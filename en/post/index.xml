@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on CialloKing Blog</title>
+    <link>cialloking.github.io/en/post/</link>
+    <description>Recent content from CialloKing Blog</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    
+    <managingEditor>xxx@example.com (CialloKing)</managingEditor>
+    <webMaster>xxx@example.com (CialloKing)</webMaster>
+    
+    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
+    
+    <lastBuildDate>Wed, 18 Mar 2026 00:00:00 +0000</lastBuildDate>
+    
+    
+    <atom:link href="cialloking.github.io/en/post/index.xml" rel="self" type="application/rss&#43;xml" />
+    
+
+    
+    
+
+    <item>
+      <title>Hello</title>
+      <link>cialloking.github.io/en/post/test/</link>
+      <pubDate>Wed, 18 Mar 2026 00:00:00 &#43;0000</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>cialloking.github.io/en/post/test/</guid>
+      <description>
+        <![CDATA[<h1>Hello</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>This is my first English post.</p>
+        
+        <hr><p>Published on 2026-03-18 at <a href='cialloking.github.io/'>CialloKing Blog</a>, last modified on 2026-03-18</p>]]>
+      </description>
+      
+    </item>
+    
+    
+
+    <item>
+      <title>Hello World</title>
+      <link>cialloking.github.io/en/post/hello/</link>
+      <pubDate>Wed, 15 Mar 2023 11:00:00 -0700</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>cialloking.github.io/en/post/hello/</guid>
+      <description>
+        <![CDATA[<h1>Hello World</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>💘 博麗 霊夢 💘</p>
+        
+        <hr><p>Published on 2023-03-15 at <a href='cialloking.github.io/'>CialloKing Blog</a>, last modified on 2023-03-15</p>]]>
+      </description>
+      
+    </item>
+    
+  </channel>
+</rss>

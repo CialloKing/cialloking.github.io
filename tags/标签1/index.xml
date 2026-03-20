@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>标签1 on CialloKing 的博客</title>
+    <link>cialloking.github.io/tags/%E6%A0%87%E7%AD%BE1/</link>
+    <description>Recent content from CialloKing 的博客</description>
+    <generator>Hugo</generator>
+    <language>zh-CN</language>
+    
+    <managingEditor>xxx@example.com (CialloKing)</managingEditor>
+    <webMaster>xxx@example.com (CialloKing)</webMaster>
+    
+    <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
+    
+    <lastBuildDate>Wed, 18 Mar 2026 00:00:00 +0000</lastBuildDate>
+    
+    
+    <atom:link href="cialloking.github.io/tags/%E6%A0%87%E7%AD%BE1/index.xml" rel="self" type="application/rss&#43;xml" />
+    
+
+    
+    
+
+    <item>
+      <title>第一篇测试文章</title>
+      <link>cialloking.github.io/post/firs-test/</link>
+      <pubDate>Tue, 17 Mar 2026 00:00:00 &#43;0000</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>cialloking.github.io/post/firs-test/</guid>
+      <description>
+        <![CDATA[<h1>第一篇测试文章</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h1 id="第一篇测试文章">
+<a class="header-anchor" href="#%e7%ac%ac%e4%b8%80%e7%af%87%e6%b5%8b%e8%af%95%e6%96%87%e7%ab%a0"></a>
+第一篇测试文章
+</h1><h2 id="二级测试标题">
+<a class="header-anchor" href="#%e4%ba%8c%e7%ba%a7%e6%b5%8b%e8%af%95%e6%a0%87%e9%a2%98"></a>
+二级测试标题
+</h2><h3 id="三级测试标题">
+<a class="header-anchor" href="#%e4%b8%89%e7%ba%a7%e6%b5%8b%e8%af%95%e6%a0%87%e9%a2%98"></a>
+三级测试标题
+</h3><p>这是正文测试
+666666666666666666666</p>
+<p>22222222222222222233333333333333333333333333</p>
+<h2 id="字体强调设置">
+<a class="header-anchor" href="#%e5%ad%97%e4%bd%93%e5%bc%ba%e8%b0%83%e8%ae%be%e7%bd%ae"></a>
+字体强调设置
+</h2><p><em>斜体测试 CTRL+i</em></p>
+<p><strong>加粗测试 ctrl+b</strong></p>
+<p><em>我是斜体</em>
+<strong>我是粗体</strong>
+<em><strong>我是粗斜体</strong></em>
+<del>我是删除线</del>
+<!-- raw HTML omitted -->我是下划线<!-- raw HTML omitted -->
+==我是高亮标记==</p>
+        
+        <hr><p>本文2026-03-17首发于<a href='cialloking.github.io/'>CialloKing 的博客</a>，最后修改于2026-03-18</p>]]>
+      </description>
+      
+        <category>目录1</category><category>目录2</category>
+      
+    </item>
+    
+  </channel>
+</rss>
