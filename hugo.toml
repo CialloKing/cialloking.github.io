@@ -1,4 +1,4 @@
-baseURL = 'https://cialloking.github.io/' #本地运行重定向时先删除主域名运行再添加回来
+baseURL = 'https://cialloking.com/' #本地运行重定向时先删除主域名运行再添加回来
 #baseURL = 'http://localhost:1313/'
 theme = 'hugo-theme-reimu'
 defaultContentLanguage = 'zh-CN'
@@ -25,8 +25,8 @@ author = 'CialloKing'
 #languageName = '日本語'
 #weight = 3
 #hasCJKLanguage = 'true'
-#title = 'xxxx'                                      # 自己编辑
-#author = 'xxxx'                                     # 自己编辑
+#title = 'xxx'                                      # 自己编辑
+#author = 'xxx'                                     # 自己编辑
 
 [markup.highlight]
 guessSyntax = true
