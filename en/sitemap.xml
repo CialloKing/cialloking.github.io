@@ -2,121 +2,121 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://cialloking.github.io/en/</loc>
+    <loc>https://cialloking.com/en/</loc>
     <lastmod>2026-03-18T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://cialloking.github.io/"
+                href="https://cialloking.com/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://cialloking.github.io/en/"
+                href="https://cialloking.com/en/"
                 />
   </url><url>
-    <loc>https://cialloking.github.io/en/link/</loc>
+    <loc>https://cialloking.com/en/link/</loc>
     <lastmod>2026-03-18T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://cialloking.github.io/link/"
+                href="https://cialloking.com/link/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://cialloking.github.io/en/link/"
+                href="https://cialloking.com/en/link/"
                 />
   </url><url>
-    <loc>https://cialloking.github.io/en/post/test/</loc>
+    <loc>https://cialloking.com/en/post/test/</loc>
     <lastmod>2026-03-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://cialloking.github.io/en/post/</loc>
+    <loc>https://cialloking.com/en/post/</loc>
     <lastmod>2026-03-18T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://cialloking.github.io/post/"
+                href="https://cialloking.com/post/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://cialloking.github.io/en/post/"
+                href="https://cialloking.com/en/post/"
                 />
   </url><url>
-    <loc>https://cialloking.github.io/en/post/hello/</loc>
+    <loc>https://cialloking.com/en/post/hello/</loc>
     <lastmod>2023-03-15T11:00:00-07:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://cialloking.github.io/post/hello/"
+                href="https://cialloking.com/post/hello/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://cialloking.github.io/en/post/hello/"
+                href="https://cialloking.com/en/post/hello/"
                 />
   </url><url>
-    <loc>https://cialloking.github.io/en/archives/</loc>
+    <loc>https://cialloking.com/en/archives/</loc>
     <lastmod>2022-07-26T21:46:25+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://cialloking.github.io/archives/"
+                href="https://cialloking.com/archives/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://cialloking.github.io/en/archives/"
+                href="https://cialloking.com/en/archives/"
                 />
   </url><url>
-    <loc>https://cialloking.github.io/en/about/</loc>
+    <loc>https://cialloking.com/en/about/</loc>
     <lastmod>2022-06-09T20:12:52+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://cialloking.github.io/about/"
+                href="https://cialloking.com/about/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://cialloking.github.io/en/about/"
+                href="https://cialloking.com/en/about/"
                 />
   </url><url>
-    <loc>https://cialloking.github.io/en/categories/</loc>
+    <loc>https://cialloking.com/en/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://cialloking.github.io/categories/"
+                href="https://cialloking.com/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://cialloking.github.io/en/categories/"
+                href="https://cialloking.com/en/categories/"
                 />
   </url><url>
-    <loc>https://cialloking.github.io/en/search/</loc>
+    <loc>https://cialloking.com/en/search/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://cialloking.github.io/search/"
+                href="https://cialloking.com/search/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://cialloking.github.io/en/search/"
+                href="https://cialloking.com/en/search/"
                 />
   </url><url>
-    <loc>https://cialloking.github.io/en/tags/</loc>
+    <loc>https://cialloking.com/en/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://cialloking.github.io/tags/"
+                href="https://cialloking.com/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://cialloking.github.io/en/tags/"
+                href="https://cialloking.com/en/tags/"
                 />
   </url>
 </urlset>

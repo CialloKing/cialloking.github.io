@@ -11,7 +11,7 @@
         "summary": " 第一篇测试文章 二级测试标题 三级测试标题 这是正文测试 666666666666666666666\n22222222222222222233333333333333333333333333\n字体强调设置 斜体测试 CTRL+i\n加粗测试 ctrl+b\n我是斜体 我是粗体 我是粗斜体 我是删除线 我是下划线 ==我是高亮标记==\n",
         "tags": ["标签1","标签2"],
         "categories": ["目录1","目录2"],
-        "permalink": "https://cialloking.github.io/post/firs-test/"
+        "permalink": "https://cialloking.com/post/firs-test/"
       },
       {
         "id": "0b26c84c48bdb285d80d2b00bc10b1cf",
@@ -20,7 +20,7 @@
         "summary": "💘 博麗 霊夢 💘\n",
         "tags": null,
         "categories": null,
-        "permalink": "https://cialloking.github.io/post/hello/"
+        "permalink": "https://cialloking.com/post/hello/"
       }
   ]
 }

@@ -7,20 +7,28 @@
       {
         "id": "c26b3402df2dac6bb84ec26f892950ce",
         "title": "第一篇测试文章",
+        "date": "2026-03-17",
+        "wordCount": 712,
+        "readingTime": 2,
         "content": " 第一篇测试文章 二级测试标题 三级测试标题 这是正文测试 666666666666666666666\n22222222222222222233333333333333333333333333\n字体强调设置 斜体测试 CTRL+i\n加粗测试 ctrl+b\n我是斜体 我是粗体 我是粗斜体 我是删除线 我是下划线 ==我是高亮标记==\n列表设置 一级列表 次级列表 次级列表2 二级列表 三级列表 四级列表 无序列表 次级无序列表 无序列表2 任务事项 已完成任务 未完成任务 待办事项 图片粘贴测试 图片粘贴测试 图片测试\n公式测试 ctrl+M+M 段落插入公式\n$$ 公式测试 \\lim_{x\\to \\infin}\\frac{sin(t)}{x}=1 $$ctrl+m正文插入公式 $\\lim_{x\\to \\infin}\\frac{sin(t)}{x}=1$ 测试\n表格测试 alt+shift+f快捷键自动格式化 默认左对齐\n左对齐 居中 右对齐 内容 内容 内容 张三 李四 王五 3 4 5 链接粘贴测试 这是一个链接\nhttps://www.bilibili.com/video/av540702386/\n链接文字 带提示的链接\n代码块测试 这是插入正文std::cout\u0026lt;\u0026lt;\u0026quot;hello world\u0026quot;\u0026lt;\u0026lt;endl;的代码\n下面是代码块\nsrd::cout\u0026lt;\u0026lt;\u0026#34;hello world\u0026#34;\u0026lt;\u0026lt;endl; s = “Python 语法高亮”print var s = “JavaScript 语法高亮”; 警报; 分割线 下面是分割线\n这是分割线\n这也是分割线\n引用 引用：在需要有用的一行前加上\u0026gt;\n我是引用 我是引用 我是引用\n一级引用\n二级引用\n三级引用\n其他小技巧 这里需要注释1\n下面是流程图 / 时序图（Mermaid） graph TD A[开始] --\u003e B{判断} B --\u003e|是| C[执行] B --\u003e|否| D[结束] 1. **强制换行**：行尾加 **两个空格** 再回车 2. **空格缩进**：用 `\u0026amp;emsp;` 表示中文全角空格 3. **特殊符号转义**：在 `* # _ ~ [ ] ( )` 前加 `\\` 即可正常显示 4. **目录自动生成**：很多编辑器输入 `[toc]` 可自动生成目录 如果你常用某一款软件（比如 Typora、VSCode、语雀、GitHub），我可以再给你一份对应平台专属的 MD 快捷键+技巧。\nmd文档发表 https://www.limfx.pro/ReadArticle/57/yi-zhong-xie-zuo-de-xin-fang-fa\n这是脚注的详细说明\u0026#160;\u0026#x21a9;\u0026#xfe0e;\n",
         "summary": " 第一篇测试文章 二级测试标题 三级测试标题 这是正文测试 666666666666666666666\n22222222222222222233333333333333333333333333\n字体强调设置 斜体测试 CTRL+i\n加粗测试 ctrl+b\n我是斜体 我是粗体 我是粗斜体 我是删除线 我是下划线 ==我是高亮标记==\n",
+        "cover": null,
         "tags": ["标签1","标签2"],
         "categories": ["目录1","目录2"],
-        "permalink": "https://cialloking.github.io/post/firs-test/"
+        "permalink": "https://cialloking.com/post/firs-test/"
       },
       {
         "id": "0b26c84c48bdb285d80d2b00bc10b1cf",
         "title": "Hello World",
+        "date": "2023-03-15",
+        "wordCount": 6,
+        "readingTime": 1,
         "content": "💘 博麗 霊夢 💘\n",
         "summary": "💘 博麗 霊夢 💘\n",
+        "cover": null,
         "tags": null,
         "categories": null,
-        "permalink": "https://cialloking.github.io/post/hello/"
+        "permalink": "https://cialloking.com/post/hello/"
       }
   ]
 }

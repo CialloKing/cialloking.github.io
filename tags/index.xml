@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on CialloKing 的博客</title>
-    <link>https://cialloking.github.io/tags/</link>
+    <link>https://cialloking.com/tags/</link>
     <description>Recent content from CialloKing 的博客</description>
     <generator>Hugo</generator>
     <language>zh-CN</language>
@@ -15,7 +15,7 @@
     <lastBuildDate></lastBuildDate>
     
     
-    <atom:link href="https://cialloking.github.io/tags/index.xml" rel="self" type="application/rss&#43;xml" />
+    <atom:link href="https://cialloking.com/tags/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
     
