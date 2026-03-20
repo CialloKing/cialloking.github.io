@@ -265,7 +265,7 @@ This article does not have a corresponding language version
 
   if (!searchInput) return;
 
-  fetch('/search.json')
+  fetch('\/en\/search.json')
     .then(response => {
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       return response.json();
