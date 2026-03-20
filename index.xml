@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>CialloKing 的博客</title>
-    <link>cialloking.github.io/algolia.json</link>
+    <link>https://cialloking.github.io/algolia.json</link>
     <description>Recent content from CialloKing 的博客</description>
     <generator>Hugo</generator>
     <language>zh-CN</language>
@@ -15,7 +15,7 @@
     <lastBuildDate>Wed, 18 Mar 2026 00:00:00 +0000</lastBuildDate>
     
     
-    <atom:link href="cialloking.github.io/index.xml" rel="self" type="application/rss&#43;xml" />
+    <atom:link href="https://cialloking.github.io/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
     
@@ -23,10 +23,10 @@
 
     <item>
       <title>第一篇测试文章</title>
-      <link>cialloking.github.io/post/firs-test/</link>
+      <link>https://cialloking.github.io/post/firs-test/</link>
       <pubDate>Tue, 17 Mar 2026 00:00:00 &#43;0000</pubDate>
       <author>xxx@example.com (CialloKing)</author>
-      <guid>cialloking.github.io/post/firs-test/</guid>
+      <guid>https://cialloking.github.io/post/firs-test/</guid>
       <description>
         <![CDATA[<h1>第一篇测试文章</h1><p>作者：CialloKing（xxx@example.com）</p>
         
@@ -54,7 +54,7 @@
 <!-- raw HTML omitted -->我是下划线<!-- raw HTML omitted -->
 ==我是高亮标记==</p>
         
-        <hr><p>本文2026-03-17首发于<a href='cialloking.github.io/'>CialloKing 的博客</a>，最后修改于2026-03-18</p>]]>
+        <hr><p>本文2026-03-17首发于<a href='https://cialloking.github.io/'>CialloKing 的博客</a>，最后修改于2026-03-18</p>]]>
       </description>
       
         <category>目录1</category><category>目录2</category>
@@ -65,16 +65,16 @@
 
     <item>
       <title>Hello World</title>
-      <link>cialloking.github.io/post/hello/</link>
+      <link>https://cialloking.github.io/post/hello/</link>
       <pubDate>Wed, 15 Mar 2023 11:00:00 -0700</pubDate>
       <author>xxx@example.com (CialloKing)</author>
-      <guid>cialloking.github.io/post/hello/</guid>
+      <guid>https://cialloking.github.io/post/hello/</guid>
       <description>
         <![CDATA[<h1>Hello World</h1><p>作者：CialloKing（xxx@example.com）</p>
         
           <p>💘 博麗 霊夢 💘</p>
         
-        <hr><p>本文2023-03-15首发于<a href='cialloking.github.io/'>CialloKing 的博客</a>，最后修改于2023-03-15</p>]]>
+        <hr><p>本文2023-03-15首发于<a href='https://cialloking.github.io/'>CialloKing 的博客</a>，最后修改于2023-03-15</p>]]>
       </description>
       
     </item>
