@@ -26,7 +26,7 @@ author = 'CialloKing'
 #weight = 3
 #hasCJKLanguage = 'true'
 #title = 'xxx'                                      # 自己编辑
-#author = 'xxx'                                     # 自己编辑
+#author = 'xxxx'                                     # 自己编辑
 
 [markup.highlight]
 guessSyntax = true
