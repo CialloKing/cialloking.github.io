@@ -32,7 +32,7 @@
     {{- end -}}
     */ -}}
           <!-- 搜索页面入口（使用图标字体） -->
-<a id="nav-search-page" class="nav-icon" href="/search/" title="{{ i18n "search" }}" aria-label="{{ i18n "search" }}"></a>
+<a id="nav-search-page" class="nav-icon" href="{{ "search/" | relLangURL }}" title="{{ i18n "search" }}" aria-label="{{ i18n "search" }}"></a>
     {{- if .Site.Params.algolia_search.enable -}}
 
       <a id="nav-search-btn" class="nav-icon popup-trigger" title="{{ i18n "search" }}" aria-label="{{ i18n "search" }}"></a>
