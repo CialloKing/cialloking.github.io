@@ -1,0 +1,105 @@
+{{ define "main" }}
+<h1 class="post-title">{{ .Title }}</h1>
+
+<input type="text" id="search-input" placeholder="输入关键词搜索..." style="width: 100%; padding: 8px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px;">
+
+<!-- 搜索结果容器，类名与主页文章列表容器一致（这里用 .post-wrapper-container，你可按需改为 .post-list 等） -->
+<div id="search-results" class="post-wrapper-container"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/7.0.0/fuse.min.js"></script>
+<script>
+(function() {
+  const searchInput = document.getElementById('search-input');
+  const resultsContainer = document.getElementById('search-results');
+
+  if (!searchInput) return;
+
+  fetch('/search.json')
+    .then(response => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.json();
+    })
+    .then(data => {
+      console.log('搜索索引加载成功，文章数量:', data.docs.length);
+
+      const options = {
+        includeScore: true,
+        threshold: 0.3,
+        minMatchCharLength: 1,
+        ignoreLocation: true,
+        findAllMatches: true,
+        keys: [
+          { name: 'title', weight: 1.5 },
+          { name: 'content', weight: 2 },
+          { name: 'summary', weight: 1.2 },
+          { name: 'tags', weight: 1 },
+          { name: 'categories', weight: 1 }
+        ]
+      };
+      const fuse = new Fuse(data.docs, options);
+
+      searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        if (query.length < 1) {
+          resultsContainer.innerHTML = '';
+          return;
+        }
+
+        const results = fuse.search(query);
+        resultsContainer.innerHTML = '';
+
+        if (results.length === 0) {
+          resultsContainer.innerHTML = '<p style="text-align:center;">未找到相关内容</p>';
+          return;
+        }
+
+        // 默认封面图（如果你的文章大多没有封面，可以替换为你的默认图）
+        const defaultCover = '/images/bg1.webp';
+        // 使用全局的 covers 数组（如果你在 injector 中定义的 covers 是全局的）
+        // const covers = window.covers || [];  // 确保能访问到
+        // const randomCover = covers.length ? covers[Math.floor(Math.random() * covers.length)] : '/images/bg1.webp';
+        // // ...
+        // <img src="${doc.cover || randomCover}" alt="${doc.title}">
+
+        results.forEach((result, index) => {
+          const doc = result.item;
+          const card = document.createElement('div');
+          card.className = 'post-wrapper';  // 卡片最外层包装
+
+          // 根据索引奇偶交替左右方向（模仿主页布局）
+          const wrapDir = index % 2 === 0 ? 'right' : 'left';
+
+          // 构建卡片 HTML（完全复制主页卡片结构）
+          card.innerHTML = `
+            <div class="post-wrap ${wrapDir} aos-init aos-animate" data-aos="fade-up">
+              <a class="post-link" href="${doc.permalink}" aria-label="${doc.title}" title="${doc.title}" data-pjax-state=""></a>
+              <div class="post-cover ${wrapDir}">
+                <img src="${doc.cover || defaultCover}" alt="${doc.title}">
+              </div>
+              <div class="post-info">
+                <div class="post-meta">
+                  <span><span class="icon-calendar"></span>${doc.date}</span>
+                  <span><span class="icon-pencil"></span>${doc.wordCount} 字</span>
+                  <span><span class="icon-clock"></span>${doc.readingTime} 分钟</span>
+                </div>
+                <h2 class="post-title">${doc.title}</h2>
+                <article class="post-article">${doc.summary}</article>
+              </div>
+            </div>
+          `;
+          resultsContainer.appendChild(card);
+        });
+
+        // 如果主题使用了 AOS 动画，刷新以激活新元素的动画
+        if (typeof AOS !== 'undefined') {
+          AOS.refresh();
+        }
+      });
+    })
+    .catch(err => {
+      console.error('搜索功能加载失败:', err);
+      resultsContainer.innerHTML = '<p style="text-align:center; color:red;">搜索功能加载失败，请刷新重试</p>';
+    });
+})();
+</script>
+{{ end }}
