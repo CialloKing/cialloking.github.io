@@ -1,0 +1,25 @@
+{{- $pages := where .Site.RegularPages "Section" "in" .Site.Params.mainSections -}}
+{
+  "index": {
+    "fields": ["title", "content", "summary", "tags", "categories"],
+    "ref": "id"
+  },
+  "docs": [
+    {{- range $index, $page := $pages }}
+      {{- if $index }},{{ end }}
+      {
+        "id": {{ $page.File.UniqueID | jsonify }},
+        "title": {{ $page.Title | jsonify }},
+        "date": {{ $page.Date.Format "2006-01-02" | jsonify }},
+        "wordCount": {{ $page.WordCount }},
+        "readingTime": {{ $page.ReadingTime }},
+        "content": {{ $page.Plain | jsonify }},
+        "summary": {{ $page.Summary | plainify | jsonify }},
+        "cover": {{ $page.Params.cover | default .Site.Params.cover | jsonify }},
+        "tags": {{ $page.Params.tags | jsonify }},
+        "categories": {{ $page.Params.categories | jsonify }},
+        "permalink": {{ $page.Permalink | jsonify }}
+      }
+    {{- end }}
+  ]
+}

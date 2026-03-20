@@ -1,0 +1,77 @@
+/* .post-cover img {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100%;
+    height: auto;
+} */
+
+#nav-search-page::before {
+    font-family: iconfont !important;
+    content: "\e631";   /* 注意是反斜杠 + e62b */
+    font-size: inherit;
+    display: inline-block;
+    line-height: 1;
+}
+
+/* ===== 封面容器新样式 ===== */
+/* 让封面容器填满父容器高度，图片居中裁剪，消除白边 */
+.post-cover {
+    height: 100% !important;          /* 填满父容器高度 (232px) */
+    overflow: hidden !important;
+    /* 移除 flex-shrink: 0，因为高度已填满，无需防止压缩 */
+}
+
+.post-cover img {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    height: 100% !important;           /* 确保图片填满容器 */
+    object-fit: cover !important;       /* 覆盖容器，保持比例，裁剪多余部分 */
+    object-position: center !important; /* 从中心裁剪，避免偏上或偏下 */
+}
+
+
+/* 移动端文章卡片布局修复 */
+@media (max-width: 767px) {
+  /* 卡片改为垂直排列 */
+  .post-wrap {
+    display: block !important;
+    flex-direction: column !important;
+    height: auto !important;
+    margin-bottom: 1.5rem;
+  }
+
+  /* 封面容器宽度100%，固定高度，溢出隐藏 */
+  .post-cover {
+    width: 100% !important;
+    height: 200px !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+  }
+
+  /* 内容区域宽度100%，高度自动，清除所有限制 */
+  .post-info {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 1rem !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 标题和摘要取消行数限制 */
+  .post-title,
+  .post-article {
+    overflow: visible !important;
+    -webkit-line-clamp: unset !important;
+    line-clamp: unset !important;
+  }
+   /* 修复长数字/长单词溢出问题 */
+  .post-article {
+    word-break: break-all;      /* 允许在任意字符处换行 */
+    overflow-wrap: break-word;  /* 兼容性更好的换行方式 */
+    white-space: normal;        /* 确保正常换行 */
+  }
+}

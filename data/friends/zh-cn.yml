@@ -1,0 +1,8 @@
+- name: D-Sketon
+  url: https://github.com/D-Sketon
+  desc: 主题作者GitHub
+  image: https://d-sketon.github.io/avatar/avatar.webp
+- name: hugo-theme-reimu
+  url: https://github.com/D-Sketon/hugo-theme-reimu
+  desc: 主题仓库
+  image: https://d-sketon.github.io/avatar/avatar.webp

@@ -1,0 +1,26 @@
+{{- $lang := .Page.Language.Lang -}}
+{{- $friends := index .Site.Data.friends $lang -}}
+
+{{- if not $friends -}}
+  {{- warnf "No friends data found for language %s, falling back to default" $lang -}}
+  {{- $friends = index .Site.Data.friends "zh-cn" -}}
+{{- end -}}
+
+{{- if not $friends -}}
+  <p>暂无友链数据，请先在 data/friends/ 中添加对应语言的文件。</p>
+{{- else -}}
+  <div class="friend-wrap" data-aos="zoom-in">
+    {{- range $friends -}}
+      <div class="friend-item-wrap">
+        <a href="{{ .url }}" rel="noopener nofollow noreferrer" target="_blank"></a>
+        <div class="friend-icon-wrap">
+          <img class="no-lightbox" src="{{ .image | relURL }}" alt="{{ .name }}" />
+        </div>
+        <div class="friend-info-wrap">
+          <div class="friend-name">{{ .name }}</div>
+          <div class="friend-desc">{{ .desc }}</div>
+        </div>
+      </div>
+    {{- end -}}
+  </div>
+{{- end -}}
