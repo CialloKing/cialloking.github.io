@@ -7,11 +7,7 @@ title: '第一篇测试文章'
 mermaid: true
 math: true
 tags:
-  - 标签1
-  - 标签2
-categories:
-  - 目录1
-  - 目录2    
+categories:  
 
 ---
 
@@ -170,6 +166,17 @@ var s = “JavaScript 语法高亮”;
 
 <!-- 这段内容不会显示在预览里 -->
 
+{{< details summary="0721" >}}
+
+Ciallo～(∠・ω< )⌒★
+
+{{< /details >}}
+
+{{< details summary="点击展开查看" >}}
+这里是折叠起来的内容
+{{< /details >}}
+
+
 <details>
 <summary>点击展开查看</summary>
 这里是折叠起来的内容
@@ -177,7 +184,8 @@ var s = “JavaScript 语法高亮”;
 
 
 
--
+
+
 - 下面是流程图 / 时序图（Mermaid）
 ```mermaid
 graph TD
