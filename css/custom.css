@@ -74,4 +74,10 @@
     overflow-wrap: break-word;  /* 兼容性更好的换行方式 */
     white-space: normal;        /* 确保正常换行 */
   }
+    .post-title {
+    word-break: break-word;      /* 允许在任意字符处换行 */
+    overflow-wrap: break-word;   /* 强制长单词换行 */
+    white-space: normal;         /* 确保正常换行（如果主题设置了 nowrap） */
+    max-width: 100%;             /* 避免超出父容器 */
+  }
 }
