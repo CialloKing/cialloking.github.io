@@ -22,9 +22,10 @@ categories:
 ```cpp
 int a = 10;
 int& b = a;   // b 是 a 的引用（别名）
-
+int* c =&a;
 std::cout << &a << std::endl; 
 std::cout << &b << std::endl; //输出相同的地址
+std::cout << &c << std::endl; //输出指针c自己的地址
 ```
 
 这里，`b` 就是 a 的另一个名字，`a`、`b` 的地址完全相同，对 `b` 的任何操作，本质上都是在操作 `a`。
@@ -120,11 +121,17 @@ const int& ra = a;   // 允许，权限缩小（不能通过 ra 修改 a，但 a
 
 const int b = 20;
 int& rb = b;         // 错误！权限放大（试图通过普通引用修改 const 变量）
+
+const int c=123;
+void f(int&x ){}
+f(c);    //报错，c是const对象，只能用const引用
+void f2(const int&x ){} //const int&x既可以接收const对象，也可以接收非const对象
+f2(c); 
 ```
 
 ### 临时对象的引用
 C++ 中，表达式的结果（如 a * 3）或类型转换产生的中间值，存放在临时对象中。
-临时对象具有常性（const），只能用 const 引用绑定。
+临时对象具有常性（const），只能用 `const` 引用绑定。
 ```cpp
 int a = 10;
 const int& r = a * 3;   // 正确，r 绑定到临时对象
@@ -132,6 +139,7 @@ const int& r = a * 3;   // 正确，r 绑定到临时对象
 
 double d = 3.14;
 const int& rd = d;      // 正确，发生类型转换，产生临时 int 对象
+
 ```
 
 ## 指针和引⽤的关系
