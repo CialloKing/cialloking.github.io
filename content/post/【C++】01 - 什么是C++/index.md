@@ -34,6 +34,32 @@ C++之父Bjarne为C++制定了几个核心原则：
 - 不强迫使用任何特定特性：你只需要为你用到的特性付费（“你只用你需要的”）。
 
 
+
+## C++ 的应用领域
+C++ 拥有极其广泛的应用场景，从底层到上层，几乎无处不在。
+
+1. 操作系统与系统软件
+Windows、Linux、macOS 等操作系统内核大量使用 C++。
+编译器（GCC、Clang）、数据库（MySQL、PostgreSQL）、浏览器（Chrome、Firefox）的核心模块也是 C++ 写的。
+
+2. 游戏与图形引擎
+几乎所有 3A 级游戏引擎（Unreal Engine、Unity 的底层、Cocos2d-x）都是用 C++ 编写的。
+图形 API（DirectX、OpenGL、Vulkan）的原生接口也是 C++。
+
+3. 音视频处理
+FFmpeg、WebRTC、Mediasoup 等音视频处理库都以 C++ 为主。视频会议软件（Zoom、腾讯会议）的客户端核心也是 C++。
+
+4. 嵌入式与物联网
+智能手环、扫地机器人、汽车电子、航天器……凡是需要高性能、低功耗的嵌入式设备，C++ 都是首选。
+
+5. 机器学习与高性能计算
+TensorFlow、PyTorch 等框架的底层核心（如 Eigen、cuDNN 的封装）使用 C++ 实现，以保证极致性能。
+量化交易、高频交易系统对延迟极度敏感，C++ 是标配。
+
+6. 服务端与基础设施
+高并发 Web 服务器（如 Nginx、Apache 模块）、分布式存储系统（如 RocksDB）、缓存中间件（Redis 的底层也是 C）都能看到 C++ 的身影。
+
+
 ## 如何动手
 
 C++文件的后缀为.cpp，C++兼容C，在Visual Studio（简称 VS）使用相同的工作流创建即可
