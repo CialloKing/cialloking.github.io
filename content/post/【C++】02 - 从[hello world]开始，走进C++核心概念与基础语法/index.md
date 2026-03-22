@@ -56,7 +56,7 @@ int main()
 
 ### 命名空间的基本用法
 
-使用关键字 `namespace` 后跟名字，然后用 `{}` 包裹成员：
+使用关键字 `namespace` 后跟名字，然后用 `{}` 包裹成员，可以在域内定义对象，函数，自定义类型等：
 ```cpp
 namespace teamA {
     int L=10;
@@ -127,15 +127,50 @@ VLN::func();   // 等价于 VeryLongNamespaceName::func()
 ```
 
 
+4. 当全局域和函数局部域有同名对象时，局部优先
+```cpp
+int a=0;
+int main() {
+    int a=10;
+    std::cout <<a<< std::endl;   // 输出  10  
+    return 0;
+}
+```
+
+
 
 
 三种访问方式
+```cpp
+namespace MySpace {
+    int value=666;
+}
+    int a = MySpace::value ;  //指定命名空间 
+```
 
-| 方式           | 写法                     | 适用场景                                   |
-| -------------- | ------------------------ | ------------------------------------------ |
-| 指定命名空间   | MySpace::value           | 最清晰，推荐用于项目开发                   |
-| using 声明     | using MySpace::value;    | 只引入单个成员，避免全部展开               |
-| using 编译指令 | using namespace MySpace; | 展开所有成员，日常练习方便，但大型项目慎用 |
+```cpp
+namespace MySpace {
+    int value=666;
+    int abc=233;
+
+}
+using MySpace::value;
+    int a = value ;  //只引入单个成员，避免全部展开 
+    int b = value ; 
+    int c = value ; 
+    int d = MySpace::abc ; 
+
+```
+
+```cpp
+#include <iostream>
+using namespace std;
+int main() {
+    cout << "Hello" << endl;   // 省去了std::，但不推荐用于大型项目
+    return 0;
+}
+```
+
 
 
 ### 标准库命名空间 std
