@@ -223,7 +223,7 @@
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>文章</div><div class="sidebar-state-number">8</div>
+    <div>文章</div><div class="sidebar-state-number">9</div>
   </div>
   <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
     <div>分类</div>
@@ -293,9 +293,10 @@
 编译器不会为引用变量分配新的内存空间，它和被引用的变量共用同一块内存。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="o">&amp;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>   <span class="c1">// b 是 a 的引用（别名）
-</span></span></span><span class="line"><span class="cl">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="o">*</span> <span class="n">c</span> <span class="o">=&amp;</span><span class="n">a</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">&amp;</span><span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> 
 </span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">&amp;</span><span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">//输出相同的地址
+</span></span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">&amp;</span><span class="n">c</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">//输出指针c自己的地址
 </span></span></span></code></pre></div><p>这里，<code>b</code> 就是 a 的另一个名字，<code>a</code>、<code>b</code> 的地址完全相同，对 <code>b</code> 的任何操作，本质上都是在操作 <code>a</code>。</p>
 <h2 id="引用的特性">
 <a class="header-anchor" href="#%e5%bc%95%e7%94%a8%e7%9a%84%e7%89%b9%e6%80%a7"></a>
@@ -385,11 +386,17 @@ const 引用
 </span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="o">&amp;</span> <span class="n">rb</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>         <span class="c1">// 错误！权限放大（试图通过普通引用修改 const 变量）
-</span></span></span></code></pre></div><h3 id="临时对象的引用">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">c</span><span class="o">=</span><span class="mi">123</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="n">x</span> <span class="p">){}</span>
+</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>    <span class="c1">//报错，c是const对象，只能用const引用
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f2</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span><span class="n">x</span> <span class="p">){}</span> <span class="c1">//const int&amp;x既可以接收const对象，也可以接收非const对象
+</span></span></span><span class="line"><span class="cl"><span class="n">f2</span><span class="p">(</span><span class="n">c</span><span class="p">);</span> 
+</span></span></code></pre></div><h3 id="临时对象的引用">
 <a class="header-anchor" href="#%e4%b8%b4%e6%97%b6%e5%af%b9%e8%b1%a1%e7%9a%84%e5%bc%95%e7%94%a8"></a>
 临时对象的引用
 </h3><p>C++ 中，表达式的结果（如 a * 3）或类型转换产生的中间值，存放在临时对象中。
-临时对象具有常性（const），只能用 const 引用绑定。</p>
+临时对象具有常性（const），只能用 <code>const</code> 引用绑定。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">3</span><span class="p">;</span>   <span class="c1">// 正确，r 绑定到临时对象
 </span></span></span><span class="line"><span class="cl"><span class="c1">// int&amp; r2 = a * 3;     // 错误，临时对象不能绑定到普通引用
@@ -430,7 +437,7 @@ const 引用
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-03.webp"
+              data-src="/images/covers/covers-26.webp"
               data-sizes="auto"
               alt="【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法"
               class="lazyload"
@@ -442,7 +449,7 @@ const 引用
         <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法</h3>
       </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-19.webp"
+              data-src="/images/covers/covers-85.webp"
               data-sizes="auto"
               alt="【C&#43;&#43;】03 - 函数重载与缺省参数"
               class="lazyload"
@@ -474,10 +481,10 @@ const 引用
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;11.5k</span
+          >&nbsp;12.7k</span
         >
         &nbsp;|&nbsp;
-        <span class="icon-coffee">&nbsp;00:29</span>
+        <span class="icon-coffee">&nbsp;00:31</span>
       </div><div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"
@@ -538,7 +545,7 @@ const 引用
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>文章</div><div class="sidebar-state-number">8</div>
+    <div>文章</div><div class="sidebar-state-number">9</div>
   </div>
   <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
     <div>分类</div>
@@ -652,7 +659,7 @@ const 引用
           author: "CialloKing",
           title: "【C\u002b\u002b】04 - 引用",
           url: "https:\/\/cialloking.com\/post\/c\u002b\u002b04---%E5%BC%95%E7%94%A8\/",
-          description: " 什么是引用？ 引用不是新定义一个变量，而是给已存在的变量取一个别名。\n编译器不会为引用变量分配新的内存空间，它和被引用的变量共用同一块内存。\nint a = 10; int\u0026amp; b = a; \/\/ b 是 a 的引用（别名） std::cout \u0026lt;\u0026lt; \u0026amp;a \u0026lt;\u0026lt; std::endl; std::cout \u0026lt;\u0026lt; \u0026amp;b \u0026lt;\u0026lt; std::endl; \/\/输出相同的地址 这里，b 就是 a 的另一个名字，a、b 的地址完全相同，对 b 的任何操作，本质上都是在操作 a。\n",
+          description: " 什么是引用？ 引用不是新定义一个变量，而是给已存在的变量取一个别名。\n编译器不会为引用变量分配新的内存空间，它和被引用的变量共用同一块内存。\nint a = 10; int\u0026amp; b = a; \/\/ b 是 a 的引用（别名） int* c =\u0026amp;a; std::cout \u0026lt;\u0026lt; \u0026amp;a \u0026lt;\u0026lt; std::endl; std::cout \u0026lt;\u0026lt; \u0026amp;b \u0026lt;\u0026lt; std::endl; \/\/输出相同的地址 std::cout \u0026lt;\u0026lt; \u0026amp;c \u0026lt;\u0026lt; std::endl; \/\/输出指针c自己的地址 这里，b 就 …",
           cover: "https:\/\/cialloking.com\/images\/bg\/bg2.webp",
         };
       </script><script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax ></script><script src="/js/tabs.js" integrity="" crossorigin="anonymous" data-pjax defer></script><script type="module" data-pjax>const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;const initPswp = (gallery, children) => {

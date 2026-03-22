@@ -213,7 +213,7 @@
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>文章</div><div class="sidebar-state-number">8</div>
+    <div>文章</div><div class="sidebar-state-number">9</div>
   </div>
   <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
     <div>分类</div>
@@ -301,9 +301,11 @@
 <li>缺省参数的位置规则</li>
 </ol>
 <ul>
-<li>缺省参数必须从右向左连续设置，不能跳跃</li>
+<li>全缺省就是全部形参给缺省值，半缺省就是部分形参给缺省值。</li>
+<li>C++规定半缺省参数必须从右往左依次连续缺省，不能间隔跳跃给缺省值</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">20</span><span class="p">);</span>   <span class="c1">// 正确
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">20</span><span class="p">);</span> <span class="c1">// 全缺省
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">20</span><span class="p">);</span>   <span class="c1">// 正确
 </span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">,</span> <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">20</span><span class="p">);</span>   <span class="c1">// 错误，b 没有默认值却放在了中间
 </span></span></span></code></pre></div><ul>
 <li>调用时，实参从左向右依次匹配，不能跳过缺省参数。</li>
@@ -359,9 +361,9 @@
     </p>
     <p><p>注意：返回值类型不能作为重载的条件。因为调用时无法根据返回值类型判断应该调用哪个函数。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">double</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">0</span><span class="err">；</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="c1">// 返回值类型不同不能作为重载
-</span></span></span></code></pre></div><p>因此，设计重载时要注意避免这种歧义。</p></p>
+</span></span></span></code></pre></div></p>
   </blockquote>
 
 
@@ -370,9 +372,14 @@
       Warning
     </p>
     <p><p>如果两个函数参数个数相同，但一个使用了缺省参数，可能会造成二义性：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>   <span class="c1">// 错误！编译器不知道调用 f(int) 还是 f(int,0)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">&gt;</span><span class="kt">void</span> <span class="n">f</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">f2</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>   <span class="c1">// 错误！编译器不知道调用 f() 还是 f(int)
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f2</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f2</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">f2</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>   <span class="c1">// 错误！编译器不知道调用 f2(int) 还是 f2(int,0)
 </span></span></span></code></pre></div><p>因此，设计重载时要注意避免这种歧义。</p></p>
   </blockquote>
 
@@ -418,7 +425,7 @@
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-26.webp"
+              data-src="/images/covers/covers-78.webp"
               data-sizes="auto"
               alt="【C&#43;&#43;】04 - 引用"
               class="lazyload"
@@ -430,7 +437,7 @@
         <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">【C&#43;&#43;】04 - 引用</h3>
       </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-98.webp"
+              data-src="/images/covers/covers-59.webp"
               data-sizes="auto"
               alt="【C&#43;&#43;】02 - 从[hello world]开始，走进C&#43;&#43;核心概念与基础语法"
               class="lazyload"
@@ -462,10 +469,10 @@
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;11.5k</span
+          >&nbsp;12.7k</span
         >
         &nbsp;|&nbsp;
-        <span class="icon-coffee">&nbsp;00:29</span>
+        <span class="icon-coffee">&nbsp;00:31</span>
       </div><div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"
@@ -516,7 +523,7 @@
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>文章</div><div class="sidebar-state-number">8</div>
+    <div>文章</div><div class="sidebar-state-number">9</div>
   </div>
   <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
     <div>分类</div>

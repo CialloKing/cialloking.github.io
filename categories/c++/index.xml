@@ -12,12 +12,43 @@
     
     <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
-    <lastBuildDate>Sun, 22 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 23 Mar 2026 00:00:00 +0000</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/categories/c&#43;&#43;/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>【C&#43;&#43;】05 - inline和nullptr</title>
+      <link>https://cialloking.com/post/c&#43;&#43;05---inline%E5%92%8Cnullptr/</link>
+      <pubDate>Mon, 23 Mar 2026 00:01:30 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/c&#43;&#43;05---inline%E5%92%8Cnullptr/</guid>
+      <description>
+        <![CDATA[<h1>【C++】05 - inline和nullptr</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h1 id="inline">
+<a class="header-anchor" href="#inline"></a>
+inline
+</h1><h2 id="什么是-inline">
+<a class="header-anchor" href="#%e4%bb%80%e4%b9%88%e6%98%af-inline"></a>
+什么是 <code>inline</code>？
+</h2><p>在 C 语言中，如果要执行一个简单的操作（比如求两个数的最小值），通常有两种方式：</p>
+<ul>
+<li>写一个函数：代码清晰，但每次调用都有函数调用开销（压栈、跳转、返回）。</li>
+<li>写一个宏：没有调用开销，但宏很容易出错，且无法调试。</li>
+</ul>
+<p>C++ 引入了 <strong><code>inline</code> 关键字</strong>，用来向编译器发出“建议”：<strong>将这个函数在调用处展开，而不是生成函数调用代码</strong>。这样既能保持函数的清晰性，又可能获得宏一样的效率。</p>
+        
+        <hr><p>本文2026-03-23首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-03-23</p>]]>
+      </description>
+      
+        <category>C&#43;&#43;</category>
+      
+    </item>
     
     
 
@@ -37,9 +68,10 @@
 编译器不会为引用变量分配新的内存空间，它和被引用的变量共用同一块内存。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="o">&amp;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>   <span class="c1">// b 是 a 的引用（别名）
-</span></span></span><span class="line"><span class="cl">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="o">*</span> <span class="n">c</span> <span class="o">=&amp;</span><span class="n">a</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">&amp;</span><span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> 
 </span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">&amp;</span><span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">//输出相同的地址
+</span></span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">&amp;</span><span class="n">c</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">//输出指针c自己的地址
 </span></span></span></code></pre></div><p>这里，<code>b</code> 就是 a 的另一个名字，<code>a</code>、<code>b</code> 的地址完全相同，对 <code>b</code> 的任何操作，本质上都是在操作 <code>a</code>。</p>
         
         <hr><p>本文2026-03-22首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-03-22</p>]]>

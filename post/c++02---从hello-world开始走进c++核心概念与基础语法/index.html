@@ -217,7 +217,7 @@
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>文章</div><div class="sidebar-state-number">8</div>
+    <div>文章</div><div class="sidebar-state-number">9</div>
   </div>
   <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
     <div>分类</div>
@@ -316,7 +316,7 @@ C++ 版 Hello World
 <h3 id="命名空间的基本用法">
 <a class="header-anchor" href="#%e5%91%bd%e5%90%8d%e7%a9%ba%e9%97%b4%e7%9a%84%e5%9f%ba%e6%9c%ac%e7%94%a8%e6%b3%95"></a>
 命名空间的基本用法
-</h3><p>使用关键字 <code>namespace</code> 后跟名字，然后用 <code>{}</code> 包裹成员：</p>
+</h3><p>使用关键字 <code>namespace</code> 后跟名字，然后用 <code>{}</code> 包裹成员，可以在域内定义对象，函数，自定义类型等：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">teamA</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">L</span><span class="o">=</span><span class="mi">10</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="p">()</span>
@@ -369,34 +369,37 @@ C++ 版 Hello World
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">VeryLongNamespaceName</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">VLN</span> <span class="o">=</span> <span class="n">VeryLongNamespaceName</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">VLN</span><span class="o">::</span><span class="n">func</span><span class="p">();</span>   <span class="c1">// 等价于 VeryLongNamespaceName::func()
-</span></span></span></code></pre></div><p>三种访问方式</p>
-<table>
-  <thead>
-      <tr>
-          <th>方式</th>
-          <th>写法</th>
-          <th>适用场景</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>指定命名空间</td>
-          <td>MySpace::value</td>
-          <td>最清晰，推荐用于项目开发</td>
-      </tr>
-      <tr>
-          <td>using 声明</td>
-          <td>using MySpace::value;</td>
-          <td>只引入单个成员，避免全部展开</td>
-      </tr>
-      <tr>
-          <td>using 编译指令</td>
-          <td>using namespace MySpace;</td>
-          <td>展开所有成员，日常练习方便，但大型项目慎用</td>
-      </tr>
-  </tbody>
-</table>
-<h3 id="标准库命名空间-std">
+</span></span></span></code></pre></div><ol start="4">
+<li>当全局域和函数局部域有同名对象时，局部优先</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">a</span><span class="o">=</span><span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="n">a</span><span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>   <span class="c1">// 输出  10  
+</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>三种访问方式</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">MySpace</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">value</span><span class="o">=</span><span class="mi">666</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">MySpace</span><span class="o">::</span><span class="n">value</span> <span class="p">;</span>  <span class="c1">//指定命名空间 
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">MySpace</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">value</span><span class="o">=</span><span class="mi">666</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">abc</span><span class="o">=</span><span class="mi">233</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="n">MySpace</span><span class="o">::</span><span class="n">value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">value</span> <span class="p">;</span>  <span class="c1">//只引入单个成员，避免全部展开 
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">value</span> <span class="p">;</span> 
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="n">value</span> <span class="p">;</span> 
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">d</span> <span class="o">=</span> <span class="n">MySpace</span><span class="o">::</span><span class="n">abc</span> <span class="p">;</span> 
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Hello&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>   <span class="c1">// 省去了std::，但不推荐用于大型项目
+</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="标准库命名空间-std">
 <a class="header-anchor" href="#%e6%a0%87%e5%87%86%e5%ba%93%e5%91%bd%e5%90%8d%e7%a9%ba%e9%97%b4-std"></a>
 标准库命名空间 std
 </h3><p>C++ 标准库的所有内容都放在 <code>std</code> 命名空间中。
@@ -505,7 +508,7 @@ Hello World的运行
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-05.webp"
+              data-src="/images/covers/covers-120.webp"
               data-sizes="auto"
               alt="【C&#43;&#43;】03 - 函数重载与缺省参数"
               class="lazyload"
@@ -516,6 +519,18 @@ Hello World的运行
         ></a>
         <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">【C&#43;&#43;】03 - 函数重载与缺省参数</h3>
+      </div><div class="article-nav-link-wrap right"><img
+              data-src="/images/covers/covers-66.webp"
+              data-sizes="auto"
+              alt="【C&#43;&#43;】05 - inline和nullptr"
+              class="lazyload"
+            /><a
+          href="/post/c&#43;&#43;05---inline%E5%92%8Cnullptr/"
+          aria-label="后一篇:【C&#43;&#43;】05 - inline和nullptr"
+          title="后一篇:【C&#43;&#43;】05 - inline和nullptr"
+        ></a>
+        <div class="article-nav-caption">后一篇</div>
+        <h3 class="article-nav-title">【C&#43;&#43;】05 - inline和nullptr</h3>
       </div></nav></article></section>
         </div><footer id="footer" aria-label="Site footer">
   <div style="width: 100%; overflow: hidden">
@@ -537,10 +552,10 @@ Hello World的运行
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;11.5k</span
+          >&nbsp;12.7k</span
         >
         &nbsp;|&nbsp;
-        <span class="icon-coffee">&nbsp;00:29</span>
+        <span class="icon-coffee">&nbsp;00:31</span>
       </div><div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"
@@ -595,7 +610,7 @@ Hello World的运行
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>文章</div><div class="sidebar-state-number">8</div>
+    <div>文章</div><div class="sidebar-state-number">9</div>
   </div>
   <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
     <div>分类</div>
