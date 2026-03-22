@@ -1,11 +1,10 @@
 ---
 
-date: 2026-03-21
-lastmod: 2026-03-21
-title: '【C++】01 - what is the C++'
+date: 2026-03-22
+lastmod: 2026-03-22
+title: '【C++】03 - Function Overloading and Default Arguments'
 
-mermaid: true
-math: true
+
 tags:
   - 基础语法
 
@@ -14,6 +13,5 @@ categories:
    
 
 ---
-
 
 The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)

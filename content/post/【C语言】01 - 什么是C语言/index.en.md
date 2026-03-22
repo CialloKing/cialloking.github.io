@@ -14,4 +14,4 @@ categories:
 
 ---
 
-The author was too lazy to write the corresponding English version. Please check the Chinese version.
+The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)

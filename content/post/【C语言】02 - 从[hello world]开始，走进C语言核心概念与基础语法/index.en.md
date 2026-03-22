@@ -1,18 +1,14 @@
 ---
 
-date: 2026-03-21
-lastmod: 2026-03-21
-title: '【C++】01 - what is the C++'
+date: 2026-03-22
+lastmod: 2026-03-22
+title: '【C语言】01 - 什么是C语言'
 
-mermaid: true
-math: true
+
 tags:
   - 基础语法
-
 categories:
-  - C++
-   
-
+  - C
 ---
 
 
