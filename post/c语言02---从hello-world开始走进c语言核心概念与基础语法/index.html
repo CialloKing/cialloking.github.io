@@ -1,0 +1,1382 @@
+<!doctype html>
+<html
+  lang="zh-CN" 
+  data-theme-mode="auto"
+  >
+  <head><meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/><title>
+  【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法 | CialloKing
+</title>
+<meta name="description" content="少女祈祷中..."/><script>
+  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"Lang\":\"zh-cn\",\"Title\":\"CialloKing 的博客\",\"Weight\":1,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"简体中文\",\"Locale\":\"zh-CN\"},{\"Lang\":\"en\",\"Title\":\"CialloKing Blog\",\"Weight\":2,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"English\",\"Locale\":\"en\"}],\"icon_font\":\"4552607_4k4bc36ef96\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
+  
+</script>
+<link
+    rel="preload"
+    as="style"
+    crossorigin
+    href="/css/custom-fonts.css"
+    onload="this.rel='stylesheet'"
+  /><link
+    rel="preload"
+    href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  /><link rel="stylesheet" href="/css/loader.min.4eac6555838cbcb8a5d15bf9bae0c688b74fae83b16a5613692de3f476051979.css" /><meta property="og:type" content="website" />
+  <meta property="og:title" content="【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法 | CialloKing" />
+  <meta
+    property="og:description"
+    content="少女祈祷中..."
+  />
+  <meta property="og:url" content="https://cialloking.com/post/c%E8%AF%AD%E8%A8%8002---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" />
+  <meta
+    property="og:site_name"
+    content="CialloKing 的博客"
+  />
+  <meta property="og:image" content="https://cialloking.com/images/bg/bg2.webp" />
+  <meta property="article:author" content="CialloKing" />
+  <meta property="article:published_time" content="2026-03-22T00:00:00&#43;00:00" />
+  <meta property="article:modified_time" content="2026-03-22T00:00:00&#43;00:00" /><meta property="article:tag" content="基础语法" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg2.webp" />
+<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.e15f9328b0e9ee3c7d04ca76ea47f3db653d93dce1f4a28af9a7327ad1d51367.css" /><link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
+    integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei&#43;Zx/1oA/0l8ysE" crossorigin="anonymous"
+    onload="this.onload=null;this.rel='stylesheet'"
+  /><link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css"
+    integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz&#43;YI" crossorigin="anonymous"
+    onload="this.onload=null;this.rel='stylesheet'"
+  /><script
+    src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"
+    
+    
+    
+    
+    integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script><link
+    rel="stylesheet"
+    href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css"
+    integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous"/><link
+    rel="stylesheet"
+    href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css"
+    integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj&#43;vDDLIL&#43;xBGQU/voDBY5XE2lVh" crossorigin="anonymous"/>
+<link rel="stylesheet" href="/css/custom.css"></head>
+  <body><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate"><svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+          M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg></div><div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script><div id="copy-tooltip"></div>
+<div id="lang-tooltip">
+本文章没有找到对应的语言版本
+</div>
+<div id="heatmap-tooltip"></div><div id="container">
+      <div id="wrap"><div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation"><a class="main-nav-link-wrap" href="/"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">首页</span>
+      </a><a class="main-nav-link-wrap" href="/archives"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">归档</span>
+      </a><a class="main-nav-link-wrap" href="/about"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">关于</span>
+      </a><a class="main-nav-link-wrap" href="/link"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">友链</span>
+      </a><a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+<a id="nav-search-page" class="nav-icon" href="/search/" title="搜索" aria-label="搜索"></a></nav>
+
+
+  </nav><nav id="i18n-nav" aria-label="Language selection">
+      <div class="custom-dropdown">
+        <div class="select-selected" id="select-selected" role="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language menu">
+          <span id="nav-language-btn" class="nav-icon" style="padding: 0 20px 0 0"></span>
+          <span id="selected-lang">简体中文</span>
+        </div>
+        <ul class="select-items" id="select-items" role="listbox" aria-label="Languages"><li data-value="zh-cn" role="option" class="selected" aria-selected="true" >简体中文</li><li data-value="en" role="option" aria-selected="false" >English</li></ul>
+      </div>
+      <script>
+        var selectSelected = document.getElementById("select-selected");
+        var selectedLang = document.getElementById("selected-lang");
+        var selectItems = document.getElementById("select-items");
+        var selectOptions = selectItems.querySelectorAll("li");
+
+        selectSelected.addEventListener("click", () => {
+          selectItems.classList.toggle("show");
+          var expanded = selectSelected.getAttribute("aria-expanded") === "true";
+          selectSelected.setAttribute("aria-expanded", (!expanded).toString());
+        });
+
+        selectOptions.forEach((item) => {
+          item.addEventListener("click", () => {
+            const langMap = {};langMap['en'] = '\/en\/post\/c%E8%AF%AD%E8%A8%8002---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95\/';selectedLang.textContent = item.textContent;
+            selectItems.classList.remove("show");
+            selectOptions.forEach((option) => {
+              option.classList.remove("selected");
+            });
+            item.classList.add("selected");
+            if (item.dataset.value === 'zh-cn') {
+              return;
+            }
+            if (!langMap[item.dataset.value]) {
+              _$("#lang-tooltip").style.opacity = "1";
+              setTimeout(() => {
+                _$("#lang-tooltip").style.opacity = "0";
+              }, 1000);
+              return;
+            }
+            window.location = langMap[item.dataset.value];
+          });
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!event.target.closest(".custom-dropdown")) {
+            selectItems.classList.remove("show");
+            selectSelected.setAttribute("aria-expanded", "false");
+          }
+        });
+      </script>
+    </nav></div>
+<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg2.webp" alt="【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法"><div id="header-outer">
+    <div id="header-title"><span id="logo">
+            <h1 data-aos="slide-up">【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法</h1>
+          </span><h2 id="subtitle-wrap" data-aos="slide-down"></h2></div>
+  </div>
+</header><div id="content"
+          aria-label="Page content"
+          class="sidebar-left"
+            ><aside id="sidebar" aria-label="Sidebar"><div class="sidebar-wrapper-container sticky"><div class="sidebar-wrapper">
+    <div
+      class="sidebar-wrap"
+      data-aos="fade-up"
+    ><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#hello-world如何运行">hello world如何运行</a>
+      <ol>
+        <li><a href="#main函数">main函数</a></li>
+        <li><a href="#printf和库函数">printf和库函数</a>
+          <ol>
+            <li><a href="#什么是库函数">什么是库函数？</a></li>
+            <li><a href="#头文件-include-stdioh-的作用">头文件 #include &lt;stdio.h&gt; 的作用</a></li>
+            <li><a href="#printf的使用">printf的使用</a>
+              <ol>
+                <li><a href="#格式说明符">格式说明符</a></li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+        <li><a href="#c语言中的关键字">C语言中的关键字</a>
+          <ol>
+            <li><a href="#什么是关键字">什么是关键字？</a></li>
+            <li><a href="#c-语言的32个关键字">C 语言的32个关键字</a></li>
+          </ol>
+        </li>
+        <li><a href="#字符和ascii编码">字符和ASCII编码</a>
+          <ol>
+            <li><a href="#什么是字符">什么是字符？</a></li>
+            <li><a href="#ascii-编码">ASCII 编码</a></li>
+          </ol>
+        </li>
+        <li><a href="#字符串和-0">字符串和 \0</a>
+          <ol>
+            <li><a href="#什么是字符串">什么是字符串？</a></li>
+            <li><a href="#字符串在内存中是如何存储的">字符串在内存中是如何存储的？</a></li>
+          </ol>
+        </li>
+        <li><a href="#转义字符">转义字符</a>
+          <ol>
+            <li><a href="#什么是转义字符">什么是转义字符？</a></li>
+          </ol>
+        </li>
+        <li><a href="#c语言的注释">C语言的注释</a>
+          <ol>
+            <li><a href="#注释是什么">注释是什么？</a></li>
+            <li><a href="#为什么需要写注释">为什么需要写注释</a></li>
+          </ol>
+        </li>
+        <li><a href="#hello-world的运行">hello world的运行</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img
+    data-src="/avatar/my-avatar.webp"
+    data-sizes="auto"
+    alt="CialloKing"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">CialloKing</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div><div class="sidebar-state-number">8</div>
+  </div>
+  <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
+    <div>分类</div>
+    <div class="sidebar-state-number">
+      2
+    </div>
+  </a>
+  <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
+    <div>标签</div>
+    <div class="sidebar-state-number">1</div>
+  </a>
+</div>
+<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="首页"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">首页</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="归档"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">归档</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="关于"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">关于</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/link"
+        aria-label="友链"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
+    </div></div></div><div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div></div>
+  </div><div class="sidebar-widget"></div></div></aside>
+<section id="main" aria-label="Main content"><article
+  class="h-entry article"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div
+    class="article-inner"
+    data-aos="fade-up"
+  >
+    <div class="article-meta"><div class="article-date">
+  <span
+    class="article-date-link icon-calendar"
+    data-aos="zoom-in"
+  >
+    <time datetime="2026-03-22 00:00:00 &#43;0000 UTC" itemprop="datePublished"
+      >2026-03-22</time
+    >
+    <time style="display: none;" id="post-update-time"
+      >2026-03-22</time
+    >
+  </span></div>
+</div><div class="hr-line"></div><div class="e-content article-entry" itemprop="articleBody"><h1 id="hello-world如何运行">
+<a class="header-anchor" href="#hello-world%e5%a6%82%e4%bd%95%e8%bf%90%e8%a1%8c"></a>
+hello world如何运行
+</h1><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Hello, World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="main函数">
+<a class="header-anchor" href="#main%e5%87%bd%e6%95%b0"></a>
+main函数
+</h2><p>这里的<code>main</code>就是 主函数，它是整个C语言程序的 入口。
+就像去一个图书馆，大门是唯一的入口；无论图书馆里面有多少房间、多少层楼，你都得从大门进去。
+C程序也一样，无论代码有多少行，都从<code>main</code>函数开始执行，执行完<code>main</code>后程序结束。</p>
+<ul>
+<li>一个C程序中 有且只能有一个<code>main</code>函数。</li>
+<li>即使项目中有多个 <code>.c </code>文件，也只能有一个<code>main</code>，因为程序只能有一个入口</li>
+</ul>
+<p>返回值<code> return 0</code>; 的意义
+在 <code>main</code> 函数中，我们通常写 <code>return 0</code>;。
+这其实是告诉操作系统：程序正常结束了。</p>
+<p>返回 <code>0</code> 表示程序成功执行。</p>
+<p>如果返回非<code>0</code>值（比如 <code>return 1</code>;），表示程序运行过程中出现了某种异常。</p>
+<p>操作系统可以捕获这个返回值，用来判断程序是否运行成功。
+比如在批处理脚本中，可以根据返回值决定下一步操作。</p>
+
+  <blockquote class="alert-blockquote warning">
+    <p class="alert-heading">
+      Warning
+    </p>
+    <p><p>错误的写法：void main()
+在一些老旧的教材或示例中，你可能会看到这样的写法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Hello, World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>这种写法不符合C语言标准</p></p>
+  </blockquote>
+
+<h2 id="printf和库函数">
+<a class="header-anchor" href="#printf%e5%92%8c%e5%ba%93%e5%87%bd%e6%95%b0"></a>
+printf和库函数
+</h2><h3 id="什么是库函数">
+<a class="header-anchor" href="#%e4%bb%80%e4%b9%88%e6%98%af%e5%ba%93%e5%87%bd%e6%95%b0"></a>
+什么是库函数？
+</h3><p>想象一下，你刚学会做菜。如果每次做番茄炒蛋，都要自己种番茄、养鸡、生蛋……那得等到猴年马月？
+聪明的厨师会直接去菜市场买现成的食材。库函数，就是 <code>C</code> 语言为你准备好的“菜市场”！
+库函数是 <code>C</code> 标准库里预先写好的函数，它们由编译器厂商根据 C 标准实现，供我们直接调用。
+比如我们要在屏幕上打印文字，不需要自己写复杂的底层代码，直接用 <code>printf</code> 就行。
+这样做的好处是：</p>
+<ul>
+<li>省时：不用重复造轮子，开发效率大大提高。</li>
+<li>可靠：库函数经过大量测试，稳定可靠。</li>
+<li>跨平台：同一个函数在不同编译器、不同操作系统上表现一致。</li>
+</ul>
+<p>除了 <code>printf</code>，<code>C</code> 标准库还提供了很多其他函数，比如：
+输入函数：<code>scanf</code></p>
+<ul>
+<li>字符串处理：<code>strlen</code>、<code>strcpy</code></li>
+<li>数学计算：<code>sqrt</code>、<code>pow</code></li>
+<li>内存操作：<code>malloc</code>、<code>free</code></li>
+</ul>
+<p>这些函数都根据功能分类放在不同的 <code>头文件</code> 中。</p>
+<h3 id="头文件-include-stdioh-的作用">
+<a class="header-anchor" href="#%e5%a4%b4%e6%96%87%e4%bb%b6-include-stdioh-%e7%9a%84%e4%bd%9c%e7%94%a8"></a>
+头文件 #include &lt;stdio.h&gt; 的作用
+</h3><p>你可能会问：为什么每次用 printf 都要写 <code>#include &lt;stdio.h&gt;</code>？</p>
+<p>因为 <code>printf</code> 这个函数是在 <code>stdio.h</code> 头文件中声明的。
+头文件就像是函数的“说明书”，告诉编译器这个函数的名字、参数类型、返回值类型等信息。
+如果你不包含这个头文件，编译器就不知道 <code>printf</code> 是什么，就会报错。
+<code>stdio.h</code> 是 标准输入输出头文件，里面除了<code> printf</code>，还有 <code>scanf</code>、<code>putchar</code>、<code>getchar</code> 等输入输出相关的函数。
+所以，只要涉及屏幕输入输出，通常都需要 <code>#include &lt;stdio.h&gt;</code>。</p>
+
+  <blockquote class="alert-blockquote tip">
+    <p class="alert-heading">
+      Tip
+    </p>
+    <p><p>C 标准库函数非常多，不可能全部记住。最好的方法是学会查文档。</p>
+<p><a href="https://cplusplus.com/reference/clibrary/">cplusplus.com/reference/clibrary</a> —— 界面友好，示例清晰。<br>
+<a href="http://cppreference.com/">cppreference.com</a> —— 更权威、详细，适合进阶学习。</p></p>
+  </blockquote>
+
+<h3 id="printf的使用">
+<a class="header-anchor" href="#printf%e7%9a%84%e4%bd%bf%e7%94%a8"></a>
+printf的使用
+</h3><p><code>printf(&quot;Hello, World!\n&quot;);</code>
+上面的代码是使用<code>printf </code>函数打印字符串。只要把想要打印的一串字符放在双引号中并传递给<code>printf</code>函数就可以打印。</p>
+<p>除了打印字符串，<code>printf </code>函数还可以打印其他类型的数据</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="mi">666</span><span class="p">)</span> <span class="p">;</span><span class="c1">//printf打印整型
+</span></span></span><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%c</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="sc">&#39;A&#39;</span><span class="p">);</span><span class="c1">//printf打印字符
+</span></span></span><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%Lf</span><span class="se">\n</span><span class="s">&#34;</span><span class="err">，</span><span class="mf">3.14</span><span class="p">);</span><span class="c1">//printf打印双精度浮点型
+</span></span></span></code></pre></div><h4 id="格式说明符">
+<a class="header-anchor" href="#%e6%a0%bc%e5%bc%8f%e8%af%b4%e6%98%8e%e7%ac%a6"></a>
+格式说明符
+</h4><p>格式说明符告诉<code> printf</code> 如何解释后面的参数。最常用的有以下几种：</p>
+<table>
+  <thead>
+      <tr>
+          <th>说明符</th>
+          <th>类型</th>
+          <th>示例</th>
+          <th>输出</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>%d</td>
+          <td>int</td>
+          <td>printf(&quot;%d&quot;, 123);</td>
+          <td>123</td>
+      </tr>
+      <tr>
+          <td>%c</td>
+          <td>char</td>
+          <td>printf(&quot;%c&quot;, &lsquo;A&rsquo;);</td>
+          <td>A</td>
+      </tr>
+      <tr>
+          <td>%s</td>
+          <td>字符串</td>
+          <td>printf(&quot;%s&quot;, &ldquo;hello&rdquo;);</td>
+          <td>hello</td>
+      </tr>
+      <tr>
+          <td>%f</td>
+          <td>float / double</td>
+          <td>printf(&quot;%f&quot;, 3.14);</td>
+          <td>3.140000</td>
+      </tr>
+      <tr>
+          <td>%lf</td>
+          <td>double（在 printf 中与 %f 通用）</td>
+          <td>printf(&quot;%lf&quot;, 3.14);</td>
+          <td>3.140000</td>
+      </tr>
+      <tr>
+          <td>%e / %E</td>
+          <td>科学计数法</td>
+          <td>printf(&quot;%e&quot;, 123.4);</td>
+          <td>1.234000e+02</td>
+      </tr>
+      <tr>
+          <td>%x / %X</td>
+          <td>十六进制（小写/大写）</td>
+          <td>printf(&quot;%x&quot;, 255);</td>
+          <td>ff</td>
+      </tr>
+      <tr>
+          <td>%o</td>
+          <td>八进制</td>
+          <td>printf(&quot;%o&quot;, 8);</td>
+          <td>10</td>
+      </tr>
+      <tr>
+          <td>%p</td>
+          <td>指针地址</td>
+          <td>printf(&quot;%p&quot;, ptr);</td>
+          <td>0x7fff1234</td>
+      </tr>
+      <tr>
+          <td>%%</td>
+          <td>输出 % 本身</td>
+          <td>printf(&quot;%%&quot;);</td>
+          <td>%</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p>printf函数还有其他更多用法，可前往 <a href="https://en.cppreference.com/w/c/io/fprintf">文档 </a> 查看</p>
+</blockquote>
+<h2 id="c语言中的关键字">
+<a class="header-anchor" href="#c%e8%af%ad%e8%a8%80%e4%b8%ad%e7%9a%84%e5%85%b3%e9%94%ae%e5%ad%97"></a>
+C语言中的关键字
+</h2><h3 id="什么是关键字">
+<a class="header-anchor" href="#%e4%bb%80%e4%b9%88%e6%98%af%e5%85%b3%e9%94%ae%e5%ad%97"></a>
+什么是关键字？
+</h3><p>在 C 语言中，有一批特殊的单词，它们被语言本身“征用”了，有着固定的含义，不能用作变量名、函数名或其他标识符。这些单词就叫关键字（也叫保留字）。
+你可以把关键字想象成停车场里的“专用车位”——上面写着“总经理专用”“残疾人专用”，普通车辆不能停进去。
+C 语言的关键字就是给编译器预留的“专用车位”，如果你用它来命名自己的变量，编译器就会报错。</p>
+<h3 id="c-语言的32个关键字">
+<a class="header-anchor" href="#c-%e8%af%ad%e8%a8%80%e7%9a%8432%e4%b8%aa%e5%85%b3%e9%94%ae%e5%ad%97"></a>
+C 语言的32个关键字
+</h3><p>C 语言标准（C89/C90）定义了 32 个关键字，如下面所示</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">|</span> <span class="k">auto</span>   <span class="o">|</span> <span class="k">break</span>  <span class="o">|</span> <span class="k">case</span>     <span class="o">|</span> <span class="kt">char</span>   <span class="o">|</span> <span class="k">const</span>    <span class="o">|</span> <span class="k">continue</span> <span class="o">|</span> <span class="k">default</span>  <span class="o">|</span> <span class="k">do</span>     <span class="o">|</span>
+</span></span><span class="line"><span class="cl"><span class="o">|</span> <span class="kt">double</span> <span class="o">|</span> <span class="k">else</span>   <span class="o">|</span> <span class="k">enum</span>     <span class="o">|</span> <span class="k">extern</span> <span class="o">|</span> <span class="kt">float</span>    <span class="o">|</span> <span class="k">for</span>      <span class="o">|</span> <span class="k">goto</span>     <span class="o">|</span> <span class="k">if</span>     <span class="o">|</span>
+</span></span><span class="line"><span class="cl"><span class="o">|</span> <span class="kt">int</span>    <span class="o">|</span> <span class="kt">long</span>   <span class="o">|</span> <span class="k">register</span> <span class="o">|</span> <span class="k">return</span> <span class="o">|</span> <span class="kt">short</span>    <span class="o">|</span> <span class="kt">signed</span>   <span class="o">|</span> <span class="k">sizeof</span>   <span class="o">|</span> <span class="k">static</span> <span class="o">|</span>
+</span></span><span class="line"><span class="cl"><span class="o">|</span> <span class="k">struct</span> <span class="o">|</span> <span class="k">switch</span> <span class="o">|</span> <span class="k">typedef</span>  <span class="o">|</span> <span class="k">union</span>  <span class="o">|</span> <span class="kt">unsigned</span> <span class="o">|</span> <span class="kt">void</span>     <span class="o">|</span> <span class="k">volatile</span> <span class="o">|</span> <span class="k">while</span>  <span class="o">|</span>
+</span></span></code></pre></div>
+  <blockquote class="alert-blockquote tip">
+    <p class="alert-heading">
+      Tip
+    </p>
+    <p><p>这些关键字都是小写的，C 语言严格区分大小写，所以<code>If</code>或<code>WHILE</code>并不是关键字，但为了代码规范，建议不要使用它们作为标识符。</p>
+<p>随着C语言标准更新，又加入了更多关键字，可在前往 <a href="https://en.cppreference.com/w/c/keyword.html">文档</a> 查看</p></p>
+  </blockquote>
+
+<h2 id="字符和ascii编码">
+<a class="header-anchor" href="#%e5%ad%97%e7%ac%a6%e5%92%8cascii%e7%bc%96%e7%a0%81"></a>
+字符和ASCII编码
+</h2><h3 id="什么是字符">
+<a class="header-anchor" href="#%e4%bb%80%e4%b9%88%e6%98%af%e5%ad%97%e7%ac%a6"></a>
+什么是字符？
+</h3><p>在键盘上敲出来的字母、数字、符号，比如 a、Z、1、@、#，这些统统叫做字符。
+在 C 语言中，字符是用单引号括起来的，例如 &lsquo;a&rsquo;、&lsquo;1&rsquo;、&rsquo;$&rsquo;。</p>
+<p>字符和字符串有什么区别？</p>
+<ul>
+<li>字符：单引号，一个字符，如 &lsquo;A&rsquo;。</li>
+<li>字符串：双引号，一串字符，如 &ldquo;Hello&rdquo;。</li>
+</ul>
+<h3 id="ascii-编码">
+<a class="header-anchor" href="#ascii-%e7%bc%96%e7%a0%81"></a>
+ASCII 编码
+</h3><p>计算机只认识 0 和 1，也就是二进制。那字符 &lsquo;A&rsquo;、&lsquo;b&rsquo;、&lsquo;3&rsquo; 在计算机里怎么表示呢？
+我们需要一个映射表，把每个字符对应成一个整数（二进制），这样计算机就能存储和处理了。这个映射过程就叫编码。</p>
+<p>如果每个厂家都用自己的一套编码，那么 A 电脑写的文件拿到 B 电脑上可能就变成了乱码。
+所以需要统一的标准。ASCII 就是这样的标准。</p>
+<p>ASCII（American Standard Code for Information Interchange，美国信息交换标准代码）是计算机领域最基础的字符编码标准。
+它用7位二进制（最高位为0）表示128个字符，包括：</p>
+<ul>
+<li>大小写英文字母</li>
+<li>数字 0~9</li>
+<li>标点符号</li>
+<li>控制字符（如换行、回车、响铃等）</li>
+</ul>
+<p>每个字符对应一个唯一的整数（0~127），这个整数就是它的ASCII码值</p>
+<p>常用 ASCII 码值</p>
+<table>
+  <thead>
+      <tr>
+          <th>字符范围</th>
+          <th>ASCII码值</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>数字 0~9</td>
+          <td>48 ~ 57</td>
+      </tr>
+      <tr>
+          <td>大写字母 A~Z</td>
+          <td>65 ~ 90</td>
+      </tr>
+      <tr>
+          <td>小写字母 a~z</td>
+          <td>97 ~ 122</td>
+      </tr>
+      <tr>
+          <td>换⾏ \n</td>
+          <td>10</td>
+      </tr>
+      <tr>
+          <td>空格</td>
+          <td>32</td>
+      </tr>
+  </tbody>
+</table>
+<pre><code>大小写字母相差 32：'A' 是 65，'a' 是 97，差 32。
+</code></pre>
+<p>我们可以使用<code>printf</code>验证一下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%c</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="sc">&#39;A&#39;</span><span class="p">);</span>       <span class="c1">//输出A
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//因为字符本质上就是整数，我们可以直接用整数打印：
+</span></span></span><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%c</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="err">&#39;</span><span class="mi">65</span><span class="err">&#39;</span><span class="p">);</span>      <span class="c1">//还是输出A
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//反过来，也可以把字符当作整数使用：
+</span></span></span><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="sc">&#39;A&#39;</span><span class="p">);</span>       <span class="c1">// 输出 65  
+</span></span></span></code></pre></div><p>ASCII 码值 32~126 是可以在屏幕上显示的可打印字符（包括空格、数字、字母、符号）。
+我们可以写个循环把它们全部打印出来：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">126</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%c &#34;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">16</span> <span class="o">==</span> <span class="mi">15</span><span class="p">)</span>   <span class="c1">// 每16个换一行
+</span></span></span><span class="line"><span class="cl">            <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>运行结果</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">  ! &#34; # $ % &amp; &#39; ( ) * + , - . /
+</span></span><span class="line"><span class="cl">0 1 2 3 4 5 6 7 8 9 : ; &lt; = &gt; ?
+</span></span><span class="line"><span class="cl">@ A B C D E F G H I J K L M N O
+</span></span><span class="line"><span class="cl">P Q R S T U V W X Y Z [ \ ] ^ _
+</span></span><span class="line"><span class="cl">` a b c d e f g h i j k l m n o
+</span></span><span class="line"><span class="cl">p q r s t u v w x y z { | } ~
+</span></span></code></pre></div><p>ASCII 值 0~31 是控制字符，比如：</p>
+<ul>
+<li><code>\n</code>（换行）对应 10</li>
+<li><code>\t</code>（制表符）对应 9</li>
+<li><code>\a</code>（响铃）对应 7</li>
+<li><code>\0</code>（空字符）对应 0</li>
+</ul>
+<p>这些字符不能直接显示在屏幕上，但有特殊作用。比如 <code>\n</code> 让光标移到下一行，<code>\a</code> 让电脑发出“嘀”的一声。</p>
+<h2 id="字符串和-0">
+<a class="header-anchor" href="#%e5%ad%97%e7%ac%a6%e4%b8%b2%e5%92%8c-0"></a>
+字符串和 \0
+</h2><h3 id="什么是字符串">
+<a class="header-anchor" href="#%e4%bb%80%e4%b9%88%e6%98%af%e5%ad%97%e7%ac%a6%e4%b8%b2"></a>
+什么是字符串？
+</h3><p>在 C 语言中，字符串是指用双引号括起来的一串字符，比如 <code>&quot;Hello&quot;</code>、<code>&quot;C language&quot;</code>、<code>&quot;123&quot;</code> 等。
+字符串可以包含字母、数字、符号，甚至可以包含转义字符（如 <code>\n</code>）。
+注意：字符是用单引号括起来的，如 <code>'A'</code>；字符串是用双引号括起来的，如 <code>&quot;A&quot;</code>。</p>
+<h3 id="字符串在内存中是如何存储的">
+<a class="header-anchor" href="#%e5%ad%97%e7%ac%a6%e4%b8%b2%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e6%98%af%e5%a6%82%e4%bd%95%e5%ad%98%e5%82%a8%e7%9a%84"></a>
+字符串在内存中是如何存储的？
+</h3><p>C 语言使用字符数组存储字符串。例如 <code>&quot;Hello&quot;</code> 在内存中是这样存放的：</p>
+<table>
+  <thead>
+      <tr>
+          <th>地址</th>
+          <th>内容</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>100</td>
+          <td>&lsquo;H&rsquo;</td>
+      </tr>
+      <tr>
+          <td>101</td>
+          <td>&rsquo;e&rsquo;</td>
+      </tr>
+      <tr>
+          <td>102</td>
+          <td>&rsquo;l&rsquo;</td>
+      </tr>
+      <tr>
+          <td>103</td>
+          <td>&rsquo;l&rsquo;</td>
+      </tr>
+      <tr>
+          <td>104</td>
+          <td>&lsquo;o&rsquo;</td>
+      </tr>
+      <tr>
+          <td>105</td>
+          <td><code>\0</code></td>
+      </tr>
+  </tbody>
+</table>
+<p>末尾会自动添加一个 <code>\0</code>（空字符），作为字符串结束标志。</p>
+<p>每个字符占用一个字节，末尾会自动添加一个 <code>\0</code> 字符。
+<code>\0</code> 是 ASCII 码为 0 的字符，叫做空字符（null character），它不是数字 0，而是一个特殊的控制字符。
+它的作用只有一个：标志字符串的结束。</p>
+<p>为什么要有 <code>\0</code>？
+因为计算机只知道内存地址，不知道字符串有多长。
+如果没有结束标志，程序就不知道在哪里停止。
+<code>\0</code> 就像一个句号，告诉程序：“到这里，这个字符串就结束了。”</p>
+<h2 id="转义字符">
+<a class="header-anchor" href="#%e8%bd%ac%e4%b9%89%e5%ad%97%e7%ac%a6"></a>
+转义字符
+</h2><h3 id="什么是转义字符">
+<a class="header-anchor" href="#%e4%bb%80%e4%b9%88%e6%98%af%e8%bd%ac%e4%b9%89%e5%ad%97%e7%ac%a6"></a>
+什么是转义字符？
+</h3><p>在 C 语言中，有些字符无法直接放在字符串或字符里，比如换行符、制表符、双引号、反斜杠本身等。为了表示这些特殊字符，C 语言引入了一种特殊的写法：转义字符。
+转义字符以反斜杠 \ 开头，后面跟一个或多个字符，用来表示一个特殊的含义。
+“转义”的意思就是：让这个字符原本的含义发生改变。
+举个例子：
+n 本来只是一个普通的字母 n，但写成 \n 后，它就变成了“换行”的意思。</p>
+<table>
+  <thead>
+      <tr>
+          <th>转义字符</th>
+          <th>含义</th>
+          <th>ASCII码值</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>\n</td>
+          <td>换行（Newline）</td>
+          <td>10</td>
+      </tr>
+      <tr>
+          <td>\r</td>
+          <td>回车（Carriage Return），光标移到行首</td>
+          <td>13</td>
+      </tr>
+      <tr>
+          <td>\t</td>
+          <td>水平制表符（Tab）</td>
+          <td>9</td>
+      </tr>
+      <tr>
+          <td>\v</td>
+          <td>垂直制表符</td>
+          <td>11</td>
+      </tr>
+      <tr>
+          <td>\b</td>
+          <td>退格（Backspace），光标左移一格</td>
+          <td>8</td>
+      </tr>
+      <tr>
+          <td>\f</td>
+          <td>换页（Form Feed）</td>
+          <td>12</td>
+      </tr>
+      <tr>
+          <td>\a</td>
+          <td>响铃（Alert），发出“嘀”声</td>
+          <td>7</td>
+      </tr>
+      <tr>
+          <td>\</td>
+          <td>反斜杠本身</td>
+          <td>92</td>
+      </tr>
+      <tr>
+          <td>'</td>
+          <td>单引号</td>
+          <td>39</td>
+      </tr>
+      <tr>
+          <td>&quot;</td>
+          <td>双引号</td>
+          <td>34</td>
+      </tr>
+      <tr>
+          <td>\0</td>
+          <td>空字符（字符串结束标志）</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>\ddd</td>
+          <td>1~3位八进制数表示的字符	对应ASCII</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>\xdd</td>
+          <td>2位十六进制数表示的字符	对应ASCII</td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="c语言的注释">
+<a class="header-anchor" href="#c%e8%af%ad%e8%a8%80%e7%9a%84%e6%b3%a8%e9%87%8a"></a>
+C语言的注释
+</h2><h3 id="注释是什么">
+<a class="header-anchor" href="#%e6%b3%a8%e9%87%8a%e6%98%af%e4%bb%80%e4%b9%88"></a>
+注释是什么？
+</h3><p>你有没有在书里看到过这样的段落：</p>
+<blockquote>
+<p>注：原文写于1931年。</p>
+</blockquote>
+<p>这种“注”就是对原文的补充说明。在 C 语言中，注释也是类似的——它是写在代码里的说明文字，用来解释代码的作用、思路、注意事项等。
+注释是写给人类看的，编译器会完全忽略它。
+也就是说，注释不会影响程序的运行，只影响阅读代码的人。</p>
+<p>在 C 语言中，注释有两种写法：</p>
+<ol>
+<li>块注释：<code>/* ... */</code></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* 这是一个块注释
+</span></span></span><span class="line"><span class="cl"><span class="cm">   可以写多行
+</span></span></span><span class="line"><span class="cl"><span class="cm">   不会影响代码运行 */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>块注释无法嵌套</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/* 外层注释开始
+</span></span></span><span class="line"><span class="cl"><span class="cm">   /* 内层注释开始 */</span>
+</span></span><span class="line"><span class="cl">   <span class="err">这里的代码会被当作普通代码（因为内层注释已经结束了）</span>
+</span></span><span class="line"><span class="cl"><span class="err">*/</span>   <span class="c1">// 这里才是外层注释的结束
+</span></span></span></code></pre></div><ol start="2">
+<li>单行注释：<code>//</code>
+这种注释从 <code>//</code> 开始，直到行尾结束。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 这是一个单行注释
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>   <span class="c1">// 这也是注释，放在语句后面
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>编译时，注释会被替换成⼀个空格，比如<code>he/*注释*/llo</code>会变成<code>he llo</code></p>
+<h3 id="为什么需要写注释">
+<a class="header-anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%86%99%e6%b3%a8%e9%87%8a"></a>
+为什么需要写注释
+</h3><ol>
+<li>帮助自己理解
+代码的逻辑往往很复杂，当时写的思路，过段时间可能就忘了。注释能帮你快速回忆。</li>
+<li>方便他人阅读
+在团队开发中，代码是给别人看的。清晰的注释能让同事快速理解你的意图，减少沟通成本。</li>
+<li>利于维护和修改
+当需要修改代码时，注释告诉你这段代码原本是干什么的，避免改出 bug。</li>
+</ol>
+<h2 id="hello-world的运行">
+<a class="header-anchor" href="#hello-world%e7%9a%84%e8%bf%90%e8%a1%8c"></a>
+hello world的运行
+</h2><p>经过上面的学习，我们已经认识了<code>hello world</code>是如何运行的</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;            //包含头文件</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>                    <span class="c1">//主函数
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Hello, World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>  <span class="c1">//输出字符串&#34;Hello, World!&#34;，并在后面使用\n换行
+</span></span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>                   <span class="c1">//返回 0 程序正常结束
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div></div>
+    <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
+    <a
+      class="article-category-link"
+      href="/categories/c"
+      data-aos="zoom-in"
+      >C</a
+    >
+    </li></ul>
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e5%9f%ba%e7%a1%80%e8%af%ad%e6%b3%95"
+        rel="tag"
+        >基础语法</a
+      >
+    </li></ul>
+</footer>
+  </div><nav
+    id="article-nav"
+    aria-label="Article navigation"
+    data-aos="fade-up"
+  ><div class="article-nav-link-wrap left"><img
+              data-src="/images/covers/covers-52.webp"
+              data-sizes="auto"
+              alt="【C&#43;&#43;】01 - 什么是C&#43;&#43;"
+              class="lazyload"
+            /><a
+          href="/post/c&#43;&#43;01---%E4%BB%80%E4%B9%88%E6%98%AFc&#43;&#43;/"
+          aria-label="前一篇:【C&#43;&#43;】01 - 什么是C&#43;&#43;"
+          title="前一篇:【C&#43;&#43;】01 - 什么是C&#43;&#43;"
+        ></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">【C&#43;&#43;】01 - 什么是C&#43;&#43;</h3>
+      </div><div class="article-nav-link-wrap right"><img
+              data-src="/images/covers/covers-58.webp"
+              data-sizes="auto"
+              alt="【C&#43;&#43;】04 - 引用"
+              class="lazyload"
+            /><a
+          href="/post/c&#43;&#43;04---%E5%BC%95%E7%94%A8/"
+          aria-label="后一篇:【C&#43;&#43;】04 - 引用"
+          title="后一篇:【C&#43;&#43;】04 - 引用"
+        ></a>
+        <div class="article-nav-caption">后一篇</div>
+        <h3 class="article-nav-title">【C&#43;&#43;】04 - 引用</h3>
+      </div></nav></article></section>
+        </div><footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info"><div>
+      <span class="icon-copyright"></span>2020-2026<span class="footer-info-sep rotate"></span>CialloKing
+    </div><div>
+        基于&nbsp;<a
+          href="https://gohugo.io/"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          >Hugo</a
+        >&nbsp;Theme.<a
+          href="https://github.com/D-Sketon/hugo-theme-reimu"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          >Reimu</a
+        >
+      </div><div>
+        <span class="icon-brush"
+          >&nbsp;11.5k</span
+        >
+        &nbsp;|&nbsp;
+        <span class="icon-coffee">&nbsp;00:29</span>
+      </div><div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv"
+          >总访问量&nbsp;<span
+            id="busuanzi_value_site_pv"
+          ></span
+        ></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv"
+          >总访客量&nbsp;<span
+            id="busuanzi_value_site_uv"
+          ></span
+        ></span>
+      </div></div>
+</footer>
+<div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div><div id="mask" class="hide"></div>
+      </div><nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap"><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#hello-world如何运行">hello world如何运行</a>
+      <ol>
+        <li><a href="#main函数">main函数</a></li>
+        <li><a href="#printf和库函数">printf和库函数</a>
+          <ol>
+            <li><a href="#什么是库函数">什么是库函数？</a></li>
+            <li><a href="#头文件-include-stdioh-的作用">头文件 #include &lt;stdio.h&gt; 的作用</a></li>
+            <li><a href="#printf的使用">printf的使用</a>
+              <ol>
+                <li><a href="#格式说明符">格式说明符</a></li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+        <li><a href="#c语言中的关键字">C语言中的关键字</a>
+          <ol>
+            <li><a href="#什么是关键字">什么是关键字？</a></li>
+            <li><a href="#c-语言的32个关键字">C 语言的32个关键字</a></li>
+          </ol>
+        </li>
+        <li><a href="#字符和ascii编码">字符和ASCII编码</a>
+          <ol>
+            <li><a href="#什么是字符">什么是字符？</a></li>
+            <li><a href="#ascii-编码">ASCII 编码</a></li>
+          </ol>
+        </li>
+        <li><a href="#字符串和-0">字符串和 \0</a>
+          <ol>
+            <li><a href="#什么是字符串">什么是字符串？</a></li>
+            <li><a href="#字符串在内存中是如何存储的">字符串在内存中是如何存储的？</a></li>
+          </ol>
+        </li>
+        <li><a href="#转义字符">转义字符</a>
+          <ol>
+            <li><a href="#什么是转义字符">什么是转义字符？</a></li>
+          </ol>
+        </li>
+        <li><a href="#c语言的注释">C语言的注释</a>
+          <ol>
+            <li><a href="#注释是什么">注释是什么？</a></li>
+            <li><a href="#为什么需要写注释">为什么需要写注释</a></li>
+          </ol>
+        </li>
+        <li><a href="#hello-world的运行">hello world的运行</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img
+    data-src="/avatar/my-avatar.webp"
+    data-sizes="auto"
+    alt="CialloKing"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">CialloKing</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div><div class="sidebar-state-number">8</div>
+  </div>
+  <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
+    <div>分类</div>
+    <div class="sidebar-state-number">
+      2
+    </div>
+  </a>
+  <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
+    <div>标签</div>
+    <div class="sidebar-state-number">1</div>
+  </a>
+</div>
+<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="首页"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">首页</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="归档"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">归档</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="关于"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">关于</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/link"
+        aria-label="友链"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
+    </div></div></div></div><div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div></nav>
+</div><meting-js
+        theme="var(--color-link)"
+        id="17840645230"server="netease"type="playlist"auto="true"fixed="true"autoplay="false"loop="all"order="random"preload="auto"volume="0.7"mutex="true"list-folded="true"lrc-type="0">
+      </meting-js><script
+    src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"
+    
+    
+    
+    
+    integrity="sha384-3gT/vsepWkfz/ff7PpWNUeMzeWoH3cDhm/A8jM7ouoAK0/fP/9bcHHR5kHq2nf&#43;e" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"
+    
+    
+    
+    
+    integrity="sha384-J08i8An/QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script><script src="/js/main.js" integrity="" crossorigin="anonymous"  ></script><script src="/js/aos.js" integrity="" crossorigin="anonymous"  ></script><script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", aosInit);
+    } else {
+      aosInit();
+    }
+  </script><script src="/js/pjax_main.js" integrity="" crossorigin="anonymous" data-pjax ></script><script>
+  var setupFirework = () => {
+    if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
+      if (window.firework) {
+        const options = JSON.parse("{\"excludeelements\":[\"a\",\"button\"],\"particles\":[{\"colors\":[\"var(--red-1)\",\"var(--red-2)\",\"var(--red-3)\",\"var(--red-4)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"emit\"],\"number\":20,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.3,0.5],\"radius\":[16,32]}},{\"colors\":[\"var(--red-0)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"diffuse\"],\"number\":1,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.2,0.5],\"lineWidth\":6,\"radius\":20}}]}");
+        options.excludeElements = options.excludeelements;
+        delete options.excludeelements;
+        window.firework(options);
+      }
+    }
+  }
+</script><script
+    src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js"
+    defer
+    
+    
+    onload="setupFirework()"
+    integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8&#43;pUoWX8n1rgq282T" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js"
+    
+    
+    
+    
+    integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE/jMSCxD&#43;jAPU55x/jj3wlf" crossorigin="anonymous"></script><script src="/js/pjax.js" integrity="" crossorigin="anonymous"  ></script><script
+    src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js"
+    
+    
+    
+    
+    integrity="sha384-caMDqvgav/HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb&#43;bEHtwlmYjD" crossorigin="anonymous"></script><script data-pjax>
+    window.quicklink?.listen({
+      timeout:  3000 ,
+      priority:  true ,
+      ignores: JSON.parse("[]")
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div><script data-pjax>
+        window.REIMU_POST = {
+          author: "CialloKing",
+          title: "【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法",
+          url: "https:\/\/cialloking.com\/post\/c%E8%AF%AD%E8%A8%8002---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95\/",
+          description: " hello world如何运行 #include \u0026lt;stdio.h\u0026gt; int main() { printf(\u0026#34;Hello, World!\\n\u0026#34;); return 0; } main函数 这里的main就是 主函数，它是整个C语言程序的 入口。 就像去一个图书馆，大门是唯一的入口；无论图书馆里面有多少房间、多少层楼，你都得从大门进去。 C程序也一样，无论代码有多少行，都从main函数开始执行，执行完main后程序结束。\n",
+          cover: "https:\/\/cialloking.com\/images\/bg\/bg2.webp",
+        };
+      </script><script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax ></script><script src="/js/tabs.js" integrity="" crossorigin="anonymous" data-pjax defer></script><script type="module" data-pjax>const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;const initPswp = (gallery, children) => {
+          if (_$$(`${gallery} ${children}`).length > 0) {
+            new PhotoSwipeLightbox({
+              gallery,
+              children,pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")}).init();
+          }
+        }
+        const pswp = () => {
+          initPswp('.article-entry', 'a.article-gallery-item');
+          initPswp('.article-gallery', 'a.article-gallery-item');
+        }
+        pswp()
+      </script></div>
+</div><script
+    src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js"
+    
+    async
+    
+    
+    integrity="sha384-0M75wtSkhjIInv4coYlaJU83&#43;OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id&#43;S" crossorigin="anonymous"></script><script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script><script>
+  const reimuCopyright = String.raw`
+   ______     ______     __     __    __     __  __    
+  /\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+  \ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+   \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+    \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                    
+  `;
+  console.log(String.raw`%c ${reimuCopyright}`, "color: #ff5252;");
+  console.log(
+    "%c Theme.Reimu" + " %c https://github.com/D-Sketon/hugo-theme-reimu ",
+    "color: white; background: #ff5252; padding:5px 0;",
+    "padding:4px;border:1px solid #ff5252;",
+  );
+</script><script>
+    var setupAPlayer = () => {
+      if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
+        if (window.matchMedia('(max-width: 959px)').matches) {
+          const meting = _$('meting-js');
+          if (meting) {
+            meting.setAttribute('fixed', 'true');
+            const aside = meting.parentNode?.parentNode;
+            if (aside?.tagName === 'ASIDE') {
+              meting.parentNode.removeChild(meting);
+              document.body.appendChild(meting);
+            }
+          }
+        }
+      }
+    };</script><script
+    src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js"
+    defer
+    
+    
+    onload="setupAPlayer()"
+    integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr&#43;h5UfruuRL/aORyw&#43;5&#43;HZoU6e" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js"
+    defer
+    
+    
+    
+    integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8&#43;0maanw1S/IyB&#43;Y4JG&#43;ZDU7GpKE8" crossorigin="anonymous"></script><script>
+(function() {
+  // 封面图片列表（保持你现有路径不变，无需修改）
+  const covers = [
+    '/images/covers/covers-01.webp',
+    '/images/covers/covers-02.webp',
+    '/images/covers/covers-03.webp',
+    '/images/covers/covers-04.webp',
+    '/images/covers/covers-05.webp',
+    '/images/covers/covers-06.webp',
+    '/images/covers/covers-07.webp',
+    '/images/covers/covers-08.webp',
+    '/images/covers/covers-09.webp',
+    '/images/covers/covers-10.webp',
+    '/images/covers/covers-11.webp',
+    '/images/covers/covers-12.webp',
+    '/images/covers/covers-13.webp',
+    '/images/covers/covers-14.webp',
+    '/images/covers/covers-15.webp',
+    '/images/covers/covers-16.webp',
+    '/images/covers/covers-17.webp',
+    '/images/covers/covers-18.webp',
+    '/images/covers/covers-19.webp',
+    '/images/covers/covers-20.webp',
+    '/images/covers/covers-21.webp',
+    '/images/covers/covers-22.webp',
+    '/images/covers/covers-23.webp',
+    '/images/covers/covers-24.webp',
+    '/images/covers/covers-25.webp',
+    '/images/covers/covers-26.webp',
+    '/images/covers/covers-27.webp',
+    '/images/covers/covers-28.webp',
+    '/images/covers/covers-29.webp',
+    '/images/covers/covers-30.webp',
+    '/images/covers/covers-31.webp',
+    '/images/covers/covers-32.webp',
+    '/images/covers/covers-33.webp',
+    '/images/covers/covers-34.webp',
+    '/images/covers/covers-35.webp',
+    '/images/covers/covers-36.webp',
+    '/images/covers/covers-37.webp',
+    '/images/covers/covers-38.webp',
+    '/images/covers/covers-39.webp',
+    '/images/covers/covers-40.webp',
+    '/images/covers/covers-41.webp',
+    '/images/covers/covers-42.webp',
+    '/images/covers/covers-43.webp',
+    '/images/covers/covers-44.webp',
+    '/images/covers/covers-45.webp',
+    '/images/covers/covers-46.webp',
+    '/images/covers/covers-47.webp',
+    '/images/covers/covers-48.webp',
+    '/images/covers/covers-49.webp',
+    '/images/covers/covers-50.webp',
+    '/images/covers/covers-51.webp',
+    '/images/covers/covers-52.webp',
+    '/images/covers/covers-53.webp',
+    '/images/covers/covers-54.webp',
+    '/images/covers/covers-55.webp',
+    '/images/covers/covers-56.webp',
+    '/images/covers/covers-57.webp',
+    '/images/covers/covers-58.webp',
+    '/images/covers/covers-59.webp',
+    '/images/covers/covers-60.webp',
+    '/images/covers/covers-61.webp',
+    '/images/covers/covers-62.webp',
+    '/images/covers/covers-63.webp',
+    '/images/covers/covers-64.webp',
+    '/images/covers/covers-65.webp',
+    '/images/covers/covers-66.webp',
+    '/images/covers/covers-67.webp',
+    '/images/covers/covers-68.webp',
+    '/images/covers/covers-69.webp',
+    '/images/covers/covers-70.webp',
+    '/images/covers/covers-71.webp',
+    '/images/covers/covers-72.webp',
+    '/images/covers/covers-73.webp',
+    '/images/covers/covers-74.webp',
+    '/images/covers/covers-75.webp',
+    '/images/covers/covers-76.webp',
+    '/images/covers/covers-77.webp',
+    '/images/covers/covers-78.webp',
+    '/images/covers/covers-79.webp',
+    '/images/covers/covers-80.webp',
+    '/images/covers/covers-81.webp',
+    '/images/covers/covers-82.webp',
+    '/images/covers/covers-83.webp',
+    '/images/covers/covers-84.webp',
+    '/images/covers/covers-85.webp',
+    '/images/covers/covers-86.webp',
+    '/images/covers/covers-87.webp',
+    '/images/covers/covers-88.webp',
+    '/images/covers/covers-89.webp',
+    '/images/covers/covers-90.webp',
+    '/images/covers/covers-91.webp',
+    '/images/covers/covers-92.webp',
+    '/images/covers/covers-93.webp',
+    '/images/covers/covers-94.webp',
+    '/images/covers/covers-95.webp',
+    '/images/covers/covers-96.webp',
+    '/images/covers/covers-97.webp',
+    '/images/covers/covers-98.webp',
+    '/images/covers/covers-99.webp',
+    '/images/covers/covers-100.webp',
+    '/images/covers/covers-101.webp',
+    '/images/covers/covers-102.webp',
+    '/images/covers/covers-103.webp',
+    '/images/covers/covers-104.webp',
+    '/images/covers/covers-105.webp',
+    '/images/covers/covers-106.webp',
+    '/images/covers/covers-107.webp',
+    '/images/covers/covers-108.webp',
+    '/images/covers/covers-109.webp',
+    '/images/covers/covers-110.webp',
+    '/images/covers/covers-111.webp',
+    '/images/covers/covers-112.webp',
+    '/images/covers/covers-113.webp',
+    '/images/covers/covers-114.webp',
+    '/images/covers/covers-115.webp',
+    '/images/covers/covers-116.webp',
+    '/images/covers/covers-117.webp',
+    '/images/covers/covers-118.webp',
+    '/images/covers/covers-119.webp',
+    '/images/covers/covers-120.webp',
+    '/images/covers/covers-121.webp',
+    '/images/covers/covers-122.webp',
+    '/images/covers/covers-123.webp',
+    '/images/covers/covers-124.webp',
+    '/images/covers/covers-125.webp',
+    '/images/covers/covers-126.webp',
+    '/images/covers/covers-127.webp',
+    '/images/covers/covers-128.webp',
+    '/images/covers/covers-129.webp',
+    '/images/covers/covers-130.webp',
+    '/images/covers/covers-131.webp'
+
+  ];
+
+  // 【关键修改1】扩展选择器，覆盖搜索页所有可能的封面容器
+  const coverSelectors = [
+    '.post-cover img',
+    '#search .post-cover img',
+    '.search-result .post-cover img',
+    '.algolia-hits .post-cover img', // 适配Algolia搜索结果卡片
+    '.search-page .post-cover img'
+  ].join(', ');
+
+  // 【关键修改2】适配动态DOM的封面赋值逻辑
+  function setRandomCovers() {
+    // 查找所有封面图片元素
+    const coverImgs = document.querySelectorAll(coverSelectors);
+    if (coverImgs.length === 0) {
+      // 若未找到，150ms后重试（适配动态渲染延迟）
+      setTimeout(setRandomCovers, 150);
+      return;
+    }
+    // 为每个封面赋值随机图片
+    coverImgs.forEach(img => {
+      const randomIndex = Math.floor(Math.random() * covers.length);
+      const newSrc = covers[randomIndex];
+      // 同时设置 src 和 data-src，兼容懒加载
+      img.setAttribute('data-src', newSrc);
+      img.src = newSrc;
+      // 强制触发图片显示（覆盖主题默认隐藏样式）
+      img.style.display = 'block';
+      img.style.opacity = '1';
+      img.style.visibility = 'visible';
+    });
+  }
+
+  // 【关键修改3】调整执行时机，适配搜索页加载流程
+  // 1. 页面加载完成后执行（适配直接打开搜索页）
+  window.addEventListener('load', setRandomCovers);
+  // 2. PJAX跳转后执行（适配从首页跳转到搜索页）
+  document.addEventListener('pjax:complete', setRandomCovers);
+  // 3. 搜索框输入后执行（适配动态搜索结果）
+  document.querySelector('.search-input')?.addEventListener('input', () => {
+    setTimeout(setRandomCovers, 200); // 延迟200ms，等待搜索结果渲染
+  });
+})();
+</script>
+
+
+<script>
+  (function() {
+    // 1. 配置你的头图列表（按实际命名和数量修改，顺序对应文件夹中的图片）
+    // 示例：如果有 10 张图，依次列 bg1.webp 到 bg10.webp
+    const bannerImages = [
+      '/images/bg/bg1.webp',
+      '/images/bg/bg2.webp',
+      '/images/bg/bg3.webp',
+      '/images/bg/bg4.webp',
+      '/images/bg/bg5.webp',
+      '/images/bg/bg6.webp',
+      '/images/bg/bg7.webp',
+      '/images/bg/bg8.webp'
+      // 有更多图片继续追加，如 '/images/bg/bg11.webp'...
+    ];
+
+    // 2. 随机选择一张图片
+    function getRandomBanner() {
+      const randomIndex = Math.floor(Math.random() * bannerImages.length);
+      return bannerImages[randomIndex];
+    }
+
+    // 3. 替换 header 中的 Banner 图片
+    function setRandomBanner() {
+      // 匹配 Reimu 主题的头图元素（无需修改，主题默认结构）
+      const headerImg = document.querySelector('#header img');
+      if (headerImg) {
+        const randomBannerUrl = getRandomBanner();
+        // 同时设置 src 和 data-src，兼容主题懒加载逻辑
+        headerImg.setAttribute('data-src', randomBannerUrl);
+        headerImg.src = randomBannerUrl;
+        // 强制触发图片显示（覆盖主题默认样式）
+        headerImg.style.opacity = '1';
+        headerImg.style.visibility = 'visible';
+      }
+    }
+
+    // 4. 确保脚本在合适时机执行
+    // - 页面首次加载完成后执行
+    window.addEventListener('DOMContentLoaded', setRandomBanner);
+    // - PJAX 跳转后执行（适配主题 PJAX 功能，跳转后仍随机切换）
+    document.addEventListener('pjax:complete', setRandomBanner);
+    // - 窗口加载完成后兜底执行
+    window.addEventListener('load', setRandomBanner);
+  })();
+</script>
+</body>
+</html>

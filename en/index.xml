@@ -12,12 +12,92 @@
     
     <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
     
-    <lastBuildDate>Sat, 21 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 22 Mar 2026 00:00:00 +0000</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/en/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>【C语言】01 - 什么是C语言</title>
+      <link>https://cialloking.com/en/post/c%E8%AF%AD%E8%A8%8002---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</link>
+      <pubDate>Sun, 22 Mar 2026 00:00:00 &#43;0000</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/en/post/c%E8%AF%AD%E8%A8%8002---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</guid>
+      <description>
+        <![CDATA[<h1>【C语言】01 - 什么是C语言</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
+        
+        <hr><p>Published on 2026-03-22 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-22</p>]]>
+      </description>
+      
+        <category>C</category>
+      
+    </item>
+    
+    
+
+    <item>
+      <title>【C&#43;&#43;】04 - References</title>
+      <link>https://cialloking.com/en/post/c&#43;&#43;04---%E5%BC%95%E7%94%A8/</link>
+      <pubDate>Sun, 22 Mar 2026 00:00:00 &#43;0000</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/en/post/c&#43;&#43;04---%E5%BC%95%E7%94%A8/</guid>
+      <description>
+        <![CDATA[<h1>【C++】04 - References</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
+        
+        <hr><p>Published on 2026-03-22 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-22</p>]]>
+      </description>
+      
+        <category>C&#43;&#43;</category>
+      
+    </item>
+    
+    
+
+    <item>
+      <title>【C&#43;&#43;】03 - Function Overloading and Default Arguments</title>
+      <link>https://cialloking.com/en/post/c&#43;&#43;03---%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E4%B8%8E%E7%BC%BA%E7%9C%81%E5%8F%82%E6%95%B0/</link>
+      <pubDate>Sun, 22 Mar 2026 00:00:00 &#43;0000</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/en/post/c&#43;&#43;03---%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E4%B8%8E%E7%BC%BA%E7%9C%81%E5%8F%82%E6%95%B0/</guid>
+      <description>
+        <![CDATA[<h1>【C++】03 - Function Overloading and Default Arguments</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
+        
+        <hr><p>Published on 2026-03-22 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-22</p>]]>
+      </description>
+      
+        <category>C&#43;&#43;</category>
+      
+    </item>
+    
+    
+
+    <item>
+      <title>【C&#43;&#43;】02 - Starting with [Hello World], Dive into Core Concepts and Basic Syntax of C&#43;&#43;</title>
+      <link>https://cialloking.com/en/post/c&#43;&#43;02---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc&#43;&#43;%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</link>
+      <pubDate>Sun, 22 Mar 2026 00:00:00 &#43;0000</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/en/post/c&#43;&#43;02---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc&#43;&#43;%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</guid>
+      <description>
+        <![CDATA[<h1>【C++】02 - Starting with [Hello World], Dive into Core Concepts and Basic Syntax of C++</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
+        
+        <hr><p>Published on 2026-03-22 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-22</p>]]>
+      </description>
+      
+        <category>C&#43;&#43;</category>
+      
+    </item>
     
     
 
@@ -30,7 +110,7 @@
       <description>
         <![CDATA[<h1>【C++】01 - what is the C++</h1><p>Author: CialloKing(xxx@example.com)</p>
         
-          <p>The author was too lazy to write the corresponding English version. Please check the Chinese version.</p>
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
         
         <hr><p>Published on 2026-03-21 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-21</p>]]>
       </description>
@@ -50,7 +130,7 @@
       <description>
         <![CDATA[<h1>[C] 01 - What is C?</h1><p>Author: CialloKing(xxx@example.com)</p>
         
-          <p>The author was too lazy to write the corresponding English version. Please check the Chinese version.</p>
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
         
         <hr><p>Published on 2026-03-21 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-21</p>]]>
       </description>

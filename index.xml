@@ -12,12 +12,149 @@
     
     <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
-    <lastBuildDate>Sat, 21 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 22 Mar 2026 00:00:00 +0000</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法</title>
+      <link>https://cialloking.com/post/c%E8%AF%AD%E8%A8%8002---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</link>
+      <pubDate>Sun, 22 Mar 2026 00:00:00 &#43;0000</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/c%E8%AF%AD%E8%A8%8002---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</guid>
+      <description>
+        <![CDATA[<h1>【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h1 id="hello-world如何运行">
+<a class="header-anchor" href="#hello-world%e5%a6%82%e4%bd%95%e8%bf%90%e8%a1%8c"></a>
+hello world如何运行
+</h1><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Hello, World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="main函数">
+<a class="header-anchor" href="#main%e5%87%bd%e6%95%b0"></a>
+main函数
+</h2><p>这里的<code>main</code>就是 主函数，它是整个C语言程序的 入口。
+就像去一个图书馆，大门是唯一的入口；无论图书馆里面有多少房间、多少层楼，你都得从大门进去。
+C程序也一样，无论代码有多少行，都从<code>main</code>函数开始执行，执行完<code>main</code>后程序结束。</p>
+        
+        <hr><p>本文2026-03-22首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-03-22</p>]]>
+      </description>
+      
+        <category>C</category>
+      
+    </item>
+    
+    
+
+    <item>
+      <title>【C&#43;&#43;】04 - 引用</title>
+      <link>https://cialloking.com/post/c&#43;&#43;04---%E5%BC%95%E7%94%A8/</link>
+      <pubDate>Sun, 22 Mar 2026 00:00:00 &#43;0000</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/c&#43;&#43;04---%E5%BC%95%E7%94%A8/</guid>
+      <description>
+        <![CDATA[<h1>【C++】04 - 引用</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h2 id="什么是引用">
+<a class="header-anchor" href="#%e4%bb%80%e4%b9%88%e6%98%af%e5%bc%95%e7%94%a8"></a>
+什么是引用？
+</h2><p>引用不是新定义一个变量，而是<strong>给已存在的变量取一个别名</strong>。<br>
+编译器不会为引用变量分配新的内存空间，它和被引用的变量共用同一块内存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="o">&amp;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>   <span class="c1">// b 是 a 的引用（别名）
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">&amp;</span><span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">&amp;</span><span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">//输出相同的地址
+</span></span></span></code></pre></div><p>这里，<code>b</code> 就是 a 的另一个名字，<code>a</code>、<code>b</code> 的地址完全相同，对 <code>b</code> 的任何操作，本质上都是在操作 <code>a</code>。</p>
+        
+        <hr><p>本文2026-03-22首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-03-22</p>]]>
+      </description>
+      
+        <category>C&#43;&#43;</category>
+      
+    </item>
+    
+    
+
+    <item>
+      <title>【C&#43;&#43;】03 - 函数重载与缺省参数</title>
+      <link>https://cialloking.com/post/c&#43;&#43;03---%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E4%B8%8E%E7%BC%BA%E7%9C%81%E5%8F%82%E6%95%B0/</link>
+      <pubDate>Sun, 22 Mar 2026 00:00:00 &#43;0000</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/c&#43;&#43;03---%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E4%B8%8E%E7%BC%BA%E7%9C%81%E5%8F%82%E6%95%B0/</guid>
+      <description>
+        <![CDATA[<h1>【C++】03 - 函数重载与缺省参数</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h1 id="函数重载与缺省参数">
+<a class="header-anchor" href="#%e5%87%bd%e6%95%b0%e9%87%8d%e8%bd%bd%e4%b8%8e%e7%bc%ba%e7%9c%81%e5%8f%82%e6%95%b0"></a>
+函数重载与缺省参数
+</h1><h2 id="缺省参数">
+<a class="header-anchor" href="#%e7%bc%ba%e7%9c%81%e5%8f%82%e6%95%b0"></a>
+缺省参数
+</h2><p>C++ 允许在函数声明时为参数提供默认值。调用时如果没有传递该参数，就使用默认值。
+这叫做缺省参数（也叫默认参数）。</p>
+<p><strong>基本用法</strong></p>
+        
+        <hr><p>本文2026-03-22首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-03-22</p>]]>
+      </description>
+      
+        <category>C&#43;&#43;</category>
+      
+    </item>
+    
+    
+
+    <item>
+      <title>【C&#43;&#43;】02 - 从[hello world]开始，走进C&#43;&#43;核心概念与基础语法</title>
+      <link>https://cialloking.com/post/c&#43;&#43;02---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc&#43;&#43;%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</link>
+      <pubDate>Sun, 22 Mar 2026 00:00:00 &#43;0000</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/c&#43;&#43;02---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc&#43;&#43;%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</guid>
+      <description>
+        <![CDATA[<h1>【C++】02 - 从[hello world]开始，走进C++核心概念与基础语法</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h1 id="hello-world如何运行">
+<a class="header-anchor" href="#hello-world%e5%a6%82%e4%bd%95%e8%bf%90%e8%a1%8c"></a>
+hello world如何运行
+</h1><h2 id="c-版-hello-world">
+<a class="header-anchor" href="#c-%e7%89%88-hello-world"></a>
+C++ 版 Hello World
+</h2><p>这是C++写法的hello world</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">  
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Hello, World!&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>C++兼容C语言，可以使用继续使用C的写法输出hello world</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">printf</span><span class="p">(</span><span class="s">&#34;Hello, World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="命名空间">
+<a class="header-anchor" href="#%e5%91%bd%e5%90%8d%e7%a9%ba%e9%97%b4"></a>
+命名空间
+</h2><h3 id="命名空间的作用">
+<a class="header-anchor" href="#%e5%91%bd%e5%90%8d%e7%a9%ba%e9%97%b4%e7%9a%84%e4%bd%9c%e7%94%a8"></a>
+命名空间的作用
+</h3><p>想象一下：你正在开发一个大型项目，有多个团队同时写代码。</p>
+        
+        <hr><p>本文2026-03-22首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-03-22</p>]]>
+      </description>
+      
+        <category>C&#43;&#43;</category>
+      
+    </item>
     
     
 
