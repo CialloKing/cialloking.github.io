@@ -12,12 +12,52 @@
     
     <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
     
-    <lastBuildDate>Sun, 22 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 23 Mar 2026 00:00:00 +0000</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/en/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>【C&#43;&#43;】05 - inline and nullptr</title>
+      <link>https://cialloking.com/en/post/c&#43;&#43;05---inline%E5%92%8Cnullptr/</link>
+      <pubDate>Mon, 23 Mar 2026 00:00:00 &#43;0000</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/en/post/c&#43;&#43;05---inline%E5%92%8Cnullptr/</guid>
+      <description>
+        <![CDATA[<h1>【C++】05 - inline and nullptr</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
+        
+        <hr><p>Published on 2026-03-23 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-23</p>]]>
+      </description>
+      
+        <category>C&#43;&#43;</category>
+      
+    </item>
+    
+    
+
+    <item>
+      <title>【C】03 - Data Types, Variables and Operators in C</title>
+      <link>https://cialloking.com/en/post/c%E8%AF%AD%E8%A8%8003---c%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6/</link>
+      <pubDate>Mon, 23 Mar 2026 00:00:00 &#43;0000</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/en/post/c%E8%AF%AD%E8%A8%8003---c%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6/</guid>
+      <description>
+        <![CDATA[<h1>【C】03 - Data Types, Variables and Operators in C</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
+        
+        <hr><p>Published on 2026-03-23 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-23</p>]]>
+      </description>
+      
+        <category>C</category>
+      
+    </item>
     
     
 

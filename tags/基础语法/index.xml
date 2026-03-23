@@ -53,6 +53,58 @@ inline
     
 
     <item>
+      <title>【C语言】03 - C语言数据类型，变量和运算符</title>
+      <link>https://cialloking.com/post/c%E8%AF%AD%E8%A8%8003---c%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6/</link>
+      <pubDate>Mon, 23 Mar 2026 00:00:00 &#43;0000</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/c%E8%AF%AD%E8%A8%8003---c%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6/</guid>
+      <description>
+        <![CDATA[<h1>【C语言】03 - C语言数据类型，变量和运算符</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h1 id="数据类型">
+<a class="header-anchor" href="#%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b"></a>
+数据类型
+</h1><h2 id="基本数据类型">
+<a class="header-anchor" href="#%e5%9f%ba%e6%9c%ac%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b"></a>
+基本数据类型
+</h2><h3 id="整型整数类型">
+<a class="header-anchor" href="#%e6%95%b4%e5%9e%8b%e6%95%b4%e6%95%b0%e7%b1%bb%e5%9e%8b"></a>
+整型（整数类型）
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">short</span>       <span class="c1">//短整型
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span>         <span class="c1">//整型
+</span></span></span><span class="line"><span class="cl"><span class="kt">long</span>        <span class="c1">//长整型
+</span></span></span><span class="line"><span class="cl"><span class="kt">long</span> <span class="kt">long</span>   <span class="c1">//长长整型
+</span></span></span></code></pre></div><h3 id="浮点型小数类型">
+<a class="header-anchor" href="#%e6%b5%ae%e7%82%b9%e5%9e%8b%e5%b0%8f%e6%95%b0%e7%b1%bb%e5%9e%8b"></a>
+浮点型（小数类型）
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">float</span>          <span class="c1">//单精度浮点型
+</span></span></span><span class="line"><span class="cl"><span class="kt">double</span>         <span class="c1">//双精度浮点型
+</span></span></span><span class="line"><span class="cl"><span class="kt">long</span> <span class="kt">double</span>    <span class="c1">//长双精度浮点型
+</span></span></span></code></pre></div><h3 id="字符型">
+<a class="header-anchor" href="#%e5%ad%97%e7%ac%a6%e5%9e%8b"></a>
+字符型
+</h3><p>字符实际上存储的是对应的 ASCII 码值。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">char</span>    <span class="c1">//字符型
+</span></span></span></code></pre></div><h2 id="数据在内存中的存储">
+<a class="header-anchor" href="#%e6%95%b0%e6%8d%ae%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e7%9a%84%e5%ad%98%e5%82%a8"></a>
+数据在内存中的存储
+</h2><ul>
+<li><strong>位（bit）</strong>：比特位，最小的单位，值为 0 或 1。</li>
+<li><strong>字节（byte）</strong>：8 个比特位组成一个字节。</li>
+<li>一个字节可以表示 0<del>255（无符号）或 -128</del>127（有符号）之间的整数。</li>
+</ul>
+<p>不同数据占用的字节数不同，这就是 <strong>数据类型</strong> 的作用——告诉编译器：这个变量需要多大的内存，以及如何解释这些二进制数据。</p>
+        
+        <hr><p>本文2026-03-23首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-03-23</p>]]>
+      </description>
+      
+        <category>C</category>
+      
+    </item>
+    
+    
+
+    <item>
       <title>【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法</title>
       <link>https://cialloking.com/post/c%E8%AF%AD%E8%A8%8002---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</link>
       <pubDate>Sun, 22 Mar 2026 00:00:00 &#43;0000</pubDate>

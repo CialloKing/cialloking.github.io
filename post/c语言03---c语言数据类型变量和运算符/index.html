@@ -1,0 +1,1454 @@
+<!doctype html>
+<html
+  lang="zh-CN" 
+  data-theme-mode="auto"
+  >
+  <head><meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/><title>
+  【C语言】03 - C语言数据类型，变量和运算符 | CialloKing
+</title>
+<meta name="description" content="少女祈祷中..."/><script>
+  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"Lang\":\"zh-cn\",\"Title\":\"CialloKing 的博客\",\"Weight\":1,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"简体中文\",\"Locale\":\"zh-CN\"},{\"Lang\":\"en\",\"Title\":\"CialloKing Blog\",\"Weight\":2,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"English\",\"Locale\":\"en\"}],\"icon_font\":\"4552607_4k4bc36ef96\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
+  
+</script>
+<link
+    rel="preload"
+    as="style"
+    crossorigin
+    href="/css/custom-fonts.css"
+    onload="this.rel='stylesheet'"
+  /><link
+    rel="preload"
+    href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  /><link rel="stylesheet" href="/css/loader.min.4eac6555838cbcb8a5d15bf9bae0c688b74fae83b16a5613692de3f476051979.css" /><meta property="og:type" content="website" />
+  <meta property="og:title" content="【C语言】03 - C语言数据类型，变量和运算符 | CialloKing" />
+  <meta
+    property="og:description"
+    content="少女祈祷中..."
+  />
+  <meta property="og:url" content="https://cialloking.com/post/c%E8%AF%AD%E8%A8%8003---c%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6/" />
+  <meta
+    property="og:site_name"
+    content="CialloKing 的博客"
+  />
+  <meta property="og:image" content="https://cialloking.com/images/bg/bg2.webp" />
+  <meta property="article:author" content="CialloKing" />
+  <meta property="article:published_time" content="2026-03-23T00:00:00&#43;00:00" />
+  <meta property="article:modified_time" content="2026-03-23T00:00:00&#43;00:00" /><meta property="article:tag" content="基础语法" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg2.webp" />
+<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.e15f9328b0e9ee3c7d04ca76ea47f3db653d93dce1f4a28af9a7327ad1d51367.css" /><link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
+    integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei&#43;Zx/1oA/0l8ysE" crossorigin="anonymous"
+    onload="this.onload=null;this.rel='stylesheet'"
+  /><link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css"
+    integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz&#43;YI" crossorigin="anonymous"
+    onload="this.onload=null;this.rel='stylesheet'"
+  /><script
+    src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"
+    
+    
+    
+    
+    integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script><link
+    rel="stylesheet"
+    href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css"
+    integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous"/><link
+    rel="stylesheet"
+    href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css"
+    integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj&#43;vDDLIL&#43;xBGQU/voDBY5XE2lVh" crossorigin="anonymous"/>
+<link rel="stylesheet" href="/css/custom.css"></head>
+  <body><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate"><svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+          M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg></div><div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script><div id="copy-tooltip"></div>
+<div id="lang-tooltip">
+本文章没有找到对应的语言版本
+</div>
+<div id="heatmap-tooltip"></div><div id="container">
+      <div id="wrap"><div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation"><a class="main-nav-link-wrap" href="/"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">首页</span>
+      </a><a class="main-nav-link-wrap" href="/archives"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">归档</span>
+      </a><a class="main-nav-link-wrap" href="/about"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">关于</span>
+      </a><a class="main-nav-link-wrap" href="/link"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">友链</span>
+      </a><a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+<a id="nav-search-page" class="nav-icon" href="/search/" title="搜索" aria-label="搜索"></a></nav>
+
+
+  </nav><nav id="i18n-nav" aria-label="Language selection">
+      <div class="custom-dropdown">
+        <div class="select-selected" id="select-selected" role="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language menu">
+          <span id="nav-language-btn" class="nav-icon" style="padding: 0 20px 0 0"></span>
+          <span id="selected-lang">简体中文</span>
+        </div>
+        <ul class="select-items" id="select-items" role="listbox" aria-label="Languages"><li data-value="zh-cn" role="option" class="selected" aria-selected="true" >简体中文</li><li data-value="en" role="option" aria-selected="false" >English</li></ul>
+      </div>
+      <script>
+        var selectSelected = document.getElementById("select-selected");
+        var selectedLang = document.getElementById("selected-lang");
+        var selectItems = document.getElementById("select-items");
+        var selectOptions = selectItems.querySelectorAll("li");
+
+        selectSelected.addEventListener("click", () => {
+          selectItems.classList.toggle("show");
+          var expanded = selectSelected.getAttribute("aria-expanded") === "true";
+          selectSelected.setAttribute("aria-expanded", (!expanded).toString());
+        });
+
+        selectOptions.forEach((item) => {
+          item.addEventListener("click", () => {
+            const langMap = {};langMap['en'] = '\/en\/post\/c%E8%AF%AD%E8%A8%8003---c%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6\/';selectedLang.textContent = item.textContent;
+            selectItems.classList.remove("show");
+            selectOptions.forEach((option) => {
+              option.classList.remove("selected");
+            });
+            item.classList.add("selected");
+            if (item.dataset.value === 'zh-cn') {
+              return;
+            }
+            if (!langMap[item.dataset.value]) {
+              _$("#lang-tooltip").style.opacity = "1";
+              setTimeout(() => {
+                _$("#lang-tooltip").style.opacity = "0";
+              }, 1000);
+              return;
+            }
+            window.location = langMap[item.dataset.value];
+          });
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!event.target.closest(".custom-dropdown")) {
+            selectItems.classList.remove("show");
+            selectSelected.setAttribute("aria-expanded", "false");
+          }
+        });
+      </script>
+    </nav></div>
+<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg2.webp" alt="【C语言】03 - C语言数据类型，变量和运算符"><div id="header-outer">
+    <div id="header-title"><span id="logo">
+            <h1 data-aos="slide-up">【C语言】03 - C语言数据类型，变量和运算符</h1>
+          </span><h2 id="subtitle-wrap" data-aos="slide-down"></h2></div>
+  </div>
+</header><div id="content"
+          aria-label="Page content"
+          class="sidebar-left"
+            ><aside id="sidebar" aria-label="Sidebar"><div class="sidebar-wrapper-container sticky"><div class="sidebar-wrapper">
+    <div
+      class="sidebar-wrap"
+      data-aos="fade-up"
+    ><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#数据类型">数据类型</a>
+      <ol>
+        <li><a href="#基本数据类型">基本数据类型</a>
+          <ol>
+            <li><a href="#整型整数类型">整型（整数类型）</a></li>
+            <li><a href="#浮点型小数类型">浮点型（小数类型）</a></li>
+            <li><a href="#字符型">字符型</a></li>
+          </ol>
+        </li>
+        <li><a href="#数据在内存中的存储">数据在内存中的存储</a>
+          <ol>
+            <li><a href="#sizeof-运算符"><code>sizeof</code> 运算符</a></li>
+            <li><a href="#什么是原码反码补码">什么是原码、反码、补码</a>
+              <ol>
+                <li><a href="#原码sign-magnitude">原码（Sign-Magnitude）</a></li>
+                <li><a href="#反码ones-complement">反码（Ones‘ Complement）</a></li>
+                <li><a href="#补码twos-complement">补码（Two‘s Complement）</a></li>
+                <li><a href="#补码的优势">补码的优势</a></li>
+              </ol>
+            </li>
+            <li><a href="#signed-与-unsigned-的内存表示">signed 与 unsigned 的内存表示</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#变量">变量</a>
+      <ol>
+        <li><a href="#变量是什么">变量是什么？</a></li>
+        <li><a href="#变量的分类">变量的分类</a>
+          <ol>
+            <li><a href="#局部变量">局部变量</a></li>
+            <li><a href="#全局变量">全局变量</a></li>
+            <li><a href="#全局变量和局部变量在内存中的存储">全局变量和局部变量在内存中的存储</a></li>
+            <li><a href="#作用域与生命周期">作用域与生命周期</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#操作符">操作符</a>
+      <ol>
+        <li><a href="#算术操作符">算术操作符</a>
+          <ol>
+            <li></li>
+            <li><a href="#-">+,-,*,/，%</a></li>
+            <li><a href="#赋值">赋值&rsquo;=&rsquo;</a></li>
+            <li><a href="#单目操作符--">单目操作符： ++,&ndash;,+,-</a></li>
+          </ol>
+        </li>
+        <li><a href="#强制类型转换">强制类型转换</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img
+    data-src="/avatar/my-avatar.webp"
+    data-sizes="auto"
+    alt="CialloKing"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">CialloKing</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div><div class="sidebar-state-number">10</div>
+  </div>
+  <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
+    <div>分类</div>
+    <div class="sidebar-state-number">
+      2
+    </div>
+  </a>
+  <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
+    <div>标签</div>
+    <div class="sidebar-state-number">1</div>
+  </a>
+</div>
+<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="首页"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">首页</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="归档"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">归档</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="关于"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">关于</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/link"
+        aria-label="友链"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
+    </div></div></div><div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div></div>
+  </div><div class="sidebar-widget"></div></div></aside>
+<section id="main" aria-label="Main content"><article
+  class="h-entry article"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div
+    class="article-inner"
+    data-aos="fade-up"
+  >
+    <div class="article-meta"><div class="article-date">
+  <span
+    class="article-date-link icon-calendar"
+    data-aos="zoom-in"
+  >
+    <time datetime="2026-03-23 00:00:00 &#43;0000 UTC" itemprop="datePublished"
+      >2026-03-23</time
+    >
+    <time style="display: none;" id="post-update-time"
+      >2026-03-23</time
+    >
+  </span></div>
+</div><div class="hr-line"></div><div class="e-content article-entry" itemprop="articleBody"><h1 id="数据类型">
+<a class="header-anchor" href="#%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b"></a>
+数据类型
+</h1><h2 id="基本数据类型">
+<a class="header-anchor" href="#%e5%9f%ba%e6%9c%ac%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b"></a>
+基本数据类型
+</h2><h3 id="整型整数类型">
+<a class="header-anchor" href="#%e6%95%b4%e5%9e%8b%e6%95%b4%e6%95%b0%e7%b1%bb%e5%9e%8b"></a>
+整型（整数类型）
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">short</span>       <span class="c1">//短整型
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span>         <span class="c1">//整型
+</span></span></span><span class="line"><span class="cl"><span class="kt">long</span>        <span class="c1">//长整型
+</span></span></span><span class="line"><span class="cl"><span class="kt">long</span> <span class="kt">long</span>   <span class="c1">//长长整型
+</span></span></span></code></pre></div><h3 id="浮点型小数类型">
+<a class="header-anchor" href="#%e6%b5%ae%e7%82%b9%e5%9e%8b%e5%b0%8f%e6%95%b0%e7%b1%bb%e5%9e%8b"></a>
+浮点型（小数类型）
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">float</span>          <span class="c1">//单精度浮点型
+</span></span></span><span class="line"><span class="cl"><span class="kt">double</span>         <span class="c1">//双精度浮点型
+</span></span></span><span class="line"><span class="cl"><span class="kt">long</span> <span class="kt">double</span>    <span class="c1">//长双精度浮点型
+</span></span></span></code></pre></div><h3 id="字符型">
+<a class="header-anchor" href="#%e5%ad%97%e7%ac%a6%e5%9e%8b"></a>
+字符型
+</h3><p>字符实际上存储的是对应的 ASCII 码值。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">char</span>    <span class="c1">//字符型
+</span></span></span></code></pre></div><h2 id="数据在内存中的存储">
+<a class="header-anchor" href="#%e6%95%b0%e6%8d%ae%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e7%9a%84%e5%ad%98%e5%82%a8"></a>
+数据在内存中的存储
+</h2><ul>
+<li><strong>位（bit）</strong>：比特位，最小的单位，值为 0 或 1。</li>
+<li><strong>字节（byte）</strong>：8 个比特位组成一个字节。</li>
+<li>一个字节可以表示 0<del>255（无符号）或 -128</del>127（有符号）之间的整数。</li>
+</ul>
+<p>不同数据占用的字节数不同，这就是 <strong>数据类型</strong> 的作用——告诉编译器：这个变量需要多大的内存，以及如何解释这些二进制数据。</p>
+<h3 id="sizeof-运算符">
+<a class="header-anchor" href="#sizeof-%e8%bf%90%e7%ae%97%e7%ac%a6"></a>
+<code>sizeof</code> 运算符
+</h3><p><code>sizeof</code> 是一个 <strong>编译时运算符</strong>（在 C99 之后，变长数组的 <code>sizeof</code> 在运行时计算），用于计算类型或变量所占的字节数。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;int 类型的大小：%zu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;变量 a 的大小：%zu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="o">+</span><span class="mi">5</span><span class="p">));</span>   <span class="c1">//sizeof 编译时运算,(a=a+5)不会被执行
+</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><code>sizeof</code> 的返回值类型是 <code>size_t</code>，通常是一个无符号整型，用 %zu 打印（C99 引入）。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;char         : %zu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;unsigned char: %zu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;short        : %zu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">short</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;int          : %zu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;unsigned int : %zu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;long         : %zu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">long</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;long long    : %zu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">long</span> <span class="kt">long</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;float        : %zu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;double       : %zu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">double</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;long double  : %zu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">long</span> <span class="kt">double</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="什么是原码反码补码">
+<a class="header-anchor" href="#%e4%bb%80%e4%b9%88%e6%98%af%e5%8e%9f%e7%a0%81%e5%8f%8d%e7%a0%81%e8%a1%a5%e7%a0%81"></a>
+什么是原码、反码、补码
+</h3><p>计算机只会做加法，没有专门的减法器。为了实现减法（如 <code>a - b</code>），我们把它转化为加法：<code>a + (-b)</code>。<br>
+因此，<strong>我们需要一种能够将负数和正数统一用加法运算的编码方式</strong>。</p>
+<p>原码、反码、补码就是三种不同的二进制编码方案，用来表示有符号整数。<br>
+其中，<strong>补码</strong>是目前计算机普遍采用的方式。</p>
+<hr>
+<h4 id="原码sign-magnitude">
+<a class="header-anchor" href="#%e5%8e%9f%e7%a0%81sign-magnitude"></a>
+原码（Sign-Magnitude）
+</h4><p><strong>原码</strong>是最直观的表示法：用最高位（最左边）表示符号（0 为正，1 为负），其余位表示数值的绝对值。</p>
+<p>以 8 位二进制为例：</p>
+<table>
+  <thead>
+      <tr>
+          <th>十进制</th>
+          <th>原码二进制</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>+1</td>
+          <td>00000001</td>
+      </tr>
+      <tr>
+          <td>-1</td>
+          <td>10000001</td>
+      </tr>
+      <tr>
+          <td>+0</td>
+          <td>00000000</td>
+      </tr>
+      <tr>
+          <td>-0</td>
+          <td>10000000</td>
+      </tr>
+      <tr>
+          <td>+127</td>
+          <td>01111111</td>
+      </tr>
+      <tr>
+          <td>-127</td>
+          <td>11111111</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>简单直观，人类容易理解。</li>
+<li>存在 <strong>正零</strong> 和 <strong>负零</strong> 两种表示，浪费了一个编码。</li>
+<li>加法规则复杂（需要先判断符号），计算机硬件实现成本高。</li>
+</ul>
+<p>由于原码在运算时麻烦，计算机并不直接使用原码存储整数（但浮点数的尾数部分有时采用类似思想）。</p>
+<hr>
+<h4 id="反码ones-complement">
+<a class="header-anchor" href="#%e5%8f%8d%e7%a0%81ones-complement"></a>
+反码（Ones‘ Complement）
+</h4><p><strong>反码</strong>的规则：</p>
+<ul>
+<li>正数的反码与原码相同。</li>
+<li>负数的反码是对其原码的数值位（除符号位外）逐位取反（0 变 1，1 变 0）。</li>
+</ul>
+<p>仍以 8 位为例：</p>
+<table>
+  <thead>
+      <tr>
+          <th>十进制</th>
+          <th>原码</th>
+          <th>反码</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>+1</td>
+          <td>00000001</td>
+          <td>00000001</td>
+      </tr>
+      <tr>
+          <td>-1</td>
+          <td>10000001</td>
+          <td>11111110</td>
+      </tr>
+      <tr>
+          <td>+0</td>
+          <td>00000000</td>
+          <td>00000000</td>
+      </tr>
+      <tr>
+          <td>-0</td>
+          <td>10000000</td>
+          <td>11111111</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>解决了原码运算的部分问题，但仍有 <strong>正零</strong> 和 <strong>负零</strong>。</li>
+<li>加法时，如果最高位有进位，需要循环进位（端回进位），硬件实现仍然复杂。</li>
+<li>现代计算机也很少使用反码。</li>
+</ul>
+<hr>
+<h4 id="补码twos-complement">
+<a class="header-anchor" href="#%e8%a1%a5%e7%a0%81twos-complement"></a>
+补码（Two‘s Complement）
+</h4><p><strong>补码</strong>是目前所有现代计算机存储有符号整数的标准方式。</p>
+<p><strong>规则</strong>：</p>
+<ul>
+<li>正数的补码与原码相同。</li>
+<li>负数的补码 = 其反码 + 1（在反码的基础上加 1）。</li>
+<li>补码的符号位同样是最高位，0 为正，1 为负。</li>
+</ul>
+<p>8 位补码示例：</p>
+<table>
+  <thead>
+      <tr>
+          <th>十进制</th>
+          <th>原码</th>
+          <th>反码</th>
+          <th>补码</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>+1</td>
+          <td>00000001</td>
+          <td>00000001</td>
+          <td>00000001</td>
+      </tr>
+      <tr>
+          <td>-1</td>
+          <td>10000001</td>
+          <td>11111110</td>
+          <td>11111111</td>
+      </tr>
+      <tr>
+          <td>+0</td>
+          <td>00000000</td>
+          <td>00000000</td>
+          <td>00000000</td>
+      </tr>
+      <tr>
+          <td>-0</td>
+          <td>10000000</td>
+          <td>11111111</td>
+          <td>00000000 （溢出，舍去进位）</td>
+      </tr>
+      <tr>
+          <td>+127</td>
+          <td>01111111</td>
+          <td>01111111</td>
+          <td>01111111</td>
+      </tr>
+      <tr>
+          <td>-127</td>
+          <td>11111111</td>
+          <td>10000000</td>
+          <td>10000001</td>
+      </tr>
+      <tr>
+          <td>-128</td>
+          <td>无法表示</td>
+          <td>无法表示</td>
+          <td>10000000</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>关键点</strong>：</p>
+<ul>
+<li><strong>只有一个 0</strong>（所有位为 0），<code>10000000</code> 被用来表示 <strong>-128</strong>，因此范围比原码多一个负数。</li>
+<li>补码的加法规则非常简单：直接进行二进制加法，溢出舍弃最高位，结果就是正确的补码值。<br>
+例如：<code>-1 + 1</code> = <code>11111111 + 00000001 = 1 00000000</code>，舍去进位后得到 <code>00000000</code>（0）。</li>
+</ul>
+<hr>
+<h4 id="补码的优势">
+<a class="header-anchor" href="#%e8%a1%a5%e7%a0%81%e7%9a%84%e4%bc%98%e5%8a%bf"></a>
+补码的优势
+</h4><ol>
+<li><strong>加法器统一</strong>：无需区分正负，直接相加即可，硬件实现简单。</li>
+<li><strong>唯一零表示</strong>：避免了浪费，也让判断零更容易。</li>
+<li><strong>范围对称</strong>：例如 8 位补码范围是 <code>-128 ~ 127</code>，负数比正数多一个，没有浪费编码。</li>
+<li><strong>减法转化为加法</strong>：<code>a - b</code> 等价于 <code>a + (-b)</code>，直接用加法器计算。</li>
+</ol>
+<h3 id="signed-与-unsigned-的内存表示">
+<a class="header-anchor" href="#signed-%e4%b8%8e-unsigned-%e7%9a%84%e5%86%85%e5%ad%98%e8%a1%a8%e7%a4%ba"></a>
+signed 与 unsigned 的内存表示
+</h3><p>在计算机中，整数以 <strong>补码</strong> 形式存储。</p>
+<ul>
+<li>对于 <code>signed</code> 类型，最高位（最左边）是符号位：0 表示正数或零，1 表示负数。</li>
+<li>对于 <code>unsigned</code> 类型，所有位都用来表示数值，没有符号位。</li>
+</ul>
+<p>以 8 位 <code>char</code> 为例：</p>
+<table>
+  <thead>
+      <tr>
+          <th>二进制</th>
+          <th>unsigned char 值</th>
+          <th>signed char 值</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>00000000</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>00000001</td>
+          <td>1</td>
+          <td>1</td>
+      </tr>
+      <tr>
+          <td>&hellip;</td>
+          <td>&hellip;</td>
+          <td>&hellip;</td>
+      </tr>
+      <tr>
+          <td>01111111</td>
+          <td>127</td>
+          <td>127</td>
+      </tr>
+      <tr>
+          <td>10000000</td>
+          <td>128</td>
+          <td>-128</td>
+      </tr>
+      <tr>
+          <td>10000001</td>
+          <td>129</td>
+          <td>-127</td>
+      </tr>
+      <tr>
+          <td>&hellip;</td>
+          <td>&hellip;</td>
+          <td>&hellip;</td>
+      </tr>
+      <tr>
+          <td>11111111</td>
+          <td>255</td>
+          <td>-1</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>关键点</strong>：</p>
+<ul>
+<li>相同的二进制序列，解释为 <code>unsigned</code> 或 <code>signed</code> 时，得到的数值不同。</li>
+<li><code>unsigned</code> 类型只能表示非负数，但能表示的最大正数比同长度的 <code>signed</code> 大一倍（因为节省了符号位）。</li>
+</ul>
+<table>
+  <thead>
+      <tr>
+          <th>类型</th>
+          <th>大小（字节）</th>
+          <th>有符号范围</th>
+          <th>无符号范围</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>signed char</code></td>
+          <td>1</td>
+          <td>-128 ~ 127</td>
+          <td>—</td>
+      </tr>
+      <tr>
+          <td><code>unsigned char</code></td>
+          <td>1</td>
+          <td>—</td>
+          <td>0 ~ 255</td>
+      </tr>
+      <tr>
+          <td><code>signed short</code></td>
+          <td>2</td>
+          <td>-32768 ~ 32767</td>
+          <td>—</td>
+      </tr>
+      <tr>
+          <td><code>unsigned short</code></td>
+          <td>2</td>
+          <td>—</td>
+          <td>0 ~ 65535</td>
+      </tr>
+      <tr>
+          <td><code>signed int</code></td>
+          <td>4</td>
+          <td>-2147483648 ~ 2147483647</td>
+          <td>—</td>
+      </tr>
+      <tr>
+          <td><code>unsigned int</code></td>
+          <td>4</td>
+          <td>—</td>
+          <td>0 ~ 4294967295</td>
+      </tr>
+      <tr>
+          <td><code>signed long</code></td>
+          <td>4 或 8（取决于平台）</td>
+          <td>依平台而定</td>
+          <td>—</td>
+      </tr>
+      <tr>
+          <td><code>unsigned long</code></td>
+          <td>4 或 8</td>
+          <td>—</td>
+          <td>依平台而定</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>注意</strong>：</p>
+<ul>
+<li><code>char</code> 的符号性由实现定义。如果需要明确的 1 字节无符号整数，用 <code>unsigned char</code>；需要有符号，用 <code>signed char</code>。</li>
+<li>若不加任何修饰，<code>int</code> 就是 <code>signed int</code>。</li>
+<li>当确信变量不会为负数时，使用 <code>unsigned</code> 可以获得更大的最大值。例如数组索引、大小、计数器等。</li>
+</ul>
+<p>不同平台的数据类型最大最小值可能不同，C语言在头文件<code>limits.h</code> 中说明了整型类型的取值范围,头文件<code>float.h</code>这个中说明浮点型类型的取值范围。
+当我们需要某种类型的极值时，可以使用以下头文件中定义好的常量</p>
+<ul>
+<li><code>SCHAR_MIN</code> ，<code>SCHAR_MAX</code> ： <code>signed char</code> 的最小值和最大值。</li>
+<li><code>SHRT_MIN </code> ,<code>SHRT_MAX</code> ：<code>short</code> 的最小值和最大值。</li>
+<li><code>INT_MAX</code>,<code>INT_MIN</code> ：<code>int</code> 的最小值和最大值。</li>
+<li><code>LONG_MIN</code> ， <code>LONG_MAX</code> ： <code>long</code> 的最小值和最大值。</li>
+<li><code>LLONG_MIN</code> ， <code>LLONG_MAX</code> ： <code>long long</code> 的最小值和最大值。</li>
+<li><code>UCHAR_MAX</code> ： <code>unsigned char</code> 的最大值。</li>
+<li><code>USHRT_MAX</code> : <code>unsigned short</code> 的最大值。</li>
+<li><code>UINT_MAX</code> : <code>unsigned int</code> 的最大值。</li>
+<li><code>ULoNG_MAX</code> : <code>unsigned long</code> 的最大值。</li>
+<li><code>ULLoNG_MAX</code> : <code>unsigned long long</code> 的最大值。</li>
+</ul>
+<h1 id="变量">
+<a class="header-anchor" href="#%e5%8f%98%e9%87%8f"></a>
+变量
+</h1><h2 id="变量是什么">
+<a class="header-anchor" href="#%e5%8f%98%e9%87%8f%e6%98%af%e4%bb%80%e4%b9%88"></a>
+变量是什么？
+</h2><p><strong>变量</strong>，顾名思义，就是值可以改变的量,与此对应不变的值称为<strong>常量</strong>
+在内存中，变量对应一块存储空间，我们可以通过变量名来读写这块空间。</p>
+<p>你可以把变量想象成一个 <strong>带标签的盒子</strong>：</p>
+<ul>
+<li>标签就是变量名（比如 <code>age</code>）。</li>
+<li>盒子的大小由数据类型决定（比如 <code>int</code> 盒子能装一个整数）。</li>
+<li>盒子里的内容就是变量的值（比如 <code>18</code>）。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span><span class="o">=</span><span class="mi">10</span><span class="p">;</span>   <span class="c1">// 变量a的名字是&#39;a&#39;，类型是int，在内存中占4个字节，这里的10是常量
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">b</span><span class="p">;</span>
+</span></span></code></pre></div><p>如上面的代码，定义变量时可以同时赋初值，称为初始化，若不初始化，则变量的值具体是什么则由编译器决定</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>
+</span></span></code></pre></div><p>在Visual Studio2026的环境下，使用未初始化的<code>b</code>会报错无法运行，建议创建变量时要初始化。
+<img src="/post/c%E8%AF%AD%E8%A8%8003---c%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6/image.png" alt="alt text"></p>
+<h2 id="变量的分类">
+<a class="header-anchor" href="#%e5%8f%98%e9%87%8f%e7%9a%84%e5%88%86%e7%b1%bb"></a>
+变量的分类
+</h2><p>C 语言中，变量按作用域和生命周期可以分为两大类：局部变量 和 全局变量。</p>
+<h3 id="局部变量">
+<a class="header-anchor" href="#%e5%b1%80%e9%83%a8%e5%8f%98%e9%87%8f"></a>
+局部变量
+</h3><p>局部变量定义在函数内部（包括 <code>main</code> 函数）或代码块（<code>{}</code>）中。</p>
+<p>特点：</p>
+<ul>
+<li>作用域：从定义处开始，到所在的代码块结束。离开代码块后无法访问。</li>
+<li>生命周期：进入代码块时创建，退出代码块时销毁。</li>
+<li>未初始化时，值取决于编译器行为（不同平台可能不同）。</li>
+<li></li>
+</ul>
+<p>不同函数中的局部变量可以同名，互不影响。
+局部变量通常存储在 <code>栈</code> 中。</p>
+<h3 id="全局变量">
+<a class="header-anchor" href="#%e5%85%a8%e5%b1%80%e5%8f%98%e9%87%8f"></a>
+全局变量
+</h3><p>全局变量定义在所有函数外部（通常在文件开头）。
+特点：</p>
+<ul>
+<li>作用域：整个程序（从定义处到文件结束），可以被所有函数访问。</li>
+<li>生命周期：从程序启动到结束。</li>
+<li>未初始化时，默认值为 0（对于数值类型）或 &lsquo;\0&rsquo;（对于字符）。</li>
+</ul>
+<p>如果局部变量与全局变量同名，在局部作用域内，会优先使用局部变量。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>   <span class="c1">// 全局变量
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>   <span class="c1">// 局部变量，覆盖全局变量
+</span></span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">a</span><span class="p">);</span>   <span class="c1">// 输出 20
+</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="全局变量和局部变量在内存中的存储">
+<a class="header-anchor" href="#%e5%85%a8%e5%b1%80%e5%8f%98%e9%87%8f%e5%92%8c%e5%b1%80%e9%83%a8%e5%8f%98%e9%87%8f%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e7%9a%84%e5%ad%98%e5%82%a8"></a>
+全局变量和局部变量在内存中的存储
+</h3><p>内存中划分了很多区域</p>
+<ul>
+<li>局部变量是放在内存的栈区</li>
+<li>全局变量是放在内存的静态区</li>
+<li>堆区是用来动态内存管理的</li>
+</ul>
+<h3 id="作用域与生命周期">
+<a class="header-anchor" href="#%e4%bd%9c%e7%94%a8%e5%9f%9f%e4%b8%8e%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f"></a>
+作用域与生命周期
+</h3><table>
+  <thead>
+      <tr>
+          <th>变量类型</th>
+          <th>作用域</th>
+          <th>生命周期</th>
+          <th>默认初始值</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>局部变量</td>
+          <td>定义它的代码块内</td>
+          <td>进入代码块 → 退出代码块</td>
+          <td>随机值</td>
+      </tr>
+      <tr>
+          <td>全局变量</td>
+          <td>整个程序（定义处开始）</td>
+          <td>程序开始 → 程序结束</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>局部变量生命周期结束就销毁，所以局部变量生命周期结束就不要访问了</td>
+          <td></td>
+          <td></td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 错误示例：在作用域外访问局部变量
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// printf(&#34;%d\n&#34;, a);   // 错误！a 已超出作用域
+</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h1 id="操作符">
+<a class="header-anchor" href="#%e6%93%8d%e4%bd%9c%e7%ac%a6"></a>
+操作符
+</h1><h2 id="算术操作符">
+<a class="header-anchor" href="#%e7%ae%97%e6%9c%af%e6%93%8d%e4%bd%9c%e7%ac%a6"></a>
+算术操作符
+</h2><h3 id="">
+<a class="header-anchor" href="#"></a>
+
+</h3><h3 id="-">
+<a class="header-anchor" href="#-"></a>
++,-,*,/，%
+</h3><p>以下是加减乘除以及取模运行的示例</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span><span class="o">+</span><span class="mi">3</span><span class="p">;</span>     
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">30</span><span class="o">-</span><span class="mi">25</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="mi">3</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">31</span><span class="o">/</span><span class="mi">5</span><span class="p">;</span>     <span class="c1">//除法符号&#39;/&#39;两边是整数时，会抛弃结果的小数部分返回整数，这里d的值为6
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">e</span> <span class="o">=</span> <span class="mi">5</span><span class="o">/</span><span class="mi">6</span><span class="p">;</span>      <span class="c1">// 5小于6，整数部分为0，抛弃小数，e的值为0
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">f</span> <span class="o">=</span> <span class="mi">31</span><span class="o">%</span><span class="mi">5</span><span class="p">;</span>     <span class="c1">//整数的取模运算只取整除后的余数部分，31除5，得6余数为1，f的值为1
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">g</span> <span class="o">=</span> <span class="mi">31</span><span class="o">%-</span><span class="mi">5</span><span class="p">;</span>    <span class="c1">//取模运算结果的符号只看第一个数的正负，g的值为1
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="o">-</span><span class="mi">31</span><span class="o">%</span><span class="mi">5</span><span class="p">;</span>    <span class="c1">//                                  h的值为-1      
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">31</span><span class="o">%-</span><span class="mi">5</span><span class="p">;</span>   <span class="c1">//                                  i的值为-1 
+</span></span></span></code></pre></div><h3 id="赋值">
+<a class="header-anchor" href="#%e8%b5%8b%e5%80%bc"></a>
+赋值&rsquo;=&rsquo;
+</h3><p>赋值操作符可以连续赋值</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span><span class="o">+</span><span class="mi">3</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">+</span><span class="mi">6</span><span class="p">;</span>
+</span></span></code></pre></div><p>一般不建议连续赋值，写出的代码不容易理解，建议拆开</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span><span class="o">+</span><span class="mi">3</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">+</span><span class="mi">6</span><span class="p">;</span>    
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+</span></span></code></pre></div><p>当我们需要对一个数自身进行操作时，可以使用复合赋值符</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span><span class="mi">4</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="n">a</span> <span class="o">+=</span> <span class="mi">6</span><span class="err">；</span>       <span class="c1">//等价于   a = a+6;
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span>  <span class="n">b</span> <span class="o">=</span> <span class="mi">7</span> <span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">b</span><span class="o">-=</span><span class="mi">5</span> <span class="p">;</span>        <span class="c1">//等价于    b = b-5;
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="o">*=</span><span class="mi">5</span>         <span class="c1">//等价于    c = c*5;
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">d</span> <span class="o">/=</span> <span class="mi">5</span><span class="p">;</span>      <span class="c1">//等价于     d = d/5; 
+</span></span></span></code></pre></div><h3 id="单目操作符--">
+<a class="header-anchor" href="#%e5%8d%95%e7%9b%ae%e6%93%8d%e4%bd%9c%e7%ac%a6--"></a>
+单目操作符： ++,&ndash;,+,-
+</h3><p>类似于上面的复合赋值，单目操作符只对一个数进行操作</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span><span class="mi">4</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="n">a</span><span class="o">++</span><span class="err">；</span>       <span class="c1">//等价于   a +=1 ;
+</span></span></span><span class="line"><span class="cl"><span class="o">++</span><span class="n">a</span><span class="err">；</span>       <span class="c1">//等价于   a +=1 ;
+</span></span></span><span class="line"><span class="cl">            <span class="c1">//--操作符同理
+</span></span></span></code></pre></div><p>当<code>++</code>或<code>--</code>在操作数前面时，是先进行+1或-1，再使用操作数，当<code>++</code>或<code>--</code>在操作数后面时，是先使用操作数再进行+1或-1</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span><span class="mi">4</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">++</span><span class="err">；</span>       <span class="c1">//先使用a给b赋值，b为4，a再+1 ;
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="o">++</span><span class="n">a</span><span class="err">；</span>       <span class="c1">//先给a+1，a的值为6，再赋值给c
+</span></span></span><span class="line"><span class="cl">                    <span class="c1">//--操作符同理
+</span></span></span></code></pre></div><p>单独使用<code>+</code>或<code>-</code>可以改变正负</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span><span class="mi">4</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mi">4</span><span class="err">；</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="o">+</span><span class="n">a</span><span class="err">；</span>       <span class="c1">//+(+a)最后c是正数
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">d</span> <span class="o">=</span> <span class="o">+</span><span class="n">b</span><span class="err">；</span>       <span class="c1">//+(-b)最后d是负数
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">e</span> <span class="o">=</span> <span class="o">-</span><span class="n">a</span><span class="err">；</span>       <span class="c1">//-(+a)最后e是负数
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">e</span> <span class="o">=</span> <span class="o">-</span><span class="n">a</span><span class="err">；</span>       <span class="c1">//-(-b),负负得正，最后e是正数
+</span></span></span></code></pre></div><p>可以发现，<code>+</code>运算符对结果没影响，<code>-</code>运算符可以改变正负</p>
+<h2 id="强制类型转换">
+<a class="header-anchor" href="#%e5%bc%ba%e5%88%b6%e7%b1%bb%e5%9e%8b%e8%bd%ac%e6%8d%a2"></a>
+强制类型转换
+</h2><p>在括号里面填上类型，如<code>(int)</code>,<code>(char)</code>,强制类型转换</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">double</span>  <span class="n">a</span> <span class="o">=</span> <span class="mf">3.14159</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>           <span class="c1">//这里b和a的类型不同，编译器会警告
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">c</span> <span class="o">=</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">a</span><span class="p">;</span>        <span class="c1">//进行强制类型转换，会丢弃a的小数部分保留整数
+</span></span></span></code></pre></div><p>强扭的瓜不甜，强制类型转换可能会丢失信息，要慎用</p>
+</div>
+    <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
+    <a
+      class="article-category-link"
+      href="/categories/c"
+      data-aos="zoom-in"
+      >C</a
+    >
+    </li></ul>
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e5%9f%ba%e7%a1%80%e8%af%ad%e6%b3%95"
+        rel="tag"
+        >基础语法</a
+      >
+    </li></ul>
+</footer>
+  </div><nav
+    id="article-nav"
+    aria-label="Article navigation"
+    data-aos="fade-up"
+  ><div class="article-nav-link-wrap left"><img
+              data-src="/images/covers/covers-16.webp"
+              data-sizes="auto"
+              alt="【C&#43;&#43;】05 - inline和nullptr"
+              class="lazyload"
+            /><a
+          href="/post/c&#43;&#43;05---inline%E5%92%8Cnullptr/"
+          aria-label="前一篇:【C&#43;&#43;】05 - inline和nullptr"
+          title="前一篇:【C&#43;&#43;】05 - inline和nullptr"
+        ></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">【C&#43;&#43;】05 - inline和nullptr</h3>
+      </div></nav></article></section>
+        </div><footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info"><div>
+      <span class="icon-copyright"></span>2020-2026<span class="footer-info-sep rotate"></span>CialloKing
+    </div><div>
+        基于&nbsp;<a
+          href="https://gohugo.io/"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          >Hugo</a
+        >&nbsp;Theme.<a
+          href="https://github.com/D-Sketon/hugo-theme-reimu"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          >Reimu</a
+        >
+      </div><div>
+        <span class="icon-brush"
+          >&nbsp;16.8k</span
+        >
+        &nbsp;|&nbsp;
+        <span class="icon-coffee">&nbsp;00:40</span>
+      </div><div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv"
+          >总访问量&nbsp;<span
+            id="busuanzi_value_site_pv"
+          ></span
+        ></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv"
+          >总访客量&nbsp;<span
+            id="busuanzi_value_site_uv"
+          ></span
+        ></span>
+      </div></div>
+</footer>
+<div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div><div id="mask" class="hide"></div>
+      </div><nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap"><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#数据类型">数据类型</a>
+      <ol>
+        <li><a href="#基本数据类型">基本数据类型</a>
+          <ol>
+            <li><a href="#整型整数类型">整型（整数类型）</a></li>
+            <li><a href="#浮点型小数类型">浮点型（小数类型）</a></li>
+            <li><a href="#字符型">字符型</a></li>
+          </ol>
+        </li>
+        <li><a href="#数据在内存中的存储">数据在内存中的存储</a>
+          <ol>
+            <li><a href="#sizeof-运算符"><code>sizeof</code> 运算符</a></li>
+            <li><a href="#什么是原码反码补码">什么是原码、反码、补码</a>
+              <ol>
+                <li><a href="#原码sign-magnitude">原码（Sign-Magnitude）</a></li>
+                <li><a href="#反码ones-complement">反码（Ones‘ Complement）</a></li>
+                <li><a href="#补码twos-complement">补码（Two‘s Complement）</a></li>
+                <li><a href="#补码的优势">补码的优势</a></li>
+              </ol>
+            </li>
+            <li><a href="#signed-与-unsigned-的内存表示">signed 与 unsigned 的内存表示</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#变量">变量</a>
+      <ol>
+        <li><a href="#变量是什么">变量是什么？</a></li>
+        <li><a href="#变量的分类">变量的分类</a>
+          <ol>
+            <li><a href="#局部变量">局部变量</a></li>
+            <li><a href="#全局变量">全局变量</a></li>
+            <li><a href="#全局变量和局部变量在内存中的存储">全局变量和局部变量在内存中的存储</a></li>
+            <li><a href="#作用域与生命周期">作用域与生命周期</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#操作符">操作符</a>
+      <ol>
+        <li><a href="#算术操作符">算术操作符</a>
+          <ol>
+            <li></li>
+            <li><a href="#-">+,-,*,/，%</a></li>
+            <li><a href="#赋值">赋值&rsquo;=&rsquo;</a></li>
+            <li><a href="#单目操作符--">单目操作符： ++,&ndash;,+,-</a></li>
+          </ol>
+        </li>
+        <li><a href="#强制类型转换">强制类型转换</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img
+    data-src="/avatar/my-avatar.webp"
+    data-sizes="auto"
+    alt="CialloKing"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">CialloKing</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div><div class="sidebar-state-number">10</div>
+  </div>
+  <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
+    <div>分类</div>
+    <div class="sidebar-state-number">
+      2
+    </div>
+  </a>
+  <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
+    <div>标签</div>
+    <div class="sidebar-state-number">1</div>
+  </a>
+</div>
+<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="首页"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">首页</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="归档"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">归档</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="关于"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">关于</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/link"
+        aria-label="友链"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
+    </div></div></div></div><div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div></nav>
+</div><meting-js
+        theme="var(--color-link)"
+        id="17840645230"server="netease"type="playlist"auto="true"fixed="true"autoplay="false"loop="all"order="random"preload="auto"volume="0.7"mutex="true"list-folded="true"lrc-type="0">
+      </meting-js><script
+    src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"
+    
+    
+    
+    
+    integrity="sha384-3gT/vsepWkfz/ff7PpWNUeMzeWoH3cDhm/A8jM7ouoAK0/fP/9bcHHR5kHq2nf&#43;e" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"
+    
+    
+    
+    
+    integrity="sha384-J08i8An/QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script><script src="/js/main.js" integrity="" crossorigin="anonymous"  ></script><script src="/js/aos.js" integrity="" crossorigin="anonymous"  ></script><script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", aosInit);
+    } else {
+      aosInit();
+    }
+  </script><script src="/js/pjax_main.js" integrity="" crossorigin="anonymous" data-pjax ></script><script>
+  var setupFirework = () => {
+    if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
+      if (window.firework) {
+        const options = JSON.parse("{\"excludeelements\":[\"a\",\"button\"],\"particles\":[{\"colors\":[\"var(--red-1)\",\"var(--red-2)\",\"var(--red-3)\",\"var(--red-4)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"emit\"],\"number\":20,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.3,0.5],\"radius\":[16,32]}},{\"colors\":[\"var(--red-0)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"diffuse\"],\"number\":1,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.2,0.5],\"lineWidth\":6,\"radius\":20}}]}");
+        options.excludeElements = options.excludeelements;
+        delete options.excludeelements;
+        window.firework(options);
+      }
+    }
+  }
+</script><script
+    src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js"
+    defer
+    
+    
+    onload="setupFirework()"
+    integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8&#43;pUoWX8n1rgq282T" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js"
+    
+    
+    
+    
+    integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE/jMSCxD&#43;jAPU55x/jj3wlf" crossorigin="anonymous"></script><script src="/js/pjax.js" integrity="" crossorigin="anonymous"  ></script><script
+    src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js"
+    
+    
+    
+    
+    integrity="sha384-caMDqvgav/HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb&#43;bEHtwlmYjD" crossorigin="anonymous"></script><script data-pjax>
+    window.quicklink?.listen({
+      timeout:  3000 ,
+      priority:  true ,
+      ignores: JSON.parse("[]")
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div><script data-pjax>
+        window.REIMU_POST = {
+          author: "CialloKing",
+          title: "【C语言】03 - C语言数据类型，变量和运算符",
+          url: "https:\/\/cialloking.com\/post\/c%E8%AF%AD%E8%A8%8003---c%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6\/",
+          description: " 数据类型 基本数据类型 整型（整数类型） short \/\/短整型 int \/\/整型 long \/\/长整型 long long \/\/长长整型 浮点型（小数类型） float \/\/单精度浮点型 double \/\/双精度浮点型 long double \/\/长双精度浮点型 字符型 字符实际上存储的是对应的 ASCII 码值。\nchar \/\/字符型 数据在内存中的存储 位（bit）：比特位，最小的单位，值为 0 或 1。 字节（byte）：8 个比特位组成一个字节。 一个字节可以表示 0255（无符号）或 -128127（有符号）之间的整数。 不同数据占用的字节数不同，这就是 数据类型 的作用——告诉 …",
+          cover: "https:\/\/cialloking.com\/images\/bg\/bg2.webp",
+        };
+      </script><script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax ></script><script src="/js/tabs.js" integrity="" crossorigin="anonymous" data-pjax defer></script><script type="module" data-pjax>const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;const initPswp = (gallery, children) => {
+          if (_$$(`${gallery} ${children}`).length > 0) {
+            new PhotoSwipeLightbox({
+              gallery,
+              children,pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")}).init();
+          }
+        }
+        const pswp = () => {
+          initPswp('.article-entry', 'a.article-gallery-item');
+          initPswp('.article-gallery', 'a.article-gallery-item');
+        }
+        pswp()
+      </script></div>
+</div><script
+    src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js"
+    
+    async
+    
+    
+    integrity="sha384-0M75wtSkhjIInv4coYlaJU83&#43;OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id&#43;S" crossorigin="anonymous"></script><script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script><script>
+  const reimuCopyright = String.raw`
+   ______     ______     __     __    __     __  __    
+  /\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+  \ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+   \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+    \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                    
+  `;
+  console.log(String.raw`%c ${reimuCopyright}`, "color: #ff5252;");
+  console.log(
+    "%c Theme.Reimu" + " %c https://github.com/D-Sketon/hugo-theme-reimu ",
+    "color: white; background: #ff5252; padding:5px 0;",
+    "padding:4px;border:1px solid #ff5252;",
+  );
+</script><script>
+    var setupAPlayer = () => {
+      if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
+        if (window.matchMedia('(max-width: 959px)').matches) {
+          const meting = _$('meting-js');
+          if (meting) {
+            meting.setAttribute('fixed', 'true');
+            const aside = meting.parentNode?.parentNode;
+            if (aside?.tagName === 'ASIDE') {
+              meting.parentNode.removeChild(meting);
+              document.body.appendChild(meting);
+            }
+          }
+        }
+      }
+    };</script><script
+    src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js"
+    defer
+    
+    
+    onload="setupAPlayer()"
+    integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr&#43;h5UfruuRL/aORyw&#43;5&#43;HZoU6e" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js"
+    defer
+    
+    
+    
+    integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8&#43;0maanw1S/IyB&#43;Y4JG&#43;ZDU7GpKE8" crossorigin="anonymous"></script><script>
+(function() {
+  // 封面图片列表（保持你现有路径不变，无需修改）
+  const covers = [
+    '/images/covers/covers-01.webp',
+    '/images/covers/covers-02.webp',
+    '/images/covers/covers-03.webp',
+    '/images/covers/covers-04.webp',
+    '/images/covers/covers-05.webp',
+    '/images/covers/covers-06.webp',
+    '/images/covers/covers-07.webp',
+    '/images/covers/covers-08.webp',
+    '/images/covers/covers-09.webp',
+    '/images/covers/covers-10.webp',
+    '/images/covers/covers-11.webp',
+    '/images/covers/covers-12.webp',
+    '/images/covers/covers-13.webp',
+    '/images/covers/covers-14.webp',
+    '/images/covers/covers-15.webp',
+    '/images/covers/covers-16.webp',
+    '/images/covers/covers-17.webp',
+    '/images/covers/covers-18.webp',
+    '/images/covers/covers-19.webp',
+    '/images/covers/covers-20.webp',
+    '/images/covers/covers-21.webp',
+    '/images/covers/covers-22.webp',
+    '/images/covers/covers-23.webp',
+    '/images/covers/covers-24.webp',
+    '/images/covers/covers-25.webp',
+    '/images/covers/covers-26.webp',
+    '/images/covers/covers-27.webp',
+    '/images/covers/covers-28.webp',
+    '/images/covers/covers-29.webp',
+    '/images/covers/covers-30.webp',
+    '/images/covers/covers-31.webp',
+    '/images/covers/covers-32.webp',
+    '/images/covers/covers-33.webp',
+    '/images/covers/covers-34.webp',
+    '/images/covers/covers-35.webp',
+    '/images/covers/covers-36.webp',
+    '/images/covers/covers-37.webp',
+    '/images/covers/covers-38.webp',
+    '/images/covers/covers-39.webp',
+    '/images/covers/covers-40.webp',
+    '/images/covers/covers-41.webp',
+    '/images/covers/covers-42.webp',
+    '/images/covers/covers-43.webp',
+    '/images/covers/covers-44.webp',
+    '/images/covers/covers-45.webp',
+    '/images/covers/covers-46.webp',
+    '/images/covers/covers-47.webp',
+    '/images/covers/covers-48.webp',
+    '/images/covers/covers-49.webp',
+    '/images/covers/covers-50.webp',
+    '/images/covers/covers-51.webp',
+    '/images/covers/covers-52.webp',
+    '/images/covers/covers-53.webp',
+    '/images/covers/covers-54.webp',
+    '/images/covers/covers-55.webp',
+    '/images/covers/covers-56.webp',
+    '/images/covers/covers-57.webp',
+    '/images/covers/covers-58.webp',
+    '/images/covers/covers-59.webp',
+    '/images/covers/covers-60.webp',
+    '/images/covers/covers-61.webp',
+    '/images/covers/covers-62.webp',
+    '/images/covers/covers-63.webp',
+    '/images/covers/covers-64.webp',
+    '/images/covers/covers-65.webp',
+    '/images/covers/covers-66.webp',
+    '/images/covers/covers-67.webp',
+    '/images/covers/covers-68.webp',
+    '/images/covers/covers-69.webp',
+    '/images/covers/covers-70.webp',
+    '/images/covers/covers-71.webp',
+    '/images/covers/covers-72.webp',
+    '/images/covers/covers-73.webp',
+    '/images/covers/covers-74.webp',
+    '/images/covers/covers-75.webp',
+    '/images/covers/covers-76.webp',
+    '/images/covers/covers-77.webp',
+    '/images/covers/covers-78.webp',
+    '/images/covers/covers-79.webp',
+    '/images/covers/covers-80.webp',
+    '/images/covers/covers-81.webp',
+    '/images/covers/covers-82.webp',
+    '/images/covers/covers-83.webp',
+    '/images/covers/covers-84.webp',
+    '/images/covers/covers-85.webp',
+    '/images/covers/covers-86.webp',
+    '/images/covers/covers-87.webp',
+    '/images/covers/covers-88.webp',
+    '/images/covers/covers-89.webp',
+    '/images/covers/covers-90.webp',
+    '/images/covers/covers-91.webp',
+    '/images/covers/covers-92.webp',
+    '/images/covers/covers-93.webp',
+    '/images/covers/covers-94.webp',
+    '/images/covers/covers-95.webp',
+    '/images/covers/covers-96.webp',
+    '/images/covers/covers-97.webp',
+    '/images/covers/covers-98.webp',
+    '/images/covers/covers-99.webp',
+    '/images/covers/covers-100.webp',
+    '/images/covers/covers-101.webp',
+    '/images/covers/covers-102.webp',
+    '/images/covers/covers-103.webp',
+    '/images/covers/covers-104.webp',
+    '/images/covers/covers-105.webp',
+    '/images/covers/covers-106.webp',
+    '/images/covers/covers-107.webp',
+    '/images/covers/covers-108.webp',
+    '/images/covers/covers-109.webp',
+    '/images/covers/covers-110.webp',
+    '/images/covers/covers-111.webp',
+    '/images/covers/covers-112.webp',
+    '/images/covers/covers-113.webp',
+    '/images/covers/covers-114.webp',
+    '/images/covers/covers-115.webp',
+    '/images/covers/covers-116.webp',
+    '/images/covers/covers-117.webp',
+    '/images/covers/covers-118.webp',
+    '/images/covers/covers-119.webp',
+    '/images/covers/covers-120.webp',
+    '/images/covers/covers-121.webp',
+    '/images/covers/covers-122.webp',
+    '/images/covers/covers-123.webp',
+    '/images/covers/covers-124.webp',
+    '/images/covers/covers-125.webp',
+    '/images/covers/covers-126.webp',
+    '/images/covers/covers-127.webp',
+    '/images/covers/covers-128.webp',
+    '/images/covers/covers-129.webp',
+    '/images/covers/covers-130.webp',
+    '/images/covers/covers-131.webp'
+
+  ];
+
+  // 【关键修改1】扩展选择器，覆盖搜索页所有可能的封面容器
+  const coverSelectors = [
+    '.post-cover img',
+    '#search .post-cover img',
+    '.search-result .post-cover img',
+    '.algolia-hits .post-cover img', // 适配Algolia搜索结果卡片
+    '.search-page .post-cover img'
+  ].join(', ');
+
+  // 【关键修改2】适配动态DOM的封面赋值逻辑
+  function setRandomCovers() {
+    // 查找所有封面图片元素
+    const coverImgs = document.querySelectorAll(coverSelectors);
+    if (coverImgs.length === 0) {
+      // 若未找到，150ms后重试（适配动态渲染延迟）
+      setTimeout(setRandomCovers, 150);
+      return;
+    }
+    // 为每个封面赋值随机图片
+    coverImgs.forEach(img => {
+      const randomIndex = Math.floor(Math.random() * covers.length);
+      const newSrc = covers[randomIndex];
+      // 同时设置 src 和 data-src，兼容懒加载
+      img.setAttribute('data-src', newSrc);
+      img.src = newSrc;
+      // 强制触发图片显示（覆盖主题默认隐藏样式）
+      img.style.display = 'block';
+      img.style.opacity = '1';
+      img.style.visibility = 'visible';
+    });
+  }
+
+  // 【关键修改3】调整执行时机，适配搜索页加载流程
+  // 1. 页面加载完成后执行（适配直接打开搜索页）
+  window.addEventListener('load', setRandomCovers);
+  // 2. PJAX跳转后执行（适配从首页跳转到搜索页）
+  document.addEventListener('pjax:complete', setRandomCovers);
+  // 3. 搜索框输入后执行（适配动态搜索结果）
+  document.querySelector('.search-input')?.addEventListener('input', () => {
+    setTimeout(setRandomCovers, 200); // 延迟200ms，等待搜索结果渲染
+  });
+})();
+</script>
+
+
+<script>
+  (function() {
+    // 1. 配置你的头图列表（按实际命名和数量修改，顺序对应文件夹中的图片）
+    // 示例：如果有 10 张图，依次列 bg1.webp 到 bg10.webp
+    const bannerImages = [
+      '/images/bg/bg1.webp',
+      '/images/bg/bg2.webp',
+      '/images/bg/bg3.webp',
+      '/images/bg/bg4.webp',
+      '/images/bg/bg5.webp',
+      '/images/bg/bg6.webp',
+      '/images/bg/bg7.webp',
+      '/images/bg/bg8.webp'
+      // 有更多图片继续追加，如 '/images/bg/bg11.webp'...
+    ];
+
+    // 2. 随机选择一张图片
+    function getRandomBanner() {
+      const randomIndex = Math.floor(Math.random() * bannerImages.length);
+      return bannerImages[randomIndex];
+    }
+
+    // 3. 替换 header 中的 Banner 图片
+    function setRandomBanner() {
+      // 匹配 Reimu 主题的头图元素（无需修改，主题默认结构）
+      const headerImg = document.querySelector('#header img');
+      if (headerImg) {
+        const randomBannerUrl = getRandomBanner();
+        // 同时设置 src 和 data-src，兼容主题懒加载逻辑
+        headerImg.setAttribute('data-src', randomBannerUrl);
+        headerImg.src = randomBannerUrl;
+        // 强制触发图片显示（覆盖主题默认样式）
+        headerImg.style.opacity = '1';
+        headerImg.style.visibility = 'visible';
+      }
+    }
+
+    // 4. 确保脚本在合适时机执行
+    // - 页面首次加载完成后执行
+    window.addEventListener('DOMContentLoaded', setRandomBanner);
+    // - PJAX 跳转后执行（适配主题 PJAX 功能，跳转后仍随机切换）
+    document.addEventListener('pjax:complete', setRandomBanner);
+    // - 窗口加载完成后兜底执行
+    window.addEventListener('load', setRandomBanner);
+  })();
+</script>
+</body>
+</html>

@@ -225,6 +225,15 @@
             <li><a href="#什么是转义字符">什么是转义字符？</a></li>
           </ol>
         </li>
+        <li><a href="#语句">语句</a>
+          <ol>
+            <li><a href="#空语句">空语句</a></li>
+            <li><a href="#表达式语句">表达式语句</a></li>
+            <li><a href="#函数调用语句">函数调用语句</a></li>
+            <li><a href="#复合语句代码块">复合语句（代码块）</a></li>
+            <li><a href="#控制语句">控制语句</a></li>
+          </ol>
+        </li>
         <li><a href="#c语言的注释">C语言的注释</a>
           <ol>
             <li><a href="#注释是什么">注释是什么？</a></li>
@@ -249,7 +258,7 @@
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>文章</div><div class="sidebar-state-number">9</div>
+    <div>文章</div><div class="sidebar-state-number">10</div>
   </div>
   <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
     <div>分类</div>
@@ -748,6 +757,48 @@ n 本来只是一个普通的字母 n，但写成 \n 后，它就变成了“换
       </tr>
   </tbody>
 </table>
+<h2 id="语句">
+<a class="header-anchor" href="#%e8%af%ad%e5%8f%a5"></a>
+语句
+</h2><p><strong>语句</strong>就是 C 程序中的基本执行单元，每条语句都以分号 <code>;</code> 结束。</p>
+<h3 id="空语句">
+<a class="header-anchor" href="#%e7%a9%ba%e8%af%ad%e5%8f%a5"></a>
+空语句
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="p">;</span><span class="c1">//空语句是最简单的语句，它只有一个分号 `;`，什么也不做。
+</span></span></span></code></pre></div><h3 id="表达式语句">
+<a class="header-anchor" href="#%e8%a1%a8%e8%be%be%e5%bc%8f%e8%af%ad%e5%8f%a5"></a>
+表达式语句
+</h3><p>表达式语句就是在表达式后面加上分号。
+几乎所有的运算都可以写成表达式，比如赋值、算术运算、关系比较等。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">a</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>          <span class="c1">// 赋值表达式语句
+</span></span></span><span class="line"><span class="cl"><span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">10</span><span class="p">;</span>     <span class="c1">// 算术表达式语句
+</span></span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">;</span>          <span class="c1">// 关系表达式语句（虽然结果没使用，但合法）
+</span></span></span></code></pre></div><h3 id="函数调用语句">
+<a class="header-anchor" href="#%e5%87%bd%e6%95%b0%e8%b0%83%e7%94%a8%e8%af%ad%e5%8f%a5"></a>
+函数调用语句
+</h3><p>当调用函数时，在函数调用表达式后加分号，就构成了函数调用语句。函数调用语句可以单独成行，也可以出现在其他表达式里。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Hello, World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>   <span class="c1">// 调用 printf
+</span></span></span><span class="line"><span class="cl"><span class="nf">scanf</span><span class="p">(</span><span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>             <span class="c1">// 调用 scanf
+</span></span></span><span class="line"><span class="cl"><span class="nf">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>                   <span class="c1">// 调用自定义函数
+</span></span></span></code></pre></div><h3 id="复合语句代码块">
+<a class="header-anchor" href="#%e5%a4%8d%e5%90%88%e8%af%ad%e5%8f%a5%e4%bb%a3%e7%a0%81%e5%9d%97"></a>
+复合语句（代码块）
+</h3><p>复合语句是用一对花括号 <code>{}</code>将多条语句括起来，形成一个整体。
+它又被称为代码块。复合语句可以出现在任何需要单条语句的地方，比如在 <code>if</code> 或 <code>while</code> 后面。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">a</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>               
+</span></span></code></pre></div><h3 id="控制语句">
+<a class="header-anchor" href="#%e6%8e%a7%e5%88%b6%e8%af%ad%e5%8f%a5"></a>
+控制语句
+</h3><p>控制语句用于改变程序的执行流程。C 语言提供了三类控制语句：</p>
+<ul>
+<li>条件判断语句</li>
+<li>循环执行语句</li>
+<li>转向语句</li>
+</ul>
 <h2 id="c语言的注释">
 <a class="header-anchor" href="#c%e8%af%ad%e8%a8%80%e7%9a%84%e6%b3%a8%e9%87%8a"></a>
 C语言的注释
@@ -829,7 +880,7 @@ hello world的运行
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-39.webp"
+              data-src="/images/covers/covers-31.webp"
               data-sizes="auto"
               alt="【C&#43;&#43;】01 - 什么是C&#43;&#43;"
               class="lazyload"
@@ -841,7 +892,7 @@ hello world的运行
         <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">【C&#43;&#43;】01 - 什么是C&#43;&#43;</h3>
       </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-76.webp"
+              data-src="/images/covers/covers-96.webp"
               data-sizes="auto"
               alt="【C&#43;&#43;】04 - 引用"
               class="lazyload"
@@ -873,10 +924,10 @@ hello world的运行
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;12.7k</span
+          >&nbsp;16.8k</span
         >
         &nbsp;|&nbsp;
-        <span class="icon-coffee">&nbsp;00:31</span>
+        <span class="icon-coffee">&nbsp;00:40</span>
       </div><div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"
@@ -939,6 +990,15 @@ hello world的运行
             <li><a href="#什么是转义字符">什么是转义字符？</a></li>
           </ol>
         </li>
+        <li><a href="#语句">语句</a>
+          <ol>
+            <li><a href="#空语句">空语句</a></li>
+            <li><a href="#表达式语句">表达式语句</a></li>
+            <li><a href="#函数调用语句">函数调用语句</a></li>
+            <li><a href="#复合语句代码块">复合语句（代码块）</a></li>
+            <li><a href="#控制语句">控制语句</a></li>
+          </ol>
+        </li>
         <li><a href="#c语言的注释">C语言的注释</a>
           <ol>
             <li><a href="#注释是什么">注释是什么？</a></li>
@@ -963,7 +1023,7 @@ hello world的运行
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>文章</div><div class="sidebar-state-number">9</div>
+    <div>文章</div><div class="sidebar-state-number">10</div>
   </div>
   <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
     <div>分类</div>
