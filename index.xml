@@ -61,34 +61,34 @@ inline
       <description>
         <![CDATA[<h1>【C语言】03 - C语言数据类型，变量和运算符</h1><p>作者：CialloKing（xxx@example.com）</p>
         
-          <h1 id="数据类型">
+          <h2 id="数据类型">
 <a class="header-anchor" href="#%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b"></a>
 数据类型
-</h1><h2 id="基本数据类型">
+</h2><h3 id="基本数据类型">
 <a class="header-anchor" href="#%e5%9f%ba%e6%9c%ac%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b"></a>
 基本数据类型
-</h2><h3 id="整型整数类型">
+</h3><h4 id="整型整数类型">
 <a class="header-anchor" href="#%e6%95%b4%e5%9e%8b%e6%95%b4%e6%95%b0%e7%b1%bb%e5%9e%8b"></a>
 整型（整数类型）
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">short</span>       <span class="c1">//短整型
+</h4><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">short</span>       <span class="c1">//短整型
 </span></span></span><span class="line"><span class="cl"><span class="kt">int</span>         <span class="c1">//整型
 </span></span></span><span class="line"><span class="cl"><span class="kt">long</span>        <span class="c1">//长整型
 </span></span></span><span class="line"><span class="cl"><span class="kt">long</span> <span class="kt">long</span>   <span class="c1">//长长整型
-</span></span></span></code></pre></div><h3 id="浮点型小数类型">
+</span></span></span></code></pre></div><h4 id="浮点型小数类型">
 <a class="header-anchor" href="#%e6%b5%ae%e7%82%b9%e5%9e%8b%e5%b0%8f%e6%95%b0%e7%b1%bb%e5%9e%8b"></a>
 浮点型（小数类型）
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">float</span>          <span class="c1">//单精度浮点型
+</h4><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">float</span>          <span class="c1">//单精度浮点型
 </span></span></span><span class="line"><span class="cl"><span class="kt">double</span>         <span class="c1">//双精度浮点型
 </span></span></span><span class="line"><span class="cl"><span class="kt">long</span> <span class="kt">double</span>    <span class="c1">//长双精度浮点型
-</span></span></span></code></pre></div><h3 id="字符型">
+</span></span></span></code></pre></div><h4 id="字符型">
 <a class="header-anchor" href="#%e5%ad%97%e7%ac%a6%e5%9e%8b"></a>
 字符型
-</h3><p>字符实际上存储的是对应的 ASCII 码值。</p>
+</h4><p>字符实际上存储的是对应的 ASCII 码值。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">char</span>    <span class="c1">//字符型
-</span></span></span></code></pre></div><h2 id="数据在内存中的存储">
+</span></span></span></code></pre></div><h3 id="数据在内存中的存储">
 <a class="header-anchor" href="#%e6%95%b0%e6%8d%ae%e5%9c%a8%e5%86%85%e5%ad%98%e4%b8%ad%e7%9a%84%e5%ad%98%e5%82%a8"></a>
 数据在内存中的存储
-</h2><ul>
+</h3><ul>
 <li><strong>位（bit）</strong>：比特位，最小的单位，值为 0 或 1。</li>
 <li><strong>字节（byte）</strong>：8 个比特位组成一个字节。</li>
 <li>一个字节可以表示 0<del>255（无符号）或 -128</del>127（有符号）之间的整数。</li>
