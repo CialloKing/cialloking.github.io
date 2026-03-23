@@ -38,6 +38,18 @@
       };
       const fuse = new Fuse(data.docs, options);
 
+
+
+      // ========== 新增：随机封面获取函数 ==========
+      const getRandomCover = () => {
+        const covers = window.covers || [];
+        if (covers.length) {
+          return covers[Math.floor(Math.random() * covers.length)];
+        }
+        return '/images/bg1.webp'; // 默认封面 fallback
+      };
+
+
       searchInput.addEventListener('input', function() {
         const query = this.value.trim();
         if (query.length < 1) {
@@ -74,7 +86,7 @@
             <div class="post-wrap ${wrapDir} aos-init aos-animate" data-aos="fade-up">
               <a class="post-link" href="${doc.permalink}" aria-label="${doc.title}" title="${doc.title}" data-pjax-state=""></a>
               <div class="post-cover ${wrapDir}">
-                <img src="${doc.cover || defaultCover}" alt="${doc.title}">
+                <img src="${doc.cover || getRandomCover()}" alt="${doc.title}">
               </div>
               <div class="post-info">
                 <div class="post-meta">

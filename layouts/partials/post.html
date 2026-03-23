@@ -40,13 +40,14 @@
       {{ else }}
         post-cover left
       {{ end }}"
-    >
+    > 
       {{- if and $page.Params.cover (not (hasPrefix $page.Params.cover "rgb")) -}}
         <img
           data-src="{{ $page.Params.cover | relURL }}"
           data-sizes="auto"
           alt="{{ .Title }}"
           class="lazyload"
+          data-custom-cover="true"
         />
       {{- else -}}
         {{- $cover := partial "helpers/randomCover.html" $ctx -}}
