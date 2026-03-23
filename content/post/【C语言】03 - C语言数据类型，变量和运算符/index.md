@@ -14,6 +14,13 @@ categories:
 
 ---
 
+# C语言数据类型，变量和运算符
+
+
+
+
+
+
 ## 数据类型
 
 
@@ -68,6 +75,8 @@ int main() {
 }
 ```
 `sizeof` 的返回值类型是 `size_t`，通常是一个无符号整型，用 %zu 打印（C99 引入）。
+
+运行以下代码可以看到各种类型在内存中所占的字节数
 ```c
 #include <stdio.h>
 
@@ -85,8 +94,19 @@ int main() {
     return 0;
 }
 ```
-
-
+VS2026下的运行结果
+```
+char         : 1
+unsigned char: 1
+short        : 2
+int          : 4
+unsigned int : 4
+long         : 4
+long long    : 8
+float        : 4
+double       : 8
+long double  : 8
+```
 
 #### 什么是原码、反码、补码
 
