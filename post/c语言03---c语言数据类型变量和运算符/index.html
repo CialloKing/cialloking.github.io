@@ -226,7 +226,7 @@
             <li><a href="#算术操作符">算术操作符</a>
               <ol>
                 <li><a href="#-">+,-,*,/，%</a></li>
-                <li><a href="#赋值">赋值&rsquo;=&rsquo;</a></li>
+                <li><a href="#赋值">赋值&rsquo;='</a></li>
                 <li><a href="#单目操作符--">单目操作符： ++,&ndash;,+,-</a></li>
               </ol>
             </li>
@@ -763,7 +763,7 @@ signed 与 unsigned 的内存表示
 <ul>
 <li>作用域：整个程序（从定义处到文件结束），可以被所有函数访问。</li>
 <li>生命周期：从程序启动到结束。</li>
-<li>未初始化时，默认值为 0（对于数值类型）或 &lsquo;\0&rsquo;（对于字符）。</li>
+<li>未初始化时，默认值为 <code>0</code>（对于数值类型）或 <code>'\0'</code>（对于字符）。</li>
 </ul>
 <p>如果局部变量与全局变量同名，在局部作用域内，会优先使用局部变量。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>   <span class="c1">// 全局变量
@@ -831,16 +831,20 @@ signed 与 unsigned 的内存表示
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">30</span><span class="o">-</span><span class="mi">25</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="mi">3</span><span class="p">;</span> 
 </span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">d</span> <span class="o">=</span> <span class="mi">31</span><span class="o">/</span><span class="mi">5</span><span class="p">;</span>     <span class="c1">//除法符号&#39;/&#39;两边是整数时，会抛弃结果的小数部分返回整数，这里d的值为6
-</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">e</span> <span class="o">=</span> <span class="mi">5</span><span class="o">/</span><span class="mi">6</span><span class="p">;</span>      <span class="c1">// 5小于6，整数部分为0，抛弃小数，e的值为0
-</span></span></span><span class="line"><span class="cl">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">e</span> <span class="o">=</span> <span class="mi">3</span><span class="o">/</span><span class="mi">6</span><span class="p">;</span>      <span class="c1">// 5小于6，整数部分为0，抛弃小数，e的值为0
+</span></span></span><span class="line"><span class="cl"><span class="kt">double</span> <span class="n">de</span> <span class="o">=</span> <span class="mf">3.0</span><span class="o">/</span><span class="mi">6</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">de</span> <span class="o">=</span> <span class="mi">3</span><span class="o">/</span><span class="mf">6.0</span><span class="p">;</span>        <span class="c1">//如果希望得到浮点数结果，除法符号&#39;/&#39;两边必须要有一个浮点数，C语言会自动进行浮点数除法
+</span></span></span><span class="line"><span class="cl"><span class="n">de</span> <span class="o">=</span> <span class="mf">3.0</span><span class="o">/</span><span class="mf">6.0</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">f</span> <span class="o">=</span> <span class="mi">31</span><span class="o">%</span><span class="mi">5</span><span class="p">;</span>     <span class="c1">//整数的取模运算只取整除后的余数部分，31除5，得6余数为1，f的值为1
 </span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">g</span> <span class="o">=</span> <span class="mi">31</span><span class="o">%-</span><span class="mi">5</span><span class="p">;</span>    <span class="c1">//取模运算结果的符号只看第一个数的正负，g的值为1
 </span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="o">-</span><span class="mi">31</span><span class="o">%</span><span class="mi">5</span><span class="p">;</span>    <span class="c1">//                                  h的值为-1      
 </span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">31</span><span class="o">%-</span><span class="mi">5</span><span class="p">;</span>   <span class="c1">//                                  i的值为-1 
 </span></span></span></code></pre></div><h4 id="赋值">
 <a class="header-anchor" href="#%e8%b5%8b%e5%80%bc"></a>
-赋值&rsquo;=&rsquo;
+赋值&rsquo;='
 </h4><p>赋值操作符可以连续赋值</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span><span class="o">+</span><span class="mi">3</span><span class="p">;</span>  
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
@@ -911,7 +915,7 @@ signed 与 unsigned 的内存表示
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-93.webp"
+              data-src="/images/covers/covers-33.webp"
               data-sizes="auto"
               alt="【C&#43;&#43;】05 - inline和nullptr"
               class="lazyload"
@@ -943,7 +947,7 @@ signed 与 unsigned 的内存表示
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;16.9k</span
+          >&nbsp;17.0k</span
         >
         &nbsp;|&nbsp;
         <span class="icon-coffee">&nbsp;00:40</span>
@@ -1010,7 +1014,7 @@ signed 与 unsigned 的内存表示
             <li><a href="#算术操作符">算术操作符</a>
               <ol>
                 <li><a href="#-">+,-,*,/，%</a></li>
-                <li><a href="#赋值">赋值&rsquo;=&rsquo;</a></li>
+                <li><a href="#赋值">赋值&rsquo;='</a></li>
                 <li><a href="#单目操作符--">单目操作符： ++,&ndash;,+,-</a></li>
               </ol>
             </li>
