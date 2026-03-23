@@ -36,10 +36,10 @@ data-theme-mode="auto"
     property="og:site_name"
     content="CialloKing 的博客"
   />
-  <meta property="og:image" content="https://cialloking.com/images/bg/bg2.webp" />
+  <meta property="og:image" content="https://cialloking.com/images/bg/bg1.webp" />
   <meta property="article:author" content="CialloKing" />
   <meta property="article:published_time" content="0001-01-01T00:00:00&#43;00:00" />
-  <meta property="article:modified_time" content="0001-01-01T00:00:00&#43;00:00" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg2.webp" />
+  <meta property="article:modified_time" content="0001-01-01T00:00:00&#43;00:00" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
 <link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.e15f9328b0e9ee3c7d04ca76ea47f3db653d93dce1f4a28af9a7327ad1d51367.css" /><link
     rel="preload"
     as="style"
@@ -65,7 +65,17 @@ data-theme-mode="auto"
     rel="stylesheet"
     href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css"
     integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj&#43;vDDLIL&#43;xBGQU/voDBY5XE2lVh" crossorigin="anonymous"/>
-<link rel="stylesheet" href="/css/custom.css"></head>
+<link rel="stylesheet" href="/css/custom.css"><style>
+  .post-cover img {
+    transition: opacity 0.3s ease;
+    opacity: 0;
+  }
+  .post-cover img[data-cover-set="true"],
+  .post-cover img[data-custom-cover="true"] {
+    opacity: 1;
+  }
+</style>
+</head>
 <body><div id="container">
     <div id="wrap">
       <div id="header-nav">
@@ -80,7 +90,7 @@ data-theme-mode="auto"
 
 
   </nav></div>
-<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg2.webp" alt=""><div id="header-outer">
+<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg1.webp" alt=""><div id="header-outer">
     <div id="header-title"><a href="/" id="logo">
           <h1 data-aos="slide-up">4 0 4 (ﾟ⊿ﾟ)ﾂ</h1>
         </a><h2 id="subtitle-wrap" data-aos="slide-down">
@@ -160,7 +170,7 @@ data-theme-mode="auto"
           title: "404 Page not found",
           url: "https:\/\/cialloking.com\/404.html",
           description: "",
-          cover: "https:\/\/cialloking.com\/images\/bg\/bg2.webp",
+          cover: "https:\/\/cialloking.com\/images\/bg\/bg1.webp",
         };
       </script><script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax ></script><script src="/js/tabs.js" integrity="" crossorigin="anonymous" data-pjax defer></script><script type="module" data-pjax>const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;const initPswp = (gallery, children) => {
           if (_$$(`${gallery} ${children}`).length > 0) {
@@ -234,7 +244,7 @@ data-theme-mode="auto"
     integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8&#43;0maanw1S/IyB&#43;Y4JG&#43;ZDU7GpKE8" crossorigin="anonymous"></script><script>
 (function() {
   // 封面图片列表（保持你现有路径不变，无需修改）
-  const covers = [
+  window.covers = [
     '/images/covers/covers-01.webp',
     '/images/covers/covers-02.webp',
     '/images/covers/covers-03.webp',
@@ -380,23 +390,32 @@ data-theme-mode="auto"
 
   // 【关键修改2】适配动态DOM的封面赋值逻辑
   function setRandomCovers() {
-    // 查找所有封面图片元素
+    // 搜索页跳过（已在 single.html 处理）
+    if (document.getElementById('search-results')) {
+      return;
+    }
     const coverImgs = document.querySelectorAll(coverSelectors);
     if (coverImgs.length === 0) {
-      // 若未找到，150ms后重试（适配动态渲染延迟）
       setTimeout(setRandomCovers, 150);
       return;
     }
-    // 为每个封面赋值随机图片
     coverImgs.forEach(img => {
-      const randomIndex = Math.floor(Math.random() * covers.length);
-      const newSrc = covers[randomIndex];
-      // 同时设置 src 和 data-src，兼容懒加载
+      // 有自定义封面的图片：直接显示，不随机替换
+      if (img.hasAttribute('data-custom-cover')) {
+        img.style.opacity = '1';
+        return;
+      }
+      // 已经设置过随机封面的图片：不再重复设置
+      if (img.hasAttribute('data-cover-set')) {
+        return;
+      }
+      const randomIndex = Math.floor(Math.random() * window.covers.length);
+      const newSrc = window.covers[randomIndex];
       img.setAttribute('data-src', newSrc);
       img.src = newSrc;
-      // 强制触发图片显示（覆盖主题默认隐藏样式）
-      img.style.display = 'block';
+      img.setAttribute('data-cover-set', 'true');
       img.style.opacity = '1';
+      img.style.display = 'block';
       img.style.visibility = 'visible';
     });
   }
@@ -407,58 +426,72 @@ data-theme-mode="auto"
   // 2. PJAX跳转后执行（适配从首页跳转到搜索页）
   document.addEventListener('pjax:complete', setRandomCovers);
   // 3. 搜索框输入后执行（适配动态搜索结果）
-  document.querySelector('.search-input')?.addEventListener('input', () => {
-    setTimeout(setRandomCovers, 200); // 延迟200ms，等待搜索结果渲染
-  });
+  //document.querySelector('.search-input')?.addEventListener('input', () => {
+    //setTimeout(setRandomCovers, 200); // 延迟200ms，等待搜索结果渲染
+  //});
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      setTimeout(setRandomCovers, 200);
+    });
+  }
+
+
+
 })();
 </script>
 
 
 <script>
-  (function() {
-    // 1. 配置你的头图列表（按实际命名和数量修改，顺序对应文件夹中的图片）
-    // 示例：如果有 10 张图，依次列 bg1.webp 到 bg10.webp
-    const bannerImages = [
-      '/images/bg/bg1.webp',
-      '/images/bg/bg2.webp',
-      '/images/bg/bg3.webp',
-      '/images/bg/bg4.webp',
-      '/images/bg/bg5.webp',
-      '/images/bg/bg6.webp',
-      '/images/bg/bg7.webp',
-      '/images/bg/bg8.webp'
-      // 有更多图片继续追加，如 '/images/bg/bg11.webp'...
-    ];
+(function() {
+  const bannerImages = [
+    '/images/bg/bg1.webp',
+    '/images/bg/bg2.webp',
+    '/images/bg/bg3.webp',
+    '/images/bg/bg4.webp',
+    '/images/bg/bg5.webp',
+    '/images/bg/bg6.webp',
+    '/images/bg/bg7.webp',
+    '/images/bg/bg8.webp'
+  ];
 
-    // 2. 随机选择一张图片
-    function getRandomBanner() {
-      const randomIndex = Math.floor(Math.random() * bannerImages.length);
-      return bannerImages[randomIndex];
+  function getRandomBanner() {
+    return bannerImages[Math.floor(Math.random() * bannerImages.length)];
+  }
+
+  // 立即检查并设置，如果图片已存在
+  function setRandomBanner() {
+    const headerImg = document.querySelector('#header img');
+    if (headerImg && !headerImg.hasAttribute('data-random-set')) {
+      const randomUrl = getRandomBanner();
+      headerImg.setAttribute('data-src', randomUrl);
+      headerImg.src = randomUrl;
+      headerImg.setAttribute('data-random-set', 'true');
+      headerImg.style.opacity = '1';
+      headerImg.style.visibility = 'visible';
     }
+  }
 
-    // 3. 替换 header 中的 Banner 图片
-    function setRandomBanner() {
-      // 匹配 Reimu 主题的头图元素（无需修改，主题默认结构）
-      const headerImg = document.querySelector('#header img');
-      if (headerImg) {
-        const randomBannerUrl = getRandomBanner();
-        // 同时设置 src 和 data-src，兼容主题懒加载逻辑
-        headerImg.setAttribute('data-src', randomBannerUrl);
-        headerImg.src = randomBannerUrl;
-        // 强制触发图片显示（覆盖主题默认样式）
-        headerImg.style.opacity = '1';
-        headerImg.style.visibility = 'visible';
-      }
+  // 使用 MutationObserver 监听 DOM 变化，确保尽早捕捉到 header 图片
+  const observer = new MutationObserver((mutations, obs) => {
+    const img = document.querySelector('#header img');
+    if (img) {
+      setRandomBanner();
+      obs.disconnect(); // 找到后停止观察
     }
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
 
-    // 4. 确保脚本在合适时机执行
-    // - 页面首次加载完成后执行
-    window.addEventListener('DOMContentLoaded', setRandomBanner);
-    // - PJAX 跳转后执行（适配主题 PJAX 功能，跳转后仍随机切换）
-    document.addEventListener('pjax:complete', setRandomBanner);
-    // - 窗口加载完成后兜底执行
-    window.addEventListener('load', setRandomBanner);
-  })();
+  // 页面完全加载后兜底（防止 observer 遗漏）
+  window.addEventListener('load', setRandomBanner);
+  // PJAX 跳转后重新设置
+  document.addEventListener('pjax:complete', () => {
+    // 清除标记，允许重新设置
+    const headerImg = document.querySelector('#header img');
+    if (headerImg) headerImg.removeAttribute('data-random-set');
+    setRandomBanner();
+  });
+})();
 </script>
 <script>
     (function () {
