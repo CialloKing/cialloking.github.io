@@ -34,7 +34,7 @@
     {{- if and $page.Params.weight (or (eq $ctx.Site.Params.sort_order.home "default") (not $ctx.Site.Params.sort_order.home)) -}}
       <div class="post-sticky">{{ i18n "sticky" }}</div>
     {{- end -}}
-    <!-- <div
+    <div
       class="{{ if mod $index 2 }}
         post-cover right
       {{ else }}
@@ -67,17 +67,19 @@
           />
         {{- end -}}
       {{- end -}}
-    </div> -->
-    <div class="{{ if mod $index 2 }}post-cover right{{ else }}post-cover left{{ end }}">
-      {{- if and $page.Params.cover (not (hasPrefix $page.Params.cover "rgb")) -}}
+    </div>
+    <!-- <div class="{{ if mod $index 2 }}post-cover right{{ else }}post-cover left{{ end }}">
+      {{- if and $page.Params.cover (not (hasPrefix $page.Params.cover "rgb")) -}} -->
       <!-- 自定义封面：直接使用 src，不依赖懒加载 -->
-      <img src="{{ $page.Params.cover | relURL }}" alt="{{ $page.Title }}" data-custom-cover="true" />
-      {{- else -}}
+      <!-- <img src="{{ $page.Params.cover | relURL }}" alt="{{ $page.Title }}" data-custom-cover="true" />
+      {{- else -}} -->
       <!-- 无自定义封面：使用透明占位图，等待 JS 替换为随机封面 -->
-      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E"
+      <!-- <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E"
         alt="{{ $page.Title }}" />
       {{- end -}}
-    </div>
+    </div> -->
+
+
     <div class="post-info">
       <div class="post-meta">
         <span
