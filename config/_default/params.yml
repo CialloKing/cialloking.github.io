@@ -193,7 +193,7 @@ sort_order:
 
 # Pagination
 paginate:                     #设置每页文章数，将xx替换为数值即可，注意保留后方空格，否则报错
-  archive: 8 # Number of posts per page in archive and taxonomy pages
+  archive: 20 # Number of posts per page in archive and taxonomy pages
   post: 8  # Number of posts per page in home and other list pages
 
 ########################################
