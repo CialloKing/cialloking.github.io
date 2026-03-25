@@ -8,7 +8,7 @@
   name="viewport"
   content="width=device-width, initial-scale=1, shrink-to-fit=no"
 /><title>
-  【C&#43;&#43;】05 - inline和nullptr | CialloKing
+  类和对象 | CialloKing
 </title>
 <meta name="description" content="少女祈祷中..."/><script>
   window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"Lang\":\"zh-cn\",\"Title\":\"CialloKing 的博客\",\"Weight\":1,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"简体中文\",\"Locale\":\"zh-CN\"},{\"Lang\":\"en\",\"Title\":\"CialloKing Blog\",\"Weight\":2,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"English\",\"Locale\":\"en\"}],\"icon_font\":\"4552607_4k4bc36ef96\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
@@ -27,20 +27,20 @@
     type="font/woff2"
     crossorigin="anonymous"
   /><link rel="stylesheet" href="/css/loader.min.4eac6555838cbcb8a5d15bf9bae0c688b74fae83b16a5613692de3f476051979.css" /><meta property="og:type" content="website" />
-  <meta property="og:title" content="【C&#43;&#43;】05 - inline和nullptr | CialloKing" />
+  <meta property="og:title" content="类和对象 | CialloKing" />
   <meta
     property="og:description"
     content="少女祈祷中..."
   />
-  <meta property="og:url" content="https://cialloking.com/post/c&#43;&#43;05---inline%E5%92%8Cnullptr/" />
+  <meta property="og:url" content="https://cialloking.com/tags/%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/" />
   <meta
     property="og:site_name"
     content="CialloKing 的博客"
   />
   <meta property="og:image" content="https://cialloking.com/images/bg/bg1.webp" />
   <meta property="article:author" content="CialloKing" />
-  <meta property="article:published_time" content="2026-03-23T00:01:30&#43;08:00" />
-  <meta property="article:modified_time" content="2026-03-23T00:00:00&#43;00:00" /><meta property="article:tag" content="基础语法" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
+  <meta property="article:published_time" content="2026-03-24T00:00:00&#43;00:00" />
+  <meta property="article:modified_time" content="2026-03-26T00:00:00&#43;00:00" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" /><link rel="alternate" type="application/rss+xml" href="https://cialloking.com/tags/%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/index.xml" title="CialloKing 的博客">
 <link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.e15f9328b0e9ee3c7d04ca76ea47f3db653d93dce1f4a28af9a7327ad1d51367.css" /><link
     rel="preload"
     as="style"
@@ -154,7 +154,7 @@
 
         selectOptions.forEach((item) => {
           item.addEventListener("click", () => {
-            const langMap = {};langMap['en'] = '\/en\/post\/c\u002b\u002b05---inline%E5%92%8Cnullptr\/';selectedLang.textContent = item.textContent;
+            const langMap = {};langMap['en'] = '\/en\/tags\/%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1\/';selectedLang.textContent = item.textContent;
             selectItems.classList.remove("show");
             selectOptions.forEach((option) => {
               option.classList.remove("selected");
@@ -182,40 +182,19 @@
         });
       </script>
     </nav></div>
-<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg1.webp" alt="【C&#43;&#43;】05 - inline和nullptr"><div id="header-outer">
+<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg1.webp" alt="类和对象"><div id="header-outer">
     <div id="header-title"><span id="logo">
-            <h1 data-aos="slide-up">【C&#43;&#43;】05 - inline和nullptr</h1>
-          </span><h2 id="subtitle-wrap" data-aos="slide-down"></h2></div>
+            <h1 data-aos="slide-up">标签</h1>
+          </span><h2 id="subtitle-wrap" data-aos="slide-down"><span id="subtitle">类和对象</span></h2></div>
   </div>
 </header><div id="content"
           aria-label="Page content"
           class="sidebar-left"
-            ><aside id="sidebar" aria-label="Sidebar"><div class="sidebar-wrapper-container sticky"><div class="sidebar-wrapper">
+            ><aside id="sidebar" aria-label="Sidebar"><div class="sidebar-wrapper-container "><div class="sidebar-wrapper">
     <div
       class="sidebar-wrap"
       data-aos="fade-up"
-    ><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
-<div class="sidebar-toc-wrapper toc-div-class">
-  <nav id="TableOfContents">
-  <ol>
-    <li><a href="#inline">inline</a>
-      <ol>
-        <li><a href="#什么是-inline">什么是 <code>inline</code>？</a></li>
-        <li><a href="#inline-与宏的对比">inline 与宏的对比</a></li>
-        <li><a href="#inline-只是建议不是强制">inline 只是建议，不是强制</a></li>
-        <li><a href="#inline-与声明定义分离">inline 与声明/定义分离</a></li>
-      </ol>
-    </li>
-    <li><a href="#nullptr">nullptr</a>
-      <ol>
-        <li><a href="#null-的困扰"><code>NULL</code> 的困扰</a></li>
-        <li><a href="#nullptr-的诞生"><code>nullptr</code> 的诞生</a></li>
-      </ol>
-    </li>
-  </ol>
-</nav>
-</div></div>
-          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+    ><div class="sidebar-author">
   <img
     data-src="/avatar/my-avatar.webp"
     data-sizes="auto"
@@ -264,164 +243,146 @@
         href="/link"
         aria-label="友链"
       ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
-    </div></div></div><div class="sidebar-btn-wrapper" style="position:static">
-            <div class="sidebar-toc-btn current"></div>
-            <div class="sidebar-common-btn"></div>
-          </div></div>
-  </div><div class="sidebar-widget"></div></div></aside>
-<section id="main" aria-label="Main content"><article
-  class="h-entry article"
-  itemscope
-  itemtype="https://schema.org/BlogPosting"
->
+    </div></div></div>
+  </div><div class="sidebar-widget"><div class="widget-wrapper">
+    <div
+      class="widget-wrap"
+      data-aos="fade-up"
+    >
+      <div style="display: flex; justify-content: space-between;">
+        <h3 class="widget-title">分类</h3></div>
+      <div class="widget">
+        <ul class="category-list"><li class="category-list-item">
+                <a class="category-list-link" href="/categories/c/" 
+                  title="C"
+                  >C</a
+                >
+              </li><li class="category-list-item">
+                <a class="category-list-link" href="/categories/c&#43;&#43;/" 
+                  title="C&#43;&#43;"
+                  >C&#43;&#43;</a
+                >
+              </li></ul>
+      </div>
+    </div>
+  </div><div class="widget-wrapper">
+    <div
+      class="widget-wrap"
+      data-aos="fade-up"
+    >
+      <div style="display: flex; justify-content: space-between;">
+        <h3 class="widget-title">标签</h3></div>
+      <div class="widget">
+        <ul class="tag-list" itemprop="keywords"><li class="tag-item">
+                <a
+                  class="tag-link"
+                  href="/tags/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"
+                  aria-label="标签: 基础语法"
+                  title="基础语法"
+                >
+                  基础语法
+                </a>
+              </li><li class="tag-item">
+                <a
+                  class="tag-link"
+                  href="/tags/%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/"
+                  aria-label="标签: 类和对象"
+                  title="类和对象"
+                >
+                  类和对象
+                </a>
+              </li></ul>
+      </div>
+    </div>
+  </div><div class="widget-wrapper">
   <div
-    class="article-inner"
+    class="widget-wrap"
     data-aos="fade-up"
   >
-    <div class="article-meta"><div class="article-date">
-  <span
-    class="article-date-link icon-calendar"
-    data-aos="zoom-in"
-  >
-    <time datetime="2026-03-23 00:01:30 &#43;0800 &#43;0800" itemprop="datePublished"
-      >2026-03-23</time
+    <h3 class="widget-title">标签云</h3><div class="widget tagcloud"><a
+            style="font-size:10px"
+            href="/tags/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"
+            aria-label="标签: 基础语法"
+            >基础语法</a
+          ><a
+            style="font-size:10px"
+            href="/tags/%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/"
+            aria-label="标签: 类和对象"
+            >类和对象</a
+          ></div>
+  </div>
+</div><div class="widget-wrapper">
+    <div
+      class="widget-wrap"
+      data-aos="fade-up"
     >
-    <time style="display: none;" id="post-update-time"
-      >2026-03-23</time
-    >
-  </span></div>
-</div><div class="hr-line"></div><div class="e-content article-entry" itemprop="articleBody"><h1 id="inline">
-<a class="header-anchor" href="#inline"></a>
-inline
-</h1><h2 id="什么是-inline">
-<a class="header-anchor" href="#%e4%bb%80%e4%b9%88%e6%98%af-inline"></a>
-什么是 <code>inline</code>？
-</h2><p>在 C 语言中，如果要执行一个简单的操作（比如求两个数的最小值），通常有两种方式：</p>
-<ul>
-<li>写一个函数：代码清晰，但每次调用都有函数调用开销（压栈、跳转、返回）。</li>
-<li>写一个宏：没有调用开销，但宏很容易出错，且无法调试。</li>
-</ul>
-<p>C++ 引入了 <strong><code>inline</code> 关键字</strong>，用来向编译器发出“建议”：<strong>将这个函数在调用处展开，而不是生成函数调用代码</strong>。这样既能保持函数的清晰性，又可能获得宏一样的效率。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kr">inline</span> <span class="kt">int</span> <span class="nf">max</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span> <span class="o">?</span> <span class="nl">a</span> <span class="p">:</span> <span class="n">b</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>当编译器决定内联时，<code>max(3, 5)</code> 会直接替换为 <code>3 &gt; 5 ? 3 : 5</code>，没有函数调用开销。</p>
-<h2 id="inline-与宏的对比">
-<a class="header-anchor" href="#inline-%e4%b8%8e%e5%ae%8f%e7%9a%84%e5%af%b9%e6%af%94"></a>
-inline 与宏的对比
-</h2><p>宏（<code>#define</code>）在预处理阶段进行文本替换，虽然快，但存在诸多问题：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
-</span></span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">z</span> <span class="o">=</span> <span class="n">MAX</span><span class="p">(</span><span class="o">++</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>   <span class="c1">// 宏展开后：((++x) &gt; (y) ? (++x) : (y))
-</span></span></span><span class="line"><span class="cl">    <span class="c1">// x 被++两次，结果错误！
-</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>而 <code>inline</code> 函数是真正的函数，参数只求值一次，不会出现上述副作用，且支持类型检查、作用域、调试等。</p>
-<h2 id="inline-只是建议不是强制">
-<a class="header-anchor" href="#inline-%e5%8f%aa%e6%98%af%e5%bb%ba%e8%ae%ae%e4%b8%8d%e6%98%af%e5%bc%ba%e5%88%b6"></a>
-inline 只是建议，不是强制
-</h2><p>编译器可以忽略 inline 建议。通常：</p>
-<ul>
-<li>函数体较大、递归函数、或包含循环的函数，编译器不会内联。</li>
-<li>函数定义在类内部的成员函数，会隐式成为 inline 候选（但编译器同样可以拒绝）。</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 在类内定义的函数默认为 inline 候选
-</span></span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">getValue</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">value</span><span class="p">;</span> <span class="p">}</span>   <span class="c1">// 隐式 inline
-</span></span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span></code></pre></div><h2 id="inline-与声明定义分离">
-<a class="header-anchor" href="#inline-%e4%b8%8e%e5%a3%b0%e6%98%8e%e5%ae%9a%e4%b9%89%e5%88%86%e7%a6%bb"></a>
-inline 与声明/定义分离
-</h2><p><code>inline</code>不建议声明和定义分离到两个文件，分离会导致链接错误。因为<code>inline</code>被展开，就没有函数地址，链接时会出现报错。</p>
-
-  <blockquote class="alert-blockquote tip">
-    <p class="alert-heading">
-      Tip
-    </p>
-    <p><p>现代 C++ 观点：<code>inline</code> 已经不再主要用于性能优化（编译器比人更懂何时内联），而是用于在头文件中定义函数，避免链接错误。尤其是当你想在头文件中实现非模板函数时，必须加上 <code>inline</code>，否则多个源文件包含会导致多重定义。</p></p>
-  </blockquote>
-
-<h1 id="nullptr">
-<a class="header-anchor" href="#nullptr"></a>
-nullptr
-</h1><h2 id="null-的困扰">
-<a class="header-anchor" href="#null-%e7%9a%84%e5%9b%b0%e6%89%b0"></a>
-<code>NULL</code> 的困扰
-</h2><p>在 C 语言中，<code>NULL</code> 实际是⼀个宏，通常被定义为 <code>((void*)0) </code>或 <code>0</code>。在 C++ 中，为了避免类型转换问题，<code>NULL</code> 通常被定义为字面常量 <code>0</code>。这会导致一个尴尬的问题：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;int&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;pointer&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>     <span class="c1">// 调用 f(int)
-</span></span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>  <span class="c1">// 本意想调用 f(int*)，但 NULL 是 0，实际调用 f(int)
-</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>这种歧义使得程序员无法通过 NULL 明确地调用指针版本的重载函数。</p>
-<h2 id="nullptr-的诞生">
-<a class="header-anchor" href="#nullptr-%e7%9a%84%e8%af%9e%e7%94%9f"></a>
-<code>nullptr</code> 的诞生
-</h2><p>C++11 引入了 nullptr，它是一个关键字，代表空指针常量。nullptr 可以隐式转换为任何指针类型，但不能转换为整数类型。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;int&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;pointer&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="p">(</span><span class="k">nullptr</span><span class="p">);</span>   <span class="c1">// 调用 f(int*)
-</span></span></span><span class="line"><span class="cl">    <span class="c1">// int n = nullptr;   // 错误！不能转换为整数
-</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p><code>nullptr</code> 的优势：<code>nullptr</code> 只能转换为指针类型，避免误匹配整数重载。</p>
-</div>
-    <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
-    <a
-      class="article-category-link"
-      href="/categories/c&#43;&#43;"
+      <h3 class="widget-title">最新文章</h3>
+      <div class="widget">
+        <ul><li>
+              <a href="/post/c&#43;&#43;06---%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/" title="【C&#43;&#43;】06 - 类和对象">【C&#43;&#43;】06 - 类和对象</a>
+            </li><li>
+              <a href="/post/c%E8%AF%AD%E8%A8%8003---c%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6/" title="【C语言】03 - C语言数据类型，变量和运算符">【C语言】03 - C语言数据类型，变量和运算符</a>
+            </li><li>
+              <a href="/post/c&#43;&#43;05---inline%E5%92%8Cnullptr/" title="【C&#43;&#43;】05 - inline和nullptr">【C&#43;&#43;】05 - inline和nullptr</a>
+            </li><li>
+              <a href="/post/c&#43;&#43;02---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc&#43;&#43;%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" title="【C&#43;&#43;】02 - 从[hello world]开始，走进C&#43;&#43;核心概念与基础语法">【C&#43;&#43;】02 - 从[hello world]开始，走进C&#43;&#43;核心概念与基础语法</a>
+            </li><li>
+              <a href="/post/c&#43;&#43;03---%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E4%B8%8E%E7%BC%BA%E7%9C%81%E5%8F%82%E6%95%B0/" title="【C&#43;&#43;】03 - 函数重载与缺省参数">【C&#43;&#43;】03 - 函数重载与缺省参数</a>
+            </li></ul>
+      </div>
+    </div>
+  </div></div></div></aside>
+<section id="main" aria-label="Main content"><div
+    class="archives-outer-wrap"
+    data-aos="fade-up"
+  ><div class="tag-wrap"><div
+      class="archives-tag-list-item"
       data-aos="zoom-in"
-      >C&#43;&#43;</a
     >
-    </li></ul>
-<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in">
-      <a
-        class="article-tag-list-link"
-        href="/tags/%e5%9f%ba%e7%a1%80%e8%af%ad%e6%b3%95"
-        rel="tag"
+      <a class="archives-tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"
         >基础语法</a
       >
-    </li></ul>
-</footer>
-  </div><nav
-    id="article-nav"
-    aria-label="Article navigation"
-    data-aos="fade-up"
-  ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-51.webp"
-              data-sizes="auto"
-              alt="【C&#43;&#43;】02 - 从[hello world]开始，走进C&#43;&#43;核心概念与基础语法"
-              class="lazyload"
-            /><a
-          href="/post/c&#43;&#43;02---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc&#43;&#43;%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"
-          aria-label="前一篇:【C&#43;&#43;】02 - 从[hello world]开始，走进C&#43;&#43;核心概念与基础语法"
-          title="前一篇:【C&#43;&#43;】02 - 从[hello world]开始，走进C&#43;&#43;核心概念与基础语法"
-        ></a>
-        <div class="article-nav-caption">前一篇</div>
-        <h3 class="article-nav-title">【C&#43;&#43;】02 - 从[hello world]开始，走进C&#43;&#43;核心概念与基础语法</h3>
-      </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-129.webp"
-              data-sizes="auto"
-              alt="【C语言】03 - C语言数据类型，变量和运算符"
-              class="lazyload"
-            /><a
-          href="/post/c%E8%AF%AD%E8%A8%8003---c%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6/"
-          aria-label="后一篇:【C语言】03 - C语言数据类型，变量和运算符"
-          title="后一篇:【C语言】03 - C语言数据类型，变量和运算符"
-        ></a>
-        <div class="article-nav-caption">后一篇</div>
-        <h3 class="article-nav-title">【C语言】03 - C语言数据类型，变量和运算符</h3>
-      </div></nav></article></section>
+    </div><div
+      class="archives-tag-list-item"
+      data-aos="zoom-in"
+    >
+      <a class="archives-tag-list-link" href="/tags/%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/"
+        >类和对象</a
+      >
+    </div></div>
+<div class="category-wrap"><div
+      class="archives-category-list-item"
+      data-aos="zoom-in"
+    >
+      <a class="archives-category-list-link" href="/categories/c/"
+        >C</a
+      >
+    </div><div
+      class="archives-category-list-item"
+      data-aos="zoom-in"
+    >
+      <a class="archives-category-list-link" href="/categories/c&#43;&#43;/"
+        >C&#43;&#43;</a
+      >
+    </div></div><section class="archives-wrap" data-aos="fade-up">
+    <div class="archive-year-wrap">
+      <span class="archive-year">2026</span>
+    </div>
+    <ul><li class="archive-article">
+          <div class="archive-article-date">
+            <span>
+              <time
+                class="dt-published"
+                datetime="2026-03-24 00:00:00 &#43;0000 UTC"
+                itemprop="datePublished"
+                >2026-03</time
+              >
+            </span>
+          </div><a class="archive-article-title" href="/post/c&#43;&#43;06---%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/"
+              >【C&#43;&#43;】06 - 类和对象</a
+            ></li></ul>
+  </section></div><nav id="page-nav" aria-label="Pagination navigation" data-aos="fade-up"><span class="page-number current">1</span></nav>
+</section>
         </div><footer id="footer" aria-label="Site footer">
   <div style="width: 100%; overflow: hidden">
     <div class="footer-line"></div>
@@ -467,28 +428,7 @@ nullptr
             <div class="arrow-up"></div>
           </div><div id="mask" class="hide"></div>
       </div><nav id="mobile-nav" aria-label="Mobile navigation">
-  <div class="sidebar-wrap"><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
-<div class="sidebar-toc-wrapper toc-div-class">
-  <nav id="TableOfContents">
-  <ol>
-    <li><a href="#inline">inline</a>
-      <ol>
-        <li><a href="#什么是-inline">什么是 <code>inline</code>？</a></li>
-        <li><a href="#inline-与宏的对比">inline 与宏的对比</a></li>
-        <li><a href="#inline-只是建议不是强制">inline 只是建议，不是强制</a></li>
-        <li><a href="#inline-与声明定义分离">inline 与声明/定义分离</a></li>
-      </ol>
-    </li>
-    <li><a href="#nullptr">nullptr</a>
-      <ol>
-        <li><a href="#null-的困扰"><code>NULL</code> 的困扰</a></li>
-        <li><a href="#nullptr-的诞生"><code>nullptr</code> 的诞生</a></li>
-      </ol>
-    </li>
-  </ol>
-</nav>
-</div></div>
-        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <div class="sidebar-wrap"><div class="sidebar-author">
   <img
     data-src="/avatar/my-avatar.webp"
     data-sizes="auto"
@@ -537,10 +477,7 @@ nullptr
         href="/link"
         aria-label="友链"
       ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
-    </div></div></div></div><div class="sidebar-btn-wrapper">
-        <div class="sidebar-toc-btn current"></div>
-        <div class="sidebar-common-btn"></div>
-      </div></nav>
+    </div></div></div></nav>
 </div><meting-js
         theme="var(--color-link)"
         id="17840645230"server="netease"type="playlist"auto="true"fixed="true"autoplay="false"loop="all"order="random"preload="auto"volume="0.7"mutex="true"list-folded="true"lrc-type="0">
@@ -612,9 +549,9 @@ nullptr
   <div><script data-pjax>
         window.REIMU_POST = {
           author: "CialloKing",
-          title: "【C\u002b\u002b】05 - inline和nullptr",
-          url: "https:\/\/cialloking.com\/post\/c\u002b\u002b05---inline%E5%92%8Cnullptr\/",
-          description: " inline 什么是 inline？ 在 C 语言中，如果要执行一个简单的操作（比如求两个数的最小值），通常有两种方式：\n写一个函数：代码清晰，但每次调用都有函数调用开销（压栈、跳转、返回）。 写一个宏：没有调用开销，但宏很容易出错，且无法调试。 C\u002b\u002b 引入了 inline 关键字，用来向编译器发出“建议”：将这个函数在调用处展开，而不是生成函数调用代码。这样既能保持函数的清晰性，又可能获得宏一样的效率。\n",
+          title: "类和对象",
+          url: "https:\/\/cialloking.com\/tags\/%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1\/",
+          description: "",
           cover: "https:\/\/cialloking.com\/images\/bg\/bg1.webp",
         };
       </script><script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax ></script><script src="/js/tabs.js" integrity="" crossorigin="anonymous" data-pjax defer></script><script type="module" data-pjax>const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;const initPswp = (gallery, children) => {

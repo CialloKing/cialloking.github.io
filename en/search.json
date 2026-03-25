@@ -5,6 +5,19 @@
   },
   "docs": [
       {
+        "id": "65db7e392b00f72c8b77bc267af61424",
+        "title": "【C++】06 - Classes and Objects",
+        "date": "2026-03-24",
+        "wordCount": 35,
+        "readingTime": 1,
+        "content": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "summary": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "cover": null,
+        "tags": ["基础语法","类和对象"],
+        "categories": ["C++"],
+        "permalink": "https://cialloking.com/en/post/c++06---%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/"
+      },
+      {
         "id": "abe6e2a736f58be96031e6cf7e0fed78",
         "title": "【C】03 - Data Types, Variables and Operators in C",
         "date": "2026-03-23",

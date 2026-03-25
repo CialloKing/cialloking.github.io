@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>类和对象 on CialloKing Blog</title>
+    <link>https://cialloking.com/en/tags/%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/</link>
+    <description>Recent content from CialloKing Blog</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    
+    <managingEditor>xxx@example.com (CialloKing)</managingEditor>
+    <webMaster>xxx@example.com (CialloKing)</webMaster>
+    
+    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
+    
+    <lastBuildDate>Tue, 24 Mar 2026 00:00:00 +0000</lastBuildDate>
+    
+    
+    <atom:link href="https://cialloking.com/en/tags/%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/index.xml" rel="self" type="application/rss&#43;xml" />
+    
+
+    
+    
+
+    <item>
+      <title>【C&#43;&#43;】06 - Classes and Objects</title>
+      <link>https://cialloking.com/en/post/c&#43;&#43;06---%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/</link>
+      <pubDate>Tue, 24 Mar 2026 00:00:00 &#43;0000</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/en/post/c&#43;&#43;06---%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/</guid>
+      <description>
+        <![CDATA[<h1>【C++】06 - Classes and Objects</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
+        
+        <hr><p>Published on 2026-03-24 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-24</p>]]>
+      </description>
+      
+        <category>C&#43;&#43;</category>
+      
+    </item>
+    
+  </channel>
+</rss>
