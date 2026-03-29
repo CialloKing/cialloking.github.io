@@ -1,15 +1,15 @@
 ---
 
-date: 2026-03-24
-lastmod: 2026-03-24
-title: '【C++】06 - Classes and Objects'
+date: 2026-03-28T00:00:00+08:00
+lastmod: 2026-03-30T00:00:00+08:00
+title: '【Linux】02 - Basic Linux Commands'
+
 
 tags:
-  - 基础语法
-  - 类和对象
+  - 基础命令
 
 categories:
-  - C++
+  - Linux
    
 
 ---

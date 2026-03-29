@@ -1,15 +1,14 @@
 ---
 
-date: 2026-03-24
-lastmod: 2026-03-24
-title: '【C++】06 - Classes and Objects'
+date: 2026-03-28T00:00:00+08:00
+lastmod: 2026-03-28T00:00:00+08:00
+title: '【Linux】01 - what is Linux'
 
 tags:
   - 基础语法
-  - 类和对象
 
 categories:
-  - C++
+  - Linux
    
 
 ---
