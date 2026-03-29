@@ -5,6 +5,24 @@
   },
   "docs": [
       {
+        "id": "9b0e9e658af7f1cd391498efb2ad832d",
+        "title": "【Linux】01 - what is Linux",
+        "content": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "summary": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "tags": ["基础语法"],
+        "categories": ["Linux"],
+        "permalink": "https://cialloking.com/en/post/linux01---%E4%BB%80%E4%B9%88%E6%98%AFlinux/"
+      },
+      {
+        "id": "b54dcbe6dfd7ac368f834892c4cee2ca",
+        "title": "【Linux】02 - Basic Linux Commands",
+        "content": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "summary": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "tags": ["基础命令"],
+        "categories": ["Linux"],
+        "permalink": "https://cialloking.com/en/post/linux02---linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/"
+      },
+      {
         "id": "65db7e392b00f72c8b77bc267af61424",
         "title": "【C++】06 - Classes and Objects",
         "content": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",

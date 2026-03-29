@@ -1,0 +1,1789 @@
+<!doctype html>
+<html
+  lang="zh-CN" 
+  data-theme-mode="auto"
+  >
+  <head><meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/><title>
+  【Linux】02 - Linux基础命令 | CialloKing
+</title>
+<meta name="description" content="少女祈祷中..."/><script>
+  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"Lang\":\"zh-cn\",\"Title\":\"CialloKing 的博客\",\"Weight\":1,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"简体中文\",\"Locale\":\"zh-CN\"},{\"Lang\":\"en\",\"Title\":\"CialloKing Blog\",\"Weight\":2,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"English\",\"Locale\":\"en\"}],\"icon_font\":\"4552607_4k4bc36ef96\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
+  
+</script>
+<link
+    rel="preload"
+    as="style"
+    crossorigin
+    href="/css/custom-fonts.css"
+    onload="this.rel='stylesheet'"
+  /><link
+    rel="preload"
+    href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  /><link rel="stylesheet" href="/css/loader.min.4eac6555838cbcb8a5d15bf9bae0c688b74fae83b16a5613692de3f476051979.css" /><meta property="og:type" content="website" />
+  <meta property="og:title" content="【Linux】02 - Linux基础命令 | CialloKing" />
+  <meta
+    property="og:description"
+    content="少女祈祷中..."
+  />
+  <meta property="og:url" content="https://cialloking.com/post/linux02---linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/" />
+  <meta
+    property="og:site_name"
+    content="CialloKing 的博客"
+  />
+  <meta property="og:image" content="https://cialloking.com/images/bg/bg1.webp" />
+  <meta property="article:author" content="CialloKing" />
+  <meta property="article:published_time" content="2026-03-28T00:00:00&#43;08:00" />
+  <meta property="article:modified_time" content="2026-03-30T00:00:00&#43;08:00" /><meta property="article:tag" content="基础命令" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
+<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.e15f9328b0e9ee3c7d04ca76ea47f3db653d93dce1f4a28af9a7327ad1d51367.css" /><link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
+    integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei&#43;Zx/1oA/0l8ysE" crossorigin="anonymous"
+    onload="this.onload=null;this.rel='stylesheet'"
+  /><link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css"
+    integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz&#43;YI" crossorigin="anonymous"
+    onload="this.onload=null;this.rel='stylesheet'"
+  /><script
+    src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"
+    
+    
+    
+    
+    integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script><link
+    rel="stylesheet"
+    href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css"
+    integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous"/><link
+    rel="stylesheet"
+    href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css"
+    integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj&#43;vDDLIL&#43;xBGQU/voDBY5XE2lVh" crossorigin="anonymous"/>
+<link rel="stylesheet" href="/css/custom.css"><style>
+  .post-cover img {
+    transition: opacity 0.3s ease;
+    opacity: 0;
+  }
+  .post-cover img[data-cover-set="true"],
+  .post-cover img[data-custom-cover="true"] {
+    opacity: 1;
+  }
+</style>
+</head>
+  <body><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate"><svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+          M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg></div><div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script><div id="copy-tooltip"></div>
+<div id="lang-tooltip">
+本文章没有找到对应的语言版本
+</div>
+<div id="heatmap-tooltip"></div><div id="container">
+      <div id="wrap"><div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation"><a class="main-nav-link-wrap" href="/"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">首页</span>
+      </a><a class="main-nav-link-wrap" href="/archives"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">归档</span>
+      </a><a class="main-nav-link-wrap" href="/about"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">关于</span>
+      </a><a class="main-nav-link-wrap" href="/link"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">友链</span>
+      </a><a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+<a id="nav-search-page" class="nav-icon" href="/search/" title="搜索" aria-label="搜索"></a></nav>
+
+
+  </nav><nav id="i18n-nav" aria-label="Language selection">
+      <div class="custom-dropdown">
+        <div class="select-selected" id="select-selected" role="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language menu">
+          <span id="nav-language-btn" class="nav-icon" style="padding: 0 20px 0 0"></span>
+          <span id="selected-lang">简体中文</span>
+        </div>
+        <ul class="select-items" id="select-items" role="listbox" aria-label="Languages"><li data-value="zh-cn" role="option" class="selected" aria-selected="true" >简体中文</li><li data-value="en" role="option" aria-selected="false" >English</li></ul>
+      </div>
+      <script>
+        var selectSelected = document.getElementById("select-selected");
+        var selectedLang = document.getElementById("selected-lang");
+        var selectItems = document.getElementById("select-items");
+        var selectOptions = selectItems.querySelectorAll("li");
+
+        selectSelected.addEventListener("click", () => {
+          selectItems.classList.toggle("show");
+          var expanded = selectSelected.getAttribute("aria-expanded") === "true";
+          selectSelected.setAttribute("aria-expanded", (!expanded).toString());
+        });
+
+        selectOptions.forEach((item) => {
+          item.addEventListener("click", () => {
+            const langMap = {};langMap['en'] = '\/en\/post\/linux02---linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4\/';selectedLang.textContent = item.textContent;
+            selectItems.classList.remove("show");
+            selectOptions.forEach((option) => {
+              option.classList.remove("selected");
+            });
+            item.classList.add("selected");
+            if (item.dataset.value === 'zh-cn') {
+              return;
+            }
+            if (!langMap[item.dataset.value]) {
+              _$("#lang-tooltip").style.opacity = "1";
+              setTimeout(() => {
+                _$("#lang-tooltip").style.opacity = "0";
+              }, 1000);
+              return;
+            }
+            window.location = langMap[item.dataset.value];
+          });
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!event.target.closest(".custom-dropdown")) {
+            selectItems.classList.remove("show");
+            selectSelected.setAttribute("aria-expanded", "false");
+          }
+        });
+      </script>
+    </nav></div>
+<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg1.webp" alt="【Linux】02 - Linux基础命令"><div id="header-outer">
+    <div id="header-title"><span id="logo">
+            <h1 data-aos="slide-up">【Linux】02 - Linux基础命令</h1>
+          </span><h2 id="subtitle-wrap" data-aos="slide-down"></h2></div>
+  </div>
+</header><div id="content"
+          aria-label="Page content"
+          class="sidebar-left"
+            ><aside id="sidebar" aria-label="Sidebar"><div class="sidebar-wrapper-container sticky"><div class="sidebar-wrapper">
+    <div
+      class="sidebar-wrap"
+      data-aos="fade-up"
+    ><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#linux基础命令">Linux基础命令</a>
+      <ol>
+        <li><a href="#登录linux">登录Linux</a>
+          <ol>
+            <li><a href="#xshell的下载和使用">Xshell的下载和使用</a></li>
+            <li><a href="#cmd命令行登录">cmd命令行登录</a></li>
+            <li><a href="#登录成功">登录成功</a></li>
+          </ol>
+        </li>
+        <li><a href="#添加用户指令">添加用户指令</a></li>
+        <li><a href="#pwd指令">pwd指令</a></li>
+        <li><a href="#whoami指令">whoami指令</a></li>
+        <li><a href="#clear指令">clear指令</a></li>
+        <li><a href="#mkdir指令">mkdir指令</a>
+          <ol>
+            <li><a href="#-p选项">-p选项</a></li>
+          </ol>
+        </li>
+        <li><a href="#cd指令">cd指令</a>
+          <ol>
+            <li><a href="#heading">~</a></li>
+            <li><a href="#-">-</a></li>
+          </ol>
+        </li>
+        <li><a href="#显示当前目录下的文件ls指令">显示当前目录下的文件ls指令</a>
+          <ol>
+            <li><a href="#-l选项">-l选项</a></li>
+            <li><a href="#-a选项">-a选项</a></li>
+            <li><a href="#-d选项">-d选项</a></li>
+          </ol>
+        </li>
+        <li><a href="#新建文件touch指令">新建文件touch指令</a></li>
+        <li><a href="#tree指令">tree指令</a></li>
+        <li><a href="#which指令">which指令</a></li>
+        <li><a href="#删除空目录rmdir指令">删除空目录rmdir指令</a></li>
+        <li><a href="#删除rm指令">删除rm指令</a>
+          <ol>
+            <li><a href="#-f">-f</a></li>
+            <li><a href="#-r">-r</a></li>
+          </ol>
+        </li>
+        <li><a href="#man指令">man指令</a></li>
+        <li><a href="#拷贝cp指令">拷贝cp指令</a>
+          <ol>
+            <li><a href="#-r-f选项">-r,-f选项</a></li>
+          </ol>
+        </li>
+        <li><a href="#cat指令">cat指令</a>
+          <ol>
+            <li><a href="#tac">tac</a></li>
+            <li><a href="#输入重定向">&lt;输入重定向</a></li>
+          </ol>
+        </li>
+        <li><a href="#echo指令">echo指令</a>
+          <ol>
+            <li><a href="#输出重定向">&gt;输出重定向</a></li>
+          </ol>
+        </li>
+        <li><a href="#移动mv指令">移动mv指令</a></li>
+        <li><a href="#时间相关指令">时间相关指令</a>
+          <ol>
+            <li><a href="#date指令">date指令</a></li>
+            <li><a href="#cal指令">cal指令</a></li>
+          </ol>
+        </li>
+        <li><a href="#find指令">find指令</a></li>
+        <li><a href="#日志相关指令">日志相关指令</a>
+          <ol>
+            <li><a href="#less指令">less指令</a></li>
+            <li><a href="#head--查看文件头部">head – 查看文件头部</a></li>
+            <li><a href="#tail--查看文件尾部">tail – 查看文件尾部</a></li>
+            <li><a href="#读取文件中间的某行内容">读取文件中间的某行内容</a></li>
+          </ol>
+        </li>
+        <li><a href="#grep指令">grep指令</a></li>
+        <li><a href="#打包压缩相关指令">打包压缩相关指令</a>
+          <ol>
+            <li><a href="#zip">zip</a></li>
+            <li><a href="#unzip">unzip</a></li>
+            <li><a href="#tar">tar</a></li>
+          </ol>
+        </li>
+        <li><a href="#文件传输相关指令">文件传输相关指令</a>
+          <ol>
+            <li><a href="#sz">sz</a></li>
+            <li><a href="#rz">rz</a></li>
+            <li><a href="#scp">scp</a></li>
+          </ol>
+        </li>
+        <li><a href="#计算器bc指令">计算器bc指令</a></li>
+        <li><a href="#uname指令">uname指令</a></li>
+        <li><a href="#常用快捷键">常用快捷键</a>
+          <ol>
+            <li><a href="#上下按键">上下按键</a></li>
+            <li><a href="#tab键">Tab键</a></li>
+            <li><a href="#ctrlc">Ctrl+C</a></li>
+            <li><a href="#ctrld">Ctrl+D</a></li>
+            <li><a href="#ctrlr">Ctrl+R</a></li>
+          </ol>
+        </li>
+        <li><a href="#关机指令">关机指令</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img
+    data-src="/avatar/my-avatar.webp"
+    data-sizes="auto"
+    alt="CialloKing"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">CialloKing</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div><div class="sidebar-state-number">13</div>
+  </div>
+  <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
+    <div>分类</div>
+    <div class="sidebar-state-number">
+      3
+    </div>
+  </a>
+  <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
+    <div>标签</div>
+    <div class="sidebar-state-number">3</div>
+  </a>
+</div>
+<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="首页"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">首页</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="归档"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">归档</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="关于"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">关于</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/link"
+        aria-label="友链"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
+    </div></div></div><div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div></div>
+  </div><div class="sidebar-widget"></div></div></aside>
+<section id="main" aria-label="Main content"><article
+  class="h-entry article"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div
+    class="article-inner"
+    data-aos="fade-up"
+  >
+    <div class="article-meta"><div class="article-date">
+  <span
+    class="article-date-link icon-calendar"
+    data-aos="zoom-in"
+  >
+    <time datetime="2026-03-28 00:00:00 &#43;0800 &#43;0800" itemprop="datePublished"
+      >2026-03-28</time
+    >
+    <time style="display: none;" id="post-update-time"
+      >2026-03-30</time
+    >
+  </span></div>
+</div><div class="hr-line"></div><div class="e-content article-entry" itemprop="articleBody"><h1 id="linux基础命令">
+<a class="header-anchor" href="#linux%e5%9f%ba%e7%a1%80%e5%91%bd%e4%bb%a4"></a>
+Linux基础命令
+</h1><h2 id="登录linux">
+<a class="header-anchor" href="#%e7%99%bb%e5%bd%95linux"></a>
+登录Linux
+</h2><h3 id="xshell的下载和使用">
+<a class="header-anchor" href="#xshell%e7%9a%84%e4%b8%8b%e8%bd%bd%e5%92%8c%e4%bd%bf%e7%94%a8"></a>
+Xshell的下载和使用
+</h3><p>假如使用的是云服务器，我们可以使用Xshell这个终端软件来登录Linux。</p>
+<p><a href="https://www.xshell.com/zh/free-for-home-school/">点击链接下载</a>Xshell，Xshell是商业软件，个人可免费使用，下载后选择安装目录安装，打开时遇到免费注册的弹窗可填邮箱注册或者点下面的“后来”按钮跳过。</p>
+<p>打开Xshell后，输入 <code>ssh root@云服务器的IP</code>，这时会提示输入密码(password)，输入密码时不会在屏幕上显示，输入完了按回车确认，如果不知道密码可在云服务器厂商的控制面板处重置密码后再使用Xshell登录，注意<strong>一定要设置复杂一点的密码</strong>，有黑客会 24 小时不间断扫描所有IP，如果密码过于简单会很容易被黑客破解，黑客进入我们的服务器后会偷偷干坏事，所有<strong>一定要设置复杂的密码</strong>。</p>
+<h3 id="cmd命令行登录">
+<a class="header-anchor" href="#cmd%e5%91%bd%e4%bb%a4%e8%a1%8c%e7%99%bb%e5%bd%95"></a>
+cmd命令行登录
+</h3><p>使用windows的cmd命令行也可以登录，使用win+R快捷键打开运行窗口，输入cmd，点确定，一样使用 <code>ssh root@云服务器的IP</code>这条命令，输入命令按回车键后会有确认的提示，输入yes，这时会提示输入密码(password)，输入密码时不会在屏幕上显示，输入完了按回车确认。</p>
+<h3 id="登录成功">
+<a class="header-anchor" href="#%e7%99%bb%e5%bd%95%e6%88%90%e5%8a%9f"></a>
+登录成功
+</h3><p>当出现Welcome to Alibaba Cloud（不同厂商的提示不同）等提示时，说明登录成功，下面的<code>[root@iZ2zeh5i3yddf3p4q4ueo7Z ~]#</code>中，root是用户名，root代表管理员用户，@后面的是服务器名，可自己修改。
+<img src="/post/linux02---linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/image.webp" alt=""></p>
+<h2 id="添加用户指令">
+<a class="header-anchor" href="#%e6%b7%bb%e5%8a%a0%e7%94%a8%e6%88%b7%e6%8c%87%e4%bb%a4"></a>
+添加用户指令
+</h2><p>使用管理员用户登录后，输入<code>adduser 这里填要加入的用户名</code>来添加一个用户，输入<code>passwd 这里填用户名</code>来修改对应用户的密码，设置好后，登录时就可以用刚刚添加的新用户登录。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># adduser newuser  #添加新用户</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># passwd newuser   #设置用户的密码</span>
+</span></span><span class="line"><span class="cl">Changing password <span class="k">for</span> user newuser.
+</span></span><span class="line"><span class="cl">New password:              
+</span></span><span class="line"><span class="cl">Retype new password:         <span class="c1">#输入两次相同的密码</span>
+</span></span><span class="line"><span class="cl">passwd: all authentication tokens updated successfully.
+</span></span></code></pre></div><p>如果不想要这个用户了，可以输入<code>userdel -r 这里填用户名</code>来删除对应的用户。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># userdel -r newuser  #删除对应的用户             </span>
+</span></span></code></pre></div><h2 id="pwd指令">
+<a class="header-anchor" href="#pwd%e6%8c%87%e4%bb%a4"></a>
+pwd指令
+</h2><p>输入<code>pwd</code>，可以查看当前所处的目录，每次登录时所处的目录是当前用户的家目录</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># pwd</span>
+</span></span><span class="line"><span class="cl">/root                          <span class="c1">#当前用户是管理员用户root，登录后在/root目录下</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ <span class="nb">pwd</span>
+</span></span><span class="line"><span class="cl">/home/user1                    <span class="c1">#当前用户是普通用户user1，登录后在/home/user1目录下</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ 
+</span></span></code></pre></div><h2 id="whoami指令">
+<a class="header-anchor" href="#whoami%e6%8c%87%e4%bb%a4"></a>
+whoami指令
+</h2><p>输入<code>whoami</code>，可以查看当前登录的用户是哪个。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># whoami</span>
+</span></span><span class="line"><span class="cl">root                                      <span class="c1">#显示当前登录的用户是root</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h2 id="clear指令">
+<a class="header-anchor" href="#clear%e6%8c%87%e4%bb%a4"></a>
+clear指令
+</h2><p>输入<code>clear</code>可以清屏。</p>
+<h2 id="mkdir指令">
+<a class="header-anchor" href="#mkdir%e6%8c%87%e4%bb%a4"></a>
+mkdir指令
+</h2><p>输入<code>mkdir 新建目录名</code>可以新建一个目录（文件夹）。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># mkdir test  #新建名字为test的新目录</span>
+</span></span></code></pre></div><h3 id="-p选项">
+<a class="header-anchor" href="#-p%e9%80%89%e9%a1%b9"></a>
+-p选项
+</h3><p>使用<code>mkdir -p 多层/目录/结构</code>可以同时创建多层目录。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># mkdir -p 111/222/333/444    #创建多层结构</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># tree 111</span>
+</span></span><span class="line"><span class="cl"><span class="m">111</span>
+</span></span><span class="line"><span class="cl">└── <span class="m">222</span>
+</span></span><span class="line"><span class="cl">    └── <span class="m">333</span>
+</span></span><span class="line"><span class="cl">        └── <span class="m">444</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">3</span> directories, <span class="m">0</span> files
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h2 id="cd指令">
+<a class="header-anchor" href="#cd%e6%8c%87%e4%bb%a4"></a>
+cd指令
+</h2><p>输入<code>cd 指定目录名</code>可以进入指定目录（文件夹）。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># cd test        #进入test目录</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># pwd</span>
+</span></span><span class="line"><span class="cl">/root/test
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h3 id="heading">
+<a class="header-anchor" href="#heading"></a>
+~
+</h3><p>输入<code>cd ~</code>可以直接进入当前用户的家目录。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z donk666<span class="o">]</span><span class="c1"># cd ~</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># pwd</span>
+</span></span><span class="line"><span class="cl">/root                                      <span class="c1">#进入/root目录</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ <span class="nb">cd</span> ~
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ <span class="nb">pwd</span>
+</span></span><span class="line"><span class="cl">/home/user1                                <span class="c1">#进入/home/user1  目录</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ 
+</span></span></code></pre></div><h3 id="-">
+<a class="header-anchor" href="#-"></a>
+-
+</h3><p>输入<code>cd -</code>可以进入最近所处的目录。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># cd /root/test/donk666</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z donk666<span class="o">]</span><span class="c1"># cd ~</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># pwd</span>
+</span></span><span class="line"><span class="cl">/root
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># cd -</span>
+</span></span><span class="line"><span class="cl">/root/test/donk666                   <span class="c1">#回到/root/test/donk666目录</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z donk666<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h2 id="显示当前目录下的文件ls指令">
+<a class="header-anchor" href="#%e6%98%be%e7%a4%ba%e5%bd%93%e5%89%8d%e7%9b%ae%e5%bd%95%e4%b8%8b%e7%9a%84%e6%96%87%e4%bb%b6ls%e6%8c%87%e4%bb%a4"></a>
+显示当前目录下的文件ls指令
+</h2><p>输入<code>ls</code>显示当前目录下的文件。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># ls  #当前目录是空目录，所以什么都没有</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># mkdir donk666</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># ls</span>
+</span></span><span class="line"><span class="cl">donk666                                      <span class="c1">#创建一个新目录后，输入ls就显示出来了</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h3 id="-l选项">
+<a class="header-anchor" href="#-l%e9%80%89%e9%a1%b9"></a>
+-l选项
+</h3><p>一个命令后接<code> -命令行选项</code>代表命令行的不同选项，输入<code>ls -l</code>比<code>ls</code>命令可以多显示文件的属性，同时<code>ls -l</code>也可以简写为<code>ll</code>。<strong>Linux中一切皆文件</strong>，输入<code>ls -l</code>或<code>ll</code>显示文件的第一个字符就代表这个文件在Linux里面的属性，如第一个字符是<code>d</code>，代表这个文件是目录，Linux系统内核不以文件后缀名区分文件属性，运行的其他工具（如gcc编译器，压缩包解压工具等）才区分后缀名。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># ls -l</span>
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root <span class="m">4096</span> Mar <span class="m">29</span> 00:29 donk666   <span class="c1">#第一个字符是d，这是一个目录文件</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h3 id="-a选项">
+<a class="header-anchor" href="#-a%e9%80%89%e9%a1%b9"></a>
+-a选项
+</h3><p><code>-a</code>选项代表显示包括<strong>隐藏文件</strong>在内的所有文件，大部分命令行的选项非常自由，<code>ls -l -a</code>,<code>ls -a -l</code>,<code>ls -la</code>,<code>ls -al</code>执行效果都是一样的，怎么方便顺手就怎么用。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># ls -la</span>
+</span></span><span class="line"><span class="cl">total <span class="m">12</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">3</span> root root <span class="m">4096</span> Mar <span class="m">29</span> 00:40 .      <span class="c1">#当前目录</span>
+</span></span><span class="line"><span class="cl">dr-xr-x---. <span class="m">7</span> root root <span class="m">4096</span> Mar <span class="m">29</span> 00:16 ..     <span class="c1">#上级目录</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">2</span> root root <span class="m">4096</span> Mar <span class="m">29</span> 00:29 donk666
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> root root    <span class="m">0</span> Mar <span class="m">29</span> 00:40 niko.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>在Linux中，系统会为每个目录创建两个隐藏文件，<code>.</code>代表的是当前目录，<code>..</code>代表上级目录，可以使用<code>cd .</code>进入当前目录，<code>cd ..</code>回退到上级目录，一直使用<code>cd ..</code>可以回退到<code>/</code>目录，也就是Linux系统的根目录，windows中使用\代表路径分隔符，Linux中使用/代表路径分隔符，Linux的文件结构是一颗从根目录<code>/</code>开始的多叉树结构，叶子节点一定是普通文件或空目录，非叶子节点一定是非空目录；以<code>/</code>开始定位一个文件称为绝对路径，以非<code>/</code>为参照位置定位文件称为相对路径，</p>
+<p>使用<code>ls</code>还可以显示指定目录下的文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># ls /home  #使用绝对路径，显示home目录下的文件</span>
+</span></span><span class="line"><span class="cl">admin  user1
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># ls /root/test  #使用绝对路径，显示/root/test目录下的文件</span>
+</span></span><span class="line"><span class="cl">donk666  niko.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># cd donk666</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z donk666<span class="o">]</span><span class="c1"># pwd</span>
+</span></span><span class="line"><span class="cl">/root/test/donk666
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z donk666<span class="o">]</span><span class="c1"># ll ../niko.txt    #使用相对路径，显示上级目录里的niko.txt文件</span>
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">0</span> Mar <span class="m">29</span> 00:40 ../niko.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z donk666<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h3 id="-d选项">
+<a class="header-anchor" href="#-d%e9%80%89%e9%a1%b9"></a>
+-d选项
+</h3><p>使用<code>-d</code>选项可以只查看目录文件本身，不查看目录内的其他文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># ls -d /root/test</span>
+</span></span><span class="line"><span class="cl">/root/test                                          <span class="c1">#-d只查看了目录文件</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># ls /root/test</span>
+</span></span><span class="line"><span class="cl">donk666  niko.txt                                   <span class="c1">#没有-d显示目录下的所有文件   </span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># ls -ld /root/test</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">3</span> root root <span class="m">4096</span> Mar <span class="m">29</span> 00:40 /root/test     <span class="c1">#加上-l查看目录文件的属性</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h2 id="新建文件touch指令">
+<a class="header-anchor" href="#%e6%96%b0%e5%bb%ba%e6%96%87%e4%bb%b6touch%e6%8c%87%e4%bb%a4"></a>
+新建文件touch指令
+</h2><p>输入<code>touch 文件名.文件后缀</code>可以在当前目录创建一个普通文件，不能创建目录。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># touch niko.txt  #新建一个txt文件</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># ll</span>
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root <span class="m">4096</span> Mar <span class="m">29</span> 00:29 donk666     <span class="c1">#第一个字符是d，这是一个目录文件</span>
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> Mar <span class="m">29</span> 00:40 niko.txt    <span class="c1">#第一个字符是-，这是一个普通文件</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h2 id="tree指令">
+<a class="header-anchor" href="#tree%e6%8c%87%e4%bb%a4"></a>
+tree指令
+</h2><p>使用<code>tree 目录</code>可以以树形查看目录的结构，如果显示<code>-bash: tree: command not found</code>,可以使用<code>yum install -y tree</code>或其他方式（如apt等）安装<code>tree</code>命令。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># tree 111</span>
+</span></span><span class="line"><span class="cl"><span class="m">111</span>
+</span></span><span class="line"><span class="cl">└── <span class="m">222</span>
+</span></span><span class="line"><span class="cl">    └── <span class="m">333</span>
+</span></span><span class="line"><span class="cl">        └── <span class="m">444</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">3</span> directories, <span class="m">0</span> files
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h2 id="which指令">
+<a class="header-anchor" href="#which%e6%8c%87%e4%bb%a4"></a>
+which指令
+</h2><p><code>which</code>可以查看查看命令的完整路径，会去 PATH 环境变量指定的目录下查找指令。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># which ls</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> <span class="nv">ls</span><span class="o">=</span><span class="s1">&#39;ls --color=auto&#39;</span>
+</span></span><span class="line"><span class="cl">	/usr/bin/ls
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># which touch</span>
+</span></span><span class="line"><span class="cl">/usr/bin/touch
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># which cd</span>
+</span></span><span class="line"><span class="cl">/usr/bin/cd
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># which ll</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> <span class="nv">ll</span><span class="o">=</span><span class="s1">&#39;ls -l --color=auto&#39;</span>
+</span></span><span class="line"><span class="cl">	/usr/bin/ls
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p><code>alias</code>是指给命令起别名，比如<code>ll</code>就是<code>ls -l --color=auto</code>的别名。</p>
+<p><strong>Linux中一切皆文件</strong>，可以看到各种指令实际上就是文件，命令等同于可执行文件，我们也可以使用C/C++写出自己的命令。</p>
+<h2 id="删除空目录rmdir指令">
+<a class="header-anchor" href="#%e5%88%a0%e9%99%a4%e7%a9%ba%e7%9b%ae%e5%bd%95rmdir%e6%8c%87%e4%bb%a4"></a>
+删除空目录rmdir指令
+</h2><p>使用<code>rmdir 目录名</code>可以删除一个空目录</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># tree 111</span>
+</span></span><span class="line"><span class="cl"><span class="m">111</span>
+</span></span><span class="line"><span class="cl">└── <span class="m">222</span>
+</span></span><span class="line"><span class="cl">    └── <span class="m">333</span>
+</span></span><span class="line"><span class="cl">        └── <span class="m">444</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#删除前</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 333<span class="o">]</span><span class="c1"># pwd</span>
+</span></span><span class="line"><span class="cl">/root/test/111/222/333
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 333<span class="o">]</span><span class="c1"># rmdir 444</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 333<span class="o">]</span><span class="c1"># tree /root/test/111</span>
+</span></span><span class="line"><span class="cl">/root/test/111
+</span></span><span class="line"><span class="cl">└── <span class="m">222</span>
+</span></span><span class="line"><span class="cl">    └── <span class="m">333</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#删除后 </span>
+</span></span></code></pre></div><h2 id="删除rm指令">
+<a class="header-anchor" href="#%e5%88%a0%e9%99%a4rm%e6%8c%87%e4%bb%a4"></a>
+删除rm指令
+</h2><p><code>rm 文件或目录名</code>命令可以同时删除文件或目录</p>
+<h3 id="-f">
+<a class="header-anchor" href="#-f"></a>
+-f
+</h3><p>使用<code>-f</code>选项代表强制删除</p>
+<h3 id="-r">
+<a class="header-anchor" href="#-r"></a>
+-r
+</h3><p><code>-r</code>代表递归删除</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#删除前</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 333<span class="o">]</span><span class="c1"># tree /root/test/111</span>
+</span></span><span class="line"><span class="cl">/root/test/111
+</span></span><span class="line"><span class="cl">└── <span class="m">222</span>
+</span></span><span class="line"><span class="cl">    └── <span class="m">333</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 333<span class="o">]</span><span class="c1"># cd /root/test</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#删除后</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># rm -rf 111  #-rf代表递归并强制删除指定目录</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># tree .</span>
+</span></span><span class="line"><span class="cl">.
+</span></span><span class="line"><span class="cl">├── donk666
+</span></span><span class="line"><span class="cl">└── niko.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">1</span> directory, <span class="m">1</span> file
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>使用通配符<code>*</code>可以快速匹配相应的文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 删除所有 .log 后缀的文件</span>
+</span></span><span class="line"><span class="cl">rm *.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除所有文件名以 file 开头的文件</span>
+</span></span><span class="line"><span class="cl">rm file*
+</span></span></code></pre></div>
+  <blockquote class="alert-blockquote warning">
+    <p class="alert-heading">
+      Warning
+    </p>
+    <p><p><strong>警告</strong>：<code>rm -rf</code> 是极高危操作，特别是以下命令会删除整个系统，<strong>切勿执行</strong>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rm -rf /          <span class="c1"># 删除根目录下所有内容（会毁灭系统）</span>
+</span></span><span class="line"><span class="cl">rm -rf /*         <span class="c1"># 同上</span>
+</span></span><span class="line"><span class="cl">rm -rf /home/xxx/ <span class="c1"># 注意末尾的/，会删除目录内容而非目录本身</span>
+</span></span></code></pre></div></p>
+  </blockquote>
+
+<h2 id="man指令">
+<a class="header-anchor" href="#man%e6%8c%87%e4%bb%a4"></a>
+man指令
+</h2><p>使用<code>man 指令</code>可以查看对应指令的使用方式，man手册分为9章，可以通过<code>man 1</code>,<code>man 2</code>&hellip;查看</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># man ls   #查看ls指令</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">LS<span class="o">(</span>1<span class="o">)</span>                                     User Commands                                    LS<span class="o">(</span>1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">NAME
+</span></span><span class="line"><span class="cl">       ls - list directory contents
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">SYNOPSIS
+</span></span><span class="line"><span class="cl">       ls <span class="o">[</span>OPTION<span class="o">]</span>... <span class="o">[</span>FILE<span class="o">]</span>...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">DESCRIPTION
+</span></span><span class="line"><span class="cl">       List information about the FILEs <span class="o">(</span>the current directory by default<span class="o">)</span>.  Sort entries alpha‐
+</span></span><span class="line"><span class="cl">       betically <span class="k">if</span> none of -cftuvSUX nor --sort is specified.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">       Mandatory arguments to long options are mandatory <span class="k">for</span> short options too.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">       -a, --all
+</span></span><span class="line"><span class="cl">              <span class="k">do</span> not ignore entries starting with .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">       -A, --almost-all
+</span></span><span class="line"><span class="cl">              <span class="k">do</span> not list implied . and ..
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">       --author
+</span></span><span class="line"><span class="cl">        <span class="c1">#按 q 键退出，或按 Ctrl+C 中断</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># man 1 which    #查看第一章which命令</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">WHICH<span class="o">(</span>1<span class="o">)</span>                             General Commands Manual                            WHICH<span class="o">(</span>1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">NAME
+</span></span><span class="line"><span class="cl">       which - shows the full path of <span class="o">(</span>shell<span class="o">)</span> commands.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">SYNOPSIS
+</span></span><span class="line"><span class="cl">       which <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>--<span class="o">]</span> programname <span class="o">[</span>...<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">DESCRIPTION
+</span></span><span class="line"><span class="cl">       Which takes one or more arguments. For each of its arguments it prints to stdout the full
+</span></span><span class="line"><span class="cl">       path of the executables that would have been executed when this argument had been entered
+</span></span><span class="line"><span class="cl">       at the shell prompt. It does this by searching <span class="k">for</span> an executable or script in the direc‐
+</span></span><span class="line"><span class="cl">       tories listed in the environment variable PATH using the same algorithm as bash<span class="o">(</span>1<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">       This man page is generated from the file which.texinfo.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">OPTIONS
+</span></span><span class="line"><span class="cl">       --all, -a
+</span></span><span class="line"><span class="cl">           Print all matching executables in PATH, not just the first.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> Manual page which<span class="o">(</span>1<span class="o">)</span> line <span class="m">1</span> <span class="o">(</span>press h <span class="k">for</span> <span class="nb">help</span> or q to quit<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">#按 q 键退出，或按 Ctrl+C 中断</span>
+</span></span></code></pre></div><h2 id="拷贝cp指令">
+<a class="header-anchor" href="#%e6%8b%b7%e8%b4%9dcp%e6%8c%87%e4%bb%a4"></a>
+拷贝cp指令
+</h2><p>使用<code>cp 源文件或目录 目标文件或目录</code>，同一目录下不能存在同名文件。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># ll</span>
+</span></span><span class="line"><span class="cl">total <span class="m">8</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root <span class="m">4096</span> Mar <span class="m">29</span> 02:11 <span class="m">111</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root <span class="m">4096</span> Mar <span class="m">29</span> 00:29 donk666
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> Mar <span class="m">29</span> 00:40 niko.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># cp niko.txt niko666.txt       #将 niko.txt 复制一份，命名为 niko666.txt</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># ll</span>
+</span></span><span class="line"><span class="cl">total <span class="m">8</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root <span class="m">4096</span> Mar <span class="m">29</span> 02:11 <span class="m">111</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root <span class="m">4096</span> Mar <span class="m">29</span> 00:29 donk666
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> Mar <span class="m">29</span> 02:21 niko666.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> Mar <span class="m">29</span> 00:40 niko.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>将 niko.txt 复制一份，命名为 niko666.txt</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># ll</span>
+</span></span><span class="line"><span class="cl">total <span class="m">8</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root <span class="m">4096</span> Mar <span class="m">29</span> 02:11 <span class="m">111</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root <span class="m">4096</span> Mar <span class="m">29</span> 00:29 donk666
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> Mar <span class="m">29</span> 02:21 niko666.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> Mar <span class="m">29</span> 00:40 niko.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># cp niko.txt ./donk666     #将 niko.txt 复制到 ./donk666 目录下，文件名不变。 </span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># tree .</span>
+</span></span><span class="line"><span class="cl">.
+</span></span><span class="line"><span class="cl">├── <span class="m">111</span>
+</span></span><span class="line"><span class="cl">├── donk666
+</span></span><span class="line"><span class="cl">│   └── niko.txt
+</span></span><span class="line"><span class="cl">├── niko666.txt
+</span></span><span class="line"><span class="cl">└── niko.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">2</span> directories, <span class="m">3</span> files
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>将 niko.txt 复制到 ./donk666 目录下，文件名不变。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># cp niko.txt niko666.txt ./111 #将niko.txt ,niko666.txt全部复制到目标目录./111中。</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># tree .</span>
+</span></span><span class="line"><span class="cl">.
+</span></span><span class="line"><span class="cl">├── <span class="m">111</span>
+</span></span><span class="line"><span class="cl">│   ├── niko666.txt
+</span></span><span class="line"><span class="cl">│   └── niko.txt
+</span></span><span class="line"><span class="cl">├── donk666
+</span></span><span class="line"><span class="cl">│   └── niko.txt
+</span></span><span class="line"><span class="cl">├── niko666.txt
+</span></span><span class="line"><span class="cl">└── niko.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">2</span> directories, <span class="m">5</span> files
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>将niko.txt ,niko666.txt全部复制到目标目录./111中。</p>
+<h3 id="-r-f选项">
+<a class="header-anchor" href="#-r-f%e9%80%89%e9%a1%b9"></a>
+-r,-f选项
+</h3><p>使用<code>-r</code>选项可以递归拷贝目录,<code>-f</code>强制覆盖复制。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp -r /home/user/documents /home/user/backup/
+</span></span></code></pre></div><p>将 documents 目录（及其所有子文件和子目录）复制到 backup 目录下，新目录名为 documents。
+如果希望将 documents 目录下的内容复制到 backup 目录（不创建 documents 这一层），可以写成：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp -r /home/user/documents/. /home/user/backup/
+</span></span></code></pre></div><p>注意末尾的 / 和 .，表示复制目录内的内容。</p>
+<h2 id="cat指令">
+<a class="header-anchor" href="#cat%e6%8c%87%e4%bb%a4"></a>
+cat指令
+</h2><p><code>cat</code>指令就是在读取键盘输入显示在屏幕上,使用<code>cat 指定文件</code>可以显示指定文件内的内容。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># cat donk.txt </span>
+</span></span><span class="line"><span class="cl"><span class="m">11111111111</span>
+</span></span><span class="line"><span class="cl"><span class="m">22222222222</span>
+</span></span><span class="line"><span class="cl"><span class="m">33333333333333</span>
+</span></span><span class="line"><span class="cl"><span class="m">4444444444444444</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h3 id="tac">
+<a class="header-anchor" href="#tac"></a>
+tac
+</h3><p>反过来的<code>tac</code>指令可以倒着查看文件，常用于查看日志文件。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># tac donk.txt </span>
+</span></span><span class="line"><span class="cl"><span class="m">4444444444444444</span>
+</span></span><span class="line"><span class="cl"><span class="m">33333333333333</span>
+</span></span><span class="line"><span class="cl"><span class="m">22222222222</span>
+</span></span><span class="line"><span class="cl"><span class="m">11111111111</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h3 id="输入重定向">
+<a class="header-anchor" href="#%e8%be%93%e5%85%a5%e9%87%8d%e5%ae%9a%e5%90%91"></a>
+&lt;输入重定向
+</h3><p>加上输入重定向<code>&lt;</code>如<code>cat &lt; 指定文件</code>就是指定<code>cat</code>从指定文件中读取而不是默认从键盘文件中读取。</p>
+<h2 id="echo指令">
+<a class="header-anchor" href="#echo%e6%8c%87%e4%bb%a4"></a>
+echo指令
+</h2><p>使用<code>echo '对应的字符串'</code>可以输出字符串到屏幕上，屏幕和键盘在Linux里也算文件，系统会自动帮我们打开，使用<code>echo</code>就是在往屏幕文件里面写入字符串。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># echo nikonikoni</span>
+</span></span><span class="line"><span class="cl">nikonikoni
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h3 id="输出重定向">
+<a class="header-anchor" href="#%e8%be%93%e5%87%ba%e9%87%8d%e5%ae%9a%e5%90%91"></a>
+&gt;输出重定向
+</h3><p>使用<code>echo '对应的字符串' &gt; 指定文件</code>可以把字符串输入到指定文件内，输入时若文件不存在则新建一个，重定向时会先清空文件内容再写入，若没有对应字符串输入就会清空文件不写入。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># echo &#39;nikonikoni&#39; &gt; niko.txt   #将&#39;nikonikoni&#39; 写入 niko.txt中</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># cat niko.txt</span>
+</span></span><span class="line"><span class="cl">nikonikoni
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># echo &#39;do666nk&#39; &gt; niko.txt      #先清空niko.txt，再写入&#39;do666nk&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># cat niko.txt</span>
+</span></span><span class="line"><span class="cl">do666nk
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># &gt; niko.txt                    #不输入对应字符串就是清空文件</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># cat niko.txt</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>如果不想清空文件可以使用追加重定向<code>&gt;&gt;</code>，就不会清空文件，</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># echo &#39;nikonikoni&#39; &gt;&gt;niko.txt</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># echo &#39;nikonikoni&#39; &gt;&gt;niko.txt</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># echo &#39;nikonikoni&#39; &gt;&gt;niko.txt</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># echo &#39;nikonikoni&#39; &gt;&gt;niko.txt</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># cat niko.txt </span>
+</span></span><span class="line"><span class="cl">nikonikoni
+</span></span><span class="line"><span class="cl">nikonikoni
+</span></span><span class="line"><span class="cl">nikonikoni
+</span></span><span class="line"><span class="cl">nikonikoni
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>终端也是一个文件，在/dev/pts目录下可以看到，使用<code>echo</code>就是在往终端文件里写入，如果指定终端文件，还可以实现在其他终端上输出对应字符串。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z pts<span class="o">]</span><span class="c1"># pwd</span>
+</span></span><span class="line"><span class="cl">/dev/pts
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z pts<span class="o">]</span><span class="c1"># ll</span>
+</span></span><span class="line"><span class="cl">total <span class="m">0</span>
+</span></span><span class="line"><span class="cl">crw--w---- <span class="m">1</span> root tty  136, <span class="m">0</span> Mar <span class="m">29</span> 23:05 <span class="m">0</span>
+</span></span><span class="line"><span class="cl">c--------- <span class="m">1</span> root root   5, <span class="m">2</span> Mar <span class="m">27</span> 23:06 ptmx       <span class="c1">#c开头代表这是一个字符文件</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z pts<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>c开头代表这是一个字符文件，如键盘，显示器，终端等，输入的数据具有顺序性。</p>
+<h2 id="移动mv指令">
+<a class="header-anchor" href="#%e7%a7%bb%e5%8a%a8mv%e6%8c%87%e4%bb%a4"></a>
+移动mv指令
+</h2><p>使用<code>mv 源文件或目录 目标文件或目录</code>来移动文件或目录。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># ls</span>
+</span></span><span class="line"><span class="cl"><span class="m">111</span>  donk666  niko666.txt  niko.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># mv niko.txt ./111  #移动niko.txt到111目录</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># cd 111</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># ls</span>
+</span></span><span class="line"><span class="cl">niko.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p><code>mv 指定文件或目录 新名字</code>指令还可以用来给文件或目录重命名。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># ls</span>
+</span></span><span class="line"><span class="cl">niko.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># mv niko.txt donk.txt     #重命名 niko.txt 为 donk.txt</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># ls</span>
+</span></span><span class="line"><span class="cl">donk.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h2 id="时间相关指令">
+<a class="header-anchor" href="#%e6%97%b6%e9%97%b4%e7%9b%b8%e5%85%b3%e6%8c%87%e4%bb%a4"></a>
+时间相关指令
+</h2><h3 id="date指令">
+<a class="header-anchor" href="#date%e6%8c%87%e4%bb%a4"></a>
+date指令
+</h3><p>使用<code>date</code>可以直接显示系统时间。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># date</span>
+</span></span><span class="line"><span class="cl">Sun Mar <span class="m">29</span> 23:28:54 CST <span class="m">2026</span>     
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>输出的时间可以指定格式，如<code>date &quot;+%Y-%m-%d %H:%M:%S&quot;</code>就是自定义格式：年-月-日 时:分:秒</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># date &#34;+%Y-%m-%d %H:%M:%S&#34;</span>
+</span></span><span class="line"><span class="cl">2026-03-29 23:31:04
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p><code>date &quot;+%s&quot;</code>显示Unix 时间戳，Unix 时间戳是从 1970 年 1 月 1 日 00:00:00 UTC 开始，到当前时刻所经过的秒数（不考虑闰秒）。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># date &#34;+%s&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">1774798376</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><h3 id="cal指令">
+<a class="header-anchor" href="#cal%e6%8c%87%e4%bb%a4"></a>
+cal指令
+</h3><p>使用<code>cal 年份</code>可以查看对应的日历。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># cal 2026</span>
+</span></span><span class="line"><span class="cl">                               <span class="m">2026</span>                               
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">       January               February                 March       
+</span></span><span class="line"><span class="cl">Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa
+</span></span><span class="line"><span class="cl">             <span class="m">1</span>  <span class="m">2</span>  <span class="m">3</span>    <span class="m">1</span>  <span class="m">2</span>  <span class="m">3</span>  <span class="m">4</span>  <span class="m">5</span>  <span class="m">6</span>  <span class="m">7</span>    <span class="m">1</span>  <span class="m">2</span>  <span class="m">3</span>  <span class="m">4</span>  <span class="m">5</span>  <span class="m">6</span>  <span class="m">7</span>
+</span></span><span class="line"><span class="cl"> <span class="m">4</span>  <span class="m">5</span>  <span class="m">6</span>  <span class="m">7</span>  <span class="m">8</span>  <span class="m">9</span> <span class="m">10</span>    <span class="m">8</span>  <span class="m">9</span> <span class="m">10</span> <span class="m">11</span> <span class="m">12</span> <span class="m">13</span> <span class="m">14</span>    <span class="m">8</span>  <span class="m">9</span> <span class="m">10</span> <span class="m">11</span> <span class="m">12</span> <span class="m">13</span> <span class="m">14</span>
+</span></span><span class="line"><span class="cl"><span class="m">11</span> <span class="m">12</span> <span class="m">13</span> <span class="m">14</span> <span class="m">15</span> <span class="m">16</span> <span class="m">17</span>   <span class="m">15</span> <span class="m">16</span> <span class="m">17</span> <span class="m">18</span> <span class="m">19</span> <span class="m">20</span> <span class="m">21</span>   <span class="m">15</span> <span class="m">16</span> <span class="m">17</span> <span class="m">18</span> <span class="m">19</span> <span class="m">20</span> <span class="m">21</span>
+</span></span><span class="line"><span class="cl"><span class="m">18</span> <span class="m">19</span> <span class="m">20</span> <span class="m">21</span> <span class="m">22</span> <span class="m">23</span> <span class="m">24</span>   <span class="m">22</span> <span class="m">23</span> <span class="m">24</span> <span class="m">25</span> <span class="m">26</span> <span class="m">27</span> <span class="m">28</span>   <span class="m">22</span> <span class="m">23</span> <span class="m">24</span> <span class="m">25</span> <span class="m">26</span> <span class="m">27</span> <span class="m">28</span>
+</span></span><span class="line"><span class="cl"><span class="m">25</span> <span class="m">26</span> <span class="m">27</span> <span class="m">28</span> <span class="m">29</span> <span class="m">30</span> <span class="m">31</span>                          <span class="m">29</span> <span class="m">30</span> <span class="m">31</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        April                   May                   June        
+</span></span><span class="line"><span class="cl">Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa
+</span></span><span class="line"><span class="cl">          <span class="m">1</span>  <span class="m">2</span>  <span class="m">3</span>  <span class="m">4</span>                   <span class="m">1</span>  <span class="m">2</span>       <span class="m">1</span>  <span class="m">2</span>  <span class="m">3</span>  <span class="m">4</span>  <span class="m">5</span>  <span class="m">6</span>
+</span></span><span class="line"><span class="cl"> <span class="m">5</span>  <span class="m">6</span>  <span class="m">7</span>  <span class="m">8</span>  <span class="m">9</span> <span class="m">10</span> <span class="m">11</span>    <span class="m">3</span>  <span class="m">4</span>  <span class="m">5</span>  <span class="m">6</span>  <span class="m">7</span>  <span class="m">8</span>  <span class="m">9</span>    <span class="m">7</span>  <span class="m">8</span>  <span class="m">9</span> <span class="m">10</span> <span class="m">11</span> <span class="m">12</span> <span class="m">13</span>
+</span></span><span class="line"><span class="cl"><span class="m">12</span> <span class="m">13</span> <span class="m">14</span> <span class="m">15</span> <span class="m">16</span> <span class="m">17</span> <span class="m">18</span>   <span class="m">10</span> <span class="m">11</span> <span class="m">12</span> <span class="m">13</span> <span class="m">14</span> <span class="m">15</span> <span class="m">16</span>   <span class="m">14</span> <span class="m">15</span> <span class="m">16</span> <span class="m">17</span> <span class="m">18</span> <span class="m">19</span> <span class="m">20</span>
+</span></span><span class="line"><span class="cl"><span class="m">19</span> <span class="m">20</span> <span class="m">21</span> <span class="m">22</span> <span class="m">23</span> <span class="m">24</span> <span class="m">25</span>   <span class="m">17</span> <span class="m">18</span> <span class="m">19</span> <span class="m">20</span> <span class="m">21</span> <span class="m">22</span> <span class="m">23</span>   <span class="m">21</span> <span class="m">22</span> <span class="m">23</span> <span class="m">24</span> <span class="m">25</span> <span class="m">26</span> <span class="m">27</span>
+</span></span><span class="line"><span class="cl"><span class="m">26</span> <span class="m">27</span> <span class="m">28</span> <span class="m">29</span> <span class="m">30</span>         <span class="m">24</span> <span class="m">25</span> <span class="m">26</span> <span class="m">27</span> <span class="m">28</span> <span class="m">29</span> <span class="m">30</span>   <span class="m">28</span> <span class="m">29</span> <span class="m">30</span>
+</span></span><span class="line"><span class="cl">                       <span class="m">31</span>
+</span></span><span class="line"><span class="cl">        July                  August                September     
+</span></span><span class="line"><span class="cl">Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa
+</span></span><span class="line"><span class="cl">          <span class="m">1</span>  <span class="m">2</span>  <span class="m">3</span>  <span class="m">4</span>                      <span class="m">1</span>          <span class="m">1</span>  <span class="m">2</span>  <span class="m">3</span>  <span class="m">4</span>  <span class="m">5</span>
+</span></span><span class="line"><span class="cl"> <span class="m">5</span>  <span class="m">6</span>  <span class="m">7</span>  <span class="m">8</span>  <span class="m">9</span> <span class="m">10</span> <span class="m">11</span>    <span class="m">2</span>  <span class="m">3</span>  <span class="m">4</span>  <span class="m">5</span>  <span class="m">6</span>  <span class="m">7</span>  <span class="m">8</span>    <span class="m">6</span>  <span class="m">7</span>  <span class="m">8</span>  <span class="m">9</span> <span class="m">10</span> <span class="m">11</span> <span class="m">12</span>
+</span></span><span class="line"><span class="cl"><span class="m">12</span> <span class="m">13</span> <span class="m">14</span> <span class="m">15</span> <span class="m">16</span> <span class="m">17</span> <span class="m">18</span>    <span class="m">9</span> <span class="m">10</span> <span class="m">11</span> <span class="m">12</span> <span class="m">13</span> <span class="m">14</span> <span class="m">15</span>   <span class="m">13</span> <span class="m">14</span> <span class="m">15</span> <span class="m">16</span> <span class="m">17</span> <span class="m">18</span> <span class="m">19</span>
+</span></span><span class="line"><span class="cl"><span class="m">19</span> <span class="m">20</span> <span class="m">21</span> <span class="m">22</span> <span class="m">23</span> <span class="m">24</span> <span class="m">25</span>   <span class="m">16</span> <span class="m">17</span> <span class="m">18</span> <span class="m">19</span> <span class="m">20</span> <span class="m">21</span> <span class="m">22</span>   <span class="m">20</span> <span class="m">21</span> <span class="m">22</span> <span class="m">23</span> <span class="m">24</span> <span class="m">25</span> <span class="m">26</span>
+</span></span><span class="line"><span class="cl"><span class="m">26</span> <span class="m">27</span> <span class="m">28</span> <span class="m">29</span> <span class="m">30</span> <span class="m">31</span>      <span class="m">23</span> <span class="m">24</span> <span class="m">25</span> <span class="m">26</span> <span class="m">27</span> <span class="m">28</span> <span class="m">29</span>   <span class="m">27</span> <span class="m">28</span> <span class="m">29</span> <span class="m">30</span>
+</span></span><span class="line"><span class="cl">                       <span class="m">30</span> <span class="m">31</span>
+</span></span><span class="line"><span class="cl">       October               November               December      
+</span></span><span class="line"><span class="cl">Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa
+</span></span><span class="line"><span class="cl">             <span class="m">1</span>  <span class="m">2</span>  <span class="m">3</span>    <span class="m">1</span>  <span class="m">2</span>  <span class="m">3</span>  <span class="m">4</span>  <span class="m">5</span>  <span class="m">6</span>  <span class="m">7</span>          <span class="m">1</span>  <span class="m">2</span>  <span class="m">3</span>  <span class="m">4</span>  <span class="m">5</span>
+</span></span><span class="line"><span class="cl"> <span class="m">4</span>  <span class="m">5</span>  <span class="m">6</span>  <span class="m">7</span>  <span class="m">8</span>  <span class="m">9</span> <span class="m">10</span>    <span class="m">8</span>  <span class="m">9</span> <span class="m">10</span> <span class="m">11</span> <span class="m">12</span> <span class="m">13</span> <span class="m">14</span>    <span class="m">6</span>  <span class="m">7</span>  <span class="m">8</span>  <span class="m">9</span> <span class="m">10</span> <span class="m">11</span> <span class="m">12</span>
+</span></span><span class="line"><span class="cl"><span class="m">11</span> <span class="m">12</span> <span class="m">13</span> <span class="m">14</span> <span class="m">15</span> <span class="m">16</span> <span class="m">17</span>   <span class="m">15</span> <span class="m">16</span> <span class="m">17</span> <span class="m">18</span> <span class="m">19</span> <span class="m">20</span> <span class="m">21</span>   <span class="m">13</span> <span class="m">14</span> <span class="m">15</span> <span class="m">16</span> <span class="m">17</span> <span class="m">18</span> <span class="m">19</span>
+</span></span><span class="line"><span class="cl"><span class="m">18</span> <span class="m">19</span> <span class="m">20</span> <span class="m">21</span> <span class="m">22</span> <span class="m">23</span> <span class="m">24</span>   <span class="m">22</span> <span class="m">23</span> <span class="m">24</span> <span class="m">25</span> <span class="m">26</span> <span class="m">27</span> <span class="m">28</span>   <span class="m">20</span> <span class="m">21</span> <span class="m">22</span> <span class="m">23</span> <span class="m">24</span> <span class="m">25</span> <span class="m">26</span>
+</span></span><span class="line"><span class="cl"><span class="m">25</span> <span class="m">26</span> <span class="m">27</span> <span class="m">28</span> <span class="m">29</span> <span class="m">30</span> <span class="m">31</span>   <span class="m">29</span> <span class="m">30</span>                  <span class="m">27</span> <span class="m">28</span> <span class="m">29</span> <span class="m">30</span> <span class="m">31</span>
+</span></span></code></pre></div><h2 id="find指令">
+<a class="header-anchor" href="#find%e6%8c%87%e4%bb%a4"></a>
+find指令
+</h2><p><code>which</code>只会在指定目录下查找指令，<code>find</code>可以在任意目录下查找，<code>find</code>支持非常多的选项，可以根据需求自由使用。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># find ~ -name *.txt     #区分大小写查找当前目录下所有的txt文件</span>
+</span></span><span class="line"><span class="cl">/root/test/niko666.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>以下是一些常用的<code>find</code>使用示例</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 当前目录下查找 .conf 文件</span>
+</span></span><span class="line"><span class="cl">find . -name <span class="s2">&#34;*.conf&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 根目录下查找（忽略大小写）名为 readme 的文件</span>
+</span></span><span class="line"><span class="cl">find / -iname <span class="s2">&#34;readme*&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找完全匹配 test.txt 的文件</span>
+</span></span><span class="line"><span class="cl">find /home -name <span class="s2">&#34;test.txt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找所有目录</span>
+</span></span><span class="line"><span class="cl">find . -type d
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找所有普通文件</span>
+</span></span><span class="line"><span class="cl">find . -type f
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找所有符号链接</span>
+</span></span><span class="line"><span class="cl">find /usr/bin -type l
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找大于 100MB 的文件</span>
+</span></span><span class="line"><span class="cl">find /var -size +100M
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找小于 1KB 的文件</span>
+</span></span><span class="line"><span class="cl">find . -size -1k
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找正好 500 字节的文件</span>
+</span></span><span class="line"><span class="cl">find . -size 500c
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找最近 7 天内修改过的文件</span>
+</span></span><span class="line"><span class="cl">find . -type f -mtime -7
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找超过 30 天未访问的文件</span>
+</span></span><span class="line"><span class="cl">find . -type f -atime +30
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找最近 1 小时内状态改变的文件</span>
+</span></span><span class="line"><span class="cl">find . -cmin -60
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找权限为 755 的目录</span>
+</span></span><span class="line"><span class="cl">find . -type d -perm <span class="m">755</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找属于 www-data 用户的文件</span>
+</span></span><span class="line"><span class="cl">find /var/www -user www-data
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找没有写权限的文件</span>
+</span></span><span class="line"><span class="cl">find . -type f ! -perm -u<span class="o">=</span>w
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找 .log 或 .out 文件</span>
+</span></span><span class="line"><span class="cl">find . -name <span class="s2">&#34;*.log&#34;</span> -o -name <span class="s2">&#34;*.out&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找大于 10M 且不是 .bak 的文件</span>
+</span></span><span class="line"><span class="cl">find . -size +10M -a ! -name <span class="s2">&#34;*.bak&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找目录中大小超过 1G 的普通文件并显示详情</span>
+</span></span><span class="line"><span class="cl">find /home -type f -size +1G -ls
+</span></span></code></pre></div><p>选项非常多，掌握平时最常用<code>-name</code>选项就可以了。</p>
+<h2 id="日志相关指令">
+<a class="header-anchor" href="#%e6%97%a5%e5%bf%97%e7%9b%b8%e5%85%b3%e6%8c%87%e4%bb%a4"></a>
+日志相关指令
+</h2><h3 id="less指令">
+<a class="header-anchor" href="#less%e6%8c%87%e4%bb%a4"></a>
+less指令
+</h3><p><code>less 指定的日志</code>指令可以用来查看指定的日志文件，支持上下翻，<code>more</code>也可以用，但不支持上翻，只能往下，不推荐。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">less /var/log/syslog
+</span></span><span class="line"><span class="cl"><span class="c1"># 在 less 中按 / 搜索，按 n 跳转下一个，按 q 退出</span>
+</span></span></code></pre></div><h3 id="head--查看文件头部">
+<a class="header-anchor" href="#head--%e6%9f%a5%e7%9c%8b%e6%96%87%e4%bb%b6%e5%a4%b4%e9%83%a8"></a>
+head – 查看文件头部
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看前 20 行</span>
+</span></span><span class="line"><span class="cl">head -n <span class="m">20</span> /var/log/auth.log
+</span></span></code></pre></div><h3 id="tail--查看文件尾部">
+<a class="header-anchor" href="#tail--%e6%9f%a5%e7%9c%8b%e6%96%87%e4%bb%b6%e5%b0%be%e9%83%a8"></a>
+tail – 查看文件尾部
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看最后 100 行</span>
+</span></span><span class="line"><span class="cl">tail -n <span class="m">100</span> /var/log/syslog
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 实时跟踪新写入的日志（-f, follow）</span>
+</span></span><span class="line"><span class="cl">tail -f /var/log/nginx/access.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 同时跟踪多个文件</span>
+</span></span><span class="line"><span class="cl">tail -f /var/log/nginx/<span class="o">{</span>access,error<span class="o">}</span>.log
+</span></span></code></pre></div><h3 id="读取文件中间的某行内容">
+<a class="header-anchor" href="#%e8%af%bb%e5%8f%96%e6%96%87%e4%bb%b6%e4%b8%ad%e9%97%b4%e7%9a%84%e6%9f%90%e8%a1%8c%e5%86%85%e5%ae%b9"></a>
+读取文件中间的某行内容
+</h3><p>假如某个日志文件中有许多行，可以使用组合命令快速定位到某行。
+这个指令<code>head -1000 log.txt | tail -10</code>的意思是读取<code>log.txt</code>的前1000行，通过管道<code>|</code>传给<code>tail -10</code>指令,管道<code>|</code>左边产生数据，右边接受数据，我们可以使用管道<code>|</code>来进行命令的组合，来达成我们的目标。</p>
+<h2 id="grep指令">
+<a class="header-anchor" href="#grep%e6%8c%87%e4%bb%a4"></a>
+grep指令
+</h2><p>行文本过滤工具<code>grep</code>可以进行文本搜索。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查找包含 &#34;ERROR&#34; 的行</span>
+</span></span><span class="line"><span class="cl">grep <span class="s2">&#34;ERROR&#34;</span> /var/log/app.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 忽略大小写（-i），并显示行号(-n)</span>
+</span></span><span class="line"><span class="cl">grep -ni <span class="s2">&#34;warning&#34;</span> /var/log/syslog
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 递归搜索整个 /var/log 目录下的所有文件</span>
+</span></span><span class="line"><span class="cl">grep -r <span class="s2">&#34;Failed password&#34;</span> /var/log/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找不包含 &#34;INFO&#34; 的行（反向匹配）</span>
+</span></span><span class="line"><span class="cl">grep -v <span class="s2">&#34;INFO&#34;</span> app.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 统计匹配行数</span>
+</span></span><span class="line"><span class="cl">grep -c <span class="s2">&#34;error&#34;</span> app.log
+</span></span></code></pre></div><h2 id="打包压缩相关指令">
+<a class="header-anchor" href="#%e6%89%93%e5%8c%85%e5%8e%8b%e7%bc%a9%e7%9b%b8%e5%85%b3%e6%8c%87%e4%bb%a4"></a>
+打包压缩相关指令
+</h2><p>系统中没有相关的指令可以先安装。</p>
+<h3 id="zip">
+<a class="header-anchor" href="#zip"></a>
+zip
+</h3><p>使用<code>zip -r 压缩包名.zip 指定目录</code>来把指定目录递归打包压缩。</p>
+<h3 id="unzip">
+<a class="header-anchor" href="#unzip"></a>
+unzip
+</h3><p>使用<code>unzip 指定的压缩包.zip</code>来把压缩包解压到当前目录，使用<code>unzip 指定的压缩包.zip -d 指定的目录</code>可以解压到指定目录下。</p>
+<h3 id="tar">
+<a class="header-anchor" href="#tar"></a>
+tar
+</h3><p><code>tar</code>指令有很多选项:</p>
+<ul>
+<li>-c：建立一个压缩文件的参数指令(create 的意思);</li>
+<li>-x：解开一个压缩文件的参数指令！</li>
+<li>-t：查看tarfile里面的文件！</li>
+<li>-z：是否同时具有gzip 的属性？亦即是否需要用gzip 压缩？</li>
+<li>-j：是否同时具有bzip2的属性？亦即是否需要用bzip2压缩?</li>
+<li>-v：压缩的过程中显示文件！这个常用，但不建议用在背景执行过程！</li>
+<li>-f：使用档名，请留意，在f之后要立即接档名喔！不要再加参数！</li>
+<li>-C：解压到指定目录</li>
+</ul>
+<p>一般使用<code>tar -czf 文件名.tgz 要压缩的文件或目录</code>来压缩，<code>tar -xzf 文件名.tgz</code>可以解压到当前目录下，使用<code>tar -xzf 文件名.tgz -C 解压到指定目录</code>来解压到指定目录。</p>
+<h2 id="文件传输相关指令">
+<a class="header-anchor" href="#%e6%96%87%e4%bb%b6%e4%bc%a0%e8%be%93%e7%9b%b8%e5%85%b3%e6%8c%87%e4%bb%a4"></a>
+文件传输相关指令
+</h2><p>系统中没有相关的指令可以先安装。</p>
+<h3 id="sz">
+<a class="header-anchor" href="#sz"></a>
+sz
+</h3><p>使用<code>sz 指定的文件名</code>可以把Linux上的指定文件下载到本地。</p>
+<h3 id="rz">
+<a class="header-anchor" href="#rz"></a>
+rz
+</h3><p>使用<code>rz</code>可以在本地选择文件上传到Linux里。</p>
+<h3 id="scp">
+<a class="header-anchor" href="#scp"></a>
+scp
+</h3><p>使用<code>scp 指定文件 用户名@目标IP:目标机器的指定路径</code>来实现两台Linux机器之间的文件传输。
+传输时会要求输入目标服务器密码。</p>
+<h2 id="计算器bc指令">
+<a class="header-anchor" href="#%e8%ae%a1%e7%ae%97%e5%99%a8bc%e6%8c%87%e4%bb%a4"></a>
+计算器bc指令
+</h2><p>使用<code>bc</code>指令可以快速进入一个小计算器，ctrl+d快捷键可以退出。</p>
+<h2 id="uname指令">
+<a class="header-anchor" href="#uname%e6%8c%87%e4%bb%a4"></a>
+uname指令
+</h2><p>使用<code>uname -a</code>可以查看全部系统核心信息</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># uname -a</span>
+</span></span><span class="line"><span class="cl">Linux iZ2zeh5i3yddf3p4q4ueo7Z 3.10.0-1160.119.1.el7.x86_64 <span class="c1">#1 SMP Tue Jun 4 14:43:51 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>按空格拆开就是：</p>
+<ul>
+<li>
+<p>Linux 内核名称</p>
+</li>
+<li>
+<p>iZ2zeh5i3yddf3p4q4ueo7Z 服务器主机名（云服务器默认生成的名字）</p>
+</li>
+<li>
+<p>3.10.0-1160.119.1.el7.x86_64 内核版本：</p>
+</li>
+<li>
+<p>3.10.0：内核大版本</p>
+</li>
+<li>
+<p>el7：表示 CentOS 7 / RHEL 7</p>
+</li>
+<li>
+<p>x86_64：64 位系统</p>
+</li>
+<li>
+<p>#1 SMP Tue Jun 4 14:43:51 UTC 2024内核编译时间：2024 年 6 月 4 日编译SMP 表示支持多核 CPU</p>
+</li>
+<li>
+<p>x86_64 x86_64 x86_64依次是：</p>
+<ul>
+<li>机器硬件架构</li>
+<li>处理器类型</li>
+<li>硬件平台</li>
+<li>全是 x86_64 → 标准64 位 x86 服务器</li>
+</ul>
+</li>
+<li>
+<p>GNU/Linux操作系统类型</p>
+</li>
+</ul>
+<h2 id="常用快捷键">
+<a class="header-anchor" href="#%e5%b8%b8%e7%94%a8%e5%bf%ab%e6%8d%b7%e9%94%ae"></a>
+常用快捷键
+</h2><h3 id="上下按键">
+<a class="header-anchor" href="#%e4%b8%8a%e4%b8%8b%e6%8c%89%e9%94%ae"></a>
+上下按键
+</h3><p>上下按键在Linux当中存储的是历史命令，通过按上下键我们可以查看我们最近敲的命令。</p>
+<h3 id="tab键">
+<a class="header-anchor" href="#tab%e9%94%ae"></a>
+Tab键
+</h3><p>Tab按键&ndash;具有『命令补全』和『档案补齐』的功能。</p>
+<h3 id="ctrlc">
+<a class="header-anchor" href="#ctrlc"></a>
+Ctrl+C
+</h3><p>停止当前程序。</p>
+<h3 id="ctrld">
+<a class="header-anchor" href="#ctrld"></a>
+Ctrl+D
+</h3><p>退出命令操作。</p>
+<h3 id="ctrlr">
+<a class="header-anchor" href="#ctrlr"></a>
+Ctrl+R
+</h3><p>Linux会记录历史命令，使用ctrl+r快捷键可以搜索历史命令。</p>
+<h2 id="关机指令">
+<a class="header-anchor" href="#%e5%85%b3%e6%9c%ba%e6%8c%87%e4%bb%a4"></a>
+关机指令
+</h2><p>语法：<code>shutdown 选项</code>
+常见选项：</p>
+<ul>
+<li>-h：将系统的服务停掉后，立即关机。</li>
+<li>-r：在将系统的服务停掉之后就重新启动</li>
+<li>-tsec：-t后面加秒数，亦即『过几秒后关机』的意思</li>
+</ul>
+<p>云服务器除非出现异常或者需要维护等其他情况，一般永不关机。</p>
+</div>
+    <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
+    <a
+      class="article-category-link"
+      href="/categories/linux"
+      data-aos="zoom-in"
+      >Linux</a
+    >
+    </li></ul>
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e5%9f%ba%e7%a1%80%e5%91%bd%e4%bb%a4"
+        rel="tag"
+        >基础命令</a
+      >
+    </li></ul>
+</footer>
+  </div><nav
+    id="article-nav"
+    aria-label="Article navigation"
+    data-aos="fade-up"
+  ><div class="article-nav-link-wrap left"><img
+              data-src="/images/covers/covers-76.webp"
+              data-sizes="auto"
+              alt="【C&#43;&#43;】06 - 类和对象"
+              class="lazyload"
+            /><a
+          href="/post/c&#43;&#43;06---%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/"
+          aria-label="前一篇:【C&#43;&#43;】06 - 类和对象"
+          title="前一篇:【C&#43;&#43;】06 - 类和对象"
+        ></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">【C&#43;&#43;】06 - 类和对象</h3>
+      </div><div class="article-nav-link-wrap right"><img
+              data-src="/images/covers/covers-40.webp"
+              data-sizes="auto"
+              alt="【Linux】01 - 什么是Linux"
+              class="lazyload"
+            /><a
+          href="/post/linux01---%E4%BB%80%E4%B9%88%E6%98%AFlinux/"
+          aria-label="后一篇:【Linux】01 - 什么是Linux"
+          title="后一篇:【Linux】01 - 什么是Linux"
+        ></a>
+        <div class="article-nav-caption">后一篇</div>
+        <h3 class="article-nav-title">【Linux】01 - 什么是Linux</h3>
+      </div></nav></article></section>
+        </div><footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info"><div>
+      <span class="icon-copyright"></span>2020-2026<span class="footer-info-sep rotate"></span>CialloKing
+    </div><div>
+        基于&nbsp;<a
+          href="https://gohugo.io/"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          >Hugo</a
+        >&nbsp;Theme.<a
+          href="https://github.com/D-Sketon/hugo-theme-reimu"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          >Reimu</a
+        >
+      </div><div>
+        <span class="icon-brush"
+          >&nbsp;43.6k</span
+        >
+        &nbsp;|&nbsp;
+        <span class="icon-coffee">&nbsp;01:35</span>
+      </div><div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv"
+          >总访问量&nbsp;<span
+            id="busuanzi_value_site_pv"
+          ></span
+        ></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv"
+          >总访客量&nbsp;<span
+            id="busuanzi_value_site_uv"
+          ></span
+        ></span>
+      </div></div>
+</footer>
+<div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div><div id="mask" class="hide"></div>
+      </div><nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap"><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#linux基础命令">Linux基础命令</a>
+      <ol>
+        <li><a href="#登录linux">登录Linux</a>
+          <ol>
+            <li><a href="#xshell的下载和使用">Xshell的下载和使用</a></li>
+            <li><a href="#cmd命令行登录">cmd命令行登录</a></li>
+            <li><a href="#登录成功">登录成功</a></li>
+          </ol>
+        </li>
+        <li><a href="#添加用户指令">添加用户指令</a></li>
+        <li><a href="#pwd指令">pwd指令</a></li>
+        <li><a href="#whoami指令">whoami指令</a></li>
+        <li><a href="#clear指令">clear指令</a></li>
+        <li><a href="#mkdir指令">mkdir指令</a>
+          <ol>
+            <li><a href="#-p选项">-p选项</a></li>
+          </ol>
+        </li>
+        <li><a href="#cd指令">cd指令</a>
+          <ol>
+            <li><a href="#heading">~</a></li>
+            <li><a href="#-">-</a></li>
+          </ol>
+        </li>
+        <li><a href="#显示当前目录下的文件ls指令">显示当前目录下的文件ls指令</a>
+          <ol>
+            <li><a href="#-l选项">-l选项</a></li>
+            <li><a href="#-a选项">-a选项</a></li>
+            <li><a href="#-d选项">-d选项</a></li>
+          </ol>
+        </li>
+        <li><a href="#新建文件touch指令">新建文件touch指令</a></li>
+        <li><a href="#tree指令">tree指令</a></li>
+        <li><a href="#which指令">which指令</a></li>
+        <li><a href="#删除空目录rmdir指令">删除空目录rmdir指令</a></li>
+        <li><a href="#删除rm指令">删除rm指令</a>
+          <ol>
+            <li><a href="#-f">-f</a></li>
+            <li><a href="#-r">-r</a></li>
+          </ol>
+        </li>
+        <li><a href="#man指令">man指令</a></li>
+        <li><a href="#拷贝cp指令">拷贝cp指令</a>
+          <ol>
+            <li><a href="#-r-f选项">-r,-f选项</a></li>
+          </ol>
+        </li>
+        <li><a href="#cat指令">cat指令</a>
+          <ol>
+            <li><a href="#tac">tac</a></li>
+            <li><a href="#输入重定向">&lt;输入重定向</a></li>
+          </ol>
+        </li>
+        <li><a href="#echo指令">echo指令</a>
+          <ol>
+            <li><a href="#输出重定向">&gt;输出重定向</a></li>
+          </ol>
+        </li>
+        <li><a href="#移动mv指令">移动mv指令</a></li>
+        <li><a href="#时间相关指令">时间相关指令</a>
+          <ol>
+            <li><a href="#date指令">date指令</a></li>
+            <li><a href="#cal指令">cal指令</a></li>
+          </ol>
+        </li>
+        <li><a href="#find指令">find指令</a></li>
+        <li><a href="#日志相关指令">日志相关指令</a>
+          <ol>
+            <li><a href="#less指令">less指令</a></li>
+            <li><a href="#head--查看文件头部">head – 查看文件头部</a></li>
+            <li><a href="#tail--查看文件尾部">tail – 查看文件尾部</a></li>
+            <li><a href="#读取文件中间的某行内容">读取文件中间的某行内容</a></li>
+          </ol>
+        </li>
+        <li><a href="#grep指令">grep指令</a></li>
+        <li><a href="#打包压缩相关指令">打包压缩相关指令</a>
+          <ol>
+            <li><a href="#zip">zip</a></li>
+            <li><a href="#unzip">unzip</a></li>
+            <li><a href="#tar">tar</a></li>
+          </ol>
+        </li>
+        <li><a href="#文件传输相关指令">文件传输相关指令</a>
+          <ol>
+            <li><a href="#sz">sz</a></li>
+            <li><a href="#rz">rz</a></li>
+            <li><a href="#scp">scp</a></li>
+          </ol>
+        </li>
+        <li><a href="#计算器bc指令">计算器bc指令</a></li>
+        <li><a href="#uname指令">uname指令</a></li>
+        <li><a href="#常用快捷键">常用快捷键</a>
+          <ol>
+            <li><a href="#上下按键">上下按键</a></li>
+            <li><a href="#tab键">Tab键</a></li>
+            <li><a href="#ctrlc">Ctrl+C</a></li>
+            <li><a href="#ctrld">Ctrl+D</a></li>
+            <li><a href="#ctrlr">Ctrl+R</a></li>
+          </ol>
+        </li>
+        <li><a href="#关机指令">关机指令</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img
+    data-src="/avatar/my-avatar.webp"
+    data-sizes="auto"
+    alt="CialloKing"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">CialloKing</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div><div class="sidebar-state-number">13</div>
+  </div>
+  <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
+    <div>分类</div>
+    <div class="sidebar-state-number">
+      3
+    </div>
+  </a>
+  <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
+    <div>标签</div>
+    <div class="sidebar-state-number">3</div>
+  </a>
+</div>
+<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="首页"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">首页</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="归档"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">归档</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="关于"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">关于</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/link"
+        aria-label="友链"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
+    </div></div></div></div><div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div></nav>
+</div><meting-js
+        theme="var(--color-link)"
+        id="17840645230"server="netease"type="playlist"auto="true"fixed="true"autoplay="false"loop="all"order="random"preload="auto"volume="0.7"mutex="true"list-folded="true"lrc-type="0">
+      </meting-js><script
+    src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"
+    
+    
+    
+    
+    integrity="sha384-3gT/vsepWkfz/ff7PpWNUeMzeWoH3cDhm/A8jM7ouoAK0/fP/9bcHHR5kHq2nf&#43;e" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"
+    
+    
+    
+    
+    integrity="sha384-J08i8An/QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script><script src="/js/main.js" integrity="" crossorigin="anonymous"  ></script><script src="/js/aos.js" integrity="" crossorigin="anonymous"  ></script><script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", aosInit);
+    } else {
+      aosInit();
+    }
+  </script><script src="/js/pjax_main.js" integrity="" crossorigin="anonymous" data-pjax ></script><script>
+  var setupFirework = () => {
+    if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
+      if (window.firework) {
+        const options = JSON.parse("{\"excludeelements\":[\"a\",\"button\"],\"particles\":[{\"colors\":[\"var(--red-1)\",\"var(--red-2)\",\"var(--red-3)\",\"var(--red-4)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"emit\"],\"number\":20,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.3,0.5],\"radius\":[16,32]}},{\"colors\":[\"var(--red-0)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"diffuse\"],\"number\":1,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.2,0.5],\"lineWidth\":6,\"radius\":20}}]}");
+        options.excludeElements = options.excludeelements;
+        delete options.excludeelements;
+        window.firework(options);
+      }
+    }
+  }
+</script><script
+    src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js"
+    defer
+    
+    
+    onload="setupFirework()"
+    integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8&#43;pUoWX8n1rgq282T" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js"
+    
+    
+    
+    
+    integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE/jMSCxD&#43;jAPU55x/jj3wlf" crossorigin="anonymous"></script><script src="/js/pjax.js" integrity="" crossorigin="anonymous"  ></script><script
+    src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js"
+    
+    
+    
+    
+    integrity="sha384-caMDqvgav/HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb&#43;bEHtwlmYjD" crossorigin="anonymous"></script><script data-pjax>
+    window.quicklink?.listen({
+      timeout:  3000 ,
+      priority:  true ,
+      ignores: JSON.parse("[]")
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div><script data-pjax>
+        window.REIMU_POST = {
+          author: "CialloKing",
+          title: "【Linux】02 - Linux基础命令",
+          url: "https:\/\/cialloking.com\/post\/linux02---linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4\/",
+          description: " Linux基础命令 登录Linux Xshell的下载和使用 假如使用的是云服务器，我们可以使用Xshell这个终端软件来登录Linux。\n点击链接下载Xshell，Xshell是商业软件，个人可免费使用，下载后选择安装目录安装，打开时遇到免费注册的弹窗可填邮箱注册或者点下面的“后来”按钮跳过。\n打开Xshell后，输入 ssh root@云服务器的IP，这时会提示输入密码(password)，输入密码时不会在屏幕上显示，输入完了按回车确认，如果不知道密码可在云服务器厂商的控制面板处重置密码后再使用Xshell登录，注意一定要设置复杂一点的密码，有黑客会 24 小时不间断扫描所有IP，如果密 …",
+          cover: "https:\/\/cialloking.com\/images\/bg\/bg1.webp",
+        };
+      </script><script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax ></script><script src="/js/tabs.js" integrity="" crossorigin="anonymous" data-pjax defer></script><script type="module" data-pjax>const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;const initPswp = (gallery, children) => {
+          if (_$$(`${gallery} ${children}`).length > 0) {
+            new PhotoSwipeLightbox({
+              gallery,
+              children,pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")}).init();
+          }
+        }
+        const pswp = () => {
+          initPswp('.article-entry', 'a.article-gallery-item');
+          initPswp('.article-gallery', 'a.article-gallery-item');
+        }
+        pswp()
+      </script></div>
+</div><script
+    src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js"
+    
+    async
+    
+    
+    integrity="sha384-0M75wtSkhjIInv4coYlaJU83&#43;OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id&#43;S" crossorigin="anonymous"></script><script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script><script>
+  const reimuCopyright = String.raw`
+   ______     ______     __     __    __     __  __    
+  /\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+  \ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+   \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+    \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                    
+  `;
+  console.log(String.raw`%c ${reimuCopyright}`, "color: #ff5252;");
+  console.log(
+    "%c Theme.Reimu" + " %c https://github.com/D-Sketon/hugo-theme-reimu ",
+    "color: white; background: #ff5252; padding:5px 0;",
+    "padding:4px;border:1px solid #ff5252;",
+  );
+</script><script>
+    var setupAPlayer = () => {
+      if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
+        if (window.matchMedia('(max-width: 959px)').matches) {
+          const meting = _$('meting-js');
+          if (meting) {
+            meting.setAttribute('fixed', 'true');
+            const aside = meting.parentNode?.parentNode;
+            if (aside?.tagName === 'ASIDE') {
+              meting.parentNode.removeChild(meting);
+              document.body.appendChild(meting);
+            }
+          }
+        }
+      }
+    };</script><script
+    src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js"
+    defer
+    
+    
+    onload="setupAPlayer()"
+    integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr&#43;h5UfruuRL/aORyw&#43;5&#43;HZoU6e" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js"
+    defer
+    
+    
+    
+    integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8&#43;0maanw1S/IyB&#43;Y4JG&#43;ZDU7GpKE8" crossorigin="anonymous"></script><script>
+(function() {
+  // 封面图片列表（保持你现有路径不变，无需修改）
+  window.covers = [
+    '/images/covers/covers-01.webp',
+    '/images/covers/covers-02.webp',
+    '/images/covers/covers-03.webp',
+    '/images/covers/covers-04.webp',
+    '/images/covers/covers-05.webp',
+    '/images/covers/covers-06.webp',
+    '/images/covers/covers-07.webp',
+    '/images/covers/covers-08.webp',
+    '/images/covers/covers-09.webp',
+    '/images/covers/covers-10.webp',
+    '/images/covers/covers-11.webp',
+    '/images/covers/covers-12.webp',
+    '/images/covers/covers-13.webp',
+    '/images/covers/covers-14.webp',
+    '/images/covers/covers-15.webp',
+    '/images/covers/covers-16.webp',
+    '/images/covers/covers-17.webp',
+    '/images/covers/covers-18.webp',
+    '/images/covers/covers-19.webp',
+    '/images/covers/covers-20.webp',
+    '/images/covers/covers-21.webp',
+    '/images/covers/covers-22.webp',
+    '/images/covers/covers-23.webp',
+    '/images/covers/covers-24.webp',
+    '/images/covers/covers-25.webp',
+    '/images/covers/covers-26.webp',
+    '/images/covers/covers-27.webp',
+    '/images/covers/covers-28.webp',
+    '/images/covers/covers-29.webp',
+    '/images/covers/covers-30.webp',
+    '/images/covers/covers-31.webp',
+    '/images/covers/covers-32.webp',
+    '/images/covers/covers-33.webp',
+    '/images/covers/covers-34.webp',
+    '/images/covers/covers-35.webp',
+    '/images/covers/covers-36.webp',
+    '/images/covers/covers-37.webp',
+    '/images/covers/covers-38.webp',
+    '/images/covers/covers-39.webp',
+    '/images/covers/covers-40.webp',
+    '/images/covers/covers-41.webp',
+    '/images/covers/covers-42.webp',
+    '/images/covers/covers-43.webp',
+    '/images/covers/covers-44.webp',
+    '/images/covers/covers-45.webp',
+    '/images/covers/covers-46.webp',
+    '/images/covers/covers-47.webp',
+    '/images/covers/covers-48.webp',
+    '/images/covers/covers-49.webp',
+    '/images/covers/covers-50.webp',
+    '/images/covers/covers-51.webp',
+    '/images/covers/covers-52.webp',
+    '/images/covers/covers-53.webp',
+    '/images/covers/covers-54.webp',
+    '/images/covers/covers-55.webp',
+    '/images/covers/covers-56.webp',
+    '/images/covers/covers-57.webp',
+    '/images/covers/covers-58.webp',
+    '/images/covers/covers-59.webp',
+    '/images/covers/covers-60.webp',
+    '/images/covers/covers-61.webp',
+    '/images/covers/covers-62.webp',
+    '/images/covers/covers-63.webp',
+    '/images/covers/covers-64.webp',
+    '/images/covers/covers-65.webp',
+    '/images/covers/covers-66.webp',
+    '/images/covers/covers-67.webp',
+    '/images/covers/covers-68.webp',
+    '/images/covers/covers-69.webp',
+    '/images/covers/covers-70.webp',
+    '/images/covers/covers-71.webp',
+    '/images/covers/covers-72.webp',
+    '/images/covers/covers-73.webp',
+    '/images/covers/covers-74.webp',
+    '/images/covers/covers-75.webp',
+    '/images/covers/covers-76.webp',
+    '/images/covers/covers-77.webp',
+    '/images/covers/covers-78.webp',
+    '/images/covers/covers-79.webp',
+    '/images/covers/covers-80.webp',
+    '/images/covers/covers-81.webp',
+    '/images/covers/covers-82.webp',
+    '/images/covers/covers-83.webp',
+    '/images/covers/covers-84.webp',
+    '/images/covers/covers-85.webp',
+    '/images/covers/covers-86.webp',
+    '/images/covers/covers-87.webp',
+    '/images/covers/covers-88.webp',
+    '/images/covers/covers-89.webp',
+    '/images/covers/covers-90.webp',
+    '/images/covers/covers-91.webp',
+    '/images/covers/covers-92.webp',
+    '/images/covers/covers-93.webp',
+    '/images/covers/covers-94.webp',
+    '/images/covers/covers-95.webp',
+    '/images/covers/covers-96.webp',
+    '/images/covers/covers-97.webp',
+    '/images/covers/covers-98.webp',
+    '/images/covers/covers-99.webp',
+    '/images/covers/covers-100.webp',
+    '/images/covers/covers-101.webp',
+    '/images/covers/covers-102.webp',
+    '/images/covers/covers-103.webp',
+    '/images/covers/covers-104.webp',
+    '/images/covers/covers-105.webp',
+    '/images/covers/covers-106.webp',
+    '/images/covers/covers-107.webp',
+    '/images/covers/covers-108.webp',
+    '/images/covers/covers-109.webp',
+    '/images/covers/covers-110.webp',
+    '/images/covers/covers-111.webp',
+    '/images/covers/covers-112.webp',
+    '/images/covers/covers-113.webp',
+    '/images/covers/covers-114.webp',
+    '/images/covers/covers-115.webp',
+    '/images/covers/covers-116.webp',
+    '/images/covers/covers-117.webp',
+    '/images/covers/covers-118.webp',
+    '/images/covers/covers-119.webp',
+    '/images/covers/covers-120.webp',
+    '/images/covers/covers-121.webp',
+    '/images/covers/covers-122.webp',
+    '/images/covers/covers-123.webp',
+    '/images/covers/covers-124.webp',
+    '/images/covers/covers-125.webp',
+    '/images/covers/covers-126.webp',
+    '/images/covers/covers-127.webp',
+    '/images/covers/covers-128.webp',
+    '/images/covers/covers-129.webp',
+    '/images/covers/covers-130.webp',
+    '/images/covers/covers-131.webp'
+
+  ];
+
+  // 【关键修改1】扩展选择器，覆盖搜索页所有可能的封面容器
+  const coverSelectors = [
+    '.post-cover img',
+    '#search .post-cover img',
+    '.search-result .post-cover img',
+    '.algolia-hits .post-cover img', // 适配Algolia搜索结果卡片
+    '.search-page .post-cover img'
+  ].join(', ');
+
+  // 【关键修改2】适配动态DOM的封面赋值逻辑
+  function setRandomCovers() {
+    // 搜索页跳过（已在 single.html 处理）
+    if (document.getElementById('search-results')) {
+      return;
+    }
+    const coverImgs = document.querySelectorAll(coverSelectors);
+    if (coverImgs.length === 0) {
+      setTimeout(setRandomCovers, 150);
+      return;
+    }
+    coverImgs.forEach(img => {
+      // 有自定义封面的图片：直接显示，不随机替换
+      if (img.hasAttribute('data-custom-cover')) {
+        img.style.opacity = '1';
+        return;
+      }
+      // 已经设置过随机封面的图片：不再重复设置
+      if (img.hasAttribute('data-cover-set')) {
+        return;
+      }
+      const randomIndex = Math.floor(Math.random() * window.covers.length);
+      const newSrc = window.covers[randomIndex];
+      img.setAttribute('data-src', newSrc);
+      img.src = newSrc;
+      img.setAttribute('data-cover-set', 'true');
+      img.style.opacity = '1';
+      img.style.display = 'block';
+      img.style.visibility = 'visible';
+    });
+  }
+
+  // 【关键修改3】调整执行时机，适配搜索页加载流程
+  // 1. 页面加载完成后执行（适配直接打开搜索页）
+  window.addEventListener('load', setRandomCovers);
+  // 2. PJAX跳转后执行（适配从首页跳转到搜索页）
+  document.addEventListener('pjax:complete', setRandomCovers);
+  // 3. 搜索框输入后执行（适配动态搜索结果）
+  //document.querySelector('.search-input')?.addEventListener('input', () => {
+    //setTimeout(setRandomCovers, 200); // 延迟200ms，等待搜索结果渲染
+  //});
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      setTimeout(setRandomCovers, 200);
+    });
+  }
+
+
+
+})();
+</script>
+
+
+<script>
+(function() {
+  const bannerImages = [
+    '/images/bg/bg1.webp',
+    '/images/bg/bg2.webp',
+    '/images/bg/bg3.webp',
+    '/images/bg/bg4.webp',
+    '/images/bg/bg5.webp',
+    '/images/bg/bg6.webp',
+    '/images/bg/bg7.webp',
+    '/images/bg/bg8.webp',
+    '/images/bg/bg9.webp'
+  ];
+
+  function getRandomBanner() {
+    return bannerImages[Math.floor(Math.random() * bannerImages.length)];
+  }
+
+  // 立即检查并设置，如果图片已存在
+  function setRandomBanner() {
+    const headerImg = document.querySelector('#header img');
+    if (headerImg && !headerImg.hasAttribute('data-random-set')) {
+      const randomUrl = getRandomBanner();
+      headerImg.setAttribute('data-src', randomUrl);
+      headerImg.src = randomUrl;
+      headerImg.setAttribute('data-random-set', 'true');
+      headerImg.style.opacity = '1';
+      headerImg.style.visibility = 'visible';
+    }
+  }
+
+  // 使用 MutationObserver 监听 DOM 变化，确保尽早捕捉到 header 图片
+  const observer = new MutationObserver((mutations, obs) => {
+    const img = document.querySelector('#header img');
+    if (img) {
+      setRandomBanner();
+      obs.disconnect(); // 找到后停止观察
+    }
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+
+  // 页面完全加载后兜底（防止 observer 遗漏）
+  window.addEventListener('load', setRandomBanner);
+  // PJAX 跳转后重新设置
+  document.addEventListener('pjax:complete', () => {
+    // 清除标记，允许重新设置
+    const headerImg = document.querySelector('#header img');
+    if (headerImg) headerImg.removeAttribute('data-random-set');
+    setRandomBanner();
+  });
+})();
+</script>
+</body>
+</html>
