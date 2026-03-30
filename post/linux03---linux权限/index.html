@@ -214,7 +214,12 @@
             <li><a href="#角色只确定一次">角色只确定一次</a></li>
             <li><a href="#root用户不受权限约束">root用户不受权限约束</a></li>
             <li><a href="#可执行权限">可执行权限</a></li>
-            <li><a href="#更改拥有者和所属组chown指令">更改拥有者和所属组chown指令</a></li>
+            <li><a href="#更改拥有者和所属组">更改拥有者和所属组</a>
+              <ol>
+                <li><a href="#chown指令">chown指令</a></li>
+                <li><a href="#chgrp指令">chgrp指令</a></li>
+              </ol>
+            </li>
             <li><a href="#目录文件的权限">目录文件的权限</a>
               <ol>
                 <li><a href="#linux下多用户之间如何隔离">Linux下多用户之间如何隔离</a></li>
@@ -401,7 +406,7 @@ Linux权限管理
 </ul>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># ll</span>
 </span></span><span class="line"><span class="cl">total <span class="m">4</span>
-</span></span><span class="line"><span class="cl">!<span class="o">[</span>alt text<span class="o">](</span>image.png<span class="o">)</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">4</span> root root <span class="m">4096</span> Mar <span class="m">30</span> 00:11 <span class="nb">test</span>
 </span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># </span>
 </span></span></code></pre></div><p>对应<code>drwxr-xr-x 4 root root 4096 Mar 30 00:11 test</code>这个文件来说，第一个root是拥有者，第二个root是所属组，既不是拥有者又不是所属组就是other。同一个用户对于不同文件可能属于不同的角色。</p>
 <hr>
@@ -489,7 +494,7 @@ rwx
       </tr>
   </tbody>
 </table>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 所有者读写执行，组和其他只读（755）</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 所有者读写执行，组和其他读+执行（755）</span>
 </span></span><span class="line"><span class="cl">chmod <span class="m">755</span> script.sh
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 所有者读写，组和其他只读（644）</span>
@@ -498,7 +503,7 @@ rwx
 </span></span><span class="line"><span class="cl"><span class="c1"># 所有用户都可读写执行（777，通常不推荐）</span>
 </span></span><span class="line"><span class="cl">chmod <span class="m">777</span> shared_dir
 </span></span></code></pre></div><hr>
-<p>chomd指令也不是什么文件的权限都能修改</p>
+<p>chmod指令也不是什么文件的权限都能修改</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ ll
 </span></span><span class="line"><span class="cl">total <span class="m">0</span>
 </span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> user1 user1 <span class="m">0</span> Mar <span class="m">30</span> 23:51 file.txt
@@ -541,11 +546,14 @@ root用户不受权限约束
 <h3 id="可执行权限">
 <a class="header-anchor" href="#%e5%8f%af%e6%89%a7%e8%a1%8c%e6%9d%83%e9%99%90"></a>
 可执行权限
-</h3><p>即使拥有可执行权限，能否执行还要看文件本身能否执行。</p>
-<h3 id="更改拥有者和所属组chown指令">
-<a class="header-anchor" href="#%e6%9b%b4%e6%94%b9%e6%8b%a5%e6%9c%89%e8%80%85%e5%92%8c%e6%89%80%e5%b1%9e%e7%bb%84chown%e6%8c%87%e4%bb%a4"></a>
-更改拥有者和所属组chown指令
-</h3><p>使用chown指令可以更改拥有者和所属组。</p>
+</h3><p>即使拥有可执行权限（x），文件本身也必须包含可执行的机器代码或脚本解释器才能运行。例如，一个文本文件即使加了 x 权限，也无法执行。</p>
+<h3 id="更改拥有者和所属组">
+<a class="header-anchor" href="#%e6%9b%b4%e6%94%b9%e6%8b%a5%e6%9c%89%e8%80%85%e5%92%8c%e6%89%80%e5%b1%9e%e7%bb%84"></a>
+更改拥有者和所属组
+</h3><h4 id="chown指令">
+<a class="header-anchor" href="#chown%e6%8c%87%e4%bb%a4"></a>
+chown指令
+</h4><p>使用chown指令可以更改拥有者和所属组。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 只更改所有者为 bob</span>
 </span></span><span class="line"><span class="cl">sudo chown bob file.txt
 </span></span><span class="line"><span class="cl">
@@ -565,7 +573,16 @@ root用户不受权限约束
 </span></span><span class="line"><span class="cl">chown: changing ownership of ‘file.txt’: Operation not permitted
 </span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ 
 </span></span></code></pre></div><p>但是拥有者不是想改就改的，系统默认不允许把文件给其他用户（例如把有bug的代码文件改成别人的来甩锅），想给其他用户必须提高权限，使用<code>su</code>或<code>sudo</code>切换root权限。</p>
-<h3 id="目录文件的权限">
+<h4 id="chgrp指令">
+<a class="header-anchor" href="#chgrp%e6%8c%87%e4%bb%a4"></a>
+chgrp指令
+</h4><p>修改文件或目录的所属组，最直接的命令是 chgrp</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 将 file.txt 的所属组改为 developers</span>
+</span></span><span class="line"><span class="cl">sudo chgrp developers file.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 递归将 project 目录及其下所有内容的所属组改为 staff</span>
+</span></span><span class="line"><span class="cl">sudo chgrp -R staff /shared/project
+</span></span></code></pre></div><h3 id="目录文件的权限">
 <a class="header-anchor" href="#%e7%9b%ae%e5%bd%95%e6%96%87%e4%bb%b6%e7%9a%84%e6%9d%83%e9%99%90"></a>
 目录文件的权限
 </h3><p>如果想进入一个目录，需要的是<code>x</code>可执行权限</p>
@@ -626,12 +643,12 @@ Linux下多用户之间如何隔离
 </span></span><span class="line"><span class="cl">drwxrwxr-x <span class="m">2</span> user1 user1 <span class="m">4096</span> Mar <span class="m">31</span> 00:56 <span class="m">333</span>
 </span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> user1 user1    <span class="m">0</span> Mar <span class="m">31</span> 00:56 newfile.txt
 </span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 222<span class="o">]</span>$ 
-</span></span></code></pre></div><p>可以看到，新建一个文件起始权限666，显示<code>rw-rw-r--</code>，新建一个目录文件起始权限777，显示<code>rwxrwxr</code>，怎么对不上呢。</p>
-<p>系统中存在权限掩码</p>
+</span></span></code></pre></div><p>可以看到，新建一个文件起始权限为 666，显示 <code>rw-rw-r--</code>；新建一个目录起始权限为 777，显示 <code>rwxrwxr-x</code>。这与起始权限不一致，是因为系统存在权限掩码（umask）。</p>
+<p>系统中存在权限掩码可以通过umask指令查看</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 222<span class="o">]</span>$ <span class="nb">umask</span>
 </span></span><span class="line"><span class="cl"><span class="m">0002</span>
 </span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 222<span class="o">]</span>$ 
-</span></span></code></pre></div><p>最终权限等于按位取反权限掩码umask再与上起始权限。</p>
+</span></span></code></pre></div><p>最终权限 = 起始权限 &amp; ~umask（将 umask 按位取反后，再与起始权限进行按位与运算）。</p>
 <p>有些人需要个性化修改新建文件的默认权限，可以通过修改权限掩码umask灵活实现，大部分用户不需要修改。</p>
 <h3 id="删除权限">
 <a class="header-anchor" href="#%e5%88%a0%e9%99%a4%e6%9d%83%e9%99%90"></a>
@@ -655,7 +672,8 @@ Linux下多用户之间如何隔离
 每个人都不想让自己的文件被其他人以为删除，但是如何让任何一个人能在共享目录下新建，但是不能让非拥有者删除呢？</p>
 <p>为了实现这个需要，我们可以使用粘滞位来解决。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chmod +t /shared/collab
-</span></span></code></pre></div><p>此时权限变为 drwxrwxrwt，末尾变成了t代表可创建了不可删除他人文件的共享目录。</p>
+</span></span></code></pre></div><p>此时权限变为 drwxrwxrwt，末尾变成了t代表可创建了不可删除他人文件的共享目录。<br>
+粘滞位常用于共享目录（如 /tmp），保证用户只能删除自己的文件，提高协作安全性。</p>
 </div>
     <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
     <a
@@ -686,7 +704,7 @@ Linux下多用户之间如何隔离
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-78.webp"
+              data-src="/images/covers/covers-115.webp"
               data-sizes="auto"
               alt="【Linux】01 - 什么是Linux"
               class="lazyload"
@@ -718,10 +736,10 @@ Linux下多用户之间如何隔离
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;47.6k</span
+          >&nbsp;47.8k</span
         >
         &nbsp;|&nbsp;
-        <span class="icon-coffee">&nbsp;01:43</span>
+        <span class="icon-coffee">&nbsp;01:44</span>
       </div><div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"
@@ -763,7 +781,12 @@ Linux下多用户之间如何隔离
             <li><a href="#角色只确定一次">角色只确定一次</a></li>
             <li><a href="#root用户不受权限约束">root用户不受权限约束</a></li>
             <li><a href="#可执行权限">可执行权限</a></li>
-            <li><a href="#更改拥有者和所属组chown指令">更改拥有者和所属组chown指令</a></li>
+            <li><a href="#更改拥有者和所属组">更改拥有者和所属组</a>
+              <ol>
+                <li><a href="#chown指令">chown指令</a></li>
+                <li><a href="#chgrp指令">chgrp指令</a></li>
+              </ol>
+            </li>
             <li><a href="#目录文件的权限">目录文件的权限</a>
               <ol>
                 <li><a href="#linux下多用户之间如何隔离">Linux下多用户之间如何隔离</a></li>
