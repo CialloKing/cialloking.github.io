@@ -130,7 +130,7 @@ user1 is not in the sudoers file.  This incident will be reported.
 ```bash
 [root@iZ2zeh5i3yddf3p4q4ueo7Z ~]# ll
 total 4
-![alt text](image.png)
+drwxr-xr-x 4 root root 4096 Mar 30 00:11 test
 [root@iZ2zeh5i3yddf3p4q4ueo7Z ~]# 
 ```
 对应`drwxr-xr-x 4 root root 4096 Mar 30 00:11 test`这个文件来说，第一个root是拥有者，第二个root是所属组，既不是拥有者又不是所属组就是other。同一个用户对于不同文件可能属于不同的角色。
@@ -201,7 +201,7 @@ total 0
 
 
 ```bash
-# 所有者读写执行，组和其他只读（755）
+# 所有者读写执行，组和其他读+执行（755）
 chmod 755 script.sh
 
 # 所有者读写，组和其他只读（644）
@@ -215,7 +215,7 @@ chmod 777 shared_dir
 
 ---
 
-chomd指令也不是什么文件的权限都能修改
+chmod指令也不是什么文件的权限都能修改
 ```bash
 [user1@iZ2zeh5i3yddf3p4q4ueo7Z 111]$ ll
 total 0
@@ -268,11 +268,11 @@ hello
 
 ### 可执行权限
 
-即使拥有可执行权限，能否执行还要看文件本身能否执行。
+即使拥有可执行权限（x），文件本身也必须包含可执行的机器代码或脚本解释器才能运行。例如，一个文本文件即使加了 x 权限，也无法执行。
 
-### 更改拥有者和所属组chown指令
+### 更改拥有者和所属组
 
-
+#### chown指令
 使用chown指令可以更改拥有者和所属组。
 ```bash
 # 只更改所有者为 bob
@@ -301,6 +301,20 @@ chown: changing ownership of ‘file.txt’: Operation not permitted
 [user1@iZ2zeh5i3yddf3p4q4ueo7Z 111]$ 
 ```
 但是拥有者不是想改就改的，系统默认不允许把文件给其他用户（例如把有bug的代码文件改成别人的来甩锅），想给其他用户必须提高权限，使用`su`或`sudo`切换root权限。
+
+
+
+#### chgrp指令
+
+修改文件或目录的所属组，最直接的命令是 chgrp
+```bash
+# 将 file.txt 的所属组改为 developers
+sudo chgrp developers file.txt
+
+# 递归将 project 目录及其下所有内容的所属组改为 staff
+sudo chgrp -R staff /shared/project
+```
+
 
 
 
@@ -386,16 +400,16 @@ drwxrwxr-x 2 user1 user1 4096 Mar 31 00:56 333
 -rw-rw-r-- 1 user1 user1    0 Mar 31 00:56 newfile.txt
 [user1@iZ2zeh5i3yddf3p4q4ueo7Z 222]$ 
 ```
-可以看到，新建一个文件起始权限666，显示`rw-rw-r--`，新建一个目录文件起始权限777，显示`rwxrwxr`，怎么对不上呢。
+可以看到，新建一个文件起始权限为 666，显示 `rw-rw-r--`；新建一个目录起始权限为 777，显示 `rwxrwxr-x`。这与起始权限不一致，是因为系统存在权限掩码（umask）。
 
 
-系统中存在权限掩码
+系统中存在权限掩码可以通过umask指令查看
 ```bash
 [user1@iZ2zeh5i3yddf3p4q4ueo7Z 222]$ umask
 0002
 [user1@iZ2zeh5i3yddf3p4q4ueo7Z 222]$ 
 ```
-最终权限等于按位取反权限掩码umask再与上起始权限。
+最终权限 = 起始权限 & ~umask（将 umask 按位取反后，再与起始权限进行按位与运算）。
 
 有些人需要个性化修改新建文件的默认权限，可以通过修改权限掩码umask灵活实现，大部分用户不需要修改。
 
@@ -426,4 +440,5 @@ drwxrwxr-x 2 user1 user1 4096 Mar 31 00:56 333
 ```bash
 sudo chmod +t /shared/collab
 ```
-此时权限变为 drwxrwxrwt，末尾变成了t代表可创建了不可删除他人文件的共享目录。
+此时权限变为 drwxrwxrwt，末尾变成了t代表可创建了不可删除他人文件的共享目录。  
+粘滞位常用于共享目录（如 /tmp），保证用户只能删除自己的文件，提高协作安全性。
