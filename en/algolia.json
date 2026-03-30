@@ -5,6 +5,15 @@
   },
   "docs": [
       {
+        "id": "6a6056973f23fa584074c33a221bc7a8",
+        "title": "【Linux】03 - Linux Permissions",
+        "content": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "summary": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "tags": ["基础命令","权限"],
+        "categories": ["Linux"],
+        "permalink": "https://cialloking.com/en/post/linux03---linux%E6%9D%83%E9%99%90/"
+      },
+      {
         "id": "9b0e9e658af7f1cd391498efb2ad832d",
         "title": "【Linux】01 - what is Linux",
         "content": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",

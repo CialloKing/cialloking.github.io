@@ -12,12 +12,32 @@
     
     <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
     
-    <lastBuildDate>Mon, 30 Mar 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 31 Mar 2026 00:00:00 +0800</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/en/categories/linux/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>【Linux】03 - Linux Permissions</title>
+      <link>https://cialloking.com/en/post/linux03---linux%E6%9D%83%E9%99%90/</link>
+      <pubDate>Mon, 30 Mar 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/en/post/linux03---linux%E6%9D%83%E9%99%90/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】03 - Linux Permissions</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
+        
+        <hr><p>Published on 2026-03-30 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-31</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
     
     
 

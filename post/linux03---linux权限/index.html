@@ -1,0 +1,1263 @@
+<!doctype html>
+<html
+  lang="zh-CN" 
+  data-theme-mode="auto"
+  >
+  <head><meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/><title>
+  【Linux】03 - Linux权限 | CialloKing
+</title>
+<meta name="description" content="少女祈祷中..."/><script>
+  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"Lang\":\"zh-cn\",\"Title\":\"CialloKing 的博客\",\"Weight\":1,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"简体中文\",\"Locale\":\"zh-CN\"},{\"Lang\":\"en\",\"Title\":\"CialloKing Blog\",\"Weight\":2,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"English\",\"Locale\":\"en\"}],\"icon_font\":\"4552607_4k4bc36ef96\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
+  
+</script>
+<link
+    rel="preload"
+    as="style"
+    crossorigin
+    href="/css/custom-fonts.css"
+    onload="this.rel='stylesheet'"
+  /><link
+    rel="preload"
+    href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  /><link rel="stylesheet" href="/css/loader.min.4eac6555838cbcb8a5d15bf9bae0c688b74fae83b16a5613692de3f476051979.css" /><meta property="og:type" content="website" />
+  <meta property="og:title" content="【Linux】03 - Linux权限 | CialloKing" />
+  <meta
+    property="og:description"
+    content="少女祈祷中..."
+  />
+  <meta property="og:url" content="https://cialloking.com/post/linux03---linux%E6%9D%83%E9%99%90/" />
+  <meta
+    property="og:site_name"
+    content="CialloKing 的博客"
+  />
+  <meta property="og:image" content="https://cialloking.com/images/bg/bg1.webp" />
+  <meta property="article:author" content="CialloKing" />
+  <meta property="article:published_time" content="2026-03-30T00:00:00&#43;08:00" />
+  <meta property="article:modified_time" content="2026-03-31T00:00:00&#43;08:00" /><meta property="article:tag" content="基础命令, 权限" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
+<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.e15f9328b0e9ee3c7d04ca76ea47f3db653d93dce1f4a28af9a7327ad1d51367.css" /><link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
+    integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei&#43;Zx/1oA/0l8ysE" crossorigin="anonymous"
+    onload="this.onload=null;this.rel='stylesheet'"
+  /><link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css"
+    integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz&#43;YI" crossorigin="anonymous"
+    onload="this.onload=null;this.rel='stylesheet'"
+  /><script
+    src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"
+    
+    
+    
+    
+    integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script><link
+    rel="stylesheet"
+    href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css"
+    integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous"/><link
+    rel="stylesheet"
+    href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css"
+    integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj&#43;vDDLIL&#43;xBGQU/voDBY5XE2lVh" crossorigin="anonymous"/>
+<link rel="stylesheet" href="/css/custom.css"><style>
+  .post-cover img {
+    transition: opacity 0.3s ease;
+    opacity: 0;
+  }
+  .post-cover img[data-cover-set="true"],
+  .post-cover img[data-custom-cover="true"] {
+    opacity: 1;
+  }
+</style>
+</head>
+  <body><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate"><svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+          M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg></div><div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script><div id="copy-tooltip"></div>
+<div id="lang-tooltip">
+本文章没有找到对应的语言版本
+</div>
+<div id="heatmap-tooltip"></div><div id="container">
+      <div id="wrap"><div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation"><a class="main-nav-link-wrap" href="/"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">首页</span>
+      </a><a class="main-nav-link-wrap" href="/archives"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">归档</span>
+      </a><a class="main-nav-link-wrap" href="/about"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">关于</span>
+      </a><a class="main-nav-link-wrap" href="/link"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">友链</span>
+      </a><a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+<a id="nav-search-page" class="nav-icon" href="/search/" title="搜索" aria-label="搜索"></a></nav>
+
+
+  </nav><nav id="i18n-nav" aria-label="Language selection">
+      <div class="custom-dropdown">
+        <div class="select-selected" id="select-selected" role="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language menu">
+          <span id="nav-language-btn" class="nav-icon" style="padding: 0 20px 0 0"></span>
+          <span id="selected-lang">简体中文</span>
+        </div>
+        <ul class="select-items" id="select-items" role="listbox" aria-label="Languages"><li data-value="zh-cn" role="option" class="selected" aria-selected="true" >简体中文</li><li data-value="en" role="option" aria-selected="false" >English</li></ul>
+      </div>
+      <script>
+        var selectSelected = document.getElementById("select-selected");
+        var selectedLang = document.getElementById("selected-lang");
+        var selectItems = document.getElementById("select-items");
+        var selectOptions = selectItems.querySelectorAll("li");
+
+        selectSelected.addEventListener("click", () => {
+          selectItems.classList.toggle("show");
+          var expanded = selectSelected.getAttribute("aria-expanded") === "true";
+          selectSelected.setAttribute("aria-expanded", (!expanded).toString());
+        });
+
+        selectOptions.forEach((item) => {
+          item.addEventListener("click", () => {
+            const langMap = {};langMap['en'] = '\/en\/post\/linux03---linux%E6%9D%83%E9%99%90\/';selectedLang.textContent = item.textContent;
+            selectItems.classList.remove("show");
+            selectOptions.forEach((option) => {
+              option.classList.remove("selected");
+            });
+            item.classList.add("selected");
+            if (item.dataset.value === 'zh-cn') {
+              return;
+            }
+            if (!langMap[item.dataset.value]) {
+              _$("#lang-tooltip").style.opacity = "1";
+              setTimeout(() => {
+                _$("#lang-tooltip").style.opacity = "0";
+              }, 1000);
+              return;
+            }
+            window.location = langMap[item.dataset.value];
+          });
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!event.target.closest(".custom-dropdown")) {
+            selectItems.classList.remove("show");
+            selectSelected.setAttribute("aria-expanded", "false");
+          }
+        });
+      </script>
+    </nav></div>
+<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg1.webp" alt="【Linux】03 - Linux权限"><div id="header-outer">
+    <div id="header-title"><span id="logo">
+            <h1 data-aos="slide-up">【Linux】03 - Linux权限</h1>
+          </span><h2 id="subtitle-wrap" data-aos="slide-down"></h2></div>
+  </div>
+</header><div id="content"
+          aria-label="Page content"
+          class="sidebar-left"
+            ><aside id="sidebar" aria-label="Sidebar"><div class="sidebar-wrapper-container sticky"><div class="sidebar-wrapper">
+    <div
+      class="sidebar-wrap"
+      data-aos="fade-up"
+    ><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#linux权限">Linux权限</a>
+      <ol>
+        <li><a href="#shell">shell</a></li>
+        <li><a href="#用户的分类">用户的分类</a>
+          <ol>
+            <li><a href="#提权su指令">提权su指令</a></li>
+          </ol>
+        </li>
+        <li><a href="#linux权限管理">Linux权限管理</a>
+          <ol>
+            <li><a href="#文件访问者的分类">文件访问者的分类</a></li>
+            <li><a href="#rwx">rwx</a></li>
+            <li><a href="#修改权限chmod指令">修改权限chmod指令</a></li>
+            <li><a href="#角色只确定一次">角色只确定一次</a></li>
+            <li><a href="#root用户不受权限约束">root用户不受权限约束</a></li>
+            <li><a href="#可执行权限">可执行权限</a></li>
+            <li><a href="#更改拥有者和所属组chown指令">更改拥有者和所属组chown指令</a></li>
+            <li><a href="#目录文件的权限">目录文件的权限</a>
+              <ol>
+                <li><a href="#linux下多用户之间如何隔离">Linux下多用户之间如何隔离</a></li>
+                <li><a href="#缺省权限">缺省权限</a></li>
+              </ol>
+            </li>
+            <li><a href="#删除权限">删除权限</a></li>
+            <li><a href="#多人文件协作权限">多人文件协作权限</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img
+    data-src="/avatar/my-avatar.webp"
+    data-sizes="auto"
+    alt="CialloKing"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">CialloKing</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div><div class="sidebar-state-number">14</div>
+  </div>
+  <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
+    <div>分类</div>
+    <div class="sidebar-state-number">
+      3
+    </div>
+  </a>
+  <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
+    <div>标签</div>
+    <div class="sidebar-state-number">4</div>
+  </a>
+</div>
+<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="首页"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">首页</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="归档"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">归档</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="关于"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">关于</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/link"
+        aria-label="友链"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
+    </div></div></div><div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div></div>
+  </div><div class="sidebar-widget"></div></div></aside>
+<section id="main" aria-label="Main content"><article
+  class="h-entry article"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div
+    class="article-inner"
+    data-aos="fade-up"
+  >
+    <div class="article-meta"><div class="article-date">
+  <span
+    class="article-date-link icon-calendar"
+    data-aos="zoom-in"
+  >
+    <time datetime="2026-03-30 00:00:00 &#43;0800 &#43;0800" itemprop="datePublished"
+      >2026-03-30</time
+    >
+    <time style="display: none;" id="post-update-time"
+      >2026-03-31</time
+    >
+  </span></div>
+</div><div class="hr-line"></div><div class="e-content article-entry" itemprop="articleBody"><h1 id="linux权限">
+<a class="header-anchor" href="#linux%e6%9d%83%e9%99%90"></a>
+Linux权限
+</h1><h2 id="shell">
+<a class="header-anchor" href="#shell"></a>
+shell
+</h2><p>操作系统内核会包裹一个外壳程序，统称为shell，外壳程序在内核和用户之间沟通，对于windows系统，外壳程序就是图形化界面，用户通过图形化界面操作系统，外壳程序shell把用户的操作翻译给内核，把内核的处理结果翻译给用户；和windows相似，Linux系统里外壳程序就是命令行界面，用户通过命令行来操作。<br>
+shell会创建子进程，让子进程进行命令的解释，如果子进程执行命令出问题了也不影响父进程。</p>
+<h2 id="用户的分类">
+<a class="header-anchor" href="#%e7%94%a8%e6%88%b7%e7%9a%84%e5%88%86%e7%b1%bb"></a>
+用户的分类
+</h2><p>Linux中里面有两种用户，一种是root超级管理员用户，一种是其他普通用户。root用户拥有最高权限，命令行末尾的字符为#，例如</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>代表这是root用户。</p>
+<p>普通用户命令行末尾的字符为$，例如</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="se">\$</span> 
+</span></span></code></pre></div><p>代表这是一个普通用户。</p>
+<h3 id="提权su指令">
+<a class="header-anchor" href="#%e6%8f%90%e6%9d%83su%e6%8c%87%e4%bb%a4"></a>
+提权su指令
+</h3><p>普通用户的权限有限</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ <span class="nb">cd</span> /usr/bin/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z bin<span class="o">]</span>$ <span class="nb">pwd</span>
+</span></span><span class="line"><span class="cl">/usr/bin
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z bin<span class="o">]</span>$ touch test.txt
+</span></span><span class="line"><span class="cl">touch: cannot touch ‘test.txt’: Permission denied
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z bin<span class="o">]</span>$ 
+</span></span></code></pre></div><p>/usr/bin/是系统目录，普通用户无法修改里面的内容，有时安装命令或软件需要对系统目录进行操作，这时普通用户可以使用<code>su</code>指令来提升权限</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z bin<span class="o">]</span>$ su
+</span></span><span class="line"><span class="cl">Password: 
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z bin<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>使用<code>su</code>指令后，会要求输入root用户的密码，输入成功后权限会提高为root，末尾的字符也变成了#。<br>
+提权后若要变回普通用户可以使用ctrl+d快捷键</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z bin<span class="o">]</span><span class="c1"># exit</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z bin<span class="o">]</span>$ 
+</span></span></code></pre></div><p>这时权限就从root用户变成了普通用户。</p>
+<p>我们也可以使用<code>su -</code>指令提权，输入root用户的密码，权限也会提高为root。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z bin<span class="o">]</span>$ su -
+</span></span><span class="line"><span class="cl">Password: 
+</span></span><span class="line"><span class="cl">Last login: Mon Mar <span class="m">30</span> 22:23:10 CST <span class="m">2026</span> on pts/1
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># pwd</span>
+</span></span><span class="line"><span class="cl">/root
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># who</span>
+</span></span><span class="line"><span class="cl">root     pts/0        2026-03-30 20:50 <span class="o">(</span>223.101.60.101<span class="o">)</span>
+</span></span><span class="line"><span class="cl">user1    pts/1        2026-03-30 22:10 <span class="o">(</span>223.101.60.101<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div>
+  <blockquote class="alert-blockquote tip">
+    <p class="alert-heading">
+      Tip
+    </p>
+    <p><p><code>su</code>指令不会让root重新登录，只是身份切换，不影响所处目录，<code>su -</code>指令是让我们以root的身份重新登录，会导致用户所处的目录变化</p></p>
+  </blockquote>
+
+<hr>
+<p>root用户也可以变成普通用户，使用<code>su 用户名</code>指令可以切换为指定的普通用户。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># pwd</span>
+</span></span><span class="line"><span class="cl">/root/test
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span><span class="c1"># su user1</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span>$ <span class="nb">pwd</span>
+</span></span><span class="line"><span class="cl">/root/test
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z test<span class="o">]</span>$ 
+</span></span></code></pre></div><p>root切换为普通用户不需要输入密码。</p>
+<hr>
+<p>有时在多人协作中我们无法每次都输入root的密码来提权，但是又必须创建或修改文件，这时我们可以在要执行的命令前加上<code>sudo</code>来短暂提权，这时会要求输入当前用户的密码，输入后就可以执行需要root权限的操作了，比如软件安装等。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z bin<span class="o">]</span>$ touch test.c
+</span></span><span class="line"><span class="cl">touch: cannot touch ‘test.c’: Permission denied
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z bin<span class="o">]</span>$ sudo touch test.c
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">We trust you have received the usual lecture from the <span class="nb">local</span> System
+</span></span><span class="line"><span class="cl">Administrator. It usually boils down to these three things:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 1) Respect the privacy of others.</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 2) Think before you type.</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 3) With great power comes great responsibility.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> user1: 
+</span></span><span class="line"><span class="cl">Sorry, try again.
+</span></span><span class="line"><span class="cl"><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> user1: 
+</span></span><span class="line"><span class="cl">user1 is not in the sudoers file.  This incident will be reported.
+</span></span></code></pre></div><p>第一次使用时可以发现系统提示<code>user1 is not in the sudoers file.  This incident will be reported.</code>，用户不在白名单中，需要让root用户添加。</p>
+<h2 id="linux权限管理">
+<a class="header-anchor" href="#linux%e6%9d%83%e9%99%90%e7%ae%a1%e7%90%86"></a>
+Linux权限管理
+</h2><p>权限本质是能做或不能做什么事，Linux的权限是为了控制用户的行为，防止错误的发生。权限要求目标必须具备对应的属性，比如一个非可执行文件没有可执行的属性，谁来了都无法运行。</p>
+<h3 id="文件访问者的分类">
+<a class="header-anchor" href="#%e6%96%87%e4%bb%b6%e8%ae%bf%e9%97%ae%e8%80%85%e7%9a%84%e5%88%86%e7%b1%bb"></a>
+文件访问者的分类
+</h3><p>文件权限角色分三类，分别是</p>
+<ul>
+<li>拥有者</li>
+<li>所属组</li>
+<li>其他other</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># ll</span>
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">!<span class="o">[</span>alt text<span class="o">](</span>image.png<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>对应<code>drwxr-xr-x 4 root root 4096 Mar 30 00:11 test</code>这个文件来说，第一个root是拥有者，第二个root是所属组，既不是拥有者又不是所属组就是other。同一个用户对于不同文件可能属于不同的角色。</p>
+<hr>
+<p>Linux系统使用所属组来在多人协作中实现更精细化的权限管理，假如有AB两个人同时在同一台Linux机器上工作，AB之间的文件相互没有权限读写，有一天上级领导要浏览A的工作文件，如果没有所属组的话A只能把other所属组开放读权限，这时包括B在内的所有人都可以浏览；有了所属组A可以把上级领导设置到所属组里，开放读权限，other权限不变，这样就实现了精细化的权限管理。</p>
+<h3 id="rwx">
+<a class="header-anchor" href="#rwx"></a>
+rwx
+</h3><p>Linux中一切皆文件，描述一个文件的权限时，可以说这个文件的什么角色组可以执行什么操作，Linux在文件属性部分分别使用<code>rwx</code>来分别代表读，写，执行这三个权限。</p>
+<p><code>drwxr-xr-x 4 root root 4096 Mar 30 00:11 test</code>这个文件中，前面属性当中第一个字符代表文件类型，<code>rwxr-xr-x</code>代表文件权限，三三分组对应角色权限，<code>rwx</code>代表拥有者有读写执行权限，<code>r-x</code>代表所属组有读和执行权限，<code>r-x</code>，代表其他other有读和执行权限，没有对应的权限无法对文件进行相应的操作。</p>
+<h3 id="修改权限chmod指令">
+<a class="header-anchor" href="#%e4%bf%ae%e6%94%b9%e6%9d%83%e9%99%90chmod%e6%8c%87%e4%bb%a4"></a>
+修改权限chmod指令
+</h3><p>使用<code>chmod</code>指令可以修改权限。</p>
+<p>符号模式使用 u（拥有者）、g（所属组）、o（其他）、a（所有用户）配合 +（添加）、-（移除）、=（精确设置）。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 给所有者添加执行权限</span>
+</span></span><span class="line"><span class="cl">chmod u+x script.sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 移除所属组的写权限</span>
+</span></span><span class="line"><span class="cl">chmod g-w file.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 给其他用户设置只读（覆盖原有权限）</span>
+</span></span><span class="line"><span class="cl">chmod <span class="nv">o</span><span class="o">=</span>r file.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 同时给所有用户添加执行权限</span>
+</span></span><span class="line"><span class="cl">chmod a+x script.sh
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">0</span>
+</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> user1 user1 <span class="m">0</span> Mar <span class="m">30</span> 23:51 file.txt     
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ chmod u+x file.txt   <span class="c1"># 给所有者添加执行权限</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">0</span>
+</span></span><span class="line"><span class="cl">-rwxrw-r-- <span class="m">1</span> user1 user1 <span class="m">0</span> Mar <span class="m">30</span> 23:51 file.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ chmod u-x file.txt   <span class="c1"># 移除所有者的执行权限</span>
+</span></span><span class="line"><span class="cl">total <span class="m">0</span>
+</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> user1 user1 <span class="m">0</span> Mar <span class="m">30</span> 23:51 file.txt
+</span></span></code></pre></div><p>同时权限可以表示为八进制的数字，每个权限位对应一个数字：r=4、w=2、x=1。将一组权限的三位相加得到一个数字，按顺序（所有者、组、其他）组成三位数。</p>
+<table>
+  <thead>
+      <tr>
+          <th>数字</th>
+          <th>权限</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>7</td>
+          <td>rwx</td>
+          <td>读写执行</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>rw-</td>
+          <td>读写</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>r-x</td>
+          <td>读+执行</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>r&ndash;</td>
+          <td>只读</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>-wx</td>
+          <td>写+执行</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>-w-</td>
+          <td>只写</td>
+      </tr>
+      <tr>
+          <td>1</td>
+          <td>&ndash;x</td>
+          <td>只执行</td>
+      </tr>
+      <tr>
+          <td>0</td>
+          <td>&mdash;</td>
+          <td>无权限</td>
+      </tr>
+  </tbody>
+</table>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 所有者读写执行，组和其他只读（755）</span>
+</span></span><span class="line"><span class="cl">chmod <span class="m">755</span> script.sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 所有者读写，组和其他只读（644）</span>
+</span></span><span class="line"><span class="cl">chmod <span class="m">644</span> file.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 所有用户都可读写执行（777，通常不推荐）</span>
+</span></span><span class="line"><span class="cl">chmod <span class="m">777</span> shared_dir
+</span></span></code></pre></div><hr>
+<p>chomd指令也不是什么文件的权限都能修改</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">0</span>
+</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> user1 user1 <span class="m">0</span> Mar <span class="m">30</span> 23:51 file.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root  root  <span class="m">0</span> Mar <span class="m">31</span> 00:02 root.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ chmod u+x  root.txt 
+</span></span><span class="line"><span class="cl">chmod: changing permissions of ‘root.txt’: Operation not permitted
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ 
+</span></span></code></pre></div><p>可以看到无法修改root.txt，普通用户只能修改自己文件的权限，不能修改其他用户创建的文件权限。</p>
+<h3 id="角色只确定一次">
+<a class="header-anchor" href="#%e8%a7%92%e8%89%b2%e5%8f%aa%e7%a1%ae%e5%ae%9a%e4%b8%80%e6%ac%a1"></a>
+角色只确定一次
+</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> user1 user1 <span class="m">6</span> Mar <span class="m">31</span> 00:09 file.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root  root  <span class="m">0</span> Mar <span class="m">31</span> 00:02 root.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ cat file.txt 
+</span></span><span class="line"><span class="cl">hello
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ chmod u-r file.txt 
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">--w-rw-r-- <span class="m">1</span> user1 user1 <span class="m">6</span> Mar <span class="m">31</span> 00:09 file.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root  root  <span class="m">0</span> Mar <span class="m">31</span> 00:02 root.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ cat file.txt 
+</span></span><span class="line"><span class="cl">cat: file.txt: Permission denied
+</span></span></code></pre></div><p>通过上面的例子，我们可以看到移除所有者user1的读文件权限后，就无法读取了，可是所属组也是user1，也拥有读文件的权限，为什么无法读取呢?<br>
+确定权限信息时，系统会先确定用户是拥有者，所属组还是其他，在目前所处的环境下（CentOS），系统只会按拥有者，所属组，其他的顺序确定用户角色，只确定一次。</p>
+<h3 id="root用户不受权限约束">
+<a class="header-anchor" href="#root%e7%94%a8%e6%88%b7%e4%b8%8d%e5%8f%97%e6%9d%83%e9%99%90%e7%ba%a6%e6%9d%9f"></a>
+root用户不受权限约束
+</h3><p>root用户不受权限约束，可以随意读写执行。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># ll</span>
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">--w-rw---- <span class="m">1</span> user1 user1 <span class="m">6</span> Mar <span class="m">31</span> 00:09 file.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root  root  <span class="m">0</span> Mar <span class="m">31</span> 00:02 root.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># cat file.txt </span>
+</span></span><span class="line"><span class="cl">hello
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>可以看到，root是other组，没有读权限，一样可以读取文件。<br>
+文件在运行时Linux会有保护机制保护起来，这时root无法操作，除此之外root干什么都可以。</p>
+<h3 id="可执行权限">
+<a class="header-anchor" href="#%e5%8f%af%e6%89%a7%e8%a1%8c%e6%9d%83%e9%99%90"></a>
+可执行权限
+</h3><p>即使拥有可执行权限，能否执行还要看文件本身能否执行。</p>
+<h3 id="更改拥有者和所属组chown指令">
+<a class="header-anchor" href="#%e6%9b%b4%e6%94%b9%e6%8b%a5%e6%9c%89%e8%80%85%e5%92%8c%e6%89%80%e5%b1%9e%e7%bb%84chown%e6%8c%87%e4%bb%a4"></a>
+更改拥有者和所属组chown指令
+</h3><p>使用chown指令可以更改拥有者和所属组。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 只更改所有者为 bob</span>
+</span></span><span class="line"><span class="cl">sudo chown bob file.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 同时更改所有者和所属组</span>
+</span></span><span class="line"><span class="cl">sudo chown bob:developers file.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 只更改所属组（使用 :group 形式）</span>
+</span></span><span class="line"><span class="cl">sudo chown :developers file.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 递归更改目录及其内部所有文件的所有者</span>
+</span></span><span class="line"><span class="cl">sudo chown -R bob /home/bob/project
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">--w-rw---- <span class="m">1</span> user1 user1 <span class="m">6</span> Mar <span class="m">31</span> 00:09 file.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root  root  <span class="m">0</span> Mar <span class="m">31</span> 00:02 root.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ chown root file.txt 
+</span></span><span class="line"><span class="cl">chown: changing ownership of ‘file.txt’: Operation not permitted
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ 
+</span></span></code></pre></div><p>但是拥有者不是想改就改的，系统默认不允许把文件给其他用户（例如把有bug的代码文件改成别人的来甩锅），想给其他用户必须提高权限，使用<code>su</code>或<code>sudo</code>切换root权限。</p>
+<h3 id="目录文件的权限">
+<a class="header-anchor" href="#%e7%9b%ae%e5%bd%95%e6%96%87%e4%bb%b6%e7%9a%84%e6%9d%83%e9%99%90"></a>
+目录文件的权限
+</h3><p>如果想进入一个目录，需要的是<code>x</code>可执行权限</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">drwxrwxr-x <span class="m">2</span> user1 user1 <span class="m">4096</span> Mar <span class="m">31</span> 00:02 <span class="m">111</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ chmod a-x <span class="m">111</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">drw-rw-r-- <span class="m">2</span> user1 user1 <span class="m">4096</span> Mar <span class="m">31</span> 00:02 <span class="m">111</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ <span class="nb">cd</span> <span class="m">111</span>
+</span></span><span class="line"><span class="cl">bash: cd: 111: Permission denied
+</span></span></code></pre></div><p>可以看到移除执行权限后就无法进入目录了。</p>
+<hr>
+<p>如果想查看目录内的文件，需要<code>r</code>读权限</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">drwxrwxr-x <span class="m">2</span> user1 user1 <span class="m">4096</span> Mar <span class="m">31</span> 00:02 <span class="m">111</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ chmod a-r <span class="m">111</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ <span class="nb">cd</span> <span class="m">111</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ ls
+</span></span><span class="line"><span class="cl">ls: cannot open directory .: Permission denied
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ 
+</span></span></code></pre></div><p>可以看到移除读权限后就无法读取目录内的文件了。</p>
+<hr>
+<p>如果想在目录新建文件，需要<code>w</code>写权限</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">drwxrwxr-x <span class="m">2</span> user1 user1 <span class="m">4096</span> Mar <span class="m">31</span> 00:02 <span class="m">111</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ chmod a-w <span class="m">111</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">dr-xr-xr-x <span class="m">2</span> user1 user1 <span class="m">4096</span> Mar <span class="m">31</span> 00:02 <span class="m">111</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ <span class="nb">cd</span> <span class="m">111</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ touch newfile
+</span></span><span class="line"><span class="cl">touch: cannot touch ‘newfile’: Permission denied
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ 
+</span></span></code></pre></div><p>可以看到移除写权限后就无法在目录内新建文件了。</p>
+<hr>
+<p>默认情况下，我们新建一个目录rws权限都要有。</p>
+<h4 id="linux下多用户之间如何隔离">
+<a class="header-anchor" href="#linux%e4%b8%8b%e5%a4%9a%e7%94%a8%e6%88%b7%e4%b9%8b%e9%97%b4%e5%a6%82%e4%bd%95%e9%9a%94%e7%a6%bb"></a>
+Linux下多用户之间如何隔离
+</h4><p>在Linux系统下，每新建一个用户系统就在/home目录下新建一个以用户名为名的新目录作为这个新用户的家目录。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z home<span class="o">]</span><span class="c1"># ll</span>
+</span></span><span class="line"><span class="cl">total <span class="m">8</span>
+</span></span><span class="line"><span class="cl">drwx------ <span class="m">3</span> admin admin <span class="m">4096</span> Mar <span class="m">27</span> 23:06 admin
+</span></span><span class="line"><span class="cl">drwx------ <span class="m">3</span> user1 user1 <span class="m">4096</span> Mar <span class="m">30</span> 23:51 user1
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z home<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>可以看到，每个家目录的权限都对相应用户拉满，所属组和其他组一点权限不给，这就做到了用户无法访问其他用户的家目录，只能访问自己的家目录，从而实现了多用户下的文件隔离。</p>
+<h4 id="缺省权限">
+<a class="header-anchor" href="#%e7%bc%ba%e7%9c%81%e6%9d%83%e9%99%90"></a>
+缺省权限
+</h4><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 222<span class="o">]</span>$ mkdir <span class="m">333</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 222<span class="o">]</span>$ touch newfile.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 222<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">drwxrwxr-x <span class="m">2</span> user1 user1 <span class="m">4096</span> Mar <span class="m">31</span> 00:56 <span class="m">333</span>
+</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> user1 user1    <span class="m">0</span> Mar <span class="m">31</span> 00:56 newfile.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 222<span class="o">]</span>$ 
+</span></span></code></pre></div><p>可以看到，新建一个文件起始权限666，显示<code>rw-rw-r--</code>，新建一个目录文件起始权限777，显示<code>rwxrwxr</code>，怎么对不上呢。</p>
+<p>系统中存在权限掩码</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 222<span class="o">]</span>$ <span class="nb">umask</span>
+</span></span><span class="line"><span class="cl"><span class="m">0002</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 222<span class="o">]</span>$ 
+</span></span></code></pre></div><p>最终权限等于按位取反权限掩码umask再与上起始权限。</p>
+<p>有些人需要个性化修改新建文件的默认权限，可以通过修改权限掩码umask灵活实现，大部分用户不需要修改。</p>
+<h3 id="删除权限">
+<a class="header-anchor" href="#%e5%88%a0%e9%99%a4%e6%9d%83%e9%99%90"></a>
+删除权限
+</h3><p>要删除一个文件（例如 rm file.txt），用户必须对文件所在的父目录拥有 写权限（w） 和 执行权限（x）。</p>
+<ul>
+<li>写权限：允许修改目录内容（包括添加、删除文件项）。</li>
+<li>执行权限：允许进入该目录（cd 进去），以便访问其中的文件项。</li>
+</ul>
+<p>文件本身的权限（r/w/x）不影响你能否删除它，只影响能否读取、修改或执行其内容。</p>
+<p>删除目录（例如 rmdir empty_dir 或 rm -r dir）同样取决于父目录的写和执行权限。此外，对于 rm -r 递归删除目录时，还需要对目录本身及其内部内容有适当的访问权限才能遍历和删除。</p>
+<ul>
+<li>对目录本身的执行权限：进入目录并读取其内容。</li>
+<li>对目录本身的写权限：删除目录项时，实际是在父目录中删除该目录的条目，所以父目录需要写权限。</li>
+<li>如果使用 rm -r，你还必须能够递归地删除目录内所有文件和子目录，因此你需要对目录树中的所有子目录拥有写和执行权限。</li>
+</ul>
+<h3 id="多人文件协作权限">
+<a class="header-anchor" href="#%e5%a4%9a%e4%ba%ba%e6%96%87%e4%bb%b6%e5%8d%8f%e4%bd%9c%e6%9d%83%e9%99%90"></a>
+多人文件协作权限
+</h3><p>每个用户的家目录其他用户无法访问，为了让所有人都能进行协作，我们可以在根目录<code>/</code>下新建一个共享的目录文件来进行多人协作。<br>
+每个人都不想让自己的文件被其他人以为删除，但是如何让任何一个人能在共享目录下新建，但是不能让非拥有者删除呢？</p>
+<p>为了实现这个需要，我们可以使用粘滞位来解决。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chmod +t /shared/collab
+</span></span></code></pre></div><p>此时权限变为 drwxrwxrwt，末尾变成了t代表可创建了不可删除他人文件的共享目录。</p>
+</div>
+    <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
+    <a
+      class="article-category-link"
+      href="/categories/linux"
+      data-aos="zoom-in"
+      >Linux</a
+    >
+    </li></ul>
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e5%9f%ba%e7%a1%80%e5%91%bd%e4%bb%a4"
+        rel="tag"
+        >基础命令</a
+      >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e6%9d%83%e9%99%90"
+        rel="tag"
+        >权限</a
+      >
+    </li></ul>
+</footer>
+  </div><nav
+    id="article-nav"
+    aria-label="Article navigation"
+    data-aos="fade-up"
+  ><div class="article-nav-link-wrap left"><img
+              data-src="/images/covers/covers-78.webp"
+              data-sizes="auto"
+              alt="【Linux】01 - 什么是Linux"
+              class="lazyload"
+            /><a
+          href="/post/linux01---%E4%BB%80%E4%B9%88%E6%98%AFlinux/"
+          aria-label="前一篇:【Linux】01 - 什么是Linux"
+          title="前一篇:【Linux】01 - 什么是Linux"
+        ></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">【Linux】01 - 什么是Linux</h3>
+      </div></nav></article></section>
+        </div><footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info"><div>
+      <span class="icon-copyright"></span>2020-2026<span class="footer-info-sep rotate"></span>CialloKing
+    </div><div>
+        基于&nbsp;<a
+          href="https://gohugo.io/"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          >Hugo</a
+        >&nbsp;Theme.<a
+          href="https://github.com/D-Sketon/hugo-theme-reimu"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          >Reimu</a
+        >
+      </div><div>
+        <span class="icon-brush"
+          >&nbsp;47.6k</span
+        >
+        &nbsp;|&nbsp;
+        <span class="icon-coffee">&nbsp;01:43</span>
+      </div><div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv"
+          >总访问量&nbsp;<span
+            id="busuanzi_value_site_pv"
+          ></span
+        ></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv"
+          >总访客量&nbsp;<span
+            id="busuanzi_value_site_uv"
+          ></span
+        ></span>
+      </div></div>
+</footer>
+<div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div><div id="mask" class="hide"></div>
+      </div><nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap"><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#linux权限">Linux权限</a>
+      <ol>
+        <li><a href="#shell">shell</a></li>
+        <li><a href="#用户的分类">用户的分类</a>
+          <ol>
+            <li><a href="#提权su指令">提权su指令</a></li>
+          </ol>
+        </li>
+        <li><a href="#linux权限管理">Linux权限管理</a>
+          <ol>
+            <li><a href="#文件访问者的分类">文件访问者的分类</a></li>
+            <li><a href="#rwx">rwx</a></li>
+            <li><a href="#修改权限chmod指令">修改权限chmod指令</a></li>
+            <li><a href="#角色只确定一次">角色只确定一次</a></li>
+            <li><a href="#root用户不受权限约束">root用户不受权限约束</a></li>
+            <li><a href="#可执行权限">可执行权限</a></li>
+            <li><a href="#更改拥有者和所属组chown指令">更改拥有者和所属组chown指令</a></li>
+            <li><a href="#目录文件的权限">目录文件的权限</a>
+              <ol>
+                <li><a href="#linux下多用户之间如何隔离">Linux下多用户之间如何隔离</a></li>
+                <li><a href="#缺省权限">缺省权限</a></li>
+              </ol>
+            </li>
+            <li><a href="#删除权限">删除权限</a></li>
+            <li><a href="#多人文件协作权限">多人文件协作权限</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img
+    data-src="/avatar/my-avatar.webp"
+    data-sizes="auto"
+    alt="CialloKing"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">CialloKing</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div><div class="sidebar-state-number">14</div>
+  </div>
+  <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
+    <div>分类</div>
+    <div class="sidebar-state-number">
+      3
+    </div>
+  </a>
+  <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
+    <div>标签</div>
+    <div class="sidebar-state-number">4</div>
+  </a>
+</div>
+<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="首页"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">首页</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="归档"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">归档</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="关于"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">关于</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/link"
+        aria-label="友链"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
+    </div></div></div></div><div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div></nav>
+</div><meting-js
+        theme="var(--color-link)"
+        id="17840645230"server="netease"type="playlist"auto="true"fixed="true"autoplay="false"loop="all"order="random"preload="auto"volume="0.7"mutex="true"list-folded="true"lrc-type="0">
+      </meting-js><script
+    src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"
+    
+    
+    
+    
+    integrity="sha384-3gT/vsepWkfz/ff7PpWNUeMzeWoH3cDhm/A8jM7ouoAK0/fP/9bcHHR5kHq2nf&#43;e" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"
+    
+    
+    
+    
+    integrity="sha384-J08i8An/QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script><script src="/js/main.js" integrity="" crossorigin="anonymous"  ></script><script src="/js/aos.js" integrity="" crossorigin="anonymous"  ></script><script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", aosInit);
+    } else {
+      aosInit();
+    }
+  </script><script src="/js/pjax_main.js" integrity="" crossorigin="anonymous" data-pjax ></script><script>
+  var setupFirework = () => {
+    if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
+      if (window.firework) {
+        const options = JSON.parse("{\"excludeelements\":[\"a\",\"button\"],\"particles\":[{\"colors\":[\"var(--red-1)\",\"var(--red-2)\",\"var(--red-3)\",\"var(--red-4)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"emit\"],\"number\":20,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.3,0.5],\"radius\":[16,32]}},{\"colors\":[\"var(--red-0)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"diffuse\"],\"number\":1,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.2,0.5],\"lineWidth\":6,\"radius\":20}}]}");
+        options.excludeElements = options.excludeelements;
+        delete options.excludeelements;
+        window.firework(options);
+      }
+    }
+  }
+</script><script
+    src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js"
+    defer
+    
+    
+    onload="setupFirework()"
+    integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8&#43;pUoWX8n1rgq282T" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js"
+    
+    
+    
+    
+    integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE/jMSCxD&#43;jAPU55x/jj3wlf" crossorigin="anonymous"></script><script src="/js/pjax.js" integrity="" crossorigin="anonymous"  ></script><script
+    src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js"
+    
+    
+    
+    
+    integrity="sha384-caMDqvgav/HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb&#43;bEHtwlmYjD" crossorigin="anonymous"></script><script data-pjax>
+    window.quicklink?.listen({
+      timeout:  3000 ,
+      priority:  true ,
+      ignores: JSON.parse("[]")
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div><script data-pjax>
+        window.REIMU_POST = {
+          author: "CialloKing",
+          title: "【Linux】03 - Linux权限",
+          url: "https:\/\/cialloking.com\/post\/linux03---linux%E6%9D%83%E9%99%90\/",
+          description: " Linux权限 shell 操作系统内核会包裹一个外壳程序，统称为shell，外壳程序在内核和用户之间沟通，对于windows系统，外壳程序就是图形化界面，用户通过图形化界面操作系统，外壳程序shell把用户的操作翻译给内核，把内核的处理结果翻译给用户；和windows相似，Linux系统里外壳程序就是命令行界面，用户通过命令行来操作。\nshell会创建子进程，让子进程进行命令的解释，如果子进程执行命令出问题了也不影响父进程。\n",
+          cover: "https:\/\/cialloking.com\/images\/bg\/bg1.webp",
+        };
+      </script><script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax ></script><script src="/js/tabs.js" integrity="" crossorigin="anonymous" data-pjax defer></script><script type="module" data-pjax>const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;const initPswp = (gallery, children) => {
+          if (_$$(`${gallery} ${children}`).length > 0) {
+            new PhotoSwipeLightbox({
+              gallery,
+              children,pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")}).init();
+          }
+        }
+        const pswp = () => {
+          initPswp('.article-entry', 'a.article-gallery-item');
+          initPswp('.article-gallery', 'a.article-gallery-item');
+        }
+        pswp()
+      </script><script
+    src="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.js"
+    
+    
+    data-pjax
+    
+    integrity="sha384-MWNUH0WmtsYGhn2cbH6ELRCbf9LG3QDqCC&#43;gqPB3IBNO35xjZK3Ejb6oONRpDbPg" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/katex@0.16.24/dist/contrib/auto-render.min.js"
+    
+    
+    data-pjax
+    
+    integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv&#43;fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script><script data-pjax>
+          var renderMath = () => {
+            if (!window.renderMathInElement) return;
+            window.renderMathInElement(_$("article"), {
+              delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "\\[", right: "\\]", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+              ],
+            });
+          };
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", renderMath, { once: true });
+          } else {
+            renderMath();
+          }
+        </script></div>
+</div><script
+    src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js"
+    
+    async
+    
+    
+    integrity="sha384-0M75wtSkhjIInv4coYlaJU83&#43;OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id&#43;S" crossorigin="anonymous"></script><script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script><script>
+  const reimuCopyright = String.raw`
+   ______     ______     __     __    __     __  __    
+  /\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+  \ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+   \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+    \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                    
+  `;
+  console.log(String.raw`%c ${reimuCopyright}`, "color: #ff5252;");
+  console.log(
+    "%c Theme.Reimu" + " %c https://github.com/D-Sketon/hugo-theme-reimu ",
+    "color: white; background: #ff5252; padding:5px 0;",
+    "padding:4px;border:1px solid #ff5252;",
+  );
+</script><script>
+    var setupAPlayer = () => {
+      if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
+        if (window.matchMedia('(max-width: 959px)').matches) {
+          const meting = _$('meting-js');
+          if (meting) {
+            meting.setAttribute('fixed', 'true');
+            const aside = meting.parentNode?.parentNode;
+            if (aside?.tagName === 'ASIDE') {
+              meting.parentNode.removeChild(meting);
+              document.body.appendChild(meting);
+            }
+          }
+        }
+      }
+    };</script><script
+    src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js"
+    defer
+    
+    
+    onload="setupAPlayer()"
+    integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr&#43;h5UfruuRL/aORyw&#43;5&#43;HZoU6e" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js"
+    defer
+    
+    
+    
+    integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8&#43;0maanw1S/IyB&#43;Y4JG&#43;ZDU7GpKE8" crossorigin="anonymous"></script><script>
+(function() {
+  // 封面图片列表（保持你现有路径不变，无需修改）
+  window.covers = [
+    '/images/covers/covers-01.webp',
+    '/images/covers/covers-02.webp',
+    '/images/covers/covers-03.webp',
+    '/images/covers/covers-04.webp',
+    '/images/covers/covers-05.webp',
+    '/images/covers/covers-06.webp',
+    '/images/covers/covers-07.webp',
+    '/images/covers/covers-08.webp',
+    '/images/covers/covers-09.webp',
+    '/images/covers/covers-10.webp',
+    '/images/covers/covers-11.webp',
+    '/images/covers/covers-12.webp',
+    '/images/covers/covers-13.webp',
+    '/images/covers/covers-14.webp',
+    '/images/covers/covers-15.webp',
+    '/images/covers/covers-16.webp',
+    '/images/covers/covers-17.webp',
+    '/images/covers/covers-18.webp',
+    '/images/covers/covers-19.webp',
+    '/images/covers/covers-20.webp',
+    '/images/covers/covers-21.webp',
+    '/images/covers/covers-22.webp',
+    '/images/covers/covers-23.webp',
+    '/images/covers/covers-24.webp',
+    '/images/covers/covers-25.webp',
+    '/images/covers/covers-26.webp',
+    '/images/covers/covers-27.webp',
+    '/images/covers/covers-28.webp',
+    '/images/covers/covers-29.webp',
+    '/images/covers/covers-30.webp',
+    '/images/covers/covers-31.webp',
+    '/images/covers/covers-32.webp',
+    '/images/covers/covers-33.webp',
+    '/images/covers/covers-34.webp',
+    '/images/covers/covers-35.webp',
+    '/images/covers/covers-36.webp',
+    '/images/covers/covers-37.webp',
+    '/images/covers/covers-38.webp',
+    '/images/covers/covers-39.webp',
+    '/images/covers/covers-40.webp',
+    '/images/covers/covers-41.webp',
+    '/images/covers/covers-42.webp',
+    '/images/covers/covers-43.webp',
+    '/images/covers/covers-44.webp',
+    '/images/covers/covers-45.webp',
+    '/images/covers/covers-46.webp',
+    '/images/covers/covers-47.webp',
+    '/images/covers/covers-48.webp',
+    '/images/covers/covers-49.webp',
+    '/images/covers/covers-50.webp',
+    '/images/covers/covers-51.webp',
+    '/images/covers/covers-52.webp',
+    '/images/covers/covers-53.webp',
+    '/images/covers/covers-54.webp',
+    '/images/covers/covers-55.webp',
+    '/images/covers/covers-56.webp',
+    '/images/covers/covers-57.webp',
+    '/images/covers/covers-58.webp',
+    '/images/covers/covers-59.webp',
+    '/images/covers/covers-60.webp',
+    '/images/covers/covers-61.webp',
+    '/images/covers/covers-62.webp',
+    '/images/covers/covers-63.webp',
+    '/images/covers/covers-64.webp',
+    '/images/covers/covers-65.webp',
+    '/images/covers/covers-66.webp',
+    '/images/covers/covers-67.webp',
+    '/images/covers/covers-68.webp',
+    '/images/covers/covers-69.webp',
+    '/images/covers/covers-70.webp',
+    '/images/covers/covers-71.webp',
+    '/images/covers/covers-72.webp',
+    '/images/covers/covers-73.webp',
+    '/images/covers/covers-74.webp',
+    '/images/covers/covers-75.webp',
+    '/images/covers/covers-76.webp',
+    '/images/covers/covers-77.webp',
+    '/images/covers/covers-78.webp',
+    '/images/covers/covers-79.webp',
+    '/images/covers/covers-80.webp',
+    '/images/covers/covers-81.webp',
+    '/images/covers/covers-82.webp',
+    '/images/covers/covers-83.webp',
+    '/images/covers/covers-84.webp',
+    '/images/covers/covers-85.webp',
+    '/images/covers/covers-86.webp',
+    '/images/covers/covers-87.webp',
+    '/images/covers/covers-88.webp',
+    '/images/covers/covers-89.webp',
+    '/images/covers/covers-90.webp',
+    '/images/covers/covers-91.webp',
+    '/images/covers/covers-92.webp',
+    '/images/covers/covers-93.webp',
+    '/images/covers/covers-94.webp',
+    '/images/covers/covers-95.webp',
+    '/images/covers/covers-96.webp',
+    '/images/covers/covers-97.webp',
+    '/images/covers/covers-98.webp',
+    '/images/covers/covers-99.webp',
+    '/images/covers/covers-100.webp',
+    '/images/covers/covers-101.webp',
+    '/images/covers/covers-102.webp',
+    '/images/covers/covers-103.webp',
+    '/images/covers/covers-104.webp',
+    '/images/covers/covers-105.webp',
+    '/images/covers/covers-106.webp',
+    '/images/covers/covers-107.webp',
+    '/images/covers/covers-108.webp',
+    '/images/covers/covers-109.webp',
+    '/images/covers/covers-110.webp',
+    '/images/covers/covers-111.webp',
+    '/images/covers/covers-112.webp',
+    '/images/covers/covers-113.webp',
+    '/images/covers/covers-114.webp',
+    '/images/covers/covers-115.webp',
+    '/images/covers/covers-116.webp',
+    '/images/covers/covers-117.webp',
+    '/images/covers/covers-118.webp',
+    '/images/covers/covers-119.webp',
+    '/images/covers/covers-120.webp',
+    '/images/covers/covers-121.webp',
+    '/images/covers/covers-122.webp',
+    '/images/covers/covers-123.webp',
+    '/images/covers/covers-124.webp',
+    '/images/covers/covers-125.webp',
+    '/images/covers/covers-126.webp',
+    '/images/covers/covers-127.webp',
+    '/images/covers/covers-128.webp',
+    '/images/covers/covers-129.webp',
+    '/images/covers/covers-130.webp',
+    '/images/covers/covers-131.webp'
+
+  ];
+
+  // 【关键修改1】扩展选择器，覆盖搜索页所有可能的封面容器
+  const coverSelectors = [
+    '.post-cover img',
+    '#search .post-cover img',
+    '.search-result .post-cover img',
+    '.algolia-hits .post-cover img', // 适配Algolia搜索结果卡片
+    '.search-page .post-cover img'
+  ].join(', ');
+
+  // 【关键修改2】适配动态DOM的封面赋值逻辑
+  function setRandomCovers() {
+    // 搜索页跳过（已在 single.html 处理）
+    if (document.getElementById('search-results')) {
+      return;
+    }
+    const coverImgs = document.querySelectorAll(coverSelectors);
+    if (coverImgs.length === 0) {
+      setTimeout(setRandomCovers, 150);
+      return;
+    }
+    coverImgs.forEach(img => {
+      // 有自定义封面的图片：直接显示，不随机替换
+      if (img.hasAttribute('data-custom-cover')) {
+        img.style.opacity = '1';
+        return;
+      }
+      // 已经设置过随机封面的图片：不再重复设置
+      if (img.hasAttribute('data-cover-set')) {
+        return;
+      }
+      const randomIndex = Math.floor(Math.random() * window.covers.length);
+      const newSrc = window.covers[randomIndex];
+      img.setAttribute('data-src', newSrc);
+      img.src = newSrc;
+      img.setAttribute('data-cover-set', 'true');
+      img.style.opacity = '1';
+      img.style.display = 'block';
+      img.style.visibility = 'visible';
+    });
+  }
+
+  // 【关键修改3】调整执行时机，适配搜索页加载流程
+  // 1. 页面加载完成后执行（适配直接打开搜索页）
+  window.addEventListener('load', setRandomCovers);
+  // 2. PJAX跳转后执行（适配从首页跳转到搜索页）
+  document.addEventListener('pjax:complete', setRandomCovers);
+  // 3. 搜索框输入后执行（适配动态搜索结果）
+  //document.querySelector('.search-input')?.addEventListener('input', () => {
+    //setTimeout(setRandomCovers, 200); // 延迟200ms，等待搜索结果渲染
+  //});
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      setTimeout(setRandomCovers, 200);
+    });
+  }
+
+
+
+})();
+</script>
+
+
+<script>
+(function() {
+  const bannerImages = [
+    '/images/bg/bg1.webp',
+    '/images/bg/bg2.webp',
+    '/images/bg/bg3.webp',
+    '/images/bg/bg4.webp',
+    '/images/bg/bg5.webp',
+    '/images/bg/bg6.webp',
+    '/images/bg/bg7.webp',
+    '/images/bg/bg8.webp',
+    '/images/bg/bg9.webp'
+  ];
+
+  function getRandomBanner() {
+    return bannerImages[Math.floor(Math.random() * bannerImages.length)];
+  }
+
+  // 立即检查并设置，如果图片已存在
+  function setRandomBanner() {
+    const headerImg = document.querySelector('#header img');
+    if (headerImg && !headerImg.hasAttribute('data-random-set')) {
+      const randomUrl = getRandomBanner();
+      headerImg.setAttribute('data-src', randomUrl);
+      headerImg.src = randomUrl;
+      headerImg.setAttribute('data-random-set', 'true');
+      headerImg.style.opacity = '1';
+      headerImg.style.visibility = 'visible';
+    }
+  }
+
+  // 使用 MutationObserver 监听 DOM 变化，确保尽早捕捉到 header 图片
+  const observer = new MutationObserver((mutations, obs) => {
+    const img = document.querySelector('#header img');
+    if (img) {
+      setRandomBanner();
+      obs.disconnect(); // 找到后停止观察
+    }
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+
+  // 页面完全加载后兜底（防止 observer 遗漏）
+  window.addEventListener('load', setRandomBanner);
+  // PJAX 跳转后重新设置
+  document.addEventListener('pjax:complete', () => {
+    // 清除标记，允许重新设置
+    const headerImg = document.querySelector('#header img');
+    if (headerImg) headerImg.removeAttribute('data-random-set');
+    setRandomBanner();
+  });
+})();
+</script>
+</body>
+</html>
