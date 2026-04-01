@@ -1,7 +1,7 @@
 ---
 
 date: 2026-03-30T00:00:00+08:00
-lastmod: 2026-03-31T00:00:00+08:00
+lastmod: 2026-04-01T00:00:00+08:00
 title: '【Linux】03 - Linux权限'
 
 mermaid: true
@@ -115,6 +115,16 @@ Sorry, try again.
 user1 is not in the sudoers file.  This incident will be reported.
 ```
 第一次使用时可以发现系统提示`user1 is not in the sudoers file.  This incident will be reported.`，用户不在白名单中，需要让root用户添加。
+
+
+使用`vim /etc/sudoers`指令来编辑白名单。
+```bash
+
+## Allow root to run any commands anywhere 
+root    ALL=(ALL)       ALL                #复制这一行，粘贴并修改需要加入名单的用户名
+需要添加的用户名    ALL=(ALL)       ALL
+```
+
 
 
 ## Linux权限管理
