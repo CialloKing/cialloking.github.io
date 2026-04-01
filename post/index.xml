@@ -12,7 +12,7 @@
     
     <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
-    <lastBuildDate>Tue, 31 Mar 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 01 Apr 2026 00:00:00 +0800</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/post/index.xml" rel="self" type="application/rss&#43;xml" />
@@ -39,7 +39,7 @@ shell
 </h2><p>操作系统内核会包裹一个外壳程序，统称为shell，外壳程序在内核和用户之间沟通，对于windows系统，外壳程序就是图形化界面，用户通过图形化界面操作系统，外壳程序shell把用户的操作翻译给内核，把内核的处理结果翻译给用户；和windows相似，Linux系统里外壳程序就是命令行界面，用户通过命令行来操作。<br>
 shell会创建子进程，让子进程进行命令的解释，如果子进程执行命令出问题了也不影响父进程。</p>
         
-        <hr><p>本文2026-03-30首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-03-31</p>]]>
+        <hr><p>本文2026-03-30首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-01</p>]]>
       </description>
       
         <category>Linux</category>

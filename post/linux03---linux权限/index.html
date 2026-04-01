@@ -40,7 +40,7 @@
   <meta property="og:image" content="https://cialloking.com/images/bg/bg1.webp" />
   <meta property="article:author" content="CialloKing" />
   <meta property="article:published_time" content="2026-03-30T00:00:00&#43;08:00" />
-  <meta property="article:modified_time" content="2026-03-31T00:00:00&#43;08:00" /><meta property="article:tag" content="基础命令, 权限" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
+  <meta property="article:modified_time" content="2026-04-01T00:00:00&#43;08:00" /><meta property="article:tag" content="基础命令, 权限" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
 <link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.e15f9328b0e9ee3c7d04ca76ea47f3db653d93dce1f4a28af9a7327ad1d51367.css" /><link
     rel="preload"
     as="style"
@@ -307,7 +307,7 @@
       >2026-03-30</time
     >
     <time style="display: none;" id="post-update-time"
-      >2026-03-31</time
+      >2026-04-01</time
     >
   </span></div>
 </div><div class="hr-line"></div><div class="e-content article-entry" itemprop="articleBody"><h1 id="linux权限">
@@ -391,7 +391,12 @@ shell会创建子进程，让子进程进行命令的解释，如果子进程执
 </span></span><span class="line"><span class="cl"><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> user1: 
 </span></span><span class="line"><span class="cl">user1 is not in the sudoers file.  This incident will be reported.
 </span></span></code></pre></div><p>第一次使用时可以发现系统提示<code>user1 is not in the sudoers file.  This incident will be reported.</code>，用户不在白名单中，需要让root用户添加。</p>
-<h2 id="linux权限管理">
+<p>使用<code>vim /etc/sudoers</code>指令来编辑白名单。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## Allow root to run any commands anywhere </span>
+</span></span><span class="line"><span class="cl">root    <span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span>       ALL                <span class="c1">#复制这一行，粘贴并修改需要加入名单的用户名</span>
+</span></span><span class="line"><span class="cl">需要添加的用户名    <span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span>       ALL
+</span></span></code></pre></div><h2 id="linux权限管理">
 <a class="header-anchor" href="#linux%e6%9d%83%e9%99%90%e7%ae%a1%e7%90%86"></a>
 Linux权限管理
 </h2><p>权限本质是能做或不能做什么事，Linux的权限是为了控制用户的行为，防止错误的发生。权限要求目标必须具备对应的属性，比如一个非可执行文件没有可执行的属性，谁来了都无法运行。</p>
@@ -704,7 +709,7 @@ Linux下多用户之间如何隔离
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-115.webp"
+              data-src="/images/covers/covers-130.webp"
               data-sizes="auto"
               alt="【Linux】01 - 什么是Linux"
               class="lazyload"
@@ -736,7 +741,7 @@ Linux下多用户之间如何隔离
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;47.8k</span
+          >&nbsp;47.9k</span
         >
         &nbsp;|&nbsp;
         <span class="icon-coffee">&nbsp;01:44</span>
