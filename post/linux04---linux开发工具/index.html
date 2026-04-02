@@ -1315,7 +1315,7 @@ C语言程序是从上到下执行的，执行<code>sleep(3);</code>的时候<co
 </span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>                          <span class="c1">//进度条结束换行，不然会被命令覆盖，不信可删除尝试一下
 </span></span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>这样就实现了简单的进度条了
-<img src="PixPin_2026-04-02_23-09-24-1.webp" alt=""></p>
+<img src="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/PixPin_2026-04-02_23-09-24.webp" alt=""></p>
 <hr>
 <p>但是这个进度条只是单独的在跑，我们平时见到进度条都是在加载时，比如上传下载有进度条，安装或打开软件有进度条，进度条的进度与任务进度是同步的，我们需要让进度条能够被其他程序调用。</p>
 <p>在头文件声明一个新的进度条函数</p>
@@ -1384,7 +1384,7 @@ C语言程序是从上到下执行的，执行<code>sleep(3);</code>的时候<co
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>这样其他函数就可以调用进度条了
-<img src="PixPin_2026-04-03_00-01-35-1.webp" alt=""></p>
+<img src="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/PixPin_2026-04-03_00-01-35.webp" alt=""></p>
 <p>printf函数还支持调整打印出字符的颜色，我们可以修改百分比的颜色</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\r</span><span class="s">[ </span><span class="se">\033</span><span class="s">[1;32;40m%-100s</span><span class="se">\033</span><span class="s">[0m ][ </span><span class="se">\033</span><span class="s">[1;33m%.2f%%</span><span class="se">\033</span><span class="s">[0m ][ </span><span class="se">\033</span><span class="s">[1;31;5m%c</span><span class="se">\033</span><span class="s">[0m ]&#34;</span><span class="p">,</span><span class="n">buffer</span><span class="p">,</span> <span class="n">rate</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">lable</span><span class="p">[</span><span class="n">cnt</span><span class="p">]);</span>
 </span></span></code></pre></div><p><img src="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/PixPin_2026-04-03_00-14-20.webp" alt=""></p>
@@ -1550,7 +1550,7 @@ gbd
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-125.webp"
+              data-src="/images/covers/covers-34.webp"
               data-sizes="auto"
               alt="【Linux】03 - Linux权限"
               class="lazyload"
