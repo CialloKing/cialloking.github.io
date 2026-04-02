@@ -12,12 +12,43 @@
     
     <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
-    <lastBuildDate>Wed, 01 Apr 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 02 Apr 2026 00:00:00 +0800</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/categories/linux/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>【Linux】02 - Linux基础命令</title>
+      <link>https://cialloking.com/post/linux02---linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/</link>
+      <pubDate>Sat, 28 Mar 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/linux02---linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】02 - Linux基础命令</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h1 id="linux基础命令">
+<a class="header-anchor" href="#linux%e5%9f%ba%e7%a1%80%e5%91%bd%e4%bb%a4"></a>
+Linux基础命令
+</h1><h2 id="登录linux">
+<a class="header-anchor" href="#%e7%99%bb%e5%bd%95linux"></a>
+登录Linux
+</h2><h3 id="xshell的下载和使用">
+<a class="header-anchor" href="#xshell%e7%9a%84%e4%b8%8b%e8%bd%bd%e5%92%8c%e4%bd%bf%e7%94%a8"></a>
+Xshell的下载和使用
+</h3><p>假如使用的是云服务器，我们可以使用Xshell这个终端软件来登录Linux。</p>
+<p><a href="https://www.xshell.com/zh/free-for-home-school/">点击链接下载</a>Xshell，Xshell是商业软件，个人可免费使用，下载后选择安装目录安装，打开时遇到免费注册的弹窗可填邮箱注册或者点下面的“后来”按钮跳过。</p>
+<p>打开Xshell后，输入 <code>ssh root@云服务器的IP</code>，这时会提示输入密码(password)，输入密码时不会在屏幕上显示，输入完了按回车确认，如果不知道密码可在云服务器厂商的控制面板处重置密码后再使用Xshell登录，注意<strong>一定要设置复杂一点的密码</strong>，有黑客会 24 小时不间断扫描所有IP，如果密码过于简单会很容易被黑客破解，黑客进入我们的服务器后会偷偷干坏事，所有<strong>一定要设置复杂的密码</strong>。</p>
+        
+        <hr><p>本文2026-03-28首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-02</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
     
     
 
@@ -49,28 +80,29 @@ shell会创建子进程，让子进程进行命令的解释，如果子进程执
     
 
     <item>
-      <title>【Linux】02 - Linux基础命令</title>
-      <link>https://cialloking.com/post/linux02---linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/</link>
-      <pubDate>Sat, 28 Mar 2026 00:00:00 &#43;0800</pubDate>
+      <title>【Linux】04 - Linux开发工具</title>
+      <link>https://cialloking.com/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Tue, 31 Mar 2026 00:00:00 &#43;0800</pubDate>
       <author>xxx@example.com (CialloKing)</author>
-      <guid>https://cialloking.com/post/linux02---linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/</guid>
+      <guid>https://cialloking.com/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/</guid>
       <description>
-        <![CDATA[<h1>【Linux】02 - Linux基础命令</h1><p>作者：CialloKing（xxx@example.com）</p>
+        <![CDATA[<h1>【Linux】04 - Linux开发工具</h1><p>作者：CialloKing（xxx@example.com）</p>
         
-          <h1 id="linux基础命令">
-<a class="header-anchor" href="#linux%e5%9f%ba%e7%a1%80%e5%91%bd%e4%bb%a4"></a>
-Linux基础命令
-</h1><h2 id="登录linux">
-<a class="header-anchor" href="#%e7%99%bb%e5%bd%95linux"></a>
-登录Linux
-</h2><h3 id="xshell的下载和使用">
-<a class="header-anchor" href="#xshell%e7%9a%84%e4%b8%8b%e8%bd%bd%e5%92%8c%e4%bd%bf%e7%94%a8"></a>
-Xshell的下载和使用
-</h3><p>假如使用的是云服务器，我们可以使用Xshell这个终端软件来登录Linux。</p>
-<p><a href="https://www.xshell.com/zh/free-for-home-school/">点击链接下载</a>Xshell，Xshell是商业软件，个人可免费使用，下载后选择安装目录安装，打开时遇到免费注册的弹窗可填邮箱注册或者点下面的“后来”按钮跳过。</p>
-<p>打开Xshell后，输入 <code>ssh root@云服务器的IP</code>，这时会提示输入密码(password)，输入密码时不会在屏幕上显示，输入完了按回车确认，如果不知道密码可在云服务器厂商的控制面板处重置密码后再使用Xshell登录，注意<strong>一定要设置复杂一点的密码</strong>，有黑客会 24 小时不间断扫描所有IP，如果密码过于简单会很容易被黑客破解，黑客进入我们的服务器后会偷偷干坏事，所有<strong>一定要设置复杂的密码</strong>。</p>
+          <h1 id="linux开发工具">
+<a class="header-anchor" href="#linux%e5%bc%80%e5%8f%91%e5%b7%a5%e5%85%b7"></a>
+Linux开发工具
+</h1><h2 id="包管理器">
+<a class="header-anchor" href="#%e5%8c%85%e7%ae%a1%e7%90%86%e5%99%a8"></a>
+包管理器
+</h2><p>Linux中安装软件有三种方法</p>
+<ol>
+<li>源码安装（编译环境配置复杂，很少使用）</li>
+<li>软件包安装（下载打包好的rpm软件包，但是依赖库可能不齐，还需要我们自己下载）</li>
+<li>包管理器安装（最常用，自动安装软件和依赖库）</li>
+</ol>
+<p>包管理器类似手机上的应用商店，选择我们需要的软件就能直接下载。在CentOS系统中，默认的包管理器是yum，ubuntu系统中默认的包管理器是apt。安装软件就是拷贝文件到系统的一些目录内，所以安装时需要root权限。</p>
         
-        <hr><p>本文2026-03-28首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-03-30</p>]]>
+        <hr><p>本文2026-03-31首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-01</p>]]>
       </description>
       
         <category>Linux</category>

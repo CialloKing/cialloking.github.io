@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gcc on CialloKing 的博客</title>
+    <link>https://cialloking.com/tags/gcc/</link>
+    <description>Recent content from CialloKing 的博客</description>
+    <generator>Hugo</generator>
+    <language>zh-CN</language>
+    
+    <managingEditor>xxx@example.com (CialloKing)</managingEditor>
+    <webMaster>xxx@example.com (CialloKing)</webMaster>
+    
+    <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
+    
+    <lastBuildDate>Wed, 01 Apr 2026 00:00:00 +0800</lastBuildDate>
+    
+    
+    <atom:link href="https://cialloking.com/tags/gcc/index.xml" rel="self" type="application/rss&#43;xml" />
+    
+
+    
+    
+
+    <item>
+      <title>【Linux】04 - Linux开发工具</title>
+      <link>https://cialloking.com/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Tue, 31 Mar 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】04 - Linux开发工具</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h1 id="linux开发工具">
+<a class="header-anchor" href="#linux%e5%bc%80%e5%8f%91%e5%b7%a5%e5%85%b7"></a>
+Linux开发工具
+</h1><h2 id="包管理器">
+<a class="header-anchor" href="#%e5%8c%85%e7%ae%a1%e7%90%86%e5%99%a8"></a>
+包管理器
+</h2><p>Linux中安装软件有三种方法</p>
+<ol>
+<li>源码安装（编译环境配置复杂，很少使用）</li>
+<li>软件包安装（下载打包好的rpm软件包，但是依赖库可能不齐，还需要我们自己下载）</li>
+<li>包管理器安装（最常用，自动安装软件和依赖库）</li>
+</ol>
+<p>包管理器类似手机上的应用商店，选择我们需要的软件就能直接下载。在CentOS系统中，默认的包管理器是yum，ubuntu系统中默认的包管理器是apt。安装软件就是拷贝文件到系统的一些目录内，所以安装时需要root权限。</p>
+        
+        <hr><p>本文2026-03-31首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-01</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
+    
+  </channel>
+</rss>

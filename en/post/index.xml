@@ -42,6 +42,26 @@
     
 
     <item>
+      <title>【Linux】04 - Linux Development Tools</title>
+      <link>https://cialloking.com/en/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Tue, 31 Mar 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/en/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】04 - Linux Development Tools</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
+        
+        <hr><p>Published on 2026-03-31 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-31</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
+    
+    
+
+    <item>
       <title>【Linux】02 - Basic Linux Commands</title>
       <link>https://cialloking.com/en/post/linux02---linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/</link>
       <pubDate>Sat, 28 Mar 2026 00:00:00 &#43;0800</pubDate>
@@ -189,26 +209,6 @@
       <guid>https://cialloking.com/en/post/c&#43;&#43;03---%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E4%B8%8E%E7%BC%BA%E7%9C%81%E5%8F%82%E6%95%B0/</guid>
       <description>
         <![CDATA[<h1>【C++】03 - Function Overloading and Default Arguments</h1><p>Author: CialloKing(xxx@example.com)</p>
-        
-          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
-        
-        <hr><p>Published on 2026-03-22 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-22</p>]]>
-      </description>
-      
-        <category>C&#43;&#43;</category>
-      
-    </item>
-    
-    
-
-    <item>
-      <title>【C&#43;&#43;】02 - Starting with [Hello World], Dive into Core Concepts and Basic Syntax of C&#43;&#43;</title>
-      <link>https://cialloking.com/en/post/c&#43;&#43;02---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc&#43;&#43;%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</link>
-      <pubDate>Sun, 22 Mar 2026 00:00:00 &#43;0000</pubDate>
-      <author>xxx@example.com (CialloKing)</author>
-      <guid>https://cialloking.com/en/post/c&#43;&#43;02---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc&#43;&#43;%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</guid>
-      <description>
-        <![CDATA[<h1>【C++】02 - Starting with [Hello World], Dive into Core Concepts and Basic Syntax of C++</h1><p>Author: CialloKing(xxx@example.com)</p>
         
           <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
         

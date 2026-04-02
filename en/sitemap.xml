@@ -2,17 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://cialloking.com/en/post/linux03---linux%E6%9D%83%E9%99%90/</loc>
+    <loc>https://cialloking.com/en/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/</loc>
     <lastmod>2026-03-31T00:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://cialloking.com/post/linux03---linux%E6%9D%83%E9%99%90/"
+                href="https://cialloking.com/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://cialloking.com/en/post/linux03---linux%E6%9D%83%E9%99%90/"
+                href="https://cialloking.com/en/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"
                 />
   </url><url>
     <loc>https://cialloking.com/en/categories/</loc>
@@ -39,6 +39,19 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://cialloking.com/en/"
+                />
+  </url><url>
+    <loc>https://cialloking.com/en/tags/gcc/</loc>
+    <lastmod>2026-03-31T00:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="https://cialloking.com/tags/gcc/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://cialloking.com/en/tags/gcc/"
                 />
   </url><url>
     <loc>https://cialloking.com/en/categories/linux/</loc>
@@ -78,6 +91,45 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://cialloking.com/en/tags/"
+                />
+  </url><url>
+    <loc>https://cialloking.com/en/tags/vim/</loc>
+    <lastmod>2026-03-31T00:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="https://cialloking.com/tags/vim/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://cialloking.com/en/tags/vim/"
+                />
+  </url><url>
+    <loc>https://cialloking.com/en/tags/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/</loc>
+    <lastmod>2026-03-31T00:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="https://cialloking.com/tags/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://cialloking.com/en/tags/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/"
+                />
+  </url><url>
+    <loc>https://cialloking.com/en/post/linux03---linux%E6%9D%83%E9%99%90/</loc>
+    <lastmod>2026-03-31T00:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="https://cialloking.com/post/linux03---linux%E6%9D%83%E9%99%90/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://cialloking.com/en/post/linux03---linux%E6%9D%83%E9%99%90/"
                 />
   </url><url>
     <loc>https://cialloking.com/en/tags/%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/</loc>

@@ -12,39 +12,12 @@
     
     <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
-    <lastBuildDate>Wed, 01 Apr 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 02 Apr 2026 00:00:00 +0800</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/tags/%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
-    
-    
-
-    <item>
-      <title>【Linux】03 - Linux权限</title>
-      <link>https://cialloking.com/post/linux03---linux%E6%9D%83%E9%99%90/</link>
-      <pubDate>Mon, 30 Mar 2026 00:00:00 &#43;0800</pubDate>
-      <author>xxx@example.com (CialloKing)</author>
-      <guid>https://cialloking.com/post/linux03---linux%E6%9D%83%E9%99%90/</guid>
-      <description>
-        <![CDATA[<h1>【Linux】03 - Linux权限</h1><p>作者：CialloKing（xxx@example.com）</p>
-        
-          <h1 id="linux权限">
-<a class="header-anchor" href="#linux%e6%9d%83%e9%99%90"></a>
-Linux权限
-</h1><h2 id="shell">
-<a class="header-anchor" href="#shell"></a>
-shell
-</h2><p>操作系统内核会包裹一个外壳程序，统称为shell，外壳程序在内核和用户之间沟通，对于windows系统，外壳程序就是图形化界面，用户通过图形化界面操作系统，外壳程序shell把用户的操作翻译给内核，把内核的处理结果翻译给用户；和windows相似，Linux系统里外壳程序就是命令行界面，用户通过命令行来操作。<br>
-shell会创建子进程，让子进程进行命令的解释，如果子进程执行命令出问题了也不影响父进程。</p>
-        
-        <hr><p>本文2026-03-30首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-01</p>]]>
-      </description>
-      
-        <category>Linux</category>
-      
-    </item>
     
     
 
@@ -70,7 +43,34 @@ Xshell的下载和使用
 <p><a href="https://www.xshell.com/zh/free-for-home-school/">点击链接下载</a>Xshell，Xshell是商业软件，个人可免费使用，下载后选择安装目录安装，打开时遇到免费注册的弹窗可填邮箱注册或者点下面的“后来”按钮跳过。</p>
 <p>打开Xshell后，输入 <code>ssh root@云服务器的IP</code>，这时会提示输入密码(password)，输入密码时不会在屏幕上显示，输入完了按回车确认，如果不知道密码可在云服务器厂商的控制面板处重置密码后再使用Xshell登录，注意<strong>一定要设置复杂一点的密码</strong>，有黑客会 24 小时不间断扫描所有IP，如果密码过于简单会很容易被黑客破解，黑客进入我们的服务器后会偷偷干坏事，所有<strong>一定要设置复杂的密码</strong>。</p>
         
-        <hr><p>本文2026-03-28首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-03-30</p>]]>
+        <hr><p>本文2026-03-28首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-02</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
+    
+    
+
+    <item>
+      <title>【Linux】03 - Linux权限</title>
+      <link>https://cialloking.com/post/linux03---linux%E6%9D%83%E9%99%90/</link>
+      <pubDate>Mon, 30 Mar 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/linux03---linux%E6%9D%83%E9%99%90/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】03 - Linux权限</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h1 id="linux权限">
+<a class="header-anchor" href="#linux%e6%9d%83%e9%99%90"></a>
+Linux权限
+</h1><h2 id="shell">
+<a class="header-anchor" href="#shell"></a>
+shell
+</h2><p>操作系统内核会包裹一个外壳程序，统称为shell，外壳程序在内核和用户之间沟通，对于windows系统，外壳程序就是图形化界面，用户通过图形化界面操作系统，外壳程序shell把用户的操作翻译给内核，把内核的处理结果翻译给用户；和windows相似，Linux系统里外壳程序就是命令行界面，用户通过命令行来操作。<br>
+shell会创建子进程，让子进程进行命令的解释，如果子进程执行命令出问题了也不影响父进程。</p>
+        
+        <hr><p>本文2026-03-30首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-01</p>]]>
       </description>
       
         <category>Linux</category>
