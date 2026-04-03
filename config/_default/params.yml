@@ -849,7 +849,47 @@ injector:                                    # 代码注入器
         '/images/covers/covers-128.webp',
         '/images/covers/covers-129.webp',
         '/images/covers/covers-130.webp',
-        '/images/covers/covers-131.webp'
+        '/images/covers/covers-131.webp',
+        '/images/covers/covers-132.webp',
+        '/images/covers/covers-133.webp',
+        '/images/covers/covers-134.webp',
+        '/images/covers/covers-135.webp',
+        '/images/covers/covers-136.webp',
+        '/images/covers/covers-137.webp',
+        '/images/covers/covers-138.webp',
+        '/images/covers/covers-139.webp',
+        '/images/covers/covers-140.webp',
+        '/images/covers/covers-141.webp',
+        '/images/covers/covers-142.webp',
+        '/images/covers/covers-143.webp',
+        '/images/covers/covers-144.webp',
+        '/images/covers/covers-145.webp',
+        '/images/covers/covers-146.webp',
+        '/images/covers/covers-147.webp',
+        '/images/covers/covers-148.webp',
+        '/images/covers/covers-149.webp',
+        '/images/covers/covers-150.webp',
+        '/images/covers/covers-151.webp',
+        '/images/covers/covers-152.webp',
+        '/images/covers/covers-153.webp',
+        '/images/covers/covers-154.webp',
+        '/images/covers/covers-155.webp',
+        '/images/covers/covers-156.webp',
+        '/images/covers/covers-157.webp',
+        '/images/covers/covers-158.webp',
+        '/images/covers/covers-159.webp',
+        '/images/covers/covers-160.webp',
+        '/images/covers/covers-161.webp',
+        '/images/covers/covers-162.webp',
+        '/images/covers/covers-163.webp',
+        '/images/covers/covers-164.webp',
+        '/images/covers/covers-165.webp',
+        '/images/covers/covers-166.webp',
+        '/images/covers/covers-167.webp',
+        '/images/covers/covers-168.webp',
+        '/images/covers/covers-169.webp',
+        '/images/covers/covers-170.webp',
+        '/images/covers/covers-171.webp'
 
       ];
 
@@ -986,6 +1026,11 @@ injector:                                    # 代码注入器
     })();
     </script>
 
+
+
+
+
+
   #'<script src="/js/random-bg.js"></script>' # Inject code snippet right before </body>
   sidebar_begin: # Inject code snippet right after <aside>
   sidebar_end: # Inject code snippet right before </aside>
@@ -1035,7 +1080,33 @@ player:                    # 音乐播放器，禁用则将aplayer或meting任�
     # https://github.com/DIYgod/APlayer       # 下方配置请前往 Aplayer官方中文文档： https://aplayer.js.org/#/zh-Hans/?id=%E5%8F%82%E6%95%B0 查看
     enable: true
     options:
-      audio: []
+      audio:
+        - name: "Lumina"
+          artist: "Wisp X Xomu"
+          url: "/audio/Lumina - Wisp X Xomu.mp3"
+          cover: "/audio/Lumina - Wisp X Xomu.webp"
+        - name: "Luv Letter (Wisp X Remix)"
+          artist: "Wisp X DJ Okawari"
+          url: "/audio/Luv Letter (Wisp X Remix) - Wisp X DJ Okawari.mp3"
+          cover: "/audio/Luv Letter (Wisp X Remix) - Wisp X DJ Okawari.webp"
+        - name: "花月夜"
+          artist: "Yonder Voice"
+          url: "/audio/花月夜 - Yonder Voice.mp3"
+          cover: "/audio/花月夜 - Yonder Voice.webp"
+        - name: "色は匂へど 散りぬるを -Full Version-"
+          artist: "森永真由美"
+          url: "/audio/色は匂へど 散りぬるを -Full Version- - 森永真由美.mp3"
+          cover: "/audio/色は匂へど 散りぬるを -Full Version- - 森永真由美.webp"
+        - name: "Bad Apple!!"
+          artist: "のみこ"
+          url: "/audio/Bad Apple!! - のみこ.mp3"
+          cover: "/audio/Bad Apple!! - のみこ.webp"
+        - name: "恋ひ恋ふ縁 (Title Version)"
+          artist: "Famishin 井ノ原智"
+          url: "/audio/恋ひ恋ふ縁 (Title Version) - Famishin 井ノ原智.mp3" 
+          cover: "/audio/恋ひ恋ふ縁 (Title Version) - Famishin 井ノ原智.webp"
+
+                     
       fixed: true #调整播放器在侧边栏或页面底部 
       autoplay: false
       loop: all
@@ -1048,10 +1119,10 @@ player:                    # 音乐播放器，禁用则将aplayer或meting任�
   meting:
     # https://github.com/metowolf/MetingJS
     # if you want to use meting, please enable aplayer first
-    enable: true
+    enable: false
     meting_api: # custom api
     options:
-      id: 17840645230
+      id: 
       server: netease
       type: playlist
       auto: true
