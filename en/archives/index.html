@@ -76,6 +76,94 @@
     opacity: 1;
   }
 </style>
+
+
+<style>
+/* 解除头图纵向高度限制 */
+#header {
+  min-height: auto !important;  /* 允许容器高度自适应 */
+}
+#header img {
+  height: auto !important;      /* 图片高度自适应 */
+  max-height: 4096px !important; /* 最大高度提升到 4096px */
+  width: 100%;
+  object-fit: cover;            /* 保持比例填充，不拉伸变形 */
+}
+</style>
+
+
+
+<style>
+  #content {
+    transition: opacity 0.2s ease; /* 移出时快速恢复 */
+  }
+</style>
+<script>
+  (function() {
+    let animFrame = null;
+    let startTime = null;
+    const duration1 = 1000;   // 第一阶段 1 秒,第一阶段持续时间（毫秒），例如 1 秒 = 1000
+    const duration2 = 2000;   // 第二阶段 2 秒,第二阶段持续时间（毫秒），例如 2 秒 = 2000
+    const startOpacity = 1;   // 起始透明度
+    const midOpacity = 0.1;   // 中间透明度（第一阶段结束时的值）
+    const endOpacity = 0;     // 最终透明度
+
+    function updateOpacity(now) {
+      const elapsed = now - startTime;
+      let opacity;
+      if (elapsed < duration1) {
+        // 第一阶段：线性插值 1 -> 0.1
+        const t = elapsed / duration1;
+        opacity = startOpacity + (midOpacity - startOpacity) * t;
+      } else if (elapsed < duration1 + duration2) {
+        // 第二阶段：线性插值 0.1 -> 0
+        const t = (elapsed - duration1) / duration2;
+        opacity = midOpacity + (endOpacity - midOpacity) * t;
+      } else {
+        opacity = endOpacity;
+      }
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = opacity;
+      if (elapsed < duration1 + duration2) {
+        animFrame = requestAnimationFrame(updateOpacity);
+      }
+    }
+
+    function startFade() {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = startOpacity;
+      startTime = performance.now();
+      animFrame = requestAnimationFrame(updateOpacity);
+    }
+
+    function resetOpacity() {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = '1';
+    }
+
+    function bindEvents() {
+      const header = document.getElementById('header');
+      if (!header) return;
+      header.removeEventListener('mouseenter', startFade);
+      header.removeEventListener('mouseleave', resetOpacity);
+      header.addEventListener('mouseenter', startFade);
+      header.addEventListener('mouseleave', resetOpacity);
+    }
+
+    function init() {
+      bindEvents();
+      document.addEventListener('pjax:complete', bindEvents);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
 </head>
   <body><div id='loader'>
     <div class="loading-left-bg loading-bg"></div>
@@ -579,6 +667,18 @@ This article does not have a corresponding language version
                 >2026-03</time
               >
             </span>
+          </div><a class="archive-article-title" href="/en/post/c%E8%AF%AD%E8%A8%8002---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"
+              >【C语言】01 - 什么是C语言</a
+            ></li><li class="archive-article">
+          <div class="archive-article-date">
+            <span>
+              <time
+                class="dt-published"
+                datetime="2026-03-22 00:00:00 &#43;0000 UTC"
+                itemprop="datePublished"
+                >2026-03</time
+              >
+            </span>
           </div><a class="archive-article-title" href="/en/post/c&#43;&#43;04---%E5%BC%95%E7%94%A8/"
               >【C&#43;&#43;】04 - References</a
             ></li><li class="archive-article">
@@ -605,10 +705,61 @@ This article does not have a corresponding language version
             </span>
           </div><a class="archive-article-title" href="/en/post/c&#43;&#43;02---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc&#43;&#43;%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"
               >【C&#43;&#43;】02 - Starting with [Hello World], Dive into Core Concepts and Basic Syntax of C&#43;&#43;</a
+            ></li><li class="archive-article">
+          <div class="archive-article-date">
+            <span>
+              <time
+                class="dt-published"
+                datetime="2026-03-21 00:00:00 &#43;0000 UTC"
+                itemprop="datePublished"
+                >2026-03</time
+              >
+            </span>
+          </div><a class="archive-article-title" href="/en/post/c&#43;&#43;01---%E4%BB%80%E4%B9%88%E6%98%AFc&#43;&#43;/"
+              >【C&#43;&#43;】01 - what is the C&#43;&#43;</a
+            ></li><li class="archive-article">
+          <div class="archive-article-date">
+            <span>
+              <time
+                class="dt-published"
+                datetime="2026-03-21 00:00:00 &#43;0000 UTC"
+                itemprop="datePublished"
+                >2026-03</time
+              >
+            </span>
+          </div><a class="archive-article-title" href="/en/post/c%E8%AF%AD%E8%A8%8001---%E4%BB%80%E4%B9%88%E6%98%AFc%E8%AF%AD%E8%A8%80/"
+              >[C] 01 - What is C?</a
+            ></li><li class="archive-article">
+          <div class="archive-article-date">
+            <span>
+              <time
+                class="dt-published"
+                datetime="2026-03-18 00:00:00 &#43;0000 UTC"
+                itemprop="datePublished"
+                >2026-03</time
+              >
+            </span>
+          </div><a class="archive-article-title" href="/en/post/test/"
+              >Hello</a
             ></li></ul>
-  </section></div><nav id="page-nav" aria-label="Pagination navigation" data-aos="fade-up"><span class="page-number current">1</span><a class="page-number" href="/en/archives/page/2/">2</a><a class="extend next" rel="next" href="/en/archives/page/2/">
-      Next &raquo;
-    </a></nav>
+  </section><section class="archives-wrap" data-aos="fade-up">
+    <div class="archive-year-wrap">
+      <span class="archive-year">2023</span>
+    </div>
+    <ul><li class="archive-article">
+          <div class="archive-article-date">
+            <span>
+              <time
+                class="dt-published"
+                datetime="2023-03-15 11:00:00 -0700 -0700"
+                itemprop="datePublished"
+                >2023-03</time
+              >
+            </span>
+          </div><a class="archive-article-title" href="/en/post/hello/"
+              >Hello World</a
+            ></li></ul>
+  </section></div><nav id="page-nav" aria-label="Pagination navigation" data-aos="fade-up"><span class="page-number current">1</span></nav>
 </section>
         </div><footer id="footer" aria-label="Site footer">
   <div style="width: 100%; overflow: hidden">
@@ -1062,7 +1213,8 @@ This article does not have a corresponding language version
     '/images/bg/bg6.webp',
     '/images/bg/bg7.webp',
     '/images/bg/bg8.webp',
-    '/images/bg/bg9.webp'
+    '/images/bg/bg9.webp',
+    '/images/bg/bg10.webp'
   ];
 
   function getRandomBanner() {

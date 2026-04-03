@@ -76,6 +76,94 @@
     opacity: 1;
   }
 </style>
+
+
+<style>
+/* 解除头图纵向高度限制 */
+#header {
+  min-height: auto !important;  /* 允许容器高度自适应 */
+}
+#header img {
+  height: auto !important;      /* 图片高度自适应 */
+  max-height: 4096px !important; /* 最大高度提升到 4096px */
+  width: 100%;
+  object-fit: cover;            /* 保持比例填充，不拉伸变形 */
+}
+</style>
+
+
+
+<style>
+  #content {
+    transition: opacity 0.2s ease; /* 移出时快速恢复 */
+  }
+</style>
+<script>
+  (function() {
+    let animFrame = null;
+    let startTime = null;
+    const duration1 = 1000;   // 第一阶段 1 秒,第一阶段持续时间（毫秒），例如 1 秒 = 1000
+    const duration2 = 2000;   // 第二阶段 2 秒,第二阶段持续时间（毫秒），例如 2 秒 = 2000
+    const startOpacity = 1;   // 起始透明度
+    const midOpacity = 0.1;   // 中间透明度（第一阶段结束时的值）
+    const endOpacity = 0;     // 最终透明度
+
+    function updateOpacity(now) {
+      const elapsed = now - startTime;
+      let opacity;
+      if (elapsed < duration1) {
+        // 第一阶段：线性插值 1 -> 0.1
+        const t = elapsed / duration1;
+        opacity = startOpacity + (midOpacity - startOpacity) * t;
+      } else if (elapsed < duration1 + duration2) {
+        // 第二阶段：线性插值 0.1 -> 0
+        const t = (elapsed - duration1) / duration2;
+        opacity = midOpacity + (endOpacity - midOpacity) * t;
+      } else {
+        opacity = endOpacity;
+      }
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = opacity;
+      if (elapsed < duration1 + duration2) {
+        animFrame = requestAnimationFrame(updateOpacity);
+      }
+    }
+
+    function startFade() {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = startOpacity;
+      startTime = performance.now();
+      animFrame = requestAnimationFrame(updateOpacity);
+    }
+
+    function resetOpacity() {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = '1';
+    }
+
+    function bindEvents() {
+      const header = document.getElementById('header');
+      if (!header) return;
+      header.removeEventListener('mouseenter', startFade);
+      header.removeEventListener('mouseleave', resetOpacity);
+      header.addEventListener('mouseenter', startFade);
+      header.addEventListener('mouseleave', resetOpacity);
+    }
+
+    function init() {
+      bindEvents();
+      document.addEventListener('pjax:complete', bindEvents);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
 </head>
   <body><div id='loader'>
     <div class="loading-left-bg loading-bg"></div>
@@ -283,7 +371,7 @@ This article does not have a corresponding language version
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-35.webp"
+              data-src="/images/covers/covers-94.webp"
               data-sizes="auto"
               alt="Hello World"
               class="lazyload"
@@ -295,7 +383,7 @@ This article does not have a corresponding language version
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">Hello World</h3>
       </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-27.webp"
+              data-src="/images/covers/covers-64.webp"
               data-sizes="auto"
               alt="【C&#43;&#43;】01 - what is the C&#43;&#43;"
               class="lazyload"
@@ -766,7 +854,8 @@ This article does not have a corresponding language version
     '/images/bg/bg6.webp',
     '/images/bg/bg7.webp',
     '/images/bg/bg8.webp',
-    '/images/bg/bg9.webp'
+    '/images/bg/bg9.webp',
+    '/images/bg/bg10.webp'
   ];
 
   function getRandomBanner() {
