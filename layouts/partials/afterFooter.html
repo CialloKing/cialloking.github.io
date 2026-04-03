@@ -401,7 +401,7 @@
   );
 </script>
 
-{{- if $params.player.aplayer.enable -}}
+<!-- {{- if $params.player.aplayer.enable -}}
   {{- if not $params.player.meting.enable -}}
     <script>
     var setupAPlayer = () => {
@@ -460,7 +460,79 @@
     {{- if $params.player.meting.enable -}}
     {{- partial "helpers/cdnJs.html" (dict "name" "meting" "ctx" . "defer" true) -}}
   {{- end -}}
+{{- end -}} -->
+
+{{- if $params.player.aplayer.enable -}}
+  {{- if not $params.player.meting.enable -}}
+    <script>
+    var setupAPlayer = () => {
+      if (!{{ $params.player.disable_on_mobile | default false }} || !window.matchMedia('(max-width: 768px)').matches) {
+        if (window.matchMedia('(max-width: 959px)').matches) {
+          const aplayer = document.getElementById('aplayer');
+          if (aplayer) {
+            const aside = aplayer.parentNode?.parentNode;
+            if (aside?.tagName === 'ASIDE') {
+              aplayer.removeAttribute('data-aos');
+              aside.parentNode.removeChild(aplayer);
+              document.body.appendChild(aplayer);
+            }
+          }
+        }
+        // 直接输出音频数组，避免 JSON.parse 出错
+        var audioData = {{ $params.player.aplayer.options.audio | jsonify | safeJS }};
+        new APlayer({
+            theme: "var(--color-link)",
+            container: document.getElementById('aplayer'),
+            audio: audioData || [],
+            fixed: {{ $params.player.aplayer.options.fixed | default false }},
+            autoplay: {{ $params.player.aplayer.options.autoplay | default false }},
+            loop: '{{ $params.player.aplayer.options.loop | default "all" }}',
+            order: '{{ $params.player.aplayer.options.order | default "list" }}',
+            preload: '{{ $params.player.aplayer.options.preload | default "auto" }}',
+            volume: {{ $params.player.aplayer.options.volume | default 0.7 }},
+            mutex: {{ $params.player.aplayer.options.mutex | default true }},
+            listFolded: {{ $params.player.aplayer.options.listFolded | default false }},
+            lrcType: {{ $params.player.aplayer.options.lrcType | default 0 }},
+        });
+      }
+    }
+    </script>
+  {{- else -}}
+    <script>
+    var setupAPlayer = () => {
+      if (!{{ $params.player.disable_on_mobile | default false }} || !window.matchMedia('(max-width: 768px)').matches) {
+        if (window.matchMedia('(max-width: 959px)').matches) {
+          const meting = _$('meting-js');
+          if (meting) {
+            meting.setAttribute('fixed', 'true');
+            const aside = meting.parentNode?.parentNode;
+            if (aside?.tagName === 'ASIDE') {
+              meting.parentNode.removeChild(meting);
+              document.body.appendChild(meting);
+            }
+          }
+        }
+      }
+    };
+    {{- if $params.player.meting.meting_api -}}
+      var meting_api = '{{ $params.player.meting.meting_api }}';
+    {{- end -}}
+    </script>
+  {{- end -}}
+  {{- partial "helpers/cdnJs.html" (dict "name" "aplayer" "ctx" . "defer" true "onload" "setupAPlayer()") -}}
+    {{- if $params.player.meting.enable -}}
+    {{- partial "helpers/cdnJs.html" (dict "name" "meting" "ctx" . "defer" true) -}}
+  {{- end -}}
 {{- end -}}
+
+
+
+
+
+
+
+
+
 
 {{- if .Site.Params.pangu.enable -}}
   {{- partial "helpers/cdnJs.html" (dict "name" "pangu" "ctx" .) -}}
