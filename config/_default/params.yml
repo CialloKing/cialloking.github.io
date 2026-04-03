@@ -193,7 +193,7 @@ sort_order:
 
 # Pagination
 paginate:                     #设置每页文章数，将xx替换为数值即可，注意保留后方空格，否则报错
-  archive: 20fa # Number of posts per page in archive and taxonomy pages
+  archive: 30 # Number of posts per page in archive and taxonomy pages
   post: 8  # Number of posts per page in home and other list pages
 
 ########################################
@@ -622,6 +622,21 @@ injector:                                    # 代码注入器
         opacity: 1;
       }
     </style>
+
+
+    <style>
+    /* 解除头图纵向高度限制 */
+    #header {
+      min-height: auto !important;  /* 允许容器高度自适应 */
+    }
+    #header img {
+      height: auto !important;      /* 图片高度自适应 */
+      max-height: 4096px !important; /* 最大高度提升到 4096px */
+      width: 100%;
+      object-fit: cover;            /* 保持比例填充，不拉伸变形 */
+    }
+    </style>
+
   body_begin: # Inject code snippet right after <body>
   body_end: |
     <script>
@@ -836,7 +851,8 @@ injector:                                    # 代码注入器
         '/images/bg/bg6.webp',
         '/images/bg/bg7.webp',
         '/images/bg/bg8.webp',
-        '/images/bg/bg9.webp'
+        '/images/bg/bg9.webp',
+        '/images/bg/bg10.webp'
       ];
 
       function getRandomBanner() {
