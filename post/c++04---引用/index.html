@@ -535,7 +535,7 @@ const 引用
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-03.webp"
+              data-src="/images/covers/covers-05.webp"
               data-sizes="auto"
               alt="【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法"
               class="lazyload"
@@ -547,7 +547,7 @@ const 引用
         <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法</h3>
       </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-25.webp"
+              data-src="/images/covers/covers-94.webp"
               data-sizes="auto"
               alt="【C&#43;&#43;】03 - 函数重载与缺省参数"
               class="lazyload"
@@ -684,10 +684,7 @@ const 引用
         <div class="sidebar-toc-btn current"></div>
         <div class="sidebar-common-btn"></div>
       </div></nav>
-</div><meting-js
-        theme="var(--color-link)"
-        id="17840645230"server="netease"type="playlist"auto="true"fixed="true"autoplay="false"loop="all"order="random"preload="auto"volume="0.7"mutex="true"list-folded="true"lrc-type="0">
-      </meting-js><script
+</div><div id="aplayer" theme="var(--color-link)"></div><script
     src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"
     
     
@@ -831,34 +828,47 @@ const 引用
     "color: white; background: #ff5252; padding:5px 0;",
     "padding:4px;border:1px solid #ff5252;",
   );
-</script><script>
+</script>
+
+<script>
     var setupAPlayer = () => {
       if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
         if (window.matchMedia('(max-width: 959px)').matches) {
-          const meting = _$('meting-js');
-          if (meting) {
-            meting.setAttribute('fixed', 'true');
-            const aside = meting.parentNode?.parentNode;
+          const aplayer = document.getElementById('aplayer');
+          if (aplayer) {
+            const aside = aplayer.parentNode?.parentNode;
             if (aside?.tagName === 'ASIDE') {
-              meting.parentNode.removeChild(meting);
-              document.body.appendChild(meting);
+              aplayer.removeAttribute('data-aos');
+              aside.parentNode.removeChild(aplayer);
+              document.body.appendChild(aplayer);
             }
           }
         }
+        
+        var audioData = [{"artist":"Wisp X Xomu","cover":"/audio/Lumina - Wisp X Xomu.webp","name":"Lumina","url":"/audio/Lumina - Wisp X Xomu.mp3"},{"artist":"Wisp X DJ Okawari","cover":"/audio/Luv Letter (Wisp X Remix) - Wisp X DJ Okawari.webp","name":"Luv Letter (Wisp X Remix)","url":"/audio/Luv Letter (Wisp X Remix) - Wisp X DJ Okawari.mp3"},{"artist":"Yonder Voice","cover":"/audio/花月夜 - Yonder Voice.webp","name":"花月夜","url":"/audio/花月夜 - Yonder Voice.mp3"},{"artist":"森永真由美","cover":"/audio/色は匂へど 散りぬるを -Full Version- - 森永真由美.webp","name":"色は匂へど 散りぬるを -Full Version-","url":"/audio/色は匂へど 散りぬるを -Full Version- - 森永真由美.mp3"},{"artist":"のみこ","cover":"/audio/Bad Apple!! - のみこ.webp","name":"Bad Apple!!","url":"/audio/Bad Apple!! - のみこ.mp3"},{"artist":"Famishin 井ノ原智","cover":"/audio/恋ひ恋ふ縁 (Title Version) - Famishin 井ノ原智.webp","name":"恋ひ恋ふ縁 (Title Version)","url":"/audio/恋ひ恋ふ縁 (Title Version) - Famishin 井ノ原智.mp3"}];
+        new APlayer({
+            theme: "var(--color-link)",
+            container: document.getElementById('aplayer'),
+            audio: audioData || [],
+            fixed:  true ,
+            autoplay:  false ,
+            loop: 'all',
+            order: 'random',
+            preload: 'auto',
+            volume:  0.7 ,
+            mutex:  true ,
+            listFolded:  true ,
+            lrcType:  0 ,
+        });
       }
-    };</script><script
+    }
+    </script><script
     src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js"
     defer
     
     
     onload="setupAPlayer()"
-    integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr&#43;h5UfruuRL/aORyw&#43;5&#43;HZoU6e" crossorigin="anonymous"></script><script
-    src="https://npm.webcache.cn/meting@2.0.1/dist/Meting.min.js"
-    defer
-    
-    
-    
-    integrity="sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8&#43;0maanw1S/IyB&#43;Y4JG&#43;ZDU7GpKE8" crossorigin="anonymous"></script><script>
+    integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr&#43;h5UfruuRL/aORyw&#43;5&#43;HZoU6e" crossorigin="anonymous"></script><script>
 (function() {
   // 封面图片列表（保持你现有路径不变，无需修改）
   window.covers = [
@@ -992,7 +1002,47 @@ const 引用
     '/images/covers/covers-128.webp',
     '/images/covers/covers-129.webp',
     '/images/covers/covers-130.webp',
-    '/images/covers/covers-131.webp'
+    '/images/covers/covers-131.webp',
+    '/images/covers/covers-132.webp',
+    '/images/covers/covers-133.webp',
+    '/images/covers/covers-134.webp',
+    '/images/covers/covers-135.webp',
+    '/images/covers/covers-136.webp',
+    '/images/covers/covers-137.webp',
+    '/images/covers/covers-138.webp',
+    '/images/covers/covers-139.webp',
+    '/images/covers/covers-140.webp',
+    '/images/covers/covers-141.webp',
+    '/images/covers/covers-142.webp',
+    '/images/covers/covers-143.webp',
+    '/images/covers/covers-144.webp',
+    '/images/covers/covers-145.webp',
+    '/images/covers/covers-146.webp',
+    '/images/covers/covers-147.webp',
+    '/images/covers/covers-148.webp',
+    '/images/covers/covers-149.webp',
+    '/images/covers/covers-150.webp',
+    '/images/covers/covers-151.webp',
+    '/images/covers/covers-152.webp',
+    '/images/covers/covers-153.webp',
+    '/images/covers/covers-154.webp',
+    '/images/covers/covers-155.webp',
+    '/images/covers/covers-156.webp',
+    '/images/covers/covers-157.webp',
+    '/images/covers/covers-158.webp',
+    '/images/covers/covers-159.webp',
+    '/images/covers/covers-160.webp',
+    '/images/covers/covers-161.webp',
+    '/images/covers/covers-162.webp',
+    '/images/covers/covers-163.webp',
+    '/images/covers/covers-164.webp',
+    '/images/covers/covers-165.webp',
+    '/images/covers/covers-166.webp',
+    '/images/covers/covers-167.webp',
+    '/images/covers/covers-168.webp',
+    '/images/covers/covers-169.webp',
+    '/images/covers/covers-170.webp',
+    '/images/covers/covers-171.webp'
 
   ];
 
