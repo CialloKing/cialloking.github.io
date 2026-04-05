@@ -40,7 +40,7 @@
   <meta property="og:image" content="https://cialloking.com/images/bg/bg1.webp" />
   <meta property="article:author" content="CialloKing" />
   <meta property="article:published_time" content="2026-03-31T00:00:00&#43;08:00" />
-  <meta property="article:modified_time" content="2026-04-01T00:00:00&#43;08:00" /><meta property="article:tag" content="vim, 包管理器, gcc, Makefile, git, gbd" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
+  <meta property="article:modified_time" content="2026-04-01T00:00:00&#43;08:00" /><meta property="article:tag" content="vim, 包管理器, gcc, Makefile, git, gdb" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
 <link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.e15f9328b0e9ee3c7d04ca76ea47f3db653d93dce1f4a28af9a7327ad1d51367.css" /><link
     rel="preload"
     as="style"
@@ -355,8 +355,56 @@
             <li><a href="#进度条的实现">进度条的实现</a></li>
           </ol>
         </li>
-        <li><a href="#git">git</a></li>
-        <li><a href="#gbd">gbd</a></li>
+        <li><a href="#git">git</a>
+          <ol>
+            <li><a href="#版本控制器git">版本控制器git</a></li>
+            <li><a href="#git诞生的历史">git诞生的历史</a></li>
+            <li><a href="#git的下载安装">git的下载安装</a></li>
+            <li><a href="#创建远端仓库">创建远端仓库</a></li>
+            <li><a href="#git三板斧">git三板斧</a>
+              <ol>
+                <li><a href="#git-add--将文件添加到暂存区">git add —— 将文件添加到暂存区</a></li>
+                <li><a href="#git-commit--将暂存区内容提交到本地仓库">git commit —— 将暂存区内容提交到本地仓库</a></li>
+                <li><a href="#git-push--将本地提交推送到远程仓库">git push —— 将本地提交推送到远程仓库</a></li>
+              </ol>
+            </li>
+            <li><a href="#其他命令">其他命令</a></li>
+            <li><a href="#gitignore">.gitignore</a></li>
+            <li><a href="#git进阶教程">git进阶教程</a></li>
+          </ol>
+        </li>
+        <li><a href="#gdb">gdb</a>
+          <ol>
+            <li><a href="#gdb的基础使用">gdb的基础使用</a>
+              <ol>
+                <li><a href="#cgdb">cgdb</a></li>
+              </ol>
+            </li>
+            <li><a href="#gdb的指令">gdb的指令</a>
+              <ol>
+                <li><a href="#list">list</a></li>
+                <li><a href="#run">run</a></li>
+                <li><a href="#断点相关操作">断点相关操作</a></li>
+                <li><a href="#step和next">step和next</a></li>
+                <li><a href="#backtrace">backtrace</a></li>
+                <li><a href="#finish">finish</a></li>
+                <li><a href="#print">print</a></li>
+                <li><a href="#continue">continue</a></li>
+                <li><a href="#until">until</a></li>
+                <li><a href="#display和undisplay">display和undisplay</a></li>
+                <li><a href="#info">info</a></li>
+                <li><a href="#quit">quit</a></li>
+              </ol>
+            </li>
+            <li><a href="#gdb的小技巧">gdb的小技巧</a>
+              <ol>
+                <li><a href="#watch">watch</a></li>
+                <li><a href="#set-var确定问题原因">set var确定问题原因</a></li>
+                <li><a href="#条件断点">条件断点</a></li>
+              </ol>
+            </li>
+          </ol>
+        </li>
       </ol>
     </li>
   </ol>
@@ -455,6 +503,14 @@ Linux开发工具
 开源本质是一种商业模式，各大公司如微软谷歌开源各种项目等也是为了建立生态。</p>
 <p>我们在安装系统时，系统内部也内置了下载连接，如CentOS系统中内置了CentOS的链接，ubuntu系统中内置了ubuntu的链接。
 各个社区往往是国外的，国内下载速度会比较慢，所以国内相应的社区也建立了相应镜像源，相当于把国外社区的软件拷贝一份过来为国内提供下载服务，常用的镜像源有清华大学开源软件镜像，网易163镜像，阿里云镜像等。</p>
+
+  <blockquote class="alert-blockquote tip">
+    <p class="alert-heading">
+      Tip
+    </p>
+    <p><p>Linux的开源社区固然很成功，但不是所有的开源项目都能像Linux项目一样成功，想要了解更多可以观看这个<a href="https://www.bilibili.com/video/BV1FhjBzeEt2">视频</a></p></p>
+  </blockquote>
+
 <h3 id="yum具体操作">
 <a class="header-anchor" href="#yum%e5%85%b7%e4%bd%93%e6%93%8d%e4%bd%9c"></a>
 yum具体操作
@@ -471,13 +527,11 @@ yum具体操作
 <a class="header-anchor" href="#%e5%ae%89%e8%a3%85%e8%bd%af%e4%bb%b6"></a>
 安装软件
 </h4><p>通过yum，我们可以通过很简单的一条命令安装 lrzsz 软件包。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># yum list | grep lrzsz  </span>
-</span></span><span class="line"><span class="cl">lrzsz.x86_64                             0.12.20-36.el7                @base    
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># </span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo yum install -y lrzsz
 </span></span></code></pre></div><p>yum/apt会自动找到都有哪些软件包需要下载，这时候敲&quot;y&quot;确认安装,出现&quot;complete&quot;字样或者中间未出现报错，说明安装完成。</p>
 <ul>
 <li>安装软件时由于需要向系统目录中写入内容，一般需要sudo或者切到root账户下才能完成</li>
-<li>yum/apt安装软件只能一个装完了再装另一个.正在yum/apt安装一个软件的过程中，如果再尝试用yum/apt安装另外一个软件，yum/apt会报错。</li>
+<li>yum/apt安装软件只能一个装完了再装另一个，不能同时运行两个yum/apt进程，正在yum/apt安装一个软件的过程中，如果再尝试用yum/apt安装另外一个软件，yum/apt会报错，可以在一条命令中列出多个软件包一次性安装。。</li>
 <li>如果yum/apt报错，询问chatGPT豆包DeepSeek等AI寻找解决方法。</li>
 </ul>
 <h4 id="卸载软件">
@@ -488,7 +542,7 @@ yum具体操作
 </span></span></code></pre></div><h4 id="安装源">
 <a class="header-anchor" href="#%e5%ae%89%e8%a3%85%e6%ba%90"></a>
 安装源
-</h4><p>Cetnos安装源路径：</p>
+</h4><p>CentOS安装源路径：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ll /etc/yum.repos.d/
 </span></span><span class="line"><span class="cl">total <span class="m">16</span>
 </span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root  <span class="m">676</span> Oct  <span class="m">8</span> 20:47 CentOS-Base.repo <span class="c1"># 标准源</span>
@@ -505,7 +559,7 @@ vim编辑器
 vim是什么
 </h3><p>之前我们用的VS2026是集成开发环境（IDE），包含了各种各样的工具，如编辑器编译器链接器等等。</p>
 <p>vim是一个编辑器，只能编辑代码，vim是一个加强版的vi编辑器，vi已经非常老了所以我们使用vim。<br>
-vim是所有Linux自带的编辑器，是一款使用成本比较高的编辑器，vim的操作是按照一些只有26个字母加10个数字加shit键空格键ctrl键等功能键的键盘设计的。</p>
+大多数Linux发行版默认安装 vim 或 vi，vim是一款使用成本比较高的编辑器，vim的操作是按照一些只有26个字母加10个数字加shift键空格键ctrl键等功能键的键盘设计的。</p>
 <p><img src="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/image.webp" alt="">
 <img src="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/image-1.webp" alt=""></p>
 <h3 id="vim的上手尝试">
@@ -542,7 +596,7 @@ vim的上手尝试
 </span></span><span class="line"><span class="cl">~                                                                                                  
 </span></span><span class="line"><span class="cl">                                                                                 0,0-1         All
 </span></span></code></pre></div><p>使用<code>shift+:</code>快捷键进入底下的命令行，输入q表示退出，按回车键就退出vim了，或者按两下<strong>大写</strong>的<code>ZZ</code>快捷键来退出。</p>
-<p>新键一个文件，使用vim进入就可以编辑代码了</p>
+<p>新建一个文件，使用vim进入就可以编辑代码了</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ touch test.c   <span class="c1">#新建一个.c文件</span>
 </span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ vim test.c     <span class="c1">#使用vim进入编辑</span>
 </span></span></code></pre></div><p>编辑代码</p>
@@ -611,8 +665,8 @@ vim的默认配置不显示行号，可以在底行输入<code>set nu</code>来�
 <p>移动光标快捷键</p>
 <ul>
 <li><code>gg</code>，光标快速回到第一行</li>
-<li><code>shitf+g</code>，光标快速移动到文件结尾</li>
-<li><code>数字+shitf+g</code>，光标快速移动到对应行号</li>
+<li><code>shift+g</code>，光标快速移动到文件结尾</li>
+<li><code>数字+shift+g</code>，光标快速移动到对应行号</li>
 <li><code>shift+$(数字4)</code>，光标快速移动到行尾</li>
 <li><code>shift+^(数字6)</code>，光标快速移动到此行开头</li>
 <li><code>h</code>，光标左移</li>
@@ -652,8 +706,8 @@ vim的默认配置不显示行号，可以在底行输入<code>set nu</code>来�
 <li><code>数字+dd</code>，剪切往下数相应的n行，例如，「6+dd」表示剪切从光标所在的该行“往下数”6行文字。</li>
 <li><code>x</code>，每按一次，删除光标所在位置的一个字符，相当于word文档里的del键删除</li>
 <li><code>数字+x</code>，删除对应的n个字符，例如，<code>20+X</code>表示删除光标所在位置的“前”20个字符</li>
-<li><code>shitf+X</code>，每按一次，删除光标所在位置的前一个字符，相当于word文档里的退格键删除</li>
-<li><code>数字+shitf+X</code>，删除光标所在位置的n个字符，例如，<code>20+shift+x</code>表示删除光标所在位置的前面的“前”20个字符</li>
+<li><code>shift+X</code>，每按一次，删除光标所在位置的前一个字符，相当于word文档里的退格键删除</li>
+<li><code>数字+shift+X</code>，删除光标所在位置的n个字符，例如，<code>20+shift+x</code>表示删除光标所在位置的前面的“前”20个字符</li>
 <li></li>
 </ul>
 </li>
@@ -697,7 +751,7 @@ vim的默认配置不显示行号，可以在底行输入<code>set nu</code>来�
 </ul>
 </li>
 <li>
-<p><code>!+执行命令</code>，可以在不退出vim的情况下执行Linux命令，</p>
+<p><code>! 命令</code>，可以在不退出vim的情况下执行Linux命令，</p>
 </li>
 <li>
 <p><code>%s/被替换的单词/要替换的单词/</code>，可以进行批量化替换</p>
@@ -734,9 +788,9 @@ vim的配置
 </span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ vim .vimrc              <span class="c1">#使用vim进入配置文件编辑</span>
 </span></span></code></pre></div><p>进入<code>.vimrc </code>可以输入以下常用配置项测试一下</p>
 <ul>
-<li>设置语法亮：syntaxon</li>
-<li>显示行号:set nu</li>
-<li>设置缩进的空格数为4:setshiftwidth=4</li>
+<li>设置语法高亮：syntax on</li>
+<li>显示行号：set nu</li>
+<li>设置缩进的空格数为4：set shiftwidth=4</li>
 </ul>
 <p>vim还有很多配置项，处理配置vimrc还可以下载插件，不过下载插件进行配置比较复杂耗时，可以下载别人已经做好的配置文件使用。</p>
 <p>如果是CentOS系统，可以进入gitee的这个<a href="https://gitee.com/HGtz2222/VimForCpp">项目</a>，往下滑找到一键安装命令</p>
@@ -881,7 +935,7 @@ gcc/g++编译器
 <a class="header-anchor" href="#%e6%b1%87%e7%bc%96"></a>
 汇编
 </h4><p>汇编阶段是把编译阶段生成的“S”文件转成目标文件，
-读者在此可使选项“-c”就可看到汇编代码已转化为“o”的进制标代码了。
+读者在此可使选项“-c”就可看到汇编代码已转化为“o”二进制目标代码了。
 <code>.o</code> 文件全称叫<strong>可重定位目标文件</strong>，在windows的VS2026中在这一步也会生成<code>.obj</code>文件</p>
 <p>示例: <code>gcc -c test.s -o test.o</code></p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ gcc -c test.s -o test.o  
@@ -1089,7 +1143,7 @@ Linux里一切皆文件，动态库也是文件，程序运行需要的动态库
 项目清理
 </h3><ul>
 <li>工程是需要被清理的</li>
-<li>像clean这种，没有被第一个目标文件直接或间接关联，那么它后面所定义的命令将不会被自动执行，不过，我们可以显示要make执行。即命令一“makeclean”，以此来清除所有的目标文件，以便重编译。</li>
+<li>像clean这种，没有被第一个目标文件直接或间接关联，那么它后面所定义的命令将不会被自动执行，不过，我们可以显示要make执行。即命令一“make clean”，以此来清除所有的目标文件，以便重编译。</li>
 <li>但是一般我们这种clean的目标文件，我们将它设置为伪目标,用.PHONY修饰，伪目标的特性是，总是被执行的。</li>
 <li>可以将我们的code目标文件声明成伪目标，测试一下。</li>
 </ul>
@@ -1167,12 +1221,12 @@ make推导过程
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#vim界面</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#######################################################################################</span>
 </span></span><span class="line"><span class="cl">  <span class="m">1</span> code:code.o
-</span></span><span class="line"><span class="cl">  <span class="m">2</span>     gcc -E code.o -o code                                                                                          
-</span></span><span class="line"><span class="cl">  <span class="m">3</span> code:code.o
+</span></span><span class="line"><span class="cl">  <span class="m">2</span>     gcc code.o -o code                                                                                          
+</span></span><span class="line"><span class="cl">  <span class="m">3</span> code.o: code.s
 </span></span><span class="line"><span class="cl">  <span class="m">4</span>     gcc -c code.s -o code.o
-</span></span><span class="line"><span class="cl">  <span class="m">5</span> code:code.o
+</span></span><span class="line"><span class="cl">  <span class="m">5</span> code.s: code.i
 </span></span><span class="line"><span class="cl">  <span class="m">6</span>     gcc -S code.i -o code.s
-</span></span><span class="line"><span class="cl">  <span class="m">7</span> code:code.o
+</span></span><span class="line"><span class="cl">  <span class="m">7</span> code.i: code.c
 </span></span><span class="line"><span class="cl">  <span class="m">8</span>     gcc -E code.c -o code.i
 </span></span><span class="line"><span class="cl">  <span class="m">9</span> 
 </span></span><span class="line"><span class="cl"> <span class="m">10</span> .PHONY:clean
@@ -1389,12 +1443,12 @@ C语言程序是从上到下执行的，执行<code>sleep(3);</code>的时候<co
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="n">NUM</span><span class="p">];</span>                      <span class="c1">//数组填101是因为字符串最后有\0
 </span></span></span><span class="line"><span class="cl">    <span class="nf">memset</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">));</span>       <span class="c1">//buffer全部设置0
-</span></span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">lable</span><span class="o">=</span><span class="s">&#34;|/-</span><span class="se">\\</span><span class="s">&#34;</span><span class="p">;</span>             <span class="c1">//把动画字符储存在数组里
+</span></span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">label</span><span class="o">=</span><span class="s">&#34;|/-</span><span class="se">\\</span><span class="s">&#34;</span><span class="p">;</span>             <span class="c1">//把动画字符储存在数组里
 </span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">lable</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">label</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">cnt</span><span class="o">&lt;=</span><span class="mi">100</span><span class="p">)</span>                        <span class="c1">//进度条需要显示100%的进度，所以循环条件cnt&lt;=100
 </span></span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;[%-100s][%d\%][%c]</span><span class="se">\r</span><span class="s">&#34;</span><span class="p">,</span><span class="n">buffer</span><span class="p">,</span><span class="n">cnt</span><span class="p">,</span><span class="n">lable</span><span class="p">[</span><span class="n">cnt</span><span class="o">%</span><span class="n">len</span><span class="p">]);</span>       <span class="c1">//%-100调整输出位宽为100，靠左对齐，lable[cnt%len]循环播放动画
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;[%-100s][%d%%][%c]</span><span class="se">\r</span><span class="s">&#34;</span><span class="p">,</span><span class="n">buffer</span><span class="p">,</span><span class="n">cnt</span><span class="p">,</span><span class="n">label</span><span class="p">[</span><span class="n">cnt</span><span class="o">%</span><span class="n">len</span><span class="p">]);</span>       <span class="c1">//%-100调整输出位宽为100，靠左对齐，label[cnt%len]循环播放动画
 </span></span></span><span class="line"><span class="cl">        <span class="nf">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>                                                                                                                            
 </span></span><span class="line"><span class="cl">        <span class="n">buffer</span><span class="p">[</span><span class="n">cnt</span><span class="p">]</span><span class="o">=</span> <span class="n">STYLE</span><span class="p">;</span>                <span class="c1">//将定义好的STYLE（这里是#）填入buffer
 </span></span></span><span class="line"><span class="cl">        <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
@@ -1417,8 +1471,8 @@ C语言程序是从上到下执行的，执行<code>sleep(3);</code>的时候<co
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="n">NUM</span><span class="p">];</span>                      
 </span></span><span class="line"><span class="cl">    <span class="nf">memset</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">));</span>       
-</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">lable</span><span class="o">=</span><span class="s">&#34;|/-</span><span class="se">\\</span><span class="s">&#34;</span><span class="p">;</span>             
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">lable</span><span class="p">);</span>                  <span class="c1">//前面的部分与process函数相似
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">label</span><span class="o">=</span><span class="s">&#34;|/-</span><span class="se">\\</span><span class="s">&#34;</span><span class="p">;</span>             
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">label</span><span class="p">);</span>                  <span class="c1">//前面的部分与process函数相似
 </span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                 <span class="c1">//使用静态变量，因为进度条不动时传入的 total 和 current相同时加载动画也要能转，
 </span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)(</span><span class="n">current</span><span class="o">*</span><span class="mi">100</span><span class="o">/</span><span class="n">total</span><span class="p">);</span> <span class="c1">// 计算进度条百分比，传入的是浮点数，需要转换为整型
@@ -1429,7 +1483,7 @@ C语言程序是从上到下执行的，执行<code>sleep(3);</code>的时候<co
 </span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">double</span> <span class="n">rate</span> <span class="o">=</span> <span class="n">current</span><span class="o">/</span><span class="n">total</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="n">cnt</span> <span class="o">%=</span> <span class="n">len</span><span class="p">;</span>               
-</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;[%-100s][%.2f%%][%c]</span><span class="se">\r</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">rate</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">lable</span><span class="p">[</span><span class="n">cnt</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;[%-100s][%.2f%%][%c]</span><span class="se">\r</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">rate</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="p">[</span><span class="n">cnt</span><span class="p">]);</span>
 </span></span><span class="line"><span class="cl">    <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -1474,7 +1528,7 @@ C语言程序是从上到下执行的，执行<code>sleep(3);</code>的时候<co
 </span></span></code></pre></div><p>这样其他函数就可以调用进度条了
 <img src="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/PixPin_2026-04-03_00-01-35.webp" alt=""></p>
 <p>printf函数还支持调整打印出字符的颜色，我们可以修改百分比的颜色</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\r</span><span class="s">[ </span><span class="se">\033</span><span class="s">[1;32;40m%-100s</span><span class="se">\033</span><span class="s">[0m ][ </span><span class="se">\033</span><span class="s">[1;33m%.2f%%</span><span class="se">\033</span><span class="s">[0m ][ </span><span class="se">\033</span><span class="s">[1;31;5m%c</span><span class="se">\033</span><span class="s">[0m ]&#34;</span><span class="p">,</span><span class="n">buffer</span><span class="p">,</span> <span class="n">rate</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">lable</span><span class="p">[</span><span class="n">cnt</span><span class="p">]);</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\r</span><span class="s">[ </span><span class="se">\033</span><span class="s">[1;32;40m%-100s</span><span class="se">\033</span><span class="s">[0m ][ </span><span class="se">\033</span><span class="s">[1;33m%.2f%%</span><span class="se">\033</span><span class="s">[0m ][ </span><span class="se">\033</span><span class="s">[1;31;5m%c</span><span class="se">\033</span><span class="s">[0m ]&#34;</span><span class="p">,</span><span class="n">buffer</span><span class="p">,</span> <span class="n">rate</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="p">[</span><span class="n">cnt</span><span class="p">]);</span>
 </span></span></code></pre></div><p><img src="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/PixPin_2026-04-03_00-14-20.webp" alt=""></p>
 <p>下面是完整代码示例</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//头文件process.h   
@@ -1494,12 +1548,12 @@ C语言程序是从上到下执行的，执行<code>sleep(3);</code>的时候<co
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="n">NUM</span><span class="p">];</span>                      <span class="c1">//数组填101是因为字符串最后有\0
 </span></span></span><span class="line"><span class="cl">    <span class="nf">memset</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">));</span>       <span class="c1">//buffer全部设置0
-</span></span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">lable</span><span class="o">=</span><span class="s">&#34;|/-</span><span class="se">\\</span><span class="s">&#34;</span><span class="p">;</span>             <span class="c1">//把动画字符储存在数组里
+</span></span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">label</span><span class="o">=</span><span class="s">&#34;|/-</span><span class="se">\\</span><span class="s">&#34;</span><span class="p">;</span>             <span class="c1">//把动画字符储存在数组里
 </span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">lable</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">label</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">cnt</span><span class="o">&lt;=</span><span class="mi">100</span><span class="p">)</span>                        <span class="c1">//进度条需要显示100%的进度，所以循环条件cnt&lt;=100
 </span></span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;[%-100s][%d%%][%c]</span><span class="se">\r</span><span class="s">&#34;</span><span class="p">,</span><span class="n">buffer</span><span class="p">,</span><span class="n">cnt</span><span class="p">,</span><span class="n">lable</span><span class="p">[</span><span class="n">cnt</span><span class="o">%</span><span class="n">len</span><span class="p">]);</span>       <span class="c1">//%-100调整输出位宽为100，靠左对齐，lable[cnt%len]循环播放动画
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;[%-100s][%d%%][%c]</span><span class="se">\r</span><span class="s">&#34;</span><span class="p">,</span><span class="n">buffer</span><span class="p">,</span><span class="n">cnt</span><span class="p">,</span><span class="n">label</span><span class="p">[</span><span class="n">cnt</span><span class="o">%</span><span class="n">len</span><span class="p">]);</span>       <span class="c1">//%-100调整输出位宽为100，靠左对齐，label[cnt%len]循环播放动画
 </span></span></span><span class="line"><span class="cl">        <span class="nf">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>                                                                                                                            
 </span></span><span class="line"><span class="cl">        <span class="n">buffer</span><span class="p">[</span><span class="n">cnt</span><span class="p">]</span><span class="o">=</span> <span class="n">STYLE</span><span class="p">;</span>                <span class="c1">//将定义好的STYLE（这里是#）填入buffer
 </span></span></span><span class="line"><span class="cl">        <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
@@ -1512,8 +1566,8 @@ C语言程序是从上到下执行的，执行<code>sleep(3);</code>的时候<co
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="n">NUM</span><span class="p">];</span>                      
 </span></span><span class="line"><span class="cl">    <span class="nf">memset</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">));</span>       
-</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">lable</span><span class="o">=</span><span class="s">&#34;|/-</span><span class="se">\\</span><span class="s">&#34;</span><span class="p">;</span>             
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">lable</span><span class="p">);</span>                  <span class="c1">//前面的部分与process函数相似
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">label</span><span class="o">=</span><span class="s">&#34;|/-</span><span class="se">\\</span><span class="s">&#34;</span><span class="p">;</span>             
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">label</span><span class="p">);</span>                  <span class="c1">//前面的部分与process函数相似
 </span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> 
 </span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)(</span><span class="n">current</span><span class="o">*</span><span class="mi">100</span><span class="o">/</span><span class="n">total</span><span class="p">);</span> <span class="c1">// 计算进度条百分比，传入的是浮点数，需要转换为整型
@@ -1524,8 +1578,8 @@ C语言程序是从上到下执行的，执行<code>sleep(3);</code>的时候<co
 </span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">double</span> <span class="n">rate</span> <span class="o">=</span> <span class="n">current</span><span class="o">/</span><span class="n">total</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="n">cnt</span> <span class="o">%=</span> <span class="n">len</span><span class="p">;</span>               
-</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;[%-100s][%.2f%%][%c]</span><span class="se">\r</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">rate</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">lable</span><span class="p">[</span><span class="n">cnt</span><span class="p">]);</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">//printf(&#34;\r[ \033[1;32;40m%-100s\033[0m ][ \033[1;33m%.2f%%\033[0m ][ \033[1;31;5m%c\033[0m ]&#34;,buffer, rate * 100, lable[cnt]);
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;[%-100s][%.2f%%][%c]</span><span class="se">\r</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">rate</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="p">[</span><span class="n">cnt</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//printf(&#34;\r[ \033[1;32;40m%-100s\033[0m ][ \033[1;33m%.2f%%\033[0m ][ \033[1;31;5m%c\033[0m ]&#34;,buffer, rate * 100, label[cnt]);
 </span></span></span><span class="line"><span class="cl">    <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -1575,11 +1629,406 @@ C语言程序是从上到下执行的，执行<code>sleep(3);</code>的时候<co
 </span></span></code></pre></div><h2 id="git">
 <a class="header-anchor" href="#git"></a>
 git
-</h2><p>&hellip;待更新</p>
-<h2 id="gbd">
-<a class="header-anchor" href="#gbd"></a>
-gbd
-</h2><p>&hellip;待更新</p>
+</h2><h3 id="版本控制器git">
+<a class="header-anchor" href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6%e5%99%a8git"></a>
+版本控制器git
+</h3><p>写代码、写文档的时候，你是不是经常这样：</p>
+<ul>
+<li>改完一段代码发现改坏了，想回到昨天能跑的那个版本，但已经找不到了。</li>
+<li>和同学一起做项目，把代码传来传去，最后搞不清哪个是最新的。</li>
+<li>想看看一周前写的某一段内容，但文件早就覆盖了。</li>
+</ul>
+<p>版本控制器 就是帮你解决这些问题的工具。它像一个“时光机 + 多人协作管家”：</p>
+<ul>
+<li>每次修改都可以保存为一个“快照”（类似游戏存档），以后随时可以跳回任意一个存档。</li>
+<li>多人可以同时改同一个文件，工具会帮你们合并，不会互相覆盖。</li>
+<li>可以看到谁、什么时候、为什么改了某一行代码。</li>
+</ul>
+<p>简单说：没有版本控制器 → 到处是“最终版_v2_最终版_再也不改了.doc”
+有了版本控制器 → 所有历史清清楚楚，随意回溯。</p>
+<p>为了能够更方便我们管理这些不同版本的文件，便有了版本控制器。所谓的版本控制器，就是能让你了解到一个文件的历史，以及它的发展过程的系统。通俗的讲就是一个可以记录工程的每一次改动和版本迭代的一个管理系统，同时也方便多人协同作业。
+目前最主流的版本控制器就是Git。Git可以控制电脑上所有格式的文件，例如doc、excel、dwg、dgn、rvt等等。对于我们开发人员来说，Git最重要的就是可以帮助我们管理软件开发项目中的源代码文件！</p>
+<h3 id="git诞生的历史">
+<a class="header-anchor" href="#git%e8%af%9e%e7%94%9f%e7%9a%84%e5%8e%86%e5%8f%b2"></a>
+git诞生的历史
+</h3><p>Git 由 Linux 之父 Linus Torvalds 在 2005 年创建。</p>
+<p>Linux 内核之前使用的是BitKeeper来进行版本控制，BitKeeper是商业软件，不过同意给Linux社区免费使用，但是后来因为某些原因BitKeeper 收回了免费使用权（好奇原因的可以自己搜索，有不少的介绍视频）。Linus 需要一个新的系统来管理庞大的 Linux 内核源码（数万开发者、数百万行代码）。他的目标非常明确：</p>
+<ul>
+<li>速度快（像 Linux 内核这样的巨型项目也要秒级响应）</li>
+<li>支持非线性开发（大量并行分支）</li>
+<li>完全分布式</li>
+<li>能够有效处理大型项目（良好的数据完整性保护）</li>
+</ul>
+<p>2005 年 4 月，Linus 亲自编写出 Git 的第一个版本，几天后就开始自托管。同年 6 月，Linux 内核 2.6.12 版本使用 Git 发布。此后，Git 迅速被开源社区接纳，并成为 GitHub、GitLab 等平台的底层技术。</p>
+<p>取名 Git 源于英式俚语，意为“不招人待见的人”或“无用的人”——这是 Linus 的自嘲。</p>
+
+  <blockquote class="alert-blockquote tip">
+    <p class="alert-heading">
+      Tip
+    </p>
+    <p><p>传说Linus本人只用了仅仅几天就写出了git的第一个版本，这是真的！Linus 自己说过：“我写 Git 的时候，脑子里其实已经构思了好几年。” 。他本身就是 Linux 内核的作者，对文件系统、性能、分布式系统极为了解，并且目标极其明确——就是解决 Linux 内核开发遇到的痛点。而且 Git 早期的很多基础组件（如 diff、patch）已经有成熟实现，他只需要把它们高效地整合起来。所以表面上是几天就写出来了，但是背后是Linus在长期使用BitKeeper管理Linux 项目积累的经验等等共同作用才让git几天内就诞生了。</p></p>
+  </blockquote>
+
+<h3 id="git的下载安装">
+<a class="header-anchor" href="#git%e7%9a%84%e4%b8%8b%e8%bd%bd%e5%ae%89%e8%a3%85"></a>
+git的下载安装
+</h3><p>Windows 系统：</p>
+<ol>
+<li>打开浏览器，访问 <a href="https://git-scm.com/">https://git-scm.com/</a></li>
+<li>点击下载 Windows 版的安装程序（.exe 文件），下载完成后双击安装，一路点“下一步”（使用默认选项即可）</li>
+<li>安装完成后，在开始菜单里找到 Git Bash（一个看起来像黑框的命令行工具），打开 Git Bash，输入 git &ndash;version，如果显示版本号（比如 git version 2.x.x），就说明安装成功啦。</li>
+</ol>
+<p>Linux 系统：
+在CentOS下使用yum安装，ubuntu等其他系统使用如apt等其他包管理器安装。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install git
+</span></span></code></pre></div><p>安装好后可以查看版本号确认安装成功。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git --version
+</span></span></code></pre></div><h3 id="创建远端仓库">
+<a class="header-anchor" href="#%e5%88%9b%e5%bb%ba%e8%bf%9c%e7%ab%af%e4%bb%93%e5%ba%93"></a>
+创建远端仓库
+</h3><p>下载安装好git后并不意味着可以高枕无忧了，git确实可以进行任意版本的回溯，但是管理的文件不是100%安全，可能会遭遇各种意外导致文件丢失，比如电脑着火爆炸了，发大水电脑被淹了，龙虾OpenClaw不小心执行rm -f /*把根目录清空了等等。为了避免意外情况发生，我们可以把本地由git管理的文件推送到远端进行保存。</p>
+<p>github，gitee等网站都是依托git来进行代码托管的平台。我们可以先注册账号，在网站上新建仓库，使用git把代码推送到仓库里，同时我们还可以使用远程仓库进行多人协作。</p>
+<p>以下是在 GitHub 上创建新项目的步骤：</p>
+<ol>
+<li>注册/登录：访问 github.com，注册账号或登录已有账号。</li>
+<li>新建仓库：点击页面右上角的 + 号，选择 New repository。</li>
+<li>填写仓库信息：
+<ul>
+<li>Repository name：项目名称（如 my-first-project）。</li>
+<li>Description（可选）：简短描述。</li>
+<li>Public / Private：选择公开或私有（免费用户可创建公开仓库，私有仓库现也免费但有限制）。</li>
+<li>Initialize this repository with：可选勾选 Add a README file、.gitignore 或选择许可证。如果勾选了 README，仓库会有一个初始文件。</li>
+</ul>
+</li>
+<li>点击 Create repository，完成创建。</li>
+<li>获取仓库地址：创建后会显示仓库的 HTTPS 或 SSH 克隆地址（例如 <a href="https://github.com/">https://github.com/</a>你的用户名/my-first-project.git）。</li>
+</ol>
+<p>如果本地已经有 Git 仓库可以使用下面的命令来推送到远端仓库</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git remote add origin https://github.com/你的用户名/my-first-project.git
+</span></span><span class="line"><span class="cl">git branch -M main
+</span></span><span class="line"><span class="cl">git push -u origin main
+</span></span></code></pre></div><p>如果本地还没有代码，可以先克隆远程仓库：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone https://github.com/你的用户名/my-first-project.git
+</span></span></code></pre></div><h3 id="git三板斧">
+<a class="header-anchor" href="#git%e4%b8%89%e6%9d%bf%e6%96%a7"></a>
+git三板斧
+</h3><h4 id="git-add--将文件添加到暂存区">
+<a class="header-anchor" href="#git-add--%e5%b0%86%e6%96%87%e4%bb%b6%e6%b7%bb%e5%8a%a0%e5%88%b0%e6%9a%82%e5%ad%98%e5%8c%ba"></a>
+git add —— 将文件添加到暂存区
+</h4><p>暂存区（Staging Area）相当于一个临时保存区，用来挑选哪些改动将要被提交。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 添加单个文件</span>
+</span></span><span class="line"><span class="cl">git add 文件名
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加所有修改/新增的文件</span>
+</span></span><span class="line"><span class="cl">git add .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加所有文件（包括删除）</span>
+</span></span><span class="line"><span class="cl">git add -A
+</span></span></code></pre></div><p>常用 <code>git status</code> 查看哪些文件在工作区、暂存区。</p>
+<h4 id="git-commit--将暂存区内容提交到本地仓库">
+<a class="header-anchor" href="#git-commit--%e5%b0%86%e6%9a%82%e5%ad%98%e5%8c%ba%e5%86%85%e5%ae%b9%e6%8f%90%e4%ba%a4%e5%88%b0%e6%9c%ac%e5%9c%b0%e4%bb%93%e5%ba%93"></a>
+git commit —— 将暂存区内容提交到本地仓库
+</h4><p>每一次提交都会生成一个唯一的哈希 ID，并记录作者、时间和日志信息。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 提交并附上简短说明</span>
+</span></span><span class="line"><span class="cl">git commit -m <span class="s2">&#34;本次提交的日志&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果跳过暂存区（直接提交所有已跟踪文件的修改），可以使用 -a</span>
+</span></span><span class="line"><span class="cl">git commit -a -m <span class="s2">&#34;跳过 git add&#34;</span>
+</span></span></code></pre></div><p>提交日志非常重要，当以后出现问题时可以根据日志内容查找问题出处，需要版本回退时可以根据日志查找需要回退的版本。</p>
+<h4 id="git-push--将本地提交推送到远程仓库">
+<a class="header-anchor" href="#git-push--%e5%b0%86%e6%9c%ac%e5%9c%b0%e6%8f%90%e4%ba%a4%e6%8e%a8%e9%80%81%e5%88%b0%e8%bf%9c%e7%a8%8b%e4%bb%93%e5%ba%93"></a>
+git push —— 将本地提交推送到远程仓库
+</h4><p>push 把本地仓库的历史同步到 GitHub（或其他远程服务器），供他人拉取或备份。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 推送到远程 origin 仓库的 main 分支</span>
+</span></span><span class="line"><span class="cl">git push origin main
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 首次推送时设置上游分支（之后可以直接 git push）</span>
+</span></span><span class="line"><span class="cl">git push -u origin main
+</span></span></code></pre></div><h3 id="其他命令">
+<a class="header-anchor" href="#%e5%85%b6%e4%bb%96%e5%91%bd%e4%bb%a4"></a>
+其他命令
+</h3><ul>
+<li>git clone：完整复制一个远程仓库到本地（首次获取代码时使用）。</li>
+<li>git pull：从远程仓库拉取最新代码并合并到本地（相当于 git fetch + git merge）。git规定两个人无法同时修改一个文件，当发现无法push到远端提示冲突时，可以先<code>git pull</code>合并以后再提交。远端仓库，相比较与任何人，都是最新的。为什么git会有冲突？这是提醒本地用户，你要和远端仓库进行同步了！</li>
+</ul>
+<h3 id="gitignore">
+<a class="header-anchor" href="#gitignore"></a>
+.gitignore
+</h3><p>git管理的是源文件，如.c文件.cpp文件等。
+在项目中，经常会有一些文件不应该被放进 Git 仓库，例如：</p>
+<ul>
+<li>编译产生的中间文件（.o、.exe）</li>
+<li>依赖文件夹（Node.js 的 node_modules）</li>
+<li>本地配置文件（.env、config.local）</li>
+<li>日志文件（*.log）</li>
+<li>操作系统自动生成的文件（.DS_Store 等）</li>
+</ul>
+<p>如果不管它们，每次 git status 都会看到一堆无关文件，而且不小心提交后别人也会下载到你本地的垃圾文件，造成混乱。</p>
+<p>.gitignore是一个 告诉 Git 哪些文件不要跟踪、不要提交 的配置文件。<br>
+在仓库的根目录下新建一个文本文件，文件名必须是 .gitignore（注意最前面有个点）。<br>
+在文件里一行一条规则，告诉 Git 忽略哪些文件/文件夹。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># 注释以 # 开头
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 忽略所有 .log 结尾的文件
+</span></span><span class="line"><span class="cl">*.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 忽略 node_modules 这个文件夹（整目录）
+</span></span><span class="line"><span class="cl">node_modules/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 忽略根目录下的 .env 文件
+</span></span><span class="line"><span class="cl">/.env
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 不忽略特殊文件（用 ! 取反），比如虽然忽略了所有 .log，但保留 important.log
+</span></span><span class="line"><span class="cl">*.log
+</span></span><span class="line"><span class="cl">!important.log
+</span></span></code></pre></div><p>注意</p>
+<ul>
+<li>.gitignore 文件本身需要提交到仓库（因为团队所有人都应该遵守相同的忽略规则）。</li>
+<li>如果某个文件已经被 Git 跟踪了，想停止跟踪，需要先删除缓存：<code>git rm --cached 文件名</code>然后再把它写到 .gitignore 里。</li>
+</ul>
+<p>总结：.gitignore 就是给 Git 的“黑名单”，告诉它哪些文件不要管。</p>
+<h3 id="git进阶教程">
+<a class="header-anchor" href="#git%e8%bf%9b%e9%98%b6%e6%95%99%e7%a8%8b"></a>
+git进阶教程
+</h3><p>关于git网上还有很多优质的视频教程，可以观看详细了解。
+<a href="https://www.bilibili.com/video/BV1Hkr7YYEh8">【给傻子的Git教程】</a> <a href="https://www.bilibili.com/video/BV1Hkr7YYEh8">https://www.bilibili.com/video/BV1Hkr7YYEh8</a></p>
+<p>Git官网里有一本书Git Pro，里面详细介绍了git的各种使用方法，可以前往<a href="https://git-scm.com/book/zh/v2">观看</a>或<a href="https://github.com/progit/progit2-zh/releases/download/2.1.77/progit.pdf">下载</a></p>
+<h2 id="gdb">
+<a class="header-anchor" href="#gdb"></a>
+gdb
+</h2><p>当代码出现bug了，我们就需要调试来解决bug。调试的本质就是找到问题，查看代码上下文。</p>
+<p>软件发布有两种模式，debug模式和release 模式，Linux里gcc或g++编译出的二进制程序，默认是release模式。要使用gdb调试，必须在源代码生成二进制程序的时候，加上-g选项。</p>
+<p>使用gcc编译以下程序。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">Sum</span><span class="p">(</span><span class="kt">int</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">e</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">e</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">start</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">end</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;I will begin</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="nf">Sum</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;running done, result is: [%d-%d]=%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>不带-g选项默认生成release版。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z mygbd<span class="o">]</span>$ gcc -o mytest mygbd.c -std<span class="o">=</span>c99
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z mygbd<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">20</span>
+</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> user1 user1  <span class="m">347</span> Apr  <span class="m">5</span> 15:39 mygbd.c
+</span></span><span class="line"><span class="cl">-rwxrwxr-x <span class="m">1</span> user1 user1 <span class="m">8440</span> Apr  <span class="m">5</span> 15:40 mytest
+</span></span></code></pre></div><p>加上-g选项生成debug版。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z mygbd<span class="o">]</span>$ gcc -o mytest mygbd.c -std<span class="o">=</span>c99 -g
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z mygbd<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">20</span>
+</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> user1 user1  <span class="m">347</span> Apr  <span class="m">5</span> 15:39 mygbd.c
+</span></span><span class="line"><span class="cl">-rwxrwxr-x <span class="m">1</span> user1 user1 <span class="m">9720</span> Apr  <span class="m">5</span> 15:58 mytest
+</span></span></code></pre></div><p>可以发现因为附带了调试信息，生成的可执行文件体积更大了。</p>
+<p>程序要调试，必须是debug模式，编译时就要加上-g选项。</p>
+<h3 id="gdb的基础使用">
+<a class="header-anchor" href="#gdb%e7%9a%84%e5%9f%ba%e7%a1%80%e4%bd%bf%e7%94%a8"></a>
+gdb的基础使用
+</h3><p>如果没有安装gdb，可以使用指令先安装。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo yum install gdb 
+</span></span></code></pre></div><p>使用<code>gdb 指定的文件</code>来进入gdb调试</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z mygbd<span class="o">]</span>$ gdb mytest 
+</span></span><span class="line"><span class="cl">GNU gdb <span class="o">(</span>GDB<span class="o">)</span> Red Hat Enterprise Linux 7.6.1-120.el7
+</span></span><span class="line"><span class="cl">Copyright <span class="o">(</span>C<span class="o">)</span> <span class="m">2013</span> Free Software Foundation, Inc.
+</span></span><span class="line"><span class="cl">License GPLv3+: GNU GPL version <span class="m">3</span> or later &lt;http://gnu.org/licenses/gpl.html&gt;
+</span></span><span class="line"><span class="cl">This is free software: you are free to change and redistribute it.
+</span></span><span class="line"><span class="cl">There is NO WARRANTY, to the extent permitted by law.  Type <span class="s2">&#34;show copying&#34;</span>
+</span></span><span class="line"><span class="cl">and <span class="s2">&#34;show warranty&#34;</span> <span class="k">for</span> details.
+</span></span><span class="line"><span class="cl">This GDB was configured as <span class="s2">&#34;x86_64-redhat-linux-gnu&#34;</span>.
+</span></span><span class="line"><span class="cl">For bug reporting instructions, please see:
+</span></span><span class="line"><span class="cl">&lt;http://www.gnu.org/software/gdb/bugs/&gt;...
+</span></span><span class="line"><span class="cl">Reading symbols from /home/user1/mygbd/mytest...done.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> 
+</span></span></code></pre></div><p>gdb自动记录最新的一条输入指令，直接按回车键会执行最新的一条输入指令。</p>
+<p>在gdb调试时，使用<code>list</code>查看源代码，同时<code>list</code>可以简写为<code>l</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> list
+</span></span><span class="line"><span class="cl">4	    int <span class="nv">result</span> <span class="o">=</span> 0<span class="p">;</span>
+</span></span><span class="line"><span class="cl">5	    <span class="k">for</span><span class="o">(</span>int <span class="nv">i</span> <span class="o">=</span> s<span class="p">;</span> i &lt;<span class="o">=</span> e<span class="p">;</span> i++<span class="o">)</span>
+</span></span><span class="line"><span class="cl">6	    <span class="o">{</span>
+</span></span><span class="line"><span class="cl">7	        <span class="nv">result</span> <span class="o">+=</span> i<span class="p">;</span>
+</span></span><span class="line"><span class="cl">8	    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">9	        <span class="k">return</span> result<span class="p">;</span>
+</span></span><span class="line"><span class="cl">10	<span class="o">}</span>
+</span></span><span class="line"><span class="cl">11	int main<span class="o">()</span>
+</span></span><span class="line"><span class="cl">12	<span class="o">{</span>
+</span></span><span class="line"><span class="cl">13	    int <span class="nv">start</span> <span class="o">=</span> 1<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> l                            <span class="c1">#list可以简写为l，或者直接按回车键会继续执行list</span>
+</span></span><span class="line"><span class="cl">14	    int <span class="nv">end</span> <span class="o">=</span> 100<span class="p">;</span>
+</span></span><span class="line"><span class="cl">15	    printf<span class="o">(</span><span class="s2">&#34;I will begin\n&#34;</span><span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">16	    int <span class="nv">n</span> <span class="o">=</span> Sum<span class="o">(</span>start, end<span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">17	    printf<span class="o">(</span><span class="s2">&#34;running done, result is: [%d-%d]=%d\n&#34;</span>, start, end, n<span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">18	    <span class="k">return</span> 0<span class="p">;</span>
+</span></span><span class="line"><span class="cl">19	<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> 
+</span></span></code></pre></div><p>使用<code>list 文件名:行号</code>或<code>l 文件名:行号</code>可以从指定文件的某行开始显示</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> l <span class="m">1</span>                            <span class="c1">#当前目录下只有一个源文件可以忽略文件名，指定从第1行开始显示</span>
+</span></span><span class="line"><span class="cl">1	<span class="c1">#include &lt;stdio.h&gt;</span>
+</span></span><span class="line"><span class="cl">2	int Sum<span class="o">(</span>int s, int e<span class="o">)</span>
+</span></span><span class="line"><span class="cl">3	<span class="o">{</span>
+</span></span><span class="line"><span class="cl">4	    int <span class="nv">result</span> <span class="o">=</span> 0<span class="p">;</span>
+</span></span><span class="line"><span class="cl">5	    <span class="k">for</span><span class="o">(</span>int <span class="nv">i</span> <span class="o">=</span> s<span class="p">;</span> i &lt;<span class="o">=</span> e<span class="p">;</span> i++<span class="o">)</span>
+</span></span><span class="line"><span class="cl">6	    <span class="o">{</span>
+</span></span><span class="line"><span class="cl">7	        <span class="nv">result</span> <span class="o">+=</span> i<span class="p">;</span>
+</span></span><span class="line"><span class="cl">8	    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">9	        <span class="k">return</span> result<span class="p">;</span>
+</span></span><span class="line"><span class="cl">10	<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> 
+</span></span></code></pre></div><p>显示了对应的源代码，可以使用<code>break 文件名:行号</code>来打断点，<code>break</code>可以简写为<code>b</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> b <span class="m">15</span>
+</span></span><span class="line"><span class="cl">Breakpoint <span class="m">1</span> at 0x4005c3: file mygbd.c, line 15.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> 
+</span></span></code></pre></div><p>打完断点让程序运行起来使用<code>run</code>指令，<code>run</code>可以简写为<code>r</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> r
+</span></span><span class="line"><span class="cl">Starting program: /home/user1/mygbd/mytest 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Breakpoint 1, main <span class="o">()</span> at mygbd.c:15
+</span></span><span class="line"><span class="cl">15	    printf<span class="o">(</span><span class="s2">&#34;I will begin\n&#34;</span><span class="o">)</span><span class="p">;</span>                <span class="c1">#跑到断点处停下来了</span>
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> 
+</span></span></code></pre></div><p>让程序运行完毕使用<code>continue</code>指令，作用是从当前位置开始连续执行程序，<code>continue</code>可以简写为<code>c</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> c
+</span></span><span class="line"><span class="cl">Continuing.
+</span></span><span class="line"><span class="cl">I will begin
+</span></span><span class="line"><span class="cl">running <span class="k">done</span>, result is: <span class="o">[</span>1-100<span class="o">]=</span><span class="m">5050</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Inferior <span class="m">1</span> <span class="o">(</span>process 12077<span class="o">)</span> exited normally<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> 
+</span></span></code></pre></div><p>退出gdb调试使用<code>quit</code>指令，<code>quit</code>可以简写为<code>q</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span> q
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z mygbd<span class="o">]</span>$ 
+</span></span></code></pre></div><h4 id="cgdb">
+<a class="header-anchor" href="#cgdb"></a>
+cgdb
+</h4><p>哎呀，这gdb也太难用了，都是啥玩意啊看都看不懂。<br>
+为了解决gdb难用的问题我们可以使用cgdb，cgdb和gdb的使用方法是一样，不同的是cgdb可以看到调试的过程，更方便。</p>
+<p>使用以下指令安装cgdb</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo yum install -y cgdb
+</span></span></code></pre></div><p>安装好后，使用<code>cgdb 指定的文件</code>进入cgdb调试。进入之后</p>
+<p><img src="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/PixPin_2026-04-05_16-49-09.webp" alt="">
+上面是代码界面，下面是gdb调试界面，这就是cgdb。</p>
+<h3 id="gdb的指令">
+<a class="header-anchor" href="#gdb%e7%9a%84%e6%8c%87%e4%bb%a4"></a>
+gdb的指令
+</h3><h4 id="list">
+<a class="header-anchor" href="#list"></a>
+list
+</h4><p><code>list</code>可以简写为<code>l</code>。</p>
+<ul>
+<li><code>list/l</code>，显示源代码，从上次位置开始，每次列出10行</li>
+<li><code>list/l 函数名</code>，列出指定函数的源代码</li>
+<li><code>list/l文件名:行号</code>，列出指定文件的源代码</li>
+</ul>
+<h4 id="run">
+<a class="header-anchor" href="#run"></a>
+run
+</h4><p><code>run</code>可以简写为<code>r</code>。</p>
+<p><code>run</code>，从程序开始连续执行</p>
+<h4 id="断点相关操作">
+<a class="header-anchor" href="#%e6%96%ad%e7%82%b9%e7%9b%b8%e5%85%b3%e6%93%8d%e4%bd%9c"></a>
+断点相关操作
+</h4><p><code>break</code>可以简写为<code>b</code>。</p>
+<p>没有打断点，使用<code>r</code>指令会让程序直接跑完，为了调试我们需要先打断点。断点的本质是把代码进行块级划分，以块为单位快速定位问题区域。</p>
+<p>使用<code>break/b 文件名:行号</code>来指定行号打断点，<code>break/b 函数名</code>在函数开头设置断点，打上断点后对应的行号会变成红色，使用<code>info/i b</code>可以查看所有已设置的断点。</p>
+<p>断点有不同的属性
+<img src="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/PixPin_2026-04-05_19-20-16.webp" alt="">
+如果我们需要删除断点，可以使用<code>delete/d b 断点编号</code>来删除，断点编号就是Num列下对应的数字。只有在创建断点时使用行号，对断点进行其他操作时都使用断点编号。gdb不退出，断点编号依次递增。</p>
+<p>每个断点都有自己的开关，VS里的ctrl+F9快捷键就是禁用或启用断点的，当我们不需要这个断点又不想删除时可以暂时禁用。</p>
+<p><img src="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/PixPin_2026-04-05_20-16-49.webp" alt=""></p>
+<p>在gdb里，使用<code>disable breakpoints</code>来关闭所有断点，<code>disable 断点编号</code>关闭指定断点；<code>enable breakpoints</code>打开所有断点，<code>enable 断点编号</code>打开指定断点。</p>
+<p><img src="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/PixPin_2026-04-05_20-23-36.webp" alt=""></p>
+<p>查看断点属性时Enb列对应的断点的启用禁用，y为启用n为禁用，设置断点时都是默认启用的。</p>
+<h4 id="step和next">
+<a class="header-anchor" href="#step%e5%92%8cnext"></a>
+step和next
+</h4><p><code>step</code>可以简写为<code>s</code>，<code>next</code>可以简写为<code>n</code>。</p>
+<p><code>step</code>对应的是VS里的逐语句F11，<code>next</code>对应的是VS里的逐过程F10。</p>
+<p><img src="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/image.png" alt=""></p>
+<p>gdb自动记录最新的一条输入指令，直接按回车键会执行最新的一条输入指令，所以不需要一直手动输入<code>s</code>或<code>n</code>。</p>
+<p><img src="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/PixPin_2026-04-05_19-50-54.webp" alt=""></p>
+<h4 id="backtrace">
+<a class="header-anchor" href="#backtrace"></a>
+backtrace
+</h4><p><code>backtrace</code>可以简写为<code>bt</code>。</p>
+<p><code>backtrace/bt</code>可以查看查看当前执行栈的各级函数调用及参数。
+<img src="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/PixPin_2026-04-05_20-03-14.webp" alt=""></p>
+<h4 id="finish">
+<a class="header-anchor" href="#finish"></a>
+finish
+</h4><p><code>finish</code>可以执行到当前函数返回，然后停止，可以在想直接运行完毕当前函数时使用。</p>
+<h4 id="print">
+<a class="header-anchor" href="#print"></a>
+print
+</h4><p><code>print</code>可以简写为<code>p</code>。</p>
+<p><code>p 变量名</code>可以打印指定变量的值，<code>p 表达式</code>可以打印表达式的值。</p>
+<h4 id="continue">
+<a class="header-anchor" href="#continue"></a>
+continue
+</h4><p><code>continue</code>可以简写为<code>c</code>。</p>
+<p><code>continue/c</code>指令是从当前位置开始连续执行程序。程序运行到断点处没有出现问题时，我们可以使用<code>c</code>指令来继续运行到下一个断点。</p>
+<h4 id="until">
+<a class="header-anchor" href="#until"></a>
+until
+</h4><p><code>until 行号</code>指令可以快速执行到指定行号，相当于局部范围内快速执行。在验证某一循环代码块内部没问题的时候可以使用这个指令跳出循环。</p>
+<h4 id="display和undisplay">
+<a class="header-anchor" href="#display%e5%92%8cundisplay"></a>
+display和undisplay
+</h4><p><code>display 变量名</code>指令可以跟踪显示指定变量的值（每次停止时），使用<code>undisplay 变量名</code>可以取消对指定编号的变量的跟踪显示。</p>
+<h4 id="info">
+<a class="header-anchor" href="#info"></a>
+info
+</h4><p><code>info</code>可以简写为<code>i</code></p>
+<p><code>info/i locals</code>可以查看当前栈帧的局部变量值，也就是一个函数内所有的临时变量。</p>
+<h4 id="quit">
+<a class="header-anchor" href="#quit"></a>
+quit
+</h4><p>使用<code>quit</code>指令退出gdb。</p>
+<h3 id="gdb的小技巧">
+<a class="header-anchor" href="#gdb%e7%9a%84%e5%b0%8f%e6%8a%80%e5%b7%a7"></a>
+gdb的小技巧
+</h3><h4 id="watch">
+<a class="header-anchor" href="#watch"></a>
+watch
+</h4><p>运行gdb时可以使用<code>watch 表达式（如变量）</code>执行时监视一个表达式（如变量）的值。如果监视的表达式在程序运行期间的值发生变化，GDB会暂停程序的执行，并通知使用者。</p>
+
+  <blockquote class="alert-blockquote tip">
+    <p class="alert-heading">
+      Tip
+    </p>
+    <p><p>如果你有一些变量不应该修改，但是你怀疑它修改导致了问题，你可以watch它，如果变化了，就会通知你.</p></p>
+  </blockquote>
+
+<h4 id="set-var确定问题原因">
+<a class="header-anchor" href="#set-var%e7%a1%ae%e5%ae%9a%e9%97%ae%e9%a2%98%e5%8e%9f%e5%9b%a0"></a>
+set var确定问题原因
+</h4><p>在调试时我们想修改某个变量的值，但是调试界面没法直接修改代码，这是可以使用<code>set var 变量名=值</code>指令来修改相应的变量。</p>
+<h4 id="条件断点">
+<a class="header-anchor" href="#%e6%9d%a1%e4%bb%b6%e6%96%ad%e7%82%b9"></a>
+条件断点
+</h4><p>我们可以设置断点在某种条件下触发，这就是条件断点。
+例如，使用<code>b 9 if i == 30</code>指令来设置条件断点， 9是行号，表示新增断点的位置，后面是断点的条件。<br>
+我们也可以给已经存在的断点新增条件，例如<code>condition 2 i==30</code>指令的作用是给2号断点，新增条件i==30。</p>
+
+  <blockquote class="alert-blockquote tip">
+    <p class="alert-heading">
+      Tip
+    </p>
+    <p><ul>
+<li>条件断点添加常见两种方式：1.新增2.给已有断点追加注意两者的语法有区别，不要写错了。</li>
+<li>新增：<code>b行号/文件名:行号/函数名 if i == 30(条件)</code></li>
+<li>给已有断点追加：<code>condition 2 i==30</code>，其中2是已有断点编号，没有if</li>
+<li>cgbd 分屏操作按ESC键进入代码屏，按上下键可以查看代码，按i键回到gdb屏</li>
+</ul></p>
+  </blockquote>
+
 </div>
     <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
     <a
@@ -1627,9 +2076,9 @@ gbd
     </li><li class="article-tag-list-item" data-aos="zoom-in">
       <a
         class="article-tag-list-link"
-        href="/tags/gbd"
+        href="/tags/gdb"
         rel="tag"
-        >gbd</a
+        >gdb</a
       >
     </li></ul>
 </footer>
@@ -1638,7 +2087,7 @@ gbd
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-143.webp"
+              data-src="/images/covers/covers-145.webp"
               data-sizes="auto"
               alt="【Linux】03 - Linux权限"
               class="lazyload"
@@ -1670,10 +2119,10 @@ gbd
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;64.7k</span
+          >&nbsp;70.7k</span
         >
         &nbsp;|&nbsp;
-        <span class="icon-coffee">&nbsp;02:18</span>
+        <span class="icon-coffee">&nbsp;02:30</span>
       </div><div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"
@@ -1768,8 +2217,56 @@ gbd
             <li><a href="#进度条的实现">进度条的实现</a></li>
           </ol>
         </li>
-        <li><a href="#git">git</a></li>
-        <li><a href="#gbd">gbd</a></li>
+        <li><a href="#git">git</a>
+          <ol>
+            <li><a href="#版本控制器git">版本控制器git</a></li>
+            <li><a href="#git诞生的历史">git诞生的历史</a></li>
+            <li><a href="#git的下载安装">git的下载安装</a></li>
+            <li><a href="#创建远端仓库">创建远端仓库</a></li>
+            <li><a href="#git三板斧">git三板斧</a>
+              <ol>
+                <li><a href="#git-add--将文件添加到暂存区">git add —— 将文件添加到暂存区</a></li>
+                <li><a href="#git-commit--将暂存区内容提交到本地仓库">git commit —— 将暂存区内容提交到本地仓库</a></li>
+                <li><a href="#git-push--将本地提交推送到远程仓库">git push —— 将本地提交推送到远程仓库</a></li>
+              </ol>
+            </li>
+            <li><a href="#其他命令">其他命令</a></li>
+            <li><a href="#gitignore">.gitignore</a></li>
+            <li><a href="#git进阶教程">git进阶教程</a></li>
+          </ol>
+        </li>
+        <li><a href="#gdb">gdb</a>
+          <ol>
+            <li><a href="#gdb的基础使用">gdb的基础使用</a>
+              <ol>
+                <li><a href="#cgdb">cgdb</a></li>
+              </ol>
+            </li>
+            <li><a href="#gdb的指令">gdb的指令</a>
+              <ol>
+                <li><a href="#list">list</a></li>
+                <li><a href="#run">run</a></li>
+                <li><a href="#断点相关操作">断点相关操作</a></li>
+                <li><a href="#step和next">step和next</a></li>
+                <li><a href="#backtrace">backtrace</a></li>
+                <li><a href="#finish">finish</a></li>
+                <li><a href="#print">print</a></li>
+                <li><a href="#continue">continue</a></li>
+                <li><a href="#until">until</a></li>
+                <li><a href="#display和undisplay">display和undisplay</a></li>
+                <li><a href="#info">info</a></li>
+                <li><a href="#quit">quit</a></li>
+              </ol>
+            </li>
+            <li><a href="#gdb的小技巧">gdb的小技巧</a>
+              <ol>
+                <li><a href="#watch">watch</a></li>
+                <li><a href="#set-var确定问题原因">set var确定问题原因</a></li>
+                <li><a href="#条件断点">条件断点</a></li>
+              </ol>
+            </li>
+          </ol>
+        </li>
       </ol>
     </li>
   </ol>

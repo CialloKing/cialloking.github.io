@@ -41,9 +41,6 @@
                 href="https://cialloking.com/"
                 />
   </url><url>
-    <loc>https://cialloking.com/tags/gbd/</loc>
-    <lastmod>2026-04-01T00:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://cialloking.com/tags/gcc/</loc>
     <lastmod>2026-04-01T00:00:00+08:00</lastmod>
     <xhtml:link
@@ -56,6 +53,9 @@
                 hreflang="zh-CN"
                 href="https://cialloking.com/tags/gcc/"
                 />
+  </url><url>
+    <loc>https://cialloking.com/tags/gdb/</loc>
+    <lastmod>2026-04-01T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://cialloking.com/tags/git/</loc>
     <lastmod>2026-04-01T00:00:00+08:00</lastmod>

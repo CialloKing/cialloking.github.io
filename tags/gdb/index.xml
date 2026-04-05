@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Gbd on CialloKing 的博客</title>
-    <link>https://cialloking.com/tags/gbd/</link>
+    <title>Gdb on CialloKing 的博客</title>
+    <link>https://cialloking.com/tags/gdb/</link>
     <description>Recent content from CialloKing 的博客</description>
     <generator>Hugo</generator>
     <language>zh-CN</language>
@@ -15,7 +15,7 @@
     <lastBuildDate>Wed, 01 Apr 2026 00:00:00 +0800</lastBuildDate>
     
     
-    <atom:link href="https://cialloking.com/tags/gbd/index.xml" rel="self" type="application/rss&#43;xml" />
+    <atom:link href="https://cialloking.com/tags/gdb/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
     
