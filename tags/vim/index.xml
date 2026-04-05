@@ -12,7 +12,7 @@
     
     <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
-    <lastBuildDate>Wed, 01 Apr 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 05 Apr 2026 00:00:00 +0800</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/tags/vim/index.xml" rel="self" type="application/rss&#43;xml" />
@@ -44,7 +44,7 @@ Linux开发工具
 </ol>
 <p>包管理器类似手机上的应用商店，选择我们需要的软件就能直接下载。在CentOS系统中，默认的包管理器是yum，ubuntu系统中默认的包管理器是apt。安装软件就是拷贝文件到系统的一些目录内，所以安装时需要root权限。</p>
         
-        <hr><p>本文2026-03-31首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-01</p>]]>
+        <hr><p>本文2026-03-31首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-05</p>]]>
       </description>
       
         <category>Linux</category>
