@@ -11,7 +11,7 @@ tags:
   - gcc
   - Makefile
   - git
-  - gbd
+  - gdb
 
 categories:
   - Linux
@@ -39,6 +39,8 @@ Linux中安装软件有三种方法
 我们在安装系统时，系统内部也内置了下载连接，如CentOS系统中内置了CentOS的链接，ubuntu系统中内置了ubuntu的链接。
 各个社区往往是国外的，国内下载速度会比较慢，所以国内相应的社区也建立了相应镜像源，相当于把国外社区的软件拷贝一份过来为国内提供下载服务，常用的镜像源有清华大学开源软件镜像，网易163镜像，阿里云镜像等。
 
+> [!TIP]
+> Linux的开源社区固然很成功，但不是所有的开源项目都能像Linux项目一样成功，想要了解更多可以观看这个[视频](https://www.bilibili.com/video/BV1FhjBzeEt2)
 
 ### yum具体操作
 关于yum/apt的所有操作必须保证主机(虚拟机)网络畅通!!!可以通过ping指令验证
@@ -56,14 +58,12 @@ lrzsz.x86_64                             0.12.20-36.el7                @base
 
 通过yum，我们可以通过很简单的一条命令安装 lrzsz 软件包。
 ```bash
-[root@iZ2zeh5i3yddf3p4q4ueo7Z ~]# yum list | grep lrzsz  
-lrzsz.x86_64                             0.12.20-36.el7                @base    
-[root@iZ2zeh5i3yddf3p4q4ueo7Z ~]# 
+sudo yum install -y lrzsz
 ```
 yum/apt会自动找到都有哪些软件包需要下载，这时候敲"y"确认安装,出现"complete"字样或者中间未出现报错，说明安装完成。
 
 - 安装软件时由于需要向系统目录中写入内容，一般需要sudo或者切到root账户下才能完成
-- yum/apt安装软件只能一个装完了再装另一个.正在yum/apt安装一个软件的过程中，如果再尝试用yum/apt安装另外一个软件，yum/apt会报错。
+- yum/apt安装软件只能一个装完了再装另一个，不能同时运行两个yum/apt进程，正在yum/apt安装一个软件的过程中，如果再尝试用yum/apt安装另外一个软件，yum/apt会报错，可以在一条命令中列出多个软件包一次性安装。。
 - 如果yum/apt报错，询问chatGPT豆包DeepSeek等AI寻找解决方法。
 
 #### 卸载软件
@@ -74,7 +74,7 @@ sudo yum remove [-y] lrzsz
 
 #### 安装源
 
-Cetnos安装源路径：
+CentOS安装源路径：
 ```bash
 $ ll /etc/yum.repos.d/
 total 16
@@ -98,7 +98,7 @@ $ ll /etc/apt/sources.list.d/ # 扩展源
 之前我们用的VS2026是集成开发环境（IDE），包含了各种各样的工具，如编辑器编译器链接器等等。  
 
 vim是一个编辑器，只能编辑代码，vim是一个加强版的vi编辑器，vi已经非常老了所以我们使用vim。  
-vim是所有Linux自带的编辑器，是一款使用成本比较高的编辑器，vim的操作是按照一些只有26个字母加10个数字加shit键空格键ctrl键等功能键的键盘设计的。
+大多数Linux发行版默认安装 vim 或 vi，vim是一款使用成本比较高的编辑器，vim的操作是按照一些只有26个字母加10个数字加shift键空格键ctrl键等功能键的键盘设计的。
 
 ![](image.webp)
 ![](image-1.webp)
@@ -144,7 +144,7 @@ vim --version
 
 使用`shift+:`快捷键进入底下的命令行，输入q表示退出，按回车键就退出vim了，或者按两下**大写**的`ZZ`快捷键来退出。
 
-新键一个文件，使用vim进入就可以编辑代码了
+新建一个文件，使用vim进入就可以编辑代码了
 
 ```bash
 [user1@iZ2zeh5i3yddf3p4q4ueo7Z 111]$ touch test.c   #新建一个.c文件
@@ -224,8 +224,8 @@ vim的默认配置不显示行号，可以在底行输入`set nu`来设置显示
 
 - 移动光标快捷键
   - `gg`，光标快速回到第一行
-  - `shitf+g`，光标快速移动到文件结尾
-  - `数字+shitf+g`，光标快速移动到对应行号
+  - `shift+g`，光标快速移动到文件结尾
+  - `数字+shift+g`，光标快速移动到对应行号
   - `shift+$(数字4)`，光标快速移动到行尾
   - `shift+^(数字6)`，光标快速移动到此行开头
   - `h`，光标左移
@@ -273,8 +273,8 @@ vim的默认配置不显示行号，可以在底行输入`set nu`来设置显示
   - `数字+dd`，剪切往下数相应的n行，例如，「6+dd」表示剪切从光标所在的该行“往下数”6行文字。
   - `x`，每按一次，删除光标所在位置的一个字符，相当于word文档里的del键删除
   - `数字+x`，删除对应的n个字符，例如，`20+X`表示删除光标所在位置的“前”20个字符
-  - `shitf+X`，每按一次，删除光标所在位置的前一个字符，相当于word文档里的退格键删除
-  - `数字+shitf+X`，删除光标所在位置的n个字符，例如，`20+shift+x`表示删除光标所在位置的前面的“前”20个字符
+  - `shift+X`，每按一次，删除光标所在位置的前一个字符，相当于word文档里的退格键删除
+  - `数字+shift+X`，删除光标所在位置的n个字符，例如，`20+shift+x`表示删除光标所在位置的前面的“前”20个字符
   - 
   
 
@@ -312,7 +312,7 @@ vim的默认配置不显示行号，可以在底行输入`set nu`来设置显示
 
 
 
-- `!+执行命令`，可以在不退出vim的情况下执行Linux命令，
+- `! 命令`，可以在不退出vim的情况下执行Linux命令，
 - `%s/被替换的单词/要替换的单词/`，可以进行批量化替换
 - `vs 文件名`，可以进行多个文件分屏操作，光标在哪边就操作哪边，在左边时输入w保存的就是左边，在右边输入q退出的就是右边
 - `ctrl+w+w`，可以切换分屏的光标
@@ -349,9 +349,9 @@ drwxrwxrwx  3 user1 user1 4096 Apr  1 01:41 111
 ```
 
 进入`.vimrc `可以输入以下常用配置项测试一下  
-- 设置语法亮：syntaxon
-- 显示行号:set nu
-- 设置缩进的空格数为4:setshiftwidth=4
+- 设置语法高亮：syntax on
+- 显示行号：set nu
+- 设置缩进的空格数为4：set shiftwidth=4
 
 
 
@@ -533,7 +533,7 @@ int main()
 
 #### 汇编
 汇编阶段是把编译阶段生成的“S”文件转成目标文件，
-读者在此可使选项“-c”就可看到汇编代码已转化为“o”的进制标代码了。 
+读者在此可使选项“-c”就可看到汇编代码已转化为“o”二进制目标代码了。 
 `.o` 文件全称叫**可重定位目标文件**，在windows的VS2026中在这一步也会生成`.obj`文件
 
 示例: `gcc -c test.s -o test.o`
@@ -821,7 +821,7 @@ hello world
 ### 项目清理
 
 - 工程是需要被清理的
-- 像clean这种，没有被第一个目标文件直接或间接关联，那么它后面所定义的命令将不会被自动执行，不过，我们可以显示要make执行。即命令一“makeclean”，以此来清除所有的目标文件，以便重编译。
+- 像clean这种，没有被第一个目标文件直接或间接关联，那么它后面所定义的命令将不会被自动执行，不过，我们可以显示要make执行。即命令一“make clean”，以此来清除所有的目标文件，以便重编译。
 - 但是一般我们这种clean的目标文件，我们将它设置为伪目标,用.PHONY修饰，伪目标的特性是，总是被执行的。
 - 可以将我们的code目标文件声明成伪目标，测试一下。
 
@@ -927,12 +927,12 @@ make是如何工作的，在默认的方式下，也就是我们只输入make命
 #vim界面
 #######################################################################################
   1 code:code.o
-  2     gcc -E code.o -o code                                                                                          
-  3 code:code.o
+  2     gcc code.o -o code                                                                                          
+  3 code.o: code.s
   4     gcc -c code.s -o code.o
-  5 code:code.o
+  5 code.s: code.i
   6     gcc -S code.i -o code.s
-  7 code:code.o
+  7 code.i: code.c
   8     gcc -E code.c -o code.i
   9 
  10 .PHONY:clean
@@ -1216,12 +1216,12 @@ void process()
 {
     char buffer[NUM];                      //数组填101是因为字符串最后有\0
     memset(buffer,0,sizeof(buffer));       //buffer全部设置0
-    const char *lable="|/-\\";             //把动画字符储存在数组里
+    const char *label="|/-\\";             //把动画字符储存在数组里
     int cnt = 0;
-    int len = strlen(lable);
+    int len = strlen(label);
     while(cnt<=100)                        //进度条需要显示100%的进度，所以循环条件cnt<=100
     {
-        printf("[%-100s][%d\%][%c]\r",buffer,cnt,lable[cnt%len]);       //%-100调整输出位宽为100，靠左对齐，lable[cnt%len]循环播放动画
+        printf("[%-100s][%d%%][%c]\r",buffer,cnt,label[cnt%len]);       //%-100调整输出位宽为100，靠左对齐，label[cnt%len]循环播放动画
         fflush(stdout);                                                                                                                            
         buffer[cnt]= STYLE;                //将定义好的STYLE（这里是#）填入buffer
         cnt++;
@@ -1256,8 +1256,8 @@ void FlushProcess(double total, double current)
 {
     char buffer[NUM];                      
     memset(buffer,0,sizeof(buffer));       
-    const char *lable="|/-\\";             
-    int len = strlen(lable);                  //前面的部分与process函数相似
+    const char *label="|/-\\";             
+    int len = strlen(label);                  //前面的部分与process函数相似
 
     static int cnt = 0;                 //使用静态变量，因为进度条不动时传入的 total 和 current相同时加载动画也要能转，
     int num = (int)(current*100/total); // 计算进度条百分比，传入的是浮点数，需要转换为整型
@@ -1268,7 +1268,7 @@ void FlushProcess(double total, double current)
     }
     double rate = current/total;
     cnt %= len;               
-    printf("[%-100s][%.2f%%][%c]\r", buffer, rate*100, lable[cnt]);
+    printf("[%-100s][%.2f%%][%c]\r", buffer, rate*100, label[cnt]);
     cnt++;
     fflush(stdout);
 }
@@ -1322,7 +1322,7 @@ int main()
 
 printf函数还支持调整打印出字符的颜色，我们可以修改百分比的颜色
 ```c
-printf("\r[ \033[1;32;40m%-100s\033[0m ][ \033[1;33m%.2f%%\033[0m ][ \033[1;31;5m%c\033[0m ]",buffer, rate * 100, lable[cnt]);
+printf("\r[ \033[1;32;40m%-100s\033[0m ][ \033[1;33m%.2f%%\033[0m ][ \033[1;31;5m%c\033[0m ]",buffer, rate * 100, label[cnt]);
 ```
 
 ![](PixPin_2026-04-03_00-14-20.webp)
@@ -1351,12 +1351,12 @@ void process()
 {
     char buffer[NUM];                      //数组填101是因为字符串最后有\0
     memset(buffer,0,sizeof(buffer));       //buffer全部设置0
-    const char *lable="|/-\\";             //把动画字符储存在数组里
+    const char *label="|/-\\";             //把动画字符储存在数组里
     int cnt = 0;
-    int len = strlen(lable);
+    int len = strlen(label);
     while(cnt<=100)                        //进度条需要显示100%的进度，所以循环条件cnt<=100
     {
-        printf("[%-100s][%d%%][%c]\r",buffer,cnt,lable[cnt%len]);       //%-100调整输出位宽为100，靠左对齐，lable[cnt%len]循环播放动画
+        printf("[%-100s][%d%%][%c]\r",buffer,cnt,label[cnt%len]);       //%-100调整输出位宽为100，靠左对齐，label[cnt%len]循环播放动画
         fflush(stdout);                                                                                                                            
         buffer[cnt]= STYLE;                //将定义好的STYLE（这里是#）填入buffer
         cnt++;
@@ -1369,8 +1369,8 @@ void FlushProcess(double total, double current)
 {
     char buffer[NUM];                      
     memset(buffer,0,sizeof(buffer));       
-    const char *lable="|/-\\";             
-    int len = strlen(lable);                  //前面的部分与process函数相似
+    const char *label="|/-\\";             
+    int len = strlen(label);                  //前面的部分与process函数相似
 
     static int cnt = 0; 
     int num = (int)(current*100/total); // 计算进度条百分比，传入的是浮点数，需要转换为整型
@@ -1381,8 +1381,8 @@ void FlushProcess(double total, double current)
     }
     double rate = current/total;
     cnt %= len;               
-    printf("[%-100s][%.2f%%][%c]\r", buffer, rate*100, lable[cnt]);
-    //printf("\r[ \033[1;32;40m%-100s\033[0m ][ \033[1;33m%.2f%%\033[0m ][ \033[1;31;5m%c\033[0m ]",buffer, rate * 100, lable[cnt]);
+    printf("[%-100s][%.2f%%][%c]\r", buffer, rate*100, label[cnt]);
+    //printf("\r[ \033[1;32;40m%-100s\033[0m ][ \033[1;33m%.2f%%\033[0m ][ \033[1;31;5m%c\033[0m ]",buffer, rate * 100, label[cnt]);
     cnt++;
     fflush(stdout);
 }
@@ -1443,10 +1443,515 @@ clean:
 
 
 ## git
-...待更新
 
-## gbd
-...待更新
+### 版本控制器git
+
+写代码、写文档的时候，你是不是经常这样：
+- 改完一段代码发现改坏了，想回到昨天能跑的那个版本，但已经找不到了。
+- 和同学一起做项目，把代码传来传去，最后搞不清哪个是最新的。
+- 想看看一周前写的某一段内容，但文件早就覆盖了。
+
+版本控制器 就是帮你解决这些问题的工具。它像一个“时光机 + 多人协作管家”：
+- 每次修改都可以保存为一个“快照”（类似游戏存档），以后随时可以跳回任意一个存档。
+- 多人可以同时改同一个文件，工具会帮你们合并，不会互相覆盖。
+- 可以看到谁、什么时候、为什么改了某一行代码。
+
+简单说：没有版本控制器 → 到处是“最终版_v2_最终版_再也不改了.doc”
+有了版本控制器 → 所有历史清清楚楚，随意回溯。
+
+为了能够更方便我们管理这些不同版本的文件，便有了版本控制器。所谓的版本控制器，就是能让你了解到一个文件的历史，以及它的发展过程的系统。通俗的讲就是一个可以记录工程的每一次改动和版本迭代的一个管理系统，同时也方便多人协同作业。
+目前最主流的版本控制器就是Git。Git可以控制电脑上所有格式的文件，例如doc、excel、dwg、dgn、rvt等等。对于我们开发人员来说，Git最重要的就是可以帮助我们管理软件开发项目中的源代码文件！
+
+### git诞生的历史
+
+Git 由 Linux 之父 Linus Torvalds 在 2005 年创建。
+
+Linux 内核之前使用的是BitKeeper来进行版本控制，BitKeeper是商业软件，不过同意给Linux社区免费使用，但是后来因为某些原因BitKeeper 收回了免费使用权（好奇原因的可以自己搜索，有不少的介绍视频）。Linus 需要一个新的系统来管理庞大的 Linux 内核源码（数万开发者、数百万行代码）。他的目标非常明确：
+- 速度快（像 Linux 内核这样的巨型项目也要秒级响应）
+- 支持非线性开发（大量并行分支）
+- 完全分布式
+- 能够有效处理大型项目（良好的数据完整性保护）
+
+2005 年 4 月，Linus 亲自编写出 Git 的第一个版本，几天后就开始自托管。同年 6 月，Linux 内核 2.6.12 版本使用 Git 发布。此后，Git 迅速被开源社区接纳，并成为 GitHub、GitLab 等平台的底层技术。
+
+取名 Git 源于英式俚语，意为“不招人待见的人”或“无用的人”——这是 Linus 的自嘲。
+
+
+
+> [!TIP]
+> 传说Linus本人只用了仅仅几天就写出了git的第一个版本，这是真的！Linus 自己说过：“我写 Git 的时候，脑子里其实已经构思了好几年。” 。他本身就是 Linux 内核的作者，对文件系统、性能、分布式系统极为了解，并且目标极其明确——就是解决 Linux 内核开发遇到的痛点。而且 Git 早期的很多基础组件（如 diff、patch）已经有成熟实现，他只需要把它们高效地整合起来。所以表面上是几天就写出来了，但是背后是Linus在长期使用BitKeeper管理Linux 项目积累的经验等等共同作用才让git几天内就诞生了。
+
+### git的下载安装
+
+Windows 系统：
+1. 打开浏览器，访问 https://git-scm.com/
+2. 点击下载 Windows 版的安装程序（.exe 文件），下载完成后双击安装，一路点“下一步”（使用默认选项即可）
+3. 安装完成后，在开始菜单里找到 Git Bash（一个看起来像黑框的命令行工具），打开 Git Bash，输入 git --version，如果显示版本号（比如 git version 2.x.x），就说明安装成功啦。
+
+Linux 系统：
+在CentOS下使用yum安装，ubuntu等其他系统使用如apt等其他包管理器安装。
+```bash
+yum install git
+```
+
+安装好后可以查看版本号确认安装成功。
+```bash
+git --version
+```
+
+### 创建远端仓库
+
+下载安装好git后并不意味着可以高枕无忧了，git确实可以进行任意版本的回溯，但是管理的文件不是100%安全，可能会遭遇各种意外导致文件丢失，比如电脑着火爆炸了，发大水电脑被淹了，龙虾OpenClaw不小心执行rm -f /*把根目录清空了等等。为了避免意外情况发生，我们可以把本地由git管理的文件推送到远端进行保存。
+
+github，gitee等网站都是依托git来进行代码托管的平台。我们可以先注册账号，在网站上新建仓库，使用git把代码推送到仓库里，同时我们还可以使用远程仓库进行多人协作。
+
+以下是在 GitHub 上创建新项目的步骤：
+
+1. 注册/登录：访问 github.com，注册账号或登录已有账号。
+2. 新建仓库：点击页面右上角的 + 号，选择 New repository。
+3. 填写仓库信息：
+    - Repository name：项目名称（如 my-first-project）。
+    - Description（可选）：简短描述。
+    - Public / Private：选择公开或私有（免费用户可创建公开仓库，私有仓库现也免费但有限制）。
+    - Initialize this repository with：可选勾选 Add a README file、.gitignore 或选择许可证。如果勾选了 README，仓库会有一个初始文件。
+4. 点击 Create repository，完成创建。
+5. 获取仓库地址：创建后会显示仓库的 HTTPS 或 SSH 克隆地址（例如 https://github.com/你的用户名/my-first-project.git）。
+
+
+
+如果本地已经有 Git 仓库可以使用下面的命令来推送到远端仓库
+```bash
+git remote add origin https://github.com/你的用户名/my-first-project.git
+git branch -M main
+git push -u origin main
+```
+
+
+如果本地还没有代码，可以先克隆远程仓库：
+```bash
+git clone https://github.com/你的用户名/my-first-project.git
+```
+
+
+
+
+
+
+
+
+
+
+### git三板斧
+
+####  git add —— 将文件添加到暂存区
+暂存区（Staging Area）相当于一个临时保存区，用来挑选哪些改动将要被提交。
+
+```bash
+# 添加单个文件
+git add 文件名
+
+# 添加所有修改/新增的文件
+git add .
+
+# 添加所有文件（包括删除）
+git add -A
+```
+常用 `git status` 查看哪些文件在工作区、暂存区。
+
+#### git commit —— 将暂存区内容提交到本地仓库
+每一次提交都会生成一个唯一的哈希 ID，并记录作者、时间和日志信息。
+```bash
+# 提交并附上简短说明
+git commit -m "本次提交的日志"
+
+# 如果跳过暂存区（直接提交所有已跟踪文件的修改），可以使用 -a
+git commit -a -m "跳过 git add"
+```
+提交日志非常重要，当以后出现问题时可以根据日志内容查找问题出处，需要版本回退时可以根据日志查找需要回退的版本。
+
+
+#### git push —— 将本地提交推送到远程仓库
+
+push 把本地仓库的历史同步到 GitHub（或其他远程服务器），供他人拉取或备份。
+```bash
+# 推送到远程 origin 仓库的 main 分支
+git push origin main
+
+# 首次推送时设置上游分支（之后可以直接 git push）
+git push -u origin main
+```
+
+
+### 其他命令
+- git clone：完整复制一个远程仓库到本地（首次获取代码时使用）。
+- git pull：从远程仓库拉取最新代码并合并到本地（相当于 git fetch + git merge）。git规定两个人无法同时修改一个文件，当发现无法push到远端提示冲突时，可以先`git pull`合并以后再提交。远端仓库，相比较与任何人，都是最新的。为什么git会有冲突？这是提醒本地用户，你要和远端仓库进行同步了！
+
+
+
+
+
+
+### .gitignore
+git管理的是源文件，如.c文件.cpp文件等。
+在项目中，经常会有一些文件不应该被放进 Git 仓库，例如：
+- 编译产生的中间文件（.o、.exe）
+- 依赖文件夹（Node.js 的 node_modules）
+- 本地配置文件（.env、config.local）
+- 日志文件（*.log）
+- 操作系统自动生成的文件（.DS_Store 等）
+
+如果不管它们，每次 git status 都会看到一堆无关文件，而且不小心提交后别人也会下载到你本地的垃圾文件，造成混乱。
+
+
+.gitignore是一个 告诉 Git 哪些文件不要跟踪、不要提交 的配置文件。  
+在仓库的根目录下新建一个文本文件，文件名必须是 .gitignore（注意最前面有个点）。  
+在文件里一行一条规则，告诉 Git 忽略哪些文件/文件夹。
+```.gitignore
+# 注释以 # 开头
+
+# 忽略所有 .log 结尾的文件
+*.log
+
+# 忽略 node_modules 这个文件夹（整目录）
+node_modules/
+
+# 忽略根目录下的 .env 文件
+/.env
+
+# 不忽略特殊文件（用 ! 取反），比如虽然忽略了所有 .log，但保留 important.log
+*.log
+!important.log
+```
+注意
+- .gitignore 文件本身需要提交到仓库（因为团队所有人都应该遵守相同的忽略规则）。
+- 如果某个文件已经被 Git 跟踪了，想停止跟踪，需要先删除缓存：`git rm --cached 文件名`然后再把它写到 .gitignore 里。
+
+总结：.gitignore 就是给 Git 的“黑名单”，告诉它哪些文件不要管。
+
+### git进阶教程
+关于git网上还有很多优质的视频教程，可以观看详细了解。
+[【给傻子的Git教程】](https://www.bilibili.com/video/BV1Hkr7YYEh8) https://www.bilibili.com/video/BV1Hkr7YYEh8
+
+
+Git官网里有一本书Git Pro，里面详细介绍了git的各种使用方法，可以前往[观看](https://git-scm.com/book/zh/v2)或[下载](https://github.com/progit/progit2-zh/releases/download/2.1.77/progit.pdf)
+
+
+
+
+
+## gdb
+当代码出现bug了，我们就需要调试来解决bug。调试的本质就是找到问题，查看代码上下文。
+
+软件发布有两种模式，debug模式和release 模式，Linux里gcc或g++编译出的二进制程序，默认是release模式。要使用gdb调试，必须在源代码生成二进制程序的时候，加上-g选项。
+
+
+使用gcc编译以下程序。
+```c
+#include <stdio.h>
+int Sum(int s, int e)
+{
+    int result = 0;
+    for(int i = s; i <= e; i++)
+    {
+        result += i;
+    }
+        return result;
+}
+int main()
+{
+    int start = 1;
+    int end = 100;
+    printf("I will begin\n");
+    int n = Sum(start, end);
+    printf("running done, result is: [%d-%d]=%d\n", start, end, n);
+    return 0;
+}
+```
+
+不带-g选项默认生成release版。
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z mygbd]$ gcc -o mytest mygbd.c -std=c99
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z mygbd]$ ll
+total 20
+-rw-rw-r-- 1 user1 user1  347 Apr  5 15:39 mygbd.c
+-rwxrwxr-x 1 user1 user1 8440 Apr  5 15:40 mytest
+```
+
+加上-g选项生成debug版。
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z mygbd]$ gcc -o mytest mygbd.c -std=c99 -g
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z mygbd]$ ll
+total 20
+-rw-rw-r-- 1 user1 user1  347 Apr  5 15:39 mygbd.c
+-rwxrwxr-x 1 user1 user1 9720 Apr  5 15:58 mytest
+```
+可以发现因为附带了调试信息，生成的可执行文件体积更大了。
+
+
+程序要调试，必须是debug模式，编译时就要加上-g选项。
+
+
+
+### gdb的基础使用
+
+如果没有安装gdb，可以使用指令先安装。
+```bash
+sudo yum install gdb 
+```
+
+使用`gdb 指定的文件`来进入gdb调试
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z mygbd]$ gdb mytest 
+GNU gdb (GDB) Red Hat Enterprise Linux 7.6.1-120.el7
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-redhat-linux-gnu".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+Reading symbols from /home/user1/mygbd/mytest...done.
+(gdb) 
+```
+
+gdb自动记录最新的一条输入指令，直接按回车键会执行最新的一条输入指令。
+
+
+在gdb调试时，使用`list`查看源代码，同时`list`可以简写为`l`
+```bash
+(gdb) list
+4	    int result = 0;
+5	    for(int i = s; i <= e; i++)
+6	    {
+7	        result += i;
+8	    }
+9	        return result;
+10	}
+11	int main()
+12	{
+13	    int start = 1;
+(gdb) l                            #list可以简写为l，或者直接按回车键会继续执行list
+14	    int end = 100;
+15	    printf("I will begin\n");
+16	    int n = Sum(start, end);
+17	    printf("running done, result is: [%d-%d]=%d\n", start, end, n);
+18	    return 0;
+19	}
+(gdb) 
+```
+
+使用`list 文件名:行号`或`l 文件名:行号`可以从指定文件的某行开始显示
+```bash
+(gdb) l 1                            #当前目录下只有一个源文件可以忽略文件名，指定从第1行开始显示
+1	#include <stdio.h>
+2	int Sum(int s, int e)
+3	{
+4	    int result = 0;
+5	    for(int i = s; i <= e; i++)
+6	    {
+7	        result += i;
+8	    }
+9	        return result;
+10	}
+(gdb) 
+```
+
+显示了对应的源代码，可以使用`break 文件名:行号`来打断点，`break`可以简写为`b`
+```bash
+(gdb) b 15
+Breakpoint 1 at 0x4005c3: file mygbd.c, line 15.
+(gdb) 
+```
+打完断点让程序运行起来使用`run`指令，`run`可以简写为`r`
+```bash
+(gdb) r
+Starting program: /home/user1/mygbd/mytest 
+
+Breakpoint 1, main () at mygbd.c:15
+15	    printf("I will begin\n");                #跑到断点处停下来了
+(gdb) 
+```
+让程序运行完毕使用`continue`指令，作用是从当前位置开始连续执行程序，`continue`可以简写为`c`
+```bash
+(gdb) c
+Continuing.
+I will begin
+running done, result is: [1-100]=5050
+[Inferior 1 (process 12077) exited normally]
+(gdb) 
+```
+
+退出gdb调试使用`quit`指令，`quit`可以简写为`q`
+```bash
+(gdb) q
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z mygbd]$ 
+```
+
+
+
+#### cgdb
+哎呀，这gdb也太难用了，都是啥玩意啊看都看不懂。  
+为了解决gdb难用的问题我们可以使用cgdb，cgdb和gdb的使用方法是一样，不同的是cgdb可以看到调试的过程，更方便。
+
+使用以下指令安装cgdb
+```bash
+sudo yum install -y cgdb
+```
+
+安装好后，使用`cgdb 指定的文件`进入cgdb调试。进入之后
+
+![](PixPin_2026-04-05_16-49-09.webp)
+上面是代码界面，下面是gdb调试界面，这就是cgdb。
+
+
+### gdb的指令
+
+
+#### list
+`list`可以简写为`l`。
+
+- `list/l`，显示源代码，从上次位置开始，每次列出10行
+- `list/l 函数名`，列出指定函数的源代码
+- `list/l文件名:行号`，列出指定文件的源代码
+
+#### run
+`run`可以简写为`r`。  
+
+`run`，从程序开始连续执行
+
+#### 断点相关操作
+`break`可以简写为`b`。
+
+没有打断点，使用`r`指令会让程序直接跑完，为了调试我们需要先打断点。断点的本质是把代码进行块级划分，以块为单位快速定位问题区域。
+
+使用`break/b 文件名:行号`来指定行号打断点，`break/b 函数名`在函数开头设置断点，打上断点后对应的行号会变成红色，使用`info/i b`可以查看所有已设置的断点。
+
+
+断点有不同的属性
+![](PixPin_2026-04-05_19-20-16.webp)
+如果我们需要删除断点，可以使用`delete/d b 断点编号`来删除，断点编号就是Num列下对应的数字。只有在创建断点时使用行号，对断点进行其他操作时都使用断点编号。gdb不退出，断点编号依次递增。
+
+
+
+每个断点都有自己的开关，VS里的ctrl+F9快捷键就是禁用或启用断点的，当我们不需要这个断点又不想删除时可以暂时禁用。
+
+![](PixPin_2026-04-05_20-16-49.webp)
+
+在gdb里，使用`disable breakpoints`来关闭所有断点，`disable 断点编号`关闭指定断点；`enable breakpoints`打开所有断点，`enable 断点编号`打开指定断点。
+
+![](PixPin_2026-04-05_20-23-36.webp)
+
+查看断点属性时Enb列对应的断点的启用禁用，y为启用n为禁用，设置断点时都是默认启用的。
+#### step和next
+`step`可以简写为`s`，`next`可以简写为`n`。
+
+
+`step`对应的是VS里的逐语句F11，`next`对应的是VS里的逐过程F10。
+
+![](image.png)
+
+
+
+gdb自动记录最新的一条输入指令，直接按回车键会执行最新的一条输入指令，所以不需要一直手动输入`s`或`n`。
+
+![](PixPin_2026-04-05_19-50-54.webp)
+
+
+
+
+#### backtrace
+`backtrace`可以简写为`bt`。
+
+`backtrace/bt`可以查看查看当前执行栈的各级函数调用及参数。
+![](PixPin_2026-04-05_20-03-14.webp)
+
+
+#### finish
+
+`finish`可以执行到当前函数返回，然后停止，可以在想直接运行完毕当前函数时使用。 
+
+#### print
+`print`可以简写为`p`。
+
+`p 变量名`可以打印指定变量的值，`p 表达式`可以打印表达式的值。
+
+
+
+#### continue
+`continue`可以简写为`c`。
+
+`continue/c`指令是从当前位置开始连续执行程序。程序运行到断点处没有出现问题时，我们可以使用`c`指令来继续运行到下一个断点。
+
+
+#### until
+
+
+`until 行号`指令可以快速执行到指定行号，相当于局部范围内快速执行。在验证某一循环代码块内部没问题的时候可以使用这个指令跳出循环。
+
+
+#### display和undisplay
+
+`display 变量名`指令可以跟踪显示指定变量的值（每次停止时），使用`undisplay 变量名`可以取消对指定编号的变量的跟踪显示。
+
+#### info
+`info`可以简写为`i`
+
+`info/i locals`可以查看当前栈帧的局部变量值，也就是一个函数内所有的临时变量。
+
+
+#### quit
+使用`quit`指令退出gdb。
+
+
+### gdb的小技巧
+
+#### watch
+
+运行gdb时可以使用`watch 表达式（如变量）`执行时监视一个表达式（如变量）的值。如果监视的表达式在程序运行期间的值发生变化，GDB会暂停程序的执行，并通知使用者。
+
+> [!TIP]
+> 如果你有一些变量不应该修改，但是你怀疑它修改导致了问题，你可以watch它，如果变化了，就会通知你.
+
+
+#### set var确定问题原因
+
+在调试时我们想修改某个变量的值，但是调试界面没法直接修改代码，这是可以使用`set var 变量名=值`指令来修改相应的变量。
+
+
+#### 条件断点
+
+我们可以设置断点在某种条件下触发，这就是条件断点。
+例如，使用`b 9 if i == 30`指令来设置条件断点， 9是行号，表示新增断点的位置，后面是断点的条件。  
+我们也可以给已经存在的断点新增条件，例如`condition 2 i==30`指令的作用是给2号断点，新增条件i==30。
+
+
+
+
+> [!TIP]
+> - 条件断点添加常见两种方式：1.新增2.给已有断点追加注意两者的语法有区别，不要写错了。
+> - 新增：`b行号/文件名:行号/函数名 if i == 30(条件)`
+> - 给已有断点追加：`condition 2 i==30`，其中2是已有断点编号，没有if
+> - cgbd 分屏操作按ESC键进入代码屏，按上下键可以查看代码，按i键回到gdb屏
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
