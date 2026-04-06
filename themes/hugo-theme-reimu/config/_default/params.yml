@@ -145,6 +145,9 @@ social:
   # telegram: https://t.me/yourname
   # discord: https://discordapp.com/users/yourname
   # steam: https://steamcommunity.com/id/yourname
+  # weixin: 
+  # qq:
+  # tiktok:
 
 widgets:
   - category
@@ -215,7 +218,7 @@ reimu_cursor:
     pointer: ../images/cursor/reimu-cursor-pointer.png
     text: ../images/cursor/reimu-cursor-text.png
 
-icon_font: 4552607_4k4bc36ef96
+icon_font: 4552607_a0oqhord1y
 
 # Font loading strategy
 # Custom Font -> Google Fonts -> Local FallBack Font
@@ -419,8 +422,9 @@ giscus:
   reactionsEnabled: 1
   emitMetadata: 0
   inputPosition: bottom
-  # commentTheme: preferred_color_scheme invalid
-  # lang: zh-CN # deprecated, use html.lang instead
+  theme:
+    light:
+    dark:
 
 # https://disqus.com
 disqus:
