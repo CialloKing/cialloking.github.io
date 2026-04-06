@@ -12,12 +12,32 @@
     
     <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
     
-    <lastBuildDate>Tue, 31 Mar 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 01 Apr 2026 00:00:00 +0800</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/en/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>【Linux】05 - Process Concepts</title>
+      <link>https://cialloking.com/en/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/</link>
+      <pubDate>Wed, 01 Apr 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/en/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】05 - Process Concepts</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
+        
+        <hr><p>Published on 2026-04-01 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-04-01</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
     
     
 
@@ -189,26 +209,6 @@
       <guid>https://cialloking.com/en/post/c&#43;&#43;04---%E5%BC%95%E7%94%A8/</guid>
       <description>
         <![CDATA[<h1>【C++】04 - References</h1><p>Author: CialloKing(xxx@example.com)</p>
-        
-          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
-        
-        <hr><p>Published on 2026-03-22 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-22</p>]]>
-      </description>
-      
-        <category>C&#43;&#43;</category>
-      
-    </item>
-    
-    
-
-    <item>
-      <title>【C&#43;&#43;】03 - Function Overloading and Default Arguments</title>
-      <link>https://cialloking.com/en/post/c&#43;&#43;03---%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E4%B8%8E%E7%BC%BA%E7%9C%81%E5%8F%82%E6%95%B0/</link>
-      <pubDate>Sun, 22 Mar 2026 00:00:00 &#43;0000</pubDate>
-      <author>xxx@example.com (CialloKing)</author>
-      <guid>https://cialloking.com/en/post/c&#43;&#43;03---%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E4%B8%8E%E7%BC%BA%E7%9C%81%E5%8F%82%E6%95%B0/</guid>
-      <description>
-        <![CDATA[<h1>【C++】03 - Function Overloading and Default Arguments</h1><p>Author: CialloKing(xxx@example.com)</p>
         
           <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
         

@@ -5,6 +5,15 @@
   },
   "docs": [
       {
+        "id": "db9f3e2485849a4ff37b775e9b662067",
+        "title": "【Linux】05 - Process Concepts",
+        "content": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "summary": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "tags": ["进程"],
+        "categories": ["Linux"],
+        "permalink": "https://cialloking.com/en/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/"
+      },
+      {
         "id": "58c3e94a37601e0ee461c38eb1057603",
         "title": "【Linux】04 - Linux Development Tools",
         "content": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",

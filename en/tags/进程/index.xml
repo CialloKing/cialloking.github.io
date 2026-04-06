@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>进程 on CialloKing Blog</title>
+    <link>https://cialloking.com/en/tags/%E8%BF%9B%E7%A8%8B/</link>
+    <description>Recent content from CialloKing Blog</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    
+    <managingEditor>xxx@example.com (CialloKing)</managingEditor>
+    <webMaster>xxx@example.com (CialloKing)</webMaster>
+    
+    <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
+    
+    <lastBuildDate>Wed, 01 Apr 2026 00:00:00 +0800</lastBuildDate>
+    
+    
+    <atom:link href="https://cialloking.com/en/tags/%E8%BF%9B%E7%A8%8B/index.xml" rel="self" type="application/rss&#43;xml" />
+    
+
+    
+    
+
+    <item>
+      <title>【Linux】05 - Process Concepts</title>
+      <link>https://cialloking.com/en/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/</link>
+      <pubDate>Wed, 01 Apr 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/en/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】05 - Process Concepts</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
+        
+        <hr><p>Published on 2026-04-01 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-04-01</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
+    
+  </channel>
+</rss>

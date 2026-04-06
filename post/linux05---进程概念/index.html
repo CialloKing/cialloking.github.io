@@ -1,0 +1,1349 @@
+<!doctype html>
+<html
+  lang="zh-CN" 
+  data-theme-mode="auto"
+  >
+  <head><meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/><title>
+  【Linux】05 - 进程概念 | CialloKing
+</title>
+<meta name="description" content="少女祈祷中..."/><script>
+  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"Lang\":\"zh-cn\",\"Title\":\"CialloKing 的博客\",\"Weight\":1,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"简体中文\",\"Locale\":\"zh-CN\"},{\"Lang\":\"en\",\"Title\":\"CialloKing Blog\",\"Weight\":2,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"English\",\"Locale\":\"en\"}],\"icon_font\":\"4552607_a0oqhord1y\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
+  
+</script>
+<link
+    rel="preload"
+    as="style"
+    crossorigin
+    href="/css/custom-fonts.css"
+    onload="this.rel='stylesheet'"
+  /><link
+    rel="preload"
+    href="//at.alicdn.com/t/c/font_4552607_a0oqhord1y.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  /><link rel="stylesheet" href="/css/loader.min.4eac6555838cbcb8a5d15bf9bae0c688b74fae83b16a5613692de3f476051979.css" /><meta property="og:type" content="website" />
+  <meta property="og:title" content="【Linux】05 - 进程概念 | CialloKing" />
+  <meta
+    property="og:description"
+    content="少女祈祷中..."
+  />
+  <meta property="og:url" content="https://cialloking.com/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/" />
+  <meta
+    property="og:site_name"
+    content="CialloKing 的博客"
+  />
+  <meta property="og:image" content="https://cialloking.com/images/bg/bg1.webp" />
+  <meta property="article:author" content="CialloKing" />
+  <meta property="article:published_time" content="2026-04-06T00:00:00&#43;08:00" />
+  <meta property="article:modified_time" content="2026-04-06T00:00:00&#43;08:00" /><meta property="article:tag" content="进程, 冯诺依曼体系结构, 操作系统" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
+<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.42c2ff6576a8f7440f141db001877cdde6d4907355753cb3bbd43efbad8597c9.css" /><link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
+    integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei&#43;Zx/1oA/0l8ysE" crossorigin="anonymous"
+    onload="this.onload=null;this.rel='stylesheet'"
+  /><link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css"
+    integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz&#43;YI" crossorigin="anonymous"
+    onload="this.onload=null;this.rel='stylesheet'"
+  /><script
+    src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"
+    
+    
+    
+    
+    integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script><link
+    rel="stylesheet"
+    href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css"
+    integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous"/><link
+    rel="stylesheet"
+    href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css"
+    integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj&#43;vDDLIL&#43;xBGQU/voDBY5XE2lVh" crossorigin="anonymous"/>
+<link rel="stylesheet" href="/css/custom.css"><style>
+  .post-cover img {
+    transition: opacity 0.3s ease;
+    opacity: 0;
+  }
+  .post-cover img[data-cover-set="true"],
+  .post-cover img[data-custom-cover="true"] {
+    opacity: 1;
+  }
+</style>
+
+
+<style>
+/* 解除头图纵向高度限制 */
+#header {
+  min-height: auto !important;  /* 允许容器高度自适应 */
+}
+#header img {
+  height: auto !important;      /* 图片高度自适应 */
+  max-height: 8192px !important; /* 最大高度提升到 8192px */
+  width: 100%;
+  object-fit: cover;            /* 保持比例填充，不拉伸变形 */
+}
+</style>
+
+
+
+<style>
+  #content {
+    transition: opacity 0.2s ease; /* 移出时快速恢复 */
+  }
+</style>
+<script>
+  (function() {
+    let animFrame = null;
+    let startTime = null;
+    const duration1 = 1000;   // 第一阶段 1 秒,第一阶段持续时间（毫秒），例如 1 秒 = 1000
+    const duration2 = 2000;   // 第二阶段 2 秒,第二阶段持续时间（毫秒），例如 2 秒 = 2000
+    const startOpacity = 1;   // 起始透明度
+    const midOpacity = 0.1;   // 中间透明度（第一阶段结束时的值）
+    const endOpacity = 0;     // 最终透明度
+
+    function updateOpacity(now) {
+      const elapsed = now - startTime;
+      let opacity;
+      if (elapsed < duration1) {
+        // 第一阶段：线性插值 1 -> 0.1
+        const t = elapsed / duration1;
+        opacity = startOpacity + (midOpacity - startOpacity) * t;
+      } else if (elapsed < duration1 + duration2) {
+        // 第二阶段：线性插值 0.1 -> 0
+        const t = (elapsed - duration1) / duration2;
+        opacity = midOpacity + (endOpacity - midOpacity) * t;
+      } else {
+        opacity = endOpacity;
+      }
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = opacity;
+      if (elapsed < duration1 + duration2) {
+        animFrame = requestAnimationFrame(updateOpacity);
+      }
+    }
+
+    function startFade() {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = startOpacity;
+      startTime = performance.now();
+      animFrame = requestAnimationFrame(updateOpacity);
+    }
+
+    function resetOpacity() {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = '1';
+    }
+
+    function bindEvents() {
+      const header = document.getElementById('header');
+      if (!header) return;
+      header.removeEventListener('mouseenter', startFade);
+      header.removeEventListener('mouseleave', resetOpacity);
+      header.addEventListener('mouseenter', startFade);
+      header.addEventListener('mouseleave', resetOpacity);
+    }
+
+    function init() {
+      bindEvents();
+      document.addEventListener('pjax:complete', bindEvents);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
+</head>
+  <body><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate"><svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+          M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg></div><div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script><div id="copy-tooltip"></div>
+<div id="lang-tooltip">
+本文章没有找到对应的语言版本
+</div>
+<div id="heatmap-tooltip"></div><div id="container">
+      <div id="wrap"><div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation"><a class="main-nav-link-wrap" href="/"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">首页</span>
+      </a><a class="main-nav-link-wrap" href="/archives"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">归档</span>
+      </a><a class="main-nav-link-wrap" href="/about"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">关于</span>
+      </a><a class="main-nav-link-wrap" href="/link"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">友链</span>
+      </a><a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+<a id="nav-search-page" class="nav-icon" href="/search/" title="搜索" aria-label="搜索"></a></nav>
+
+
+  </nav><nav id="i18n-nav" aria-label="Language selection">
+      <div class="custom-dropdown">
+        <div class="select-selected" id="select-selected" role="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language menu">
+          <span id="nav-language-btn" class="nav-icon" style="padding: 0 20px 0 0"></span>
+          <span id="selected-lang">简体中文</span>
+        </div>
+        <ul class="select-items" id="select-items" role="listbox" aria-label="Languages"><li data-value="zh-cn" role="option" class="selected" aria-selected="true" >简体中文</li><li data-value="en" role="option" aria-selected="false" >English</li></ul>
+      </div>
+      <script>
+        var selectSelected = document.getElementById("select-selected");
+        var selectedLang = document.getElementById("selected-lang");
+        var selectItems = document.getElementById("select-items");
+        var selectOptions = selectItems.querySelectorAll("li");
+
+        selectSelected.addEventListener("click", () => {
+          selectItems.classList.toggle("show");
+          var expanded = selectSelected.getAttribute("aria-expanded") === "true";
+          selectSelected.setAttribute("aria-expanded", (!expanded).toString());
+        });
+
+        selectOptions.forEach((item) => {
+          item.addEventListener("click", () => {
+            const langMap = {};langMap['en'] = '\/en\/post\/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5\/';selectedLang.textContent = item.textContent;
+            selectItems.classList.remove("show");
+            selectOptions.forEach((option) => {
+              option.classList.remove("selected");
+            });
+            item.classList.add("selected");
+            if (item.dataset.value === 'zh-cn') {
+              return;
+            }
+            if (!langMap[item.dataset.value]) {
+              _$("#lang-tooltip").style.opacity = "1";
+              setTimeout(() => {
+                _$("#lang-tooltip").style.opacity = "0";
+              }, 1000);
+              return;
+            }
+            window.location = langMap[item.dataset.value];
+          });
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!event.target.closest(".custom-dropdown")) {
+            selectItems.classList.remove("show");
+            selectSelected.setAttribute("aria-expanded", "false");
+          }
+        });
+      </script>
+    </nav></div>
+<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg1.webp" alt="【Linux】05 - 进程概念"><div id="header-outer">
+    <div id="header-title"><span id="logo">
+            <h1 data-aos="slide-up">【Linux】05 - 进程概念</h1>
+          </span><h2 id="subtitle-wrap" data-aos="slide-down"></h2></div>
+  </div>
+</header><div id="content"
+          aria-label="Page content"
+          class="sidebar-left"
+            ><aside id="sidebar" aria-label="Sidebar"><div class="sidebar-wrapper-container sticky"><div class="sidebar-wrapper">
+    <div
+      class="sidebar-wrap"
+      data-aos="fade-up"
+    ><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#进程概念">进程概念</a>
+      <ol>
+        <li><a href="#冯诺依曼体系结构">冯诺依曼体系结构</a>
+          <ol>
+            <li><a href="#冯诺依曼体系为什么要有内存">冯诺依曼体系为什么要有内存</a></li>
+            <li><a href="#从硬件方面理解数据流动">从硬件方面理解数据流动</a></li>
+          </ol>
+        </li>
+        <li><a href="#操作系统">操作系统</a>
+          <ol>
+            <li><a href="#设计操作系统的目的">设计操作系统的目的</a></li>
+            <li><a href="#操作系统的管理">操作系统的管理</a></li>
+            <li><a href="#理解系统调用">理解系统调用</a></li>
+          </ol>
+        </li>
+        <li><a href="#进程">进程</a>
+          <ol>
+            <li><a href="#基本概念与基本操作">基本概念与基本操作</a>
+              <ol>
+                <li><a href="#什么是进程">什么是进程</a></li>
+                <li><a href="#task_struct">task_struct</a></li>
+                <li><a href="#查看进程">查看进程</a></li>
+              </ol>
+            </li>
+            <li><a href="#进程状态">进程状态</a></li>
+            <li><a href="#进程优先级">进程优先级</a></li>
+            <li><a href="#进程切换">进程切换</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img
+    data-src="/avatar/my-avatar.webp"
+    data-sizes="auto"
+    alt="CialloKing"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">CialloKing</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div><div class="sidebar-state-number">16</div>
+  </div>
+  <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
+    <div>分类</div>
+    <div class="sidebar-state-number">
+      3
+    </div>
+  </a>
+  <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
+    <div>标签</div>
+    <div class="sidebar-state-number">13</div>
+  </a>
+</div>
+<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="首页"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">首页</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="归档"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">归档</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="关于"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">关于</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/link"
+        aria-label="友链"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
+    </div></div></div><div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div></div>
+  </div><div class="sidebar-widget"></div></div></aside>
+<section id="main" aria-label="Main content"><article
+  class="h-entry article"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div
+    class="article-inner"
+    data-aos="fade-up"
+  >
+    <div class="article-meta"><div class="article-date">
+  <span
+    class="article-date-link icon-calendar"
+    data-aos="zoom-in"
+  >
+    <time datetime="2026-04-06 00:00:00 &#43;0800 &#43;0800" itemprop="datePublished"
+      >2026-04-06</time
+    >
+    <time style="display: none;" id="post-update-time"
+      >2026-04-06</time
+    >
+  </span></div>
+</div><div class="hr-line"></div><div class="e-content article-entry" itemprop="articleBody"><h1 id="进程概念">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e6%a6%82%e5%bf%b5"></a>
+进程概念
+</h1><h2 id="冯诺依曼体系结构">
+<a class="header-anchor" href="#%e5%86%af%e8%af%ba%e4%be%9d%e6%9b%bc%e4%bd%93%e7%b3%bb%e7%bb%93%e6%9e%84"></a>
+冯诺依曼体系结构
+</h2><p>我们常见的计算机，如笔记本电脑，学校机房里运行XP系统的电脑。我们不常见的计算机，如服务器等，大部分都遵守冯诺依曼体系。
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/image.webp" alt=""></p>
+<p>截至目前，我们所认识的计算机，都是由一个个的硬件组件组成</p>
+<ul>
+<li>输入设备：包括键盘，鼠标，话筒，摄像头，磁盘，网卡等</li>
+<li>输出设备：显示器，磁盘，网卡，打印机等</li>
+<li>中央处理器(CPU)：含有运算器和控制器等</li>
+</ul>
+<h3 id="冯诺依曼体系为什么要有内存">
+<a class="header-anchor" href="#%e5%86%af%e8%af%ba%e4%be%9d%e6%9b%bc%e4%bd%93%e7%b3%bb%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e6%9c%89%e5%86%85%e5%ad%98"></a>
+冯诺依曼体系为什么要有内存
+</h3><p>当代CPU非常复杂，简化一下，CPU=运算器+控制器。图中的存储器指的是内存。在冯诺依曼体系中，输入和输出设备都叫外设，磁盘既是输入设备又是输出设备，对磁盘的操作称为IO(input/output)操作。</p>
+<p>程序运行之前储存在磁盘里，软件要运行，必须加载到内存，因为冯诺依曼体系中CPU获取和输出数据只能在内存中运行，加载的过程本质是IO操作，数据是从一个设备“拷贝”到另一个设备，冯诺依曼体系的效率由设备“拷贝”的效率决定，CPU在数据层面，只和内存打交道。</p>
+<p>在计算机的世界里，存储离CPU越近，速度越快，空间越小，成本越高。
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/image-1.webp" alt=""></p>
+<p>冯诺依曼体系为什么要有内存，因为CPU的运算速度非常快，外设跟不上，假如没有内存的话CPU99%的时间都在等待外设输入和输出数据，这样效率非常低。那为什么不把外设造得和CPU一样快呢，因为这样成本很高，沙特的石油佬都不一定能买几台，当代计算机是性价比的产物，在性能和价格之间找到的平衡。</p>
+<h3 id="从硬件方面理解数据流动">
+<a class="header-anchor" href="#%e4%bb%8e%e7%a1%ac%e4%bb%b6%e6%96%b9%e9%9d%a2%e7%90%86%e8%a7%a3%e6%95%b0%e6%8d%ae%e6%b5%81%e5%8a%a8"></a>
+从硬件方面理解数据流动
+</h3><p>假如张三要和李四要在电脑上使用QQ微信飞书钉钉电子邮件等方式进行沟通，那么他们的消息数据是如何流动的？</p>
+<p>张三要和李四的计算机都是冯诺依曼体系。首先张三要启动聊天软件，本质就是把软件加载到内存中，然后使用输入设备（键盘，麦克风等）输入他要发送的消息，输入设备再把消息拷贝到内存中，CPU读取内存中的消息数据，根据聊天软件的代码进行数据的封装加密等工作，然后再写入内存中，最后交给网卡，通过网络发送消息数据。发送后李四的网卡（输入设备）先拿到数据，然后把数据拷贝到内存中，CPU执行解密等操作再把数据写入内存，最后数据进入输出设备（显示器，耳机等）被李四看到。<br>
+假如张三和李四需要传输文件或者其他东西，也是一样的过程，</p>
+<p>所有的软件本质都是在处理存储器和内存之间的关系，各种算法都是在处理内存中的数据。</p>
+<h2 id="操作系统">
+<a class="header-anchor" href="#%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f"></a>
+操作系统
+</h2><p>一个基本的程序集合，被称为操作系统（OS）<br>
+操作系统是一款进行软硬件管理的软件，操作系统包括：</p>
+<ul>
+<li>操作系统内核（进程管理，内存管理，文件管理，驱动管理）</li>
+<li>其他程序（例如函数库，shell程序等等）</li>
+</ul>
+<p><img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-06_16-06-46.webp" alt=""></p>
+<p>狭义上操作系统就是内核，但是只有一个内核用户用不了，所以从广义上来说操作系统由内核和各种各种外壳程序组成。
+手机上的安卓底层也是Linux，安卓也是由内核和其他各种外围的软件组成。</p>
+<h3 id="设计操作系统的目的">
+<a class="header-anchor" href="#%e8%ae%be%e8%ae%a1%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f%e7%9a%84%e7%9b%ae%e7%9a%84"></a>
+设计操作系统的目的
+</h3><p><img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/image-2.webp" alt=""></p>
+<p>底层的硬件部分是冯诺依曼体系结构，操作系统向下要与硬件交互，管理所有的软硬件资源，向上给用户提供一个良好稳定的运行环境。</p>
+<ol>
+<li>计算机的软硬件体系是层状结构，不同层之间高内聚低耦合，CPU出问题换CPU，内存出问题换内存，操作系统出问题换系统，用户出问题换电脑，各个部分相对独立。</li>
+<li>要访问操作系统，必须使用系统调用，其实就是使用系统提供的函数。</li>
+<li>我们的程序只要访问了硬件，那么它必须贯穿整个操作系统。</li>
+<li>我们平时会使用各种库，库可能在底层封装了系统调用。</li>
+</ol>
+<h3 id="操作系统的管理">
+<a class="header-anchor" href="#%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f%e7%9a%84%e7%ae%a1%e7%90%86"></a>
+操作系统的管理
+</h3><p>操作系统在结构中是承上启下的作用，是一款纯正的“搞管理”的软件。</p>
+<p>想象一下，学校里有学生，班主任，校长。校长是管理者，学生是被管理者，校长有决策权，决定要干什么事情，班主任负责执行。在计算机里操作系统就是校长，驱动就是班主任，底层硬件就是学生。<br>
+要管理，管理者可以不和被管理者见面。比如校长只需要问一下班主任就能知道谁迟到了谁没来上课。管理者可以根据数据进行管理，数据由中间层获取。<br>
+学校所有学生的信息都汇总在一张execl表格里，表格信息由班主任填写，校长需要一批成绩最好的学生参加竞赛，就只需要按表格的成绩列排序，需要免费劳动力搬东西，就只需要在表格里筛选21班的所有男生，校长对学生的管理就是对execl表格数据增删查改的管理。后来老校长退休了，新校长上任，学校扩建了招收了更多学生，新校长发现execl表格效率太低了，自己写了一个新的学生管理系统，定义了一个结构体struct_stu，把学生的属性包含在内，再用结构体内的指针把学生数据连起来，最后就得到了一个学生链表，对学生的管理就变成了对学生链表数据增删查改的管理。<br>
+校长创建学生链表的过程就是建模的过程，校长管理学生我们称为<strong>先描述，再组织</strong>，<strong>先描述，再组织</strong>，我们可以对任何管理场景进行建模。</p>
+<p>操作系统怎么管理硬件的？操作系统可以在自己的内部<strong>先描述，再组织</strong>，把各种硬件统一使用一个类，包含硬件的所有属性，然后再管理各个硬件代表的对象，这样对硬件的管理就变成了对硬件结构体对象进行增删查改的管理。为什么基本所有编程语言都会提供“类”，因为“类”解决的是先描述的问题。为什么C++还提供了STL容器的各种库，因为要解决再组织的问题。操作系统使用<strong>先描述，再组织</strong>来管理硬件，操作系统对硬件的管理就变成了对相应硬件的数据进行管理，操作系统里充满了大量的数据结构和与该数据结构对应的算法。</p>
+<h3 id="理解系统调用">
+<a class="header-anchor" href="#%e7%90%86%e8%a7%a3%e7%b3%bb%e7%bb%9f%e8%b0%83%e7%94%a8"></a>
+理解系统调用
+</h3><p>操作系统要向上提供对应的服务，操作系统不相信任何用户或者人。<br>
+类似与银行，既不相信客户又要提供服务，所有银行会有一个个窗口柜台来给客户办理用户。
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/image-3.webp" alt=""></p>
+<p>操作系统也有系统提供的系统调用，就像银行的窗口一样，用户通过系统调用来和操作系统交互。<br>
+在开发角度，操作系统对外会表现为一个整体，但是会暴露自己的部分接口，供上层开发使用，这部分由操作系统提供的接口，叫做系统调用。
+Linux系统是C语言写的，提供的系统调用其实就是C函数，函数的输入参数就是用户要给操作系统的，返回值就是操作系统给用户的。系统调用的本质是用户和操作系统之间进行某种数据交互。</p>
+<p>有些客户比如老年人，进银行里啥也不会，银行网点里为了帮助这些客户就有了大堂经理。操作系统里也有各种库，外壳，指令来帮助用户进行操作。<br>
+系统调用在使用上，功能比较基础，对用户的要求相对也比较高，所以，有心的开发者可以对部分系统调用进行适度封装，从而形成库，有了库，就很有利于更上层用户或者开发者进行二次开发。库函数和系统调用就形成了上下层的关系，库函数访问了硬件就一定使用了系统调用。</p>
+<h2 id="进程">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b"></a>
+进程
+</h2><h3 id="基本概念与基本操作">
+<a class="header-anchor" href="#%e5%9f%ba%e6%9c%ac%e6%a6%82%e5%bf%b5%e4%b8%8e%e5%9f%ba%e6%9c%ac%e6%93%8d%e4%bd%9c"></a>
+基本概念与基本操作
+</h3><h4 id="什么是进程">
+<a class="header-anchor" href="#%e4%bb%80%e4%b9%88%e6%98%af%e8%bf%9b%e7%a8%8b"></a>
+什么是进程
+</h4><p>课本概念：程序的一个执行实例，正在执行的程序等
+内核观点：担当分配系统资源（CPU时间，内存）的实体。
+当前：进程=内核数据结构(task_struct)+自己的程序代码和数据</p>
+<p><del>进程介绍完毕，可以看下一节了</del></p>
+<hr>
+<p>可执行程序在没运行时在磁盘里，运行时加载到内存中，这个可执行程序的代码和数据就在内存里，那这个就是进程了吗？
+内存中一定会同时加载了很多软件程序，在这些软件还没加载到内存前，内存中就已经加载了操作系统，电脑开机的那一段时间就是在加载操作系统。要是让软件自己随意加载到内存里那计算机岂不是乱套了，所以操作系统必然要对多个被加载到内存中的程序进行管理。操作系统如何管理呢？<strong>先描述，再管理</strong>。操作系统自己搞一个struct结构体，里面有程序的代码地址，数据地址，优先级，id，状态，指向下一个struct的指针等属性，每当有程序要加载，就根据结构体创建一个对象，把程序的属性填进去，每个结构体对象都有指针指向对应的代码和数据，于此同时，还有指针指向下一个结构体对象，这样操作系统就有了一个包含所有加载到内存里程序对象的链表，我们把这个链表称作<strong>进程列表</strong>，对进程的管理，就变成了对链表的增删查改。</p>
+<p>所以进程不仅仅是加载到内存里的代码和数据，操作系统里进程列表的节点加上对应的代码和数据才是进程。进程=内核数据结构(task_struct)+自己的程序代码和数据。我们把操作系统自己搞的struct结构体叫做<strong>PCB</strong>，PCB是个统称，所有操作系统里类似的这个东西都叫PCB，用中文说这个结构体叫做<strong>进程控制块</strong>。</p>
+<p>Linux是一款具体的操作系统，这个PCB在Linux里具体叫做struct task_struct{}，在Linux里，进程=PCB(task_struct)+自己的程序代码和数据。PCB就约等于一个人的简历，一个人要找工作，其实是他的简历在找工作，简历本质是对一个人的描述，把简历投给公司就相当于把自己的属性投给过去了。面试排队是一份简历在一摞简历里排队，面试官拿简历依次面试一个个人，面试官就是CPU，而面试官拿出来的一份份简历就是队列，面试官调度某人筛选某人淘汰某人本质是把简历进行筛选淘汰。所以一个可执行程序加载到内存中它自己是最不重要的，最重要的是操作系统要创建对应的PCB来描述它。</p>
+<h4 id="task_struct">
+<a class="header-anchor" href="#task_struct"></a>
+task_struct
+</h4><p>task_struct里面有什么？</p>
+<p>内容分类</p>
+<ul>
+<li>标示符：描述本进程的唯一标示符，用来区别其他进程。</li>
+<li>状态：任务状态，退出代码，退出信号等。优先级：相对于其他进程的优先级。</li>
+<li>程序计数器：程序中即将被执行的下一条指令的地址。</li>
+<li>内存指针：包括程序代码和进程相关数据的指针，还有和其他进程共享的内存块的指针</li>
+<li>上下文数据：进程执行时处理器的寄存器中的数据[休学例子，要加图CPU，寄存器]。</li>
+<li>I/O状态信息:包括显示的I/O请求，分配给进程的I/0设备和被进程使用的文件列表。</li>
+<li>记账信息：可能包括处理器时间总和，使用的时钟数总和，时间限制，记账号等。</li>
+<li>其他信息，具体详细信息之后介绍</li>
+</ul>
+<p>我们可以在Linux内核源代码中找到<code>task_struct</code></p>
+<p>这个<a href="https://elixir.bootlin.com/linux/v2.6.18/source/include/linux/sched.h#L767">网页</a>，或者在Linux内核官方网站的这个<a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/sched.h?h=v2.6.18&amp;id=3752aee96538b582b089f4a97a26e2ccd9403929">网页</a>，以及在github的这个<a href="https://github.com/torvalds/linux/blob/v2.6.18/include/linux/sched.h">网页</a>都可以查看Linux2.6.18版本内核源代码里task_struct的定义。</p>
+<p><img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-06_23-31-08.webp" alt="">
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-06_23-54-38.webp" alt="">
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-07_00-03-59.webp" alt=""></p>
+<p>往下能看见<code>struct list_head tasks;</code>，说明Linux里是用双链表管理PCB的
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-06_23-33-14.webp" alt=""></p>
+<p>还有父子进程等等，往下还能看到更多信息
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-06_23-39-50.webp" alt=""></p>
+<h4 id="查看进程">
+<a class="header-anchor" href="#%e6%9f%a5%e7%9c%8b%e8%bf%9b%e7%a8%8b"></a>
+查看进程
+</h4><p>可执行程序可以通过<code>getpid()</code>系统调用来获取进程id (PID)，使用 <code>getppid()</code>系统调用获取父进程id (PPID)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;pid: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">getpid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;ppid: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">getppid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ gcc -o task task.c 
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ ./task 
+</span></span><span class="line"><span class="cl">pid: <span class="m">15229</span>
+</span></span><span class="line"><span class="cl">ppid: <span class="m">30400</span>
+</span></span><span class="line"><span class="cl">pid: <span class="m">15229</span>
+</span></span><span class="line"><span class="cl">ppid: <span class="m">30400</span>
+</span></span><span class="line"><span class="cl">pid: <span class="m">15229</span>
+</span></span><span class="line"><span class="cl">ppid: <span class="m">30400</span>
+</span></span><span class="line"><span class="cl">pid: <span class="m">15229</span>
+</span></span><span class="line"><span class="cl">ppid: <span class="m">30400</span>
+</span></span><span class="line"><span class="cl">^C
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB<span class="o">]</span>$ 
+</span></span></code></pre></div><p>我们历史上执行的所有的指令，工具，自己的程序，运行起来，全部都是进程。</p>
+<p>使用<code>ps axj</code>指令可以展示系统内的所有进程</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ ps axj
+</span></span><span class="line"><span class="cl"> PPID   PID  PGID   SID TTY      TPGID STAT   UID   TIME COMMAND
+</span></span><span class="line"><span class="cl">    <span class="m">0</span>     <span class="m">1</span>     <span class="m">1</span>     <span class="m">1</span> ?           -1 Ss       <span class="m">0</span>   0:16 /usr/lib/systemd/systemd --switched-root --system --deserialize
+</span></span><span class="line"><span class="cl">    <span class="m">0</span>     <span class="m">2</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>kthreadd<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>     <span class="m">4</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>kworker/0:0H<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>     <span class="m">6</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:05 <span class="o">[</span>ksoftirqd/0<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>     <span class="m">7</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>migration/0<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>     <span class="m">8</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>rcu_bh<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>     <span class="m">9</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   7:32 <span class="o">[</span>rcu_sched<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">10</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>lru-add-drain<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">11</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:02 <span class="o">[</span>watchdog/0<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">12</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:02 <span class="o">[</span>watchdog/1<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">13</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>migration/1<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">14</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:05 <span class="o">[</span>ksoftirqd/1<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">16</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>kworker/1:0H<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">18</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>kdevtmpfs<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">19</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>netns<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">20</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>khungtaskd<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">21</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>writeback<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">22</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>kintegrityd<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">23</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>bioset<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">24</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>bioset<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">25</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>bioset<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">26</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>kblockd<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">27</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>md<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">28</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>edac-poller<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">29</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>watchdogd<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">36</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>kswapd0<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">37</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 SN       <span class="m">0</span>   0:00 <span class="o">[</span>ksmd<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">38</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 SN       <span class="m">0</span>   0:02 <span class="o">[</span>khugepaged<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">39</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>crypto<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">47</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>kthrotld<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">49</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>kmpath_rdacd<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">50</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>kaluad<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">51</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>kpsmoused<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">52</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>ipv6_addrconf<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">65</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>deferwq<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>   <span class="m">100</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>kauditd<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>   <span class="m">242</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>ata_sff<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>   <span class="m">244</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>scsi_eh_0<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>   <span class="m">245</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>scsi_tmf_0<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>   <span class="m">246</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>scsi_eh_1<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>   <span class="m">247</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>scsi_tmf_1<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>   <span class="m">251</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>kworker/1:1H<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>   <span class="m">253</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>ttm_swap<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>   <span class="m">269</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:02 <span class="o">[</span>kworker/0:1H<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>   <span class="m">270</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:13 <span class="o">[</span>jbd2/vda1-8<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>   <span class="m">271</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>ext4-rsv-conver<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">368</span>   <span class="m">368</span>   <span class="m">368</span> ?           -1 Ss       <span class="m">0</span>   0:07 /usr/lib/systemd/systemd-journald
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">389</span>   <span class="m">389</span>   <span class="m">389</span> ?           -1 Ss       <span class="m">0</span>   0:00 /usr/lib/systemd/systemd-udevd
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">439</span>   <span class="m">439</span>   <span class="m">439</span> ?           -1 S&lt;sl     <span class="m">0</span>   0:01 /sbin/auditd
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>   <span class="m">486</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>rpciod<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>   <span class="m">487</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>xprtiod<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">539</span>   <span class="m">539</span>   <span class="m">539</span> ?           -1 Ss      <span class="m">81</span>   0:12 /usr/bin/dbus-daemon --system --address<span class="o">=</span>systemd: --nofork --nop
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>   <span class="m">540</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S&lt;       <span class="m">0</span>   0:00 <span class="o">[</span>nfit<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">548</span>   <span class="m">548</span>   <span class="m">548</span> ?           -1 Ss      <span class="m">32</span>   0:01 /sbin/rpcbind -w
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">549</span>   <span class="m">549</span>   <span class="m">549</span> ?           -1 Ssl      <span class="m">0</span>   0:00 /usr/sbin/gssproxy -D
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">555</span>   <span class="m">555</span>   <span class="m">555</span> ?           -1 Ss       <span class="m">0</span>   0:07 /usr/lib/systemd/systemd-logind
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">557</span>   <span class="m">557</span>   <span class="m">557</span> ?           -1 Ssl    <span class="m">999</span>   0:06 /usr/lib/polkit-1/polkitd --no-debug
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">563</span>   <span class="m">561</span>   <span class="m">561</span> ?           -1 S      <span class="m">998</span>   0:01 /usr/sbin/chronyd
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">799</span>   <span class="m">799</span>   <span class="m">799</span> ?           -1 Ss       <span class="m">0</span>   0:00 /sbin/dhclient -1 -q -lf /var/lib/dhclient/dhclient--eth0.lease
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">868</span>   <span class="m">868</span>   <span class="m">868</span> ?           -1 Ssl      <span class="m">0</span>   1:24 /usr/bin/python2 -Es /usr/sbin/tuned -l -P
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>  <span class="m">1076</span>  <span class="m">1076</span>  <span class="m">1076</span> ?           -1 Ss       <span class="m">0</span>   0:03 /usr/libexec/postfix/master -w
+</span></span><span class="line"><span class="cl"> <span class="m">1076</span>  <span class="m">1078</span>  <span class="m">1076</span>  <span class="m">1076</span> ?           -1 S       <span class="m">89</span>   0:00 qmgr -l -t unix -u
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>  <span class="m">1173</span>  <span class="m">1173</span>  <span class="m">1173</span> ?           -1 Ssl      <span class="m">0</span>   0:41 /usr/sbin/rsyslogd -n
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>  <span class="m">1186</span>  <span class="m">1186</span>  <span class="m">1186</span> ?           -1 Ss       <span class="m">0</span>   0:00 /usr/sbin/atd -f
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>  <span class="m">1188</span>  <span class="m">1188</span>  <span class="m">1188</span> ?           -1 Ss       <span class="m">0</span>   0:01 /usr/sbin/crond -n
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>  <span class="m">1194</span>  <span class="m">1194</span>  <span class="m">1194</span> ttyS0     <span class="m">1194</span> Ss+      <span class="m">0</span>   0:00 /sbin/agetty --keep-baud 115200,38400,9600 ttyS0 vt220
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>  <span class="m">1195</span>  <span class="m">1195</span>  <span class="m">1195</span> tty1      <span class="m">1195</span> Ss+      <span class="m">0</span>   0:00 /sbin/agetty --noclear tty1 linux
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>  <span class="m">1565</span>  <span class="m">1565</span>  <span class="m">1565</span> ?           -1 Ss       <span class="m">0</span>   0:03 /usr/local/cloudmonitor/bin/argusagent -d
+</span></span><span class="line"><span class="cl"> <span class="m">1565</span>  <span class="m">1567</span>  <span class="m">1565</span>  <span class="m">1565</span> ?           -1 Sl       <span class="m">0</span> 142:52 /usr/local/cloudmonitor/bin/argusagent
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>  <span class="m">1769</span>  <span class="m">1769</span>  <span class="m">1769</span> ?           -1 Ss       <span class="m">0</span>   0:00 /usr/sbin/sshd -D
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>  <span class="m">2009</span>  <span class="m">2009</span>  <span class="m">2009</span> ?           -1 Ssl      <span class="m">0</span>  16:44 /usr/local/share/aliyun-assist/aliyun-service.symlink
+</span></span><span class="line"><span class="cl"><span class="m">30400</span>  <span class="m">2714</span>  <span class="m">2714</span> <span class="m">30400</span> pts/2    <span class="m">15231</span> T     <span class="m">1001</span>   0:00 ./testprocessbar
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>  <span class="m">2739</span>  <span class="m">2739</span>  <span class="m">2739</span> ?           -1 Ssl   <span class="m">1001</span>   0:00 /home/user1/.VimForCpp/nvim process.c
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>  <span class="m">2757</span>  <span class="m">2746</span>  <span class="m">2746</span> ?           -1 Sl    <span class="m">1001</span>   0:00 /home/user1/.VimForCpp/cquery/bin/cquery --log-file<span class="o">=</span>/tmp/cquery
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>  <span class="m">3966</span>  <span class="m">3966</span>  <span class="m">3966</span> ?           -1 Ssl   <span class="m">1001</span>   0:00 /home/user1/.VimForCpp/nvim main.c
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>  <span class="m">3984</span>  <span class="m">3973</span>  <span class="m">3973</span> ?           -1 Sl    <span class="m">1001</span>   0:00 /home/user1/.VimForCpp/cquery/bin/cquery --log-file<span class="o">=</span>/tmp/cquery
+</span></span><span class="line"><span class="cl">    <span class="m">2</span> <span class="m">10105</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>kworker/u4:0<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">1</span> <span class="m">11811</span> <span class="m">11811</span> <span class="m">11811</span> ?           -1 Ssl   <span class="m">1001</span>   0:00 /home/user1/.VimForCpp/nvim mygbd.c
+</span></span><span class="line"><span class="cl">    <span class="m">1</span> <span class="m">11835</span> <span class="m">11818</span> <span class="m">11818</span> ?           -1 Sl    <span class="m">1001</span>   0:00 /home/user1/.VimForCpp/cquery/bin/cquery --log-file<span class="o">=</span>/tmp/cquery
+</span></span><span class="line"><span class="cl">    <span class="m">2</span> <span class="m">11964</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:02 <span class="o">[</span>kworker/0:2<span class="o">]</span>
+</span></span><span class="line"><span class="cl"> <span class="m">1769</span> <span class="m">11995</span> <span class="m">11995</span> <span class="m">11995</span> ?           -1 Ss       <span class="m">0</span>   0:00 sshd: root@pts/0
+</span></span><span class="line"><span class="cl"><span class="m">11995</span> <span class="m">11997</span> <span class="m">11997</span> <span class="m">11997</span> pts/0    <span class="m">11997</span> Ss+      <span class="m">0</span>   0:00 -bash
+</span></span><span class="line"><span class="cl"><span class="m">30400</span> <span class="m">12102</span> <span class="m">12102</span> <span class="m">30400</span> pts/2    <span class="m">15231</span> T     <span class="m">1001</span>   0:15 cgdb mytest
+</span></span><span class="line"><span class="cl"><span class="m">12102</span> <span class="m">12103</span> <span class="m">12103</span> <span class="m">12103</span> pts/3    <span class="m">12103</span> Ss+   <span class="m">1001</span>   0:00 gdb --nw --annotate<span class="o">=</span><span class="m">2</span> -x /home/user1/.tgdb/a2_gdb_init mytest
+</span></span><span class="line"><span class="cl">    <span class="m">2</span> <span class="m">12195</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 R        <span class="m">0</span>   0:03 <span class="o">[</span>kworker/1:0<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span> <span class="m">12720</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>kworker/u4:1<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="m">2</span> <span class="m">14492</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>kworker/0:0<span class="o">]</span>
+</span></span><span class="line"><span class="cl"> <span class="m">1076</span> <span class="m">14940</span>  <span class="m">1076</span>  <span class="m">1076</span> ?           -1 S       <span class="m">89</span>   0:00 pickup -l -t unix -u
+</span></span><span class="line"><span class="cl">    <span class="m">2</span> <span class="m">15000</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>kworker/1:2<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="m">30400</span> <span class="m">15231</span> <span class="m">15231</span> <span class="m">30400</span> pts/2    <span class="m">15231</span> R+    <span class="m">1001</span>   0:00 ps axj
+</span></span><span class="line"><span class="cl">    <span class="m">1</span> <span class="m">15824</span> <span class="m">15824</span> <span class="m">15824</span> ?           -1 Ssl      <span class="m">0</span>  10:08 /usr/local/aegis/aegis_update/AliYunDunUpdate
+</span></span><span class="line"><span class="cl">    <span class="m">1</span> <span class="m">15865</span> <span class="m">15865</span> <span class="m">15865</span> ?           -1 Ssl      <span class="m">0</span>  51:44 /usr/local/aegis/aegis_client/aegis_12_81/AliYunDun
+</span></span><span class="line"><span class="cl">    <span class="m">1</span> <span class="m">15887</span> <span class="m">15887</span> <span class="m">15887</span> ?           -1 Ssl      <span class="m">0</span> 111:37 /usr/local/aegis/aegis_client/aegis_12_81/AliYunDunMonitor
+</span></span><span class="line"><span class="cl"> <span class="m">1769</span> <span class="m">30397</span> <span class="m">30397</span> <span class="m">30397</span> ?           -1 Ss       <span class="m">0</span>   0:00 sshd: user1 <span class="o">[</span>priv<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="m">30397</span> <span class="m">30399</span> <span class="m">30397</span> <span class="m">30397</span> ?           -1 D     <span class="m">1001</span>   0:03 sshd: user1@pts/2
+</span></span><span class="line"><span class="cl"><span class="m">30399</span> <span class="m">30400</span> <span class="m">30400</span> <span class="m">30400</span> pts/2    <span class="m">15231</span> Ss    <span class="m">1001</span>   0:00 -bash
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ 
+</span></span></code></pre></div><p>可以看到进程非常多，可以使用管道<code>|</code>再加<code>grep</code>指令筛选想要显示的进程。</p>
+<p>运行一个循环程序</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;pid: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">getpid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;ppid: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">getppid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-07_00-28-49.webp" alt="">
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-07_00-29-35.webp" alt="">
+这样我们就查到了刚刚运行的程序的进程，但是这么多属性我们怎么知道哪个是哪个？我们可以使用<code>;</code>或<code>&amp;&amp;</code>来同时执行两条指令。<br>
+使用<code>ps axj | head 1 ; ps axj | grep 对应的可执行程序</code>或<code>ps axj | head 1 &amp;&amp; ps axj | grep 对应的可执行程序</code>来查找进程</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"> PPID   PID  PGID   SID TTY      TPGID STAT   UID   TIME COMMAND
+</span></span><span class="line"><span class="cl">    <span class="m">2</span>    <span class="m">20</span>     <span class="m">0</span>     <span class="m">0</span> ?           -1 S        <span class="m">0</span>   0:00 <span class="o">[</span>khungtaskd<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="m">15595</span> <span class="m">15631</span> <span class="m">15631</span> <span class="m">15595</span> pts/1    <span class="m">15631</span> R+    <span class="m">1001</span>   0:03 ./task
+</span></span><span class="line"><span class="cl"><span class="m">11997</span> <span class="m">15640</span> <span class="m">15639</span> <span class="m">11997</span> pts/0    <span class="m">15639</span> R+       <span class="m">0</span>   0:00 grep --color<span class="o">=</span>auto task
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span><span class="c1"># </span>
+</span></span></code></pre></div><p>./task是我们刚刚运行的程序，grep &ndash;color=auto task是什么东西？grep是个命令，查找的时候也是一个进程，所以会自己把自己找出来，再加一个管道<code>|</code>,跟上命令<code>grep -v grep</code>反向筛选就能去掉显示grep了。</p>
+<p>使用ctrl+c快捷键可以杀掉进程，使用<code>kill -9 进程编号</code>指令也可以杀掉指定进程。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB<span class="o">]</span>$ ./task 
+</span></span><span class="line"><span class="cl">^C
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB<span class="o">]</span>$ 
+</span></span></code></pre></div><p>我们运行的所有指令在系统里也都是进程，系统里执行任务都是通过进程执行的，windows系统里完成各种任务也是进程，手机上的所有操作也是进程。所以在Linux系统里用户是以进程的方式来访问操作系统的，我们在系统里使用各种指令就是在给系统布置任务，所以<strong>进程</strong>也可以被称为<strong>任务</strong>。</p>
+<p>除了<code>ps</code>指令，我们也可以通过<code>/proc</code>系统文件夹查看进程的信息，<code>/proc</code>文件夹里都是内存的数据，这也符合Linux里一切皆文件。
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-07_00-58-41.webp" alt=""></p>
+<p><code>/proc</code>系统文件夹里记录着当前系统里所有进程的信息，这些蓝色的数字是目录，每个数字目录代表着特定进程的PID，数字目录里的内容包含着进程在运行时的动态属性，一旦该进程退出，该目录会被系统自动移除。进入目录里可以看到进程的各种属性。
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-07_01-22-11.webp" alt="">
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-07_01-22-26.webp" alt="">
+进程在启动时知道自己是从哪里来的，exe会记录下可执行文件名以及绝对路径。假如把进程所对应的可执行文件删除，进程竟然还能运行，因为删除的是磁盘上的文件，但是可执行文件已经拷贝到内存里运行了。
+exe上面还有一个cwd，是current work dir的缩写，进程在启动时会记录下来自己的当前路径，当进程运行时需要根据文件名找文件时就会使用cwd路径加上文件名寻找，未指定路径时创建文件就在cwd路径下创建，也就是在当前路径下寻找或创建，可以使用<code>chdir</code>指令修改cwd路径，这样进程在寻找或创建文件时，就会在修改后的路径下寻找或创建。</p>
+<h3 id="进程状态">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e7%8a%b6%e6%80%81"></a>
+进程状态
+</h3><p>待更新。。。</p>
+<h3 id="进程优先级">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e4%bc%98%e5%85%88%e7%ba%a7"></a>
+进程优先级
+</h3><h3 id="进程切换">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e5%88%87%e6%8d%a2"></a>
+进程切换
+</h3></div>
+    <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
+    <a
+      class="article-category-link"
+      href="/categories/linux"
+      data-aos="zoom-in"
+      >Linux</a
+    >
+    </li></ul>
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e8%bf%9b%e7%a8%8b"
+        rel="tag"
+        >进程</a
+      >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e5%86%af%e8%af%ba%e4%be%9d%e6%9b%bc%e4%bd%93%e7%b3%bb%e7%bb%93%e6%9e%84"
+        rel="tag"
+        >冯诺依曼体系结构</a
+      >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f"
+        rel="tag"
+        >操作系统</a
+      >
+    </li></ul>
+</footer>
+  </div><nav
+    id="article-nav"
+    aria-label="Article navigation"
+    data-aos="fade-up"
+  ><div class="article-nav-link-wrap left"><img
+              data-src="/images/covers/covers-94.webp"
+              data-sizes="auto"
+              alt="【Linux】04 - Linux开发工具"
+              class="lazyload"
+            /><a
+          href="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"
+          aria-label="前一篇:【Linux】04 - Linux开发工具"
+          title="前一篇:【Linux】04 - Linux开发工具"
+        ></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">【Linux】04 - Linux开发工具</h3>
+      </div></nav></article></section>
+        </div><footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info"><div>
+      <span class="icon-copyright"></span>2020-2026<span class="footer-info-sep rotate"></span>CialloKing
+    </div><div>
+        基于&nbsp;<a
+          href="https://gohugo.io/"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          >Hugo</a
+        >&nbsp;Theme.<a
+          href="https://github.com/D-Sketon/hugo-theme-reimu"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          >Reimu</a
+        >
+      </div><div>
+        <span class="icon-brush"
+          >&nbsp;77.8k</span
+        >
+        &nbsp;|&nbsp;
+        <span class="icon-coffee">&nbsp;02:45</span>
+      </div><div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv"
+          >总访问量&nbsp;<span
+            id="busuanzi_value_site_pv"
+          ></span
+        ></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv"
+          >总访客量&nbsp;<span
+            id="busuanzi_value_site_uv"
+          ></span
+        ></span>
+      </div></div>
+</footer>
+<div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div><div id="mask" class="hide"></div>
+      </div><nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap"><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#进程概念">进程概念</a>
+      <ol>
+        <li><a href="#冯诺依曼体系结构">冯诺依曼体系结构</a>
+          <ol>
+            <li><a href="#冯诺依曼体系为什么要有内存">冯诺依曼体系为什么要有内存</a></li>
+            <li><a href="#从硬件方面理解数据流动">从硬件方面理解数据流动</a></li>
+          </ol>
+        </li>
+        <li><a href="#操作系统">操作系统</a>
+          <ol>
+            <li><a href="#设计操作系统的目的">设计操作系统的目的</a></li>
+            <li><a href="#操作系统的管理">操作系统的管理</a></li>
+            <li><a href="#理解系统调用">理解系统调用</a></li>
+          </ol>
+        </li>
+        <li><a href="#进程">进程</a>
+          <ol>
+            <li><a href="#基本概念与基本操作">基本概念与基本操作</a>
+              <ol>
+                <li><a href="#什么是进程">什么是进程</a></li>
+                <li><a href="#task_struct">task_struct</a></li>
+                <li><a href="#查看进程">查看进程</a></li>
+              </ol>
+            </li>
+            <li><a href="#进程状态">进程状态</a></li>
+            <li><a href="#进程优先级">进程优先级</a></li>
+            <li><a href="#进程切换">进程切换</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img
+    data-src="/avatar/my-avatar.webp"
+    data-sizes="auto"
+    alt="CialloKing"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">CialloKing</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div><div class="sidebar-state-number">16</div>
+  </div>
+  <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
+    <div>分类</div>
+    <div class="sidebar-state-number">
+      3
+    </div>
+  </a>
+  <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
+    <div>标签</div>
+    <div class="sidebar-state-number">13</div>
+  </a>
+</div>
+<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="首页"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">首页</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="归档"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">归档</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="关于"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">关于</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/link"
+        aria-label="友链"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
+    </div></div></div></div><div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div></nav>
+</div><div id="aplayer" theme="var(--color-link)"></div><script
+    src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"
+    
+    
+    
+    
+    integrity="sha384-3gT/vsepWkfz/ff7PpWNUeMzeWoH3cDhm/A8jM7ouoAK0/fP/9bcHHR5kHq2nf&#43;e" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"
+    
+    
+    
+    
+    integrity="sha384-J08i8An/QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script><script src="/js/main.js" integrity="" crossorigin="anonymous"  ></script><script src="/js/aos.js" integrity="" crossorigin="anonymous"  ></script><script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", aosInit);
+    } else {
+      aosInit();
+    }
+  </script><script src="/js/pjax_main.js" integrity="" crossorigin="anonymous" data-pjax ></script><script>
+  var setupFirework = () => {
+    if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
+      if (window.firework) {
+        const options = JSON.parse("{\"excludeelements\":[\"a\",\"button\"],\"particles\":[{\"colors\":[\"var(--red-1)\",\"var(--red-2)\",\"var(--red-3)\",\"var(--red-4)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"emit\"],\"number\":20,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.3,0.5],\"radius\":[16,32]}},{\"colors\":[\"var(--red-0)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"diffuse\"],\"number\":1,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.2,0.5],\"lineWidth\":6,\"radius\":20}}]}");
+        options.excludeElements = options.excludeelements;
+        delete options.excludeelements;
+        window.firework(options);
+      }
+    }
+  }
+</script><script
+    src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js"
+    defer
+    
+    
+    onload="setupFirework()"
+    integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8&#43;pUoWX8n1rgq282T" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js"
+    
+    
+    
+    
+    integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE/jMSCxD&#43;jAPU55x/jj3wlf" crossorigin="anonymous"></script><script src="/js/pjax.js" integrity="" crossorigin="anonymous"  ></script><script
+    src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js"
+    
+    
+    
+    
+    integrity="sha384-caMDqvgav/HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb&#43;bEHtwlmYjD" crossorigin="anonymous"></script><script data-pjax>
+    window.quicklink?.listen({
+      timeout:  3000 ,
+      priority:  true ,
+      ignores: JSON.parse("[]")
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div><script data-pjax>
+        window.REIMU_POST = {
+          author: "CialloKing",
+          title: "【Linux】05 - 进程概念",
+          url: "https:\/\/cialloking.com\/post\/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5\/",
+          description: " 进程概念 冯诺依曼体系结构 我们常见的计算机，如笔记本电脑，学校机房里运行XP系统的电脑。我们不常见的计算机，如服务器等，大部分都遵守冯诺依曼体系。 ",
+          cover: "https:\/\/cialloking.com\/images\/bg\/bg1.webp",
+        };
+      </script><script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax ></script><script src="/js/tabs.js" integrity="" crossorigin="anonymous" data-pjax defer></script><script type="module" data-pjax>const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;const initPswp = (gallery, children) => {
+          if (_$$(`${gallery} ${children}`).length > 0) {
+            new PhotoSwipeLightbox({
+              gallery,
+              children,pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")}).init();
+          }
+        }
+        const pswp = () => {
+          initPswp('.article-entry', 'a.article-gallery-item');
+          initPswp('.article-gallery', 'a.article-gallery-item');
+        }
+        pswp()
+      </script></div>
+</div><script
+    src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js"
+    
+    async
+    
+    
+    integrity="sha384-0M75wtSkhjIInv4coYlaJU83&#43;OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id&#43;S" crossorigin="anonymous"></script><script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script><script>
+  const reimuCopyright = String.raw`
+   ______     ______     __     __    __     __  __    
+  /\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+  \ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+   \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+    \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                    
+  `;
+  console.log(String.raw`%c ${reimuCopyright}`, "color: #ff5252;");
+  console.log(
+    "%c Theme.Reimu" + " %c https://github.com/D-Sketon/hugo-theme-reimu ",
+    "color: white; background: #ff5252; padding:5px 0;",
+    "padding:4px;border:1px solid #ff5252;",
+  );
+</script>
+
+<script>
+    var setupAPlayer = () => {
+      if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
+        if (window.matchMedia('(max-width: 959px)').matches) {
+          const aplayer = document.getElementById('aplayer');
+          if (aplayer) {
+            const aside = aplayer.parentNode?.parentNode;
+            if (aside?.tagName === 'ASIDE') {
+              aplayer.removeAttribute('data-aos');
+              aside.parentNode.removeChild(aplayer);
+              document.body.appendChild(aplayer);
+            }
+          }
+        }
+        
+        var audioData = [{"artist":"Wisp X Xomu","cover":"/audio/Lumina - Wisp X Xomu.webp","name":"Lumina","url":"/audio/Lumina - Wisp X Xomu.mp3"},{"artist":"Wisp X DJ Okawari","cover":"/audio/Luv Letter (Wisp X Remix) - Wisp X DJ Okawari.webp","name":"Luv Letter (Wisp X Remix)","url":"/audio/Luv Letter (Wisp X Remix) - Wisp X DJ Okawari.mp3"},{"artist":"Yonder Voice","cover":"/audio/花月夜 - Yonder Voice.webp","name":"花月夜","url":"/audio/花月夜 - Yonder Voice.mp3"},{"artist":"森永真由美","cover":"/audio/色は匂へど 散りぬるを -Full Version- - 森永真由美.webp","name":"色は匂へど 散りぬるを -Full Version-","url":"/audio/色は匂へど 散りぬるを -Full Version- - 森永真由美.mp3"},{"artist":"のみこ","cover":"/audio/Bad Apple!! - のみこ.webp","name":"Bad Apple!!","url":"/audio/Bad Apple!! - のみこ.mp3"},{"artist":"Famishin 井ノ原智","cover":"/audio/恋ひ恋ふ縁 (Title Version) - Famishin 井ノ原智.webp","name":"恋ひ恋ふ縁 (Title Version)","url":"/audio/恋ひ恋ふ縁 (Title Version) - Famishin 井ノ原智.mp3"}];
+        new APlayer({
+            theme: "var(--color-link)",
+            container: document.getElementById('aplayer'),
+            audio: audioData || [],
+            fixed:  true ,
+            autoplay:  false ,
+            loop: 'all',
+            order: 'random',
+            preload: 'auto',
+            volume:  0.7 ,
+            mutex:  true ,
+            listFolded:  true ,
+            lrcType:  0 ,
+        });
+      }
+    }
+    </script><script
+    src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js"
+    defer
+    
+    
+    onload="setupAPlayer()"
+    integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr&#43;h5UfruuRL/aORyw&#43;5&#43;HZoU6e" crossorigin="anonymous"></script><script>
+(function() {
+  // 封面图片列表（保持你现有路径不变，无需修改）
+  window.covers = [
+    '/images/covers/covers-01.webp',
+    '/images/covers/covers-02.webp',
+    '/images/covers/covers-03.webp',
+    '/images/covers/covers-04.webp',
+    '/images/covers/covers-05.webp',
+    '/images/covers/covers-06.webp',
+    '/images/covers/covers-07.webp',
+    '/images/covers/covers-08.webp',
+    '/images/covers/covers-09.webp',
+    '/images/covers/covers-10.webp',
+    '/images/covers/covers-11.webp',
+    '/images/covers/covers-12.webp',
+    '/images/covers/covers-13.webp',
+    '/images/covers/covers-14.webp',
+    '/images/covers/covers-15.webp',
+    '/images/covers/covers-16.webp',
+    '/images/covers/covers-17.webp',
+    '/images/covers/covers-18.webp',
+    '/images/covers/covers-19.webp',
+    '/images/covers/covers-20.webp',
+    '/images/covers/covers-21.webp',
+    '/images/covers/covers-22.webp',
+    '/images/covers/covers-23.webp',
+    '/images/covers/covers-24.webp',
+    '/images/covers/covers-25.webp',
+    '/images/covers/covers-26.webp',
+    '/images/covers/covers-27.webp',
+    '/images/covers/covers-28.webp',
+    '/images/covers/covers-29.webp',
+    '/images/covers/covers-30.webp',
+    '/images/covers/covers-31.webp',
+    '/images/covers/covers-32.webp',
+    '/images/covers/covers-33.webp',
+    '/images/covers/covers-34.webp',
+    '/images/covers/covers-35.webp',
+    '/images/covers/covers-36.webp',
+    '/images/covers/covers-37.webp',
+    '/images/covers/covers-38.webp',
+    '/images/covers/covers-39.webp',
+    '/images/covers/covers-40.webp',
+    '/images/covers/covers-41.webp',
+    '/images/covers/covers-42.webp',
+    '/images/covers/covers-43.webp',
+    '/images/covers/covers-44.webp',
+    '/images/covers/covers-45.webp',
+    '/images/covers/covers-46.webp',
+    '/images/covers/covers-47.webp',
+    '/images/covers/covers-48.webp',
+    '/images/covers/covers-49.webp',
+    '/images/covers/covers-50.webp',
+    '/images/covers/covers-51.webp',
+    '/images/covers/covers-52.webp',
+    '/images/covers/covers-53.webp',
+    '/images/covers/covers-54.webp',
+    '/images/covers/covers-55.webp',
+    '/images/covers/covers-56.webp',
+    '/images/covers/covers-57.webp',
+    '/images/covers/covers-58.webp',
+    '/images/covers/covers-59.webp',
+    '/images/covers/covers-60.webp',
+    '/images/covers/covers-61.webp',
+    '/images/covers/covers-62.webp',
+    '/images/covers/covers-63.webp',
+    '/images/covers/covers-64.webp',
+    '/images/covers/covers-65.webp',
+    '/images/covers/covers-66.webp',
+    '/images/covers/covers-67.webp',
+    '/images/covers/covers-68.webp',
+    '/images/covers/covers-69.webp',
+    '/images/covers/covers-70.webp',
+    '/images/covers/covers-71.webp',
+    '/images/covers/covers-72.webp',
+    '/images/covers/covers-73.webp',
+    '/images/covers/covers-74.webp',
+    '/images/covers/covers-75.webp',
+    '/images/covers/covers-76.webp',
+    '/images/covers/covers-77.webp',
+    '/images/covers/covers-78.webp',
+    '/images/covers/covers-79.webp',
+    '/images/covers/covers-80.webp',
+    '/images/covers/covers-81.webp',
+    '/images/covers/covers-82.webp',
+    '/images/covers/covers-83.webp',
+    '/images/covers/covers-84.webp',
+    '/images/covers/covers-85.webp',
+    '/images/covers/covers-86.webp',
+    '/images/covers/covers-87.webp',
+    '/images/covers/covers-88.webp',
+    '/images/covers/covers-89.webp',
+    '/images/covers/covers-90.webp',
+    '/images/covers/covers-91.webp',
+    '/images/covers/covers-92.webp',
+    '/images/covers/covers-93.webp',
+    '/images/covers/covers-94.webp',
+    '/images/covers/covers-95.webp',
+    '/images/covers/covers-96.webp',
+    '/images/covers/covers-97.webp',
+    '/images/covers/covers-98.webp',
+    '/images/covers/covers-99.webp',
+    '/images/covers/covers-100.webp',
+    '/images/covers/covers-101.webp',
+    '/images/covers/covers-102.webp',
+    '/images/covers/covers-103.webp',
+    '/images/covers/covers-104.webp',
+    '/images/covers/covers-105.webp',
+    '/images/covers/covers-106.webp',
+    '/images/covers/covers-107.webp',
+    '/images/covers/covers-108.webp',
+    '/images/covers/covers-109.webp',
+    '/images/covers/covers-110.webp',
+    '/images/covers/covers-111.webp',
+    '/images/covers/covers-112.webp',
+    '/images/covers/covers-113.webp',
+    '/images/covers/covers-114.webp',
+    '/images/covers/covers-115.webp',
+    '/images/covers/covers-116.webp',
+    '/images/covers/covers-117.webp',
+    '/images/covers/covers-118.webp',
+    '/images/covers/covers-119.webp',
+    '/images/covers/covers-120.webp',
+    '/images/covers/covers-121.webp',
+    '/images/covers/covers-122.webp',
+    '/images/covers/covers-123.webp',
+    '/images/covers/covers-124.webp',
+    '/images/covers/covers-125.webp',
+    '/images/covers/covers-126.webp',
+    '/images/covers/covers-127.webp',
+    '/images/covers/covers-128.webp',
+    '/images/covers/covers-129.webp',
+    '/images/covers/covers-130.webp',
+    '/images/covers/covers-131.webp',
+    '/images/covers/covers-132.webp',
+    '/images/covers/covers-133.webp',
+    '/images/covers/covers-134.webp',
+    '/images/covers/covers-135.webp',
+    '/images/covers/covers-136.webp',
+    '/images/covers/covers-137.webp',
+    '/images/covers/covers-138.webp',
+    '/images/covers/covers-139.webp',
+    '/images/covers/covers-140.webp',
+    '/images/covers/covers-141.webp',
+    '/images/covers/covers-142.webp',
+    '/images/covers/covers-143.webp',
+    '/images/covers/covers-144.webp',
+    '/images/covers/covers-145.webp',
+    '/images/covers/covers-146.webp',
+    '/images/covers/covers-147.webp',
+    '/images/covers/covers-148.webp',
+    '/images/covers/covers-149.webp',
+    '/images/covers/covers-150.webp',
+    '/images/covers/covers-151.webp',
+    '/images/covers/covers-152.webp',
+    '/images/covers/covers-153.webp',
+    '/images/covers/covers-154.webp',
+    '/images/covers/covers-155.webp',
+    '/images/covers/covers-156.webp',
+    '/images/covers/covers-157.webp',
+    '/images/covers/covers-158.webp',
+    '/images/covers/covers-159.webp',
+    '/images/covers/covers-160.webp',
+    '/images/covers/covers-161.webp',
+    '/images/covers/covers-162.webp',
+    '/images/covers/covers-163.webp',
+    '/images/covers/covers-164.webp',
+    '/images/covers/covers-165.webp',
+    '/images/covers/covers-166.webp',
+    '/images/covers/covers-167.webp',
+    '/images/covers/covers-168.webp',
+    '/images/covers/covers-169.webp',
+    '/images/covers/covers-170.webp',
+    '/images/covers/covers-171.webp'
+
+  ];
+
+  // 【关键修改1】扩展选择器，覆盖搜索页所有可能的封面容器
+  const coverSelectors = [
+    '.post-cover img',
+    '#search .post-cover img',
+    '.search-result .post-cover img',
+    '.algolia-hits .post-cover img', // 适配Algolia搜索结果卡片
+    '.search-page .post-cover img'
+  ].join(', ');
+
+  // 【关键修改2】适配动态DOM的封面赋值逻辑
+  function setRandomCovers() {
+    // 搜索页跳过（已在 single.html 处理）
+    if (document.getElementById('search-results')) {
+      return;
+    }
+    const coverImgs = document.querySelectorAll(coverSelectors);
+    if (coverImgs.length === 0) {
+      setTimeout(setRandomCovers, 150);
+      return;
+    }
+    coverImgs.forEach(img => {
+      // 有自定义封面的图片：直接显示，不随机替换
+      if (img.hasAttribute('data-custom-cover')) {
+        img.style.opacity = '1';
+        return;
+      }
+      // 已经设置过随机封面的图片：不再重复设置
+      if (img.hasAttribute('data-cover-set')) {
+        return;
+      }
+      const randomIndex = Math.floor(Math.random() * window.covers.length);
+      const newSrc = window.covers[randomIndex];
+      img.setAttribute('data-src', newSrc);
+      img.src = newSrc;
+      img.setAttribute('data-cover-set', 'true');
+      img.style.opacity = '1';
+      img.style.display = 'block';
+      img.style.visibility = 'visible';
+    });
+  }
+
+  // 【关键修改3】调整执行时机，适配搜索页加载流程
+  // 1. 页面加载完成后执行（适配直接打开搜索页）
+  window.addEventListener('load', setRandomCovers);
+  // 2. PJAX跳转后执行（适配从首页跳转到搜索页）
+  document.addEventListener('pjax:complete', setRandomCovers);
+  // 3. 搜索框输入后执行（适配动态搜索结果）
+  //document.querySelector('.search-input')?.addEventListener('input', () => {
+    //setTimeout(setRandomCovers, 200); // 延迟200ms，等待搜索结果渲染
+  //});
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      setTimeout(setRandomCovers, 200);
+    });
+  }
+
+
+
+})();
+</script>
+
+
+<script>
+(function() {
+  const bannerImages = [
+    '/images/bg/bg1.webp',
+    '/images/bg/bg2.webp',
+    '/images/bg/bg3.webp',
+    '/images/bg/bg4.webp',
+    '/images/bg/bg5.webp',
+    '/images/bg/bg6.webp',
+    '/images/bg/bg7.webp',
+    '/images/bg/bg8.webp',
+    '/images/bg/bg9.webp',
+    '/images/bg/bg10.webp',
+    '/images/bg/bg11.webp',
+    '/images/bg/bg12.webp',
+    '/images/bg/bg13.webp',
+    '/images/bg/bg14.webp',
+    '/images/bg/bg15.webp',
+    '/images/bg/bg16.webp',
+    '/images/bg/bg17.webp',
+    '/images/bg/bg18.webp',
+    '/images/bg/bg19.webp',
+    '/images/bg/bg20.webp',
+    '/images/bg/bg21.webp',
+    '/images/bg/bg22.webp',
+    '/images/bg/bg23.webp',
+    '/images/bg/bg24.webp',
+    '/images/bg/bg25.webp',
+    '/images/bg/bg26.webp',
+    '/images/bg/bg27.webp',
+    '/images/bg/bg28.webp',
+    '/images/bg/bg29.webp',
+    '/images/bg/bg30.webp',
+    '/images/bg/bg31.webp',
+    '/images/bg/bg32.webp',
+    '/images/bg/bg33.webp'
+  ];
+
+  function getRandomBanner() {
+    return bannerImages[Math.floor(Math.random() * bannerImages.length)];
+  }
+
+  // 立即检查并设置，如果图片已存在
+  function setRandomBanner() {
+    const headerImg = document.querySelector('#header img');
+    if (headerImg && !headerImg.hasAttribute('data-random-set')) {
+      const randomUrl = getRandomBanner();
+      headerImg.setAttribute('data-src', randomUrl);
+      headerImg.src = randomUrl;
+      headerImg.setAttribute('data-random-set', 'true');
+      headerImg.style.opacity = '1';
+      headerImg.style.visibility = 'visible';
+    }
+  }
+
+  // 使用 MutationObserver 监听 DOM 变化，确保尽早捕捉到 header 图片
+  const observer = new MutationObserver((mutations, obs) => {
+    const img = document.querySelector('#header img');
+    if (img) {
+      setRandomBanner();
+      obs.disconnect(); // 找到后停止观察
+    }
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+
+  // 页面完全加载后兜底（防止 observer 遗漏）
+  window.addEventListener('load', setRandomBanner);
+  // PJAX 跳转后重新设置
+  document.addEventListener('pjax:complete', () => {
+    // 清除标记，允许重新设置
+    const headerImg = document.querySelector('#header img');
+    if (headerImg) headerImg.removeAttribute('data-random-set');
+    setRandomBanner();
+  });
+})();
+</script>
+</body>
+</html>
