@@ -7,11 +7,9 @@ title: '第一篇测试文章'
 mermaid: true
 math: true
 tags:
-  - 标签1
-  - 标签2
+
 categories:
-  - 目录1
-  - 目录2    
+
 
 ---
 
