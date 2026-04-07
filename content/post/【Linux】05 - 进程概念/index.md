@@ -330,8 +330,9 @@ int main()
     return 0;
 }
 ```
+![使用复制会话在另一个窗口输入命令](PixPin_2026-04-07_20-48-35.webp "使用复制会话在另一个窗口输入命令")
 
-
+使用复制会话在另一个窗口输入命令。
 ![](PixPin_2026-04-07_00-28-49.webp)
 ![](PixPin_2026-04-07_00-29-35.webp)
 这样我们就查到了刚刚运行的程序的进程，但是这么多属性我们怎么知道哪个是哪个？我们可以使用`;`或`&&`来同时执行两条指令。  
@@ -365,12 +366,254 @@ int main()
 exe上面还有一个cwd，是current work dir的缩写，进程在启动时会记录下来自己的当前路径，当进程运行时需要根据文件名找文件时就会使用cwd路径加上文件名寻找，未指定路径时创建文件就在cwd路径下创建，也就是在当前路径下寻找或创建，可以使用`chdir`指令修改cwd路径，这样进程在寻找或创建文件时，就会在修改后的路径下寻找或创建。
 
 
+Linux里所有的进程都是被它的父进程创建的，所有的进程组成一颗进程树。
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ ./task
+pid: 17687
+ppid: 15595
+^C
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ ./task
+pid: 17688
+ppid: 15595
+^C
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ ./task
+pid: 17689
+ppid: 15595
+^C
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ 
+```
+多次启动上面的的程序，可以发现每次启动的pid都不一样，但是父进程却相同，这个父进程是什么东西？我们使用`ps axj | head -1 ; ps axj| grep 15595`来查询一下。
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ ps axj | head -1 ; ps axj| grep 15595
+ PPID   PID  PGID   SID TTY      TPGID STAT   UID   TIME COMMAND
+15594 15595 15595 15595 pts/1    15595 Ss+   1001   0:00 -bash
+15595 15686 15686 15595 pts/1    15595 T     1001   3:08 ./task
+15595 17673 17673 15595 pts/1    15595 T     1001   0:00 ./task
+15707 17693 17692 15707 pts/2    17692 S+    1001   0:00 grep --color=auto 15595
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ 
+```
+进程15594是bash，其实就是Linux的外壳shell程序，命令行解释器bash本质就是一个进程，执行命令时bash会创建一个子进程执行，命令进程的父进程都是bash。
+
+
+> [!TIP]
+> 操作系统会给每个登录用户分配一个bash
+
+
+
+#### 通过系统调用创建进程
+
+
+我们可以通过系统调用`fork()`来创建进程。
+```c
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+int main()
+{
+    int ret = fork();
+    printf("hello proc : %d!, ret: %d\n", getpid(), ret，getppid());
+    sleep(1);
+    return 0;
+}
+```
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ gcc -o fork fork.c 
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ ./fork
+hello proc : 17899!, ret: 17900
+hello proc : 17900!, ret: 0
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ 
+```
+运行发现`printf`打印了两次，子进程的pid是0。  
+一个进程由PCB加自己的代码和数据组成，创建子进程必然要创建一个子进程的PCB，创建子进程时一般直接拷贝一份父进程的PCB，大部分属性都是一样的，父进程的PCB指向自己的数据和代码，子进程的PCB也指向父进程的数据和代码，所以子进程被调度之后，就会执行父进程之后的代码；子进程没有自己的代码和数据，因为程序没有新加载新的代码和数据，子进程的PCB类似于浅拷贝。
+
+`fork()`有两个返回值，创建进程成功后把子进程的pid返回给父进程，返回0给子进程，创建进程失败则只返回-1，假如想让父子进程执行不同的代码逻辑，可以使用`fork()`的返回值判断父子进程，再安排执行不同的代码。
+```c
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+int main()
+{
+    int ret = fork();
+    if(ret < 0){
+        perror("fork");
+        return 1;
+    }
+    else if(ret == 0){          //子进程
+        printf("我是子进程 : %d!, ret: %d,我的父进程是：%d!\n", getpid(), ret,getppid());
+    }else{                      //父进程
+        printf("我是父进程 : %d!, ret: %d\n", getpid(), ret);
+    }
+    sleep(1);
+    return 0;
+}
+```
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ gcc -o fork fork.c 
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ ./fork
+我是父进程 : 18507!, ret: 18508
+我是子进程 : 18508!, ret: 0,我的父进程是：18507!
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ 
+```
+运行之后可以看到父子进程执行了不同的代码。子进程只有一个父进程，一个父进程可能有多个子进程，所以父进程需要`fork()`返回的子进程pid来区分不同子进程。  
+为什么`fork()`函数会返回两次？`fork()`函数内部已经创建子进程完毕时还没有到`return`语句，但是这时已经有父子两个进程了，都会执行`return`语句，所以`return`语句就会返回两次。  
+为什么`ret`既等于0又大于0，让`else if`和`else`内部的代码都执行呢？进程具有独立性，一个进程挂了不影响另一个进程，代码是只读的，父子进程共享，数据也是默认父子进程共享，但是父子任何一方要修改数据，操作系统就会把修改的数据在底层再拷贝一份，让目标进程修改这个拷贝，这就是**写时拷贝**，父子进程的数据以**写时拷贝**的方式各自有一份。
+
+
+
+
+
+
+
+
 
 ### 进程状态
-待更新。。。
-### 进程优先级
-### 进程切换
 
+
+
+
+进程状态本质就是task_struct内的一个整数，我们可以在源代码中查看。
+
+
+点击[这个](https://elixir.bootlin.com/linux/v2.6.18/source/fs/proc/array.c#L131)，[这个](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/proc/array.c?h=v2.6.18&id=3752aee96538b582b089f4a97a26e2ccd9403929)，还有[这个](https://github.com/torvalds/linux/blob/v2.6.18/fs/proc/array.c)网页查看2.6.18版本里的源代码。
+
+![](PixPin_2026-04-07_22-08-24.webp)
+
+
+
+![](image.webp "https://blog.csdn.net/qq_44987270/article/details/155577410")
+
+
+
+可以看到进程状态挺多，而且可以相互之间转换。
+
+
+#### 运行状态
+
+
+一个进程能够被CPU运行，本质是每个CPU都要在系统内部维护调度队列，一个CPU一个调度队列，CPU要选择进程运行，就是在选择特点进程的PCB来运行，一个task_struct里都有指针指向对应的代码和数据；在操作系统学科有一种调度算法叫FIFO(先进先出)算法，就是让CPU安装调度队列顺序依次执行。
+
+
+
+只要进程在CPU调度队列中，就是R(running)**运行状态**，running状态要么是CPU正在运行要么就是在调度队列里排队。
+
+
+
+#### 阻塞状态
+
+有时候一些程序需要用户输入。
+```cpp
+#include <iostream>
+int main() {
+    int a;
+    double b;
+    std::cin >> a >> b;   // 从键盘读取两个数
+    std::cout << "a = " << a << ", b = " << b << std::endl;
+    return 0;
+}
+```
+程序运行到`std::cin`时不是在等待用户输入，而是在等待键盘硬件就绪，在用户没按下键盘时，我们称键盘硬件不就绪，程序就得等。  
+**阻塞状态**(sleeping)指的就是等待某种设备或资源就绪。比如磁盘在忙IO压力大等待，等待键盘按下等等情况。操作系统要对软硬件资源进行管理，先描述再管理，可以对硬件创建一个类似task_struct的东西，包含硬件的所有属性，再连成链表，对硬件的管理就变成了对硬件链表进行管理。每一个硬件struct里也有指针，连起来形成硬件的等待队列，假如CPU执行程序要读键盘，检查键盘状态，但是没有任何按键按下，所以程序无法执行，操作系统把这个进程从CPU上拿下移出运行队列，PCB连接到特定设备的等待队列里，移出调度队列该进程就永远不会被调度，那么这个进程就处于**阻塞状态**。
+
+从运行到阻塞的本质是把PCB链入到不同的队列结构当中。
+
+当键盘上有按键按下，键盘处于就绪状态，操作系统第一时间知道后就把键盘的struct属性里的状态属性设置为就绪，并检查等待队列，发现等待队列里指针不为空，就将该等待队列里进程的状态设置成运行状态，并转移到运行队列。
+
+> [!NOTE]
+> 进程状态的变化，表现之一就是要在不同的队列中进行流动，本质都是数据结构的增删查改。
+
+#### 挂起状态
+
+挂起是操作系统里比较极端的情况。磁盘中会有一个swap分区，假设计算机的内存资源严重不足了，内存资源吃紧时，操作系统会把不会被调度的阻塞进程的资源和代码从内存转移到swap分区中，只保留PCB在内存里，此时我们称这些只有PCB的进程的状态为**阻塞挂起**；一旦内存资源足够，操作系统会把对应进程被换入磁盘swap分区的代码和数据重新加载到内存，这就是swap的换入和换出操作。  
+
+当把阻塞进程全部换入swap分区内存还是不够怎么办，操作系统就只能把运行队列末端的进程也换入swap分区，此时我们称这时进程为**运行挂起**状态。挂起本质是把进程换入到swap分区里。
+
+##### 内核链表的管理
+
+> [!IMPORTANT]
+> 查看源码可以发现，Linux内核里定义的task_struct的指针直接指向另一个task_struct的成员指针，不指向task_struct结构体的开头，通过内存对齐的偏移量来读取其他成员变量的数据。task_struct里多放几个类似的指针成员变量，再链接不同的task_struct，这样就实现了一个task_struct既在全局的双链表里又在运行队列里，同时属于多种不同的数据结构。
+
+#### 查看进程状态
+运行一个循环的hello world
+```c
+#include <stdio.h>
+#include <unistd.h>
+int main()
+{
+    while(1)
+    {
+    printf("hello world\n");
+    }
+    return 0;
+}
+```
+![](PixPin_2026-04-08_01-08-31.webp)
+状态后的`+`代表进程是在前台运行，后台的进程状态就不带`+`。  
+hello一直在运行，但是查询进程状态发现大部分查询出来的状态hello都是S+状态，少部分是R+状态，把`printf`删掉查询时就全部是R+状态了，这是什么情况？  
+在Linux系统里R (running)代表运行状态，S (sleeping)代表阻塞状态，CPU运行非常快，`printf`可以运行很多次，但是外设跟不上`printf`的速度，程序只能等待外设就绪，所以就变成了阻塞状态，少部分查询到运行状态代表在查询时`printf`正在输出，所以是运行状态，删掉`printf`后程序不需要等待外设了可以一直运行，所以查询时就全是运行状态。
+
+
+
+从源代码可以看出，Linux系统的进程还有其他几个状态：
+- t (tracing stop)是追踪状态，在调试时打断点程序运行到断点处停止时就处于这个状态。
+- T (stopped)代表程序的暂停状态，hello程序一直打印hello world时使用ctrl+z快捷键就使程序暂停进入T (stopped暂停)状态，T (stopped)一般是用来止损的，操作系统不想让进程执行操作，但是又不能直接杀掉进程，所以就暂停进程，交给用户来处理问题。
+- D (disk sleep)磁盘休眠状态，S状态可称为可中断休眠，浅睡眠，S状态的进程可以直接杀掉，进程会响应，D (disk sleep)磁盘休眠状态，可称为不可中断休眠，深睡眠，D状态的进程一般在往磁盘写入数据，等待磁盘响应，但是等待时又没法工作，如果在内存紧张时杀掉不干活的写入进程会导致数据丢失，所以D状态就是用来保护进程不被杀掉的，D状态一般在大量磁盘IO操作时出现。
+- X (dead)是死亡状态，表示进程要结束了。
+
+
+
+#### 僵尸进程
+
+Z (zombie)，表示僵尸状态，进程快死不死了，我们创建子进程就是拿来干活的，要是子进程退出了，父进程需要获取相关信息，看看活干得怎么样，在子进程退出之后，父进程获取相关信息之前，就是Z僵尸状态。  
+C语言的`main`函数都有一个`return 0`来表示程序正常退出，一个进程在退出时也会有类似的东西，让父进程知道退出状态，退出信息都储存在task_struct里。
+
+
+
+
+运行以下程序来模拟僵尸进程。
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    pid_t id = fork();
+    if(id < 0){
+        perror("fork");
+        return 1;
+    }
+    else if(id > 0){ //parent
+        printf("parent[%d] is sleeping...\n", getpid());
+        sleep(30);
+    }else{
+        printf("child[%d] is begin Z...\n", getpid());
+        sleep(5);
+        exit(EXIT_SUCCESS);
+    }
+    return 0;
+}
+```
+
+我们就可以看到pid为19237的子进程为僵尸状态了。
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ ps axj | head -1 ; ps axj| grep zombic
+ PPID   PID  PGID   SID TTY      TPGID STAT   UID   TIME COMMAND
+15595 19236 19236 15595 pts/1    19236 S+    1001   0:00 ./zombic
+19236 19237 19236 15595 pts/1    19236 Z+    1001   0:00 [zombic] <defunct>
+15707 19246 19245 15707 pts/2    19245 S+    1001   0:00 grep --color=auto zombic
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ 
+```
+
+如果父进程一直不管，不回收，不获取子进程退出信息，那么僵尸状态的子进程会一直存在，那么就会导致**内存泄漏**。进程退出了操作系统会自动释放所有资源，一些需要长期运行的进程（常驻进程）一但发生内存泄漏没法通过退出进程来解决，所以在编译前就要考虑好。操作系统也是个软件，假如内部发生内存泄漏影响就比较大，出现了僵尸进程只能由用户来处理。
+
+
+
+
+
+
+### 进程优先级
+待更新。。。
+
+### 进程切换
 
 
 
