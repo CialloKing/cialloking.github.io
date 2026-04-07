@@ -159,8 +159,8 @@ widgets:                  #设置，此栏显示在侧边栏描述下方，此�
 
 # Widget behavior          #设置，设置上方栏目行为
 category_limits: 10
-tag_limits: 10
-recent_posts_limits: 5
+tag_limits: 15
+recent_posts_limits: 10
 tagcloud_limits: 20
 
 # Archive behavior
