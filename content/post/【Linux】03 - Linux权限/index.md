@@ -1,7 +1,7 @@
 ---
 
 date: 2026-03-30T00:00:00+08:00
-lastmod: 2026-04-0T00:00:00+08:00
+lastmod: 2026-04-07T00:00:00+08:00
 title: '【Linux】03 - Linux权限'
 
 mermaid: true
