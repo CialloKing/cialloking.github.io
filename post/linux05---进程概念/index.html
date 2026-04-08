@@ -40,7 +40,7 @@
   <meta property="og:image" content="https://cialloking.com/images/bg/bg1.webp" />
   <meta property="article:author" content="CialloKing" />
   <meta property="article:published_time" content="2026-04-06T00:00:00&#43;08:00" />
-  <meta property="article:modified_time" content="2026-04-06T00:00:00&#43;08:00" /><meta property="article:tag" content="进程, 冯诺依曼体系结构, 操作系统" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
+  <meta property="article:modified_time" content="2026-04-06T00:00:00&#43;08:00" /><meta property="article:tag" content="进程, 冯诺依曼体系结构, 操作系统, 调度算法, 环境变量" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
 <link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.42c2ff6576a8f7440f141db001877cdde6d4907355753cb3bbd43efbad8597c9.css" /><link
     rel="preload"
     as="style"
@@ -318,10 +318,50 @@
                 <li><a href="#挂起状态">挂起状态</a></li>
                 <li><a href="#查看进程状态">查看进程状态</a></li>
                 <li><a href="#僵尸进程">僵尸进程</a></li>
+                <li><a href="#孤儿进程">孤儿进程</a></li>
               </ol>
             </li>
-            <li><a href="#进程优先级">进程优先级</a></li>
-            <li><a href="#进程切换">进程切换</a></li>
+            <li><a href="#进程优先级">进程优先级</a>
+              <ol>
+                <li><a href="#查看进程优先级">查看进程优先级</a></li>
+              </ol>
+            </li>
+            <li><a href="#进程切换">进程切换</a>
+              <ol>
+                <li><a href="#切换调度算法">切换调度算法</a></li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+        <li><a href="#命令行参数和环境变量">命令行参数和环境变量</a>
+          <ol>
+            <li><a href="#环境变量是什么东西">环境变量是什么东西</a>
+              <ol>
+                <li><a href="#命令行参数">命令行参数</a></li>
+              </ol>
+            </li>
+            <li><a href="#常见环境变量">常见环境变量</a>
+              <ol>
+                <li><a href="#path">PATH</a></li>
+                <li><a href="#pwd">PWD</a></li>
+                <li><a href="#oldpwd">OLDPWD</a></li>
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#shell">SHELL</a></li>
+                <li><a href="#user和logname">USER和LOGNAME</a></li>
+                <li><a href="#histsize">HISTSIZE</a></li>
+                <li><a href="#hostname">HOSTNAME</a></li>
+                <li><a href="#ssh_tty">SSH_TTY</a></li>
+                <li><a href="#ls_colors">LS_COLORS</a></li>
+                <li><a href="#lang">LANG</a></li>
+              </ol>
+            </li>
+            <li><a href="#获取环境变量的方法">获取环境变量的方法</a></li>
+            <li><a href="#环境变量的特性">环境变量的特性</a></li>
+          </ol>
+        </li>
+        <li><a href="#程序地址空间">程序地址空间</a>
+          <ol>
+            <li><a href="#分页和虚拟地址空间">分页和虚拟地址空间</a></li>
           </ol>
         </li>
       </ol>
@@ -351,7 +391,7 @@
   </a>
   <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
     <div>标签</div>
-    <div class="sidebar-state-number">13</div>
+    <div class="sidebar-state-number">15</div>
   </a>
 </div>
 <div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
@@ -879,15 +919,412 @@ C语言的<code>main</code>函数都有一个<code>return 0</code>来表示程�
 </span></span><span class="line"><span class="cl"><span class="m">19236</span> <span class="m">19237</span> <span class="m">19236</span> <span class="m">15595</span> pts/1    <span class="m">19236</span> Z+    <span class="m">1001</span>   0:00 <span class="o">[</span>zombic<span class="o">]</span> &lt;defunct&gt;
 </span></span><span class="line"><span class="cl"><span class="m">15707</span> <span class="m">19246</span> <span class="m">19245</span> <span class="m">15707</span> pts/2    <span class="m">19245</span> S+    <span class="m">1001</span>   0:00 grep --color<span class="o">=</span>auto zombic
 </span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB<span class="o">]</span>$ 
-</span></span></code></pre></div><p>如果父进程一直不管，不回收，不获取子进程退出信息，那么僵尸状态的子进程会一直存在，那么就会导致<strong>内存泄漏</strong>。进程退出了操作系统会自动释放所有资源，一些需要长期运行的进程（常驻进程）一但发生内存泄漏没法通过退出进程来解决，所以在编译前就要考虑好。操作系统也是个软件，假如内部发生内存泄漏影响就比较大，出现了僵尸进程只能由用户来处理。</p>
+</span></span></code></pre></div><p>如果父进程一直不管，不回收，不获取子进程退出信息，那么僵尸状态的子进程会一直存在，PCB一直都要维护，那么就会导致<strong>内存泄漏</strong>。个父进程创建了很多子进程，就是不回收，就会造成内存资源的浪费。进程退出了操作系统会自动释放所有资源，一些需要长期运行的进程（常驻进程）一但发生内存泄漏没法通过退出进程来解决，所以在编译前就要考虑好。操作系统也是个软件，假如内部发生内存泄漏影响就比较大，出现了僵尸进程只能由用户来处理。</p>
+<h4 id="孤儿进程">
+<a class="header-anchor" href="#%e5%ad%a4%e5%84%bf%e8%bf%9b%e7%a8%8b"></a>
+孤儿进程
+</h4><p>父进程先退出，子进程就称之为“孤儿进程”。</p>
+<p>运行以下程序让父进程比子进程先退出。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">pid_t</span> <span class="n">id</span> <span class="o">=</span> <span class="nf">fork</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;fork&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>             <span class="c1">//子进程
+</span></span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;I am child, pid : %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">getpid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span><span class="p">{</span>                       <span class="c1">//父进程
+</span></span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;I am parent, pid: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">getpid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB<span class="o">]</span>$ ps axj <span class="p">|</span> head -1 <span class="p">;</span> ps axj<span class="p">|</span> grep nige
+</span></span><span class="line"><span class="cl"> PPID   PID  PGID   SID TTY      TPGID STAT   UID   TIME COMMAND
+</span></span><span class="line"><span class="cl"><span class="m">15595</span> <span class="m">20477</span> <span class="m">20477</span> <span class="m">15595</span> pts/1    <span class="m">20477</span> S+    <span class="m">1001</span>   0:00 ./nige
+</span></span><span class="line"><span class="cl"><span class="m">20477</span> <span class="m">20478</span> <span class="m">20477</span> <span class="m">15595</span> pts/1    <span class="m">20477</span> S+    <span class="m">1001</span>   0:00 ./nige
+</span></span><span class="line"><span class="cl"><span class="m">15707</span> <span class="m">20482</span> <span class="m">20481</span> <span class="m">15707</span> pts/2    <span class="m">20481</span> S+    <span class="m">1001</span>   0:00 grep --color<span class="o">=</span>auto nige
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB<span class="o">]</span>$ ps axj <span class="p">|</span> head -1 <span class="p">;</span> ps axj<span class="p">|</span> grep nige
+</span></span><span class="line"><span class="cl"> PPID   PID  PGID   SID TTY      TPGID STAT   UID   TIME COMMAND
+</span></span><span class="line"><span class="cl">    <span class="m">1</span> <span class="m">20478</span> <span class="m">20477</span> <span class="m">15595</span> pts/1    <span class="m">15595</span> S     <span class="m">1001</span>   0:00 ./nige
+</span></span><span class="line"><span class="cl"><span class="m">15707</span> <span class="m">20486</span> <span class="m">20485</span> <span class="m">15707</span> pts/2    <span class="m">20485</span> S+    <span class="m">1001</span>   0:00 grep --color<span class="o">=</span>auto nige
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB<span class="o">]</span>$ 
+</span></span></code></pre></div><p>查询进程我们可以看到，pid为20478的子进程一开始父进程id为20477，父进程退出后再查询就变成了1。父子进程关系中，如果父进程先退出，子进程要被1号进程领养，这个被领养的进程(子进程)，叫做孤儿进程。</p>
+<p>1号进程是谁，我们查询一下。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB<span class="o">]</span>$ ps axj <span class="p">|</span> head -1 <span class="p">;</span> ps axj<span class="p">|</span> grep systemd
+</span></span><span class="line"><span class="cl"> PPID   PID  PGID   SID TTY      TPGID STAT   UID   TIME COMMAND
+</span></span><span class="line"><span class="cl">    <span class="m">0</span>     <span class="m">1</span>     <span class="m">1</span>     <span class="m">1</span> ?           -1 Ss       <span class="m">0</span>   0:17 /usr/lib/systemd/systemd --switched-root --system --deserialize <span class="m">22</span>
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">368</span>   <span class="m">368</span>   <span class="m">368</span> ?           -1 Ss       <span class="m">0</span>   0:08 /usr/lib/systemd/systemd-journald
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">389</span>   <span class="m">389</span>   <span class="m">389</span> ?           -1 Ss       <span class="m">0</span>   0:00 /usr/lib/systemd/systemd-udevd
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">539</span>   <span class="m">539</span>   <span class="m">539</span> ?           -1 Ss      <span class="m">81</span>   0:13 /usr/bin/dbus-daemon --system --address<span class="o">=</span>systemd: --nofork --nopidfile --systemd-activation
+</span></span><span class="line"><span class="cl">    <span class="m">1</span>   <span class="m">555</span>   <span class="m">555</span>   <span class="m">555</span> ?           -1 Ss       <span class="m">0</span>   0:08 /usr/lib/systemd/systemd-logind
+</span></span><span class="line"><span class="cl"><span class="m">15707</span> <span class="m">20512</span> <span class="m">20511</span> <span class="m">15707</span> pts/2    <span class="m">20511</span> S+    <span class="m">1001</span>   0:00 grep --color<span class="o">=</span>auto systemd
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB<span class="o">]</span>$ 
+</span></span></code></pre></div><p>1号进程是systemd，我们可以认为这是操作系统或者操作系统的一部分，登录时是1号进程创建的bash给用户使用。0号进程在开机之后被1号替换了，所以没有0号进程。<br>
+如果1号进程不领养孤儿进程，子进程进入僵尸状态之后就没人管了，会造成内存泄漏，所以由操作系统来负责回收孤儿进程的资源。孤儿进程被领养后，会自动变成后台进程，cirl+c快捷键没法直接杀掉，只能用<code>kill</code>指令。</p>
 <h3 id="进程优先级">
 <a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e4%bc%98%e5%85%88%e7%ba%a7"></a>
 进程优先级
-</h3><p>待更新。。。</p>
+</h3><p>进程优先级是进程得到CPU资源的先后顺序。CPU资源稀缺，而进程有很多个，所以要排队，优先权高的进程有优先执行权利。<br>
+优先级决定的是得到资源的先后顺序，权限决定的是能否得到资源。</p>
+<p>Linux系统内进程优先级也是一个数字，值越低优先级越高。大多数操作系统都叫做基于时间片的分时操作系统，考虑公平性。</p>
+<h4 id="查看进程优先级">
+<a class="header-anchor" href="#%e6%9f%a5%e7%9c%8b%e8%bf%9b%e7%a8%8b%e4%bc%98%e5%85%88%e7%ba%a7"></a>
+查看进程优先级
+</h4><p>运行之前查看进程的程序（<a href="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/#%e6%9f%a5%e7%9c%8b%e8%bf%9b%e7%a8%8b">点击跳转查看</a>），查看进程状态。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB<span class="o">]</span>$ ps -al <span class="p">|</span> head -1 <span class="p">;</span> ps -al <span class="p">|</span> grep task
+</span></span><span class="line"><span class="cl">F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+</span></span><span class="line"><span class="cl"><span class="m">0</span> T  <span class="m">1001</span> <span class="m">15686</span> <span class="m">15595</span>  <span class="m">0</span>  <span class="m">80</span>   <span class="m">0</span> -  <span class="m">1053</span> do_sig pts/1    00:03:08 task
+</span></span><span class="line"><span class="cl"><span class="m">0</span> T  <span class="m">1001</span> <span class="m">17673</span> <span class="m">15595</span>  <span class="m">0</span>  <span class="m">80</span>   <span class="m">0</span> -  <span class="m">1054</span> do_sig pts/1    00:00:00 task
+</span></span><span class="line"><span class="cl"><span class="m">0</span> S  <span class="m">1001</span> <span class="m">20557</span> <span class="m">15595</span>  <span class="m">0</span>  <span class="m">80</span>   <span class="m">0</span> -  <span class="m">1054</span> hrtime pts/1    00:00:00 task
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB<span class="o">]</span>$ 
+</span></span></code></pre></div><ul>
+<li>我们可以看到有一列UID，UID代表执行者的身份，Linux里是通过UID(user id)来区分不同用户的，文件在创建时就写入了UID，系统通过UID来判断对应用户是拥有者，所属组还是其他。Linux系统中，访问任何资源，都是进程访问，进程就代表用户。</li>
+<li>PRI代表进程的优先级，默认为80，NI(nice)是进程优先级的修正数据，进程真实的优先级等于PRI(默认80)+NI。</li>
+<li>调整进程优先级，在Linux下，就是调整进程NI值。</li>
+<li>调整进程NI值后，进程优先级就会更新，优先级等于PRI(默认80)+新的NI，例如原来的优先级为PRI(默认80)+NI(10)=90，更新NI值为-5后新优先级为PRI(默认80)+NI(-5)=75</li>
+<li>NI其取值范围是-20至19，一共40个级别，用指令设置NI值为-100，系统自动取到-20，设置为100，系统自动取到19，所以Linux进程的优先级范围就是[60,99]一共40个优先级。</li>
+</ul>
+<p>使用 <code>top</code>,<code>nice</code>,<code>renice</code>命令都可以修改进程优先级，</p>
+<h5 id="竞争独立并行并发">
+<a class="header-anchor" href="#%e7%ab%9e%e4%ba%89%e7%8b%ac%e7%ab%8b%e5%b9%b6%e8%a1%8c%e5%b9%b6%e5%8f%91"></a>
+竞争、独立、并行、并发
+</h5><ul>
+<li>竞争性：系统进程数目众多，而CPU资源只有少量，甚至1个，所以进程之间是具有竞争属性的。为了高效完成任务，更合理竞争相关资源，便具有了优先级。</li>
+<li>独立性：多进程运行，需要独享各种资源，多进程运行期间互不干扰。</li>
+<li>并行:多个进程在多个CPU下分别，同时进运行，这称之为并行，比如同时运行浏览器，音乐播放器等等软件互不干扰，可以同时运行。</li>
+<li>并发:多个进程在一个CPU下采用进程<strong>切换</strong>的方式，在一段时间之内，让多个进程都得以推进，称之为并发，比如10毫秒运行A进程，下一个10毫秒切换运行B进程等等，CPU切换非常快，人类感觉不到。</li>
+</ul>
 <h3 id="进程切换">
 <a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e5%88%87%e6%8d%a2"></a>
 进程切换
-</h3></div>
+</h3><p>一旦一个进程占有CPU，不会把自己的代码全部跑完，系统会给进程分配一个时间片的东西。死循环进程不会打死系统，不会一直占用CPU。</p>
+<p>CPU要执行进程，会根据PCB访问进程的代码和数据，CPU内部有很多寄存器，会保存正在运行的进程的临时数据。寄存器就是CPU内部的临时空间，寄存器不等于寄存器内部保存的数据，空间只有一份，保存的内容可以变化。</p>
+<hr>
+<p>假如张三在学校里准备参军入伍，就需要向学校递交相关材料保留学籍，退伍回来后<del>正步踢进夜总会</del>根据保留的学籍继续在学校里学习。<br>
+学校就是CPU，校长就是调度器，张三是进程；学籍材料就是进程运行时的临时数据，CPU内寄存器的内容(当前进程的上下文数据)；保留学籍材料就是保存CPU运行进程的上下文数据，也就是寄存器里的内容；恢复学籍就是恢复上下文数据，恢复到寄存器里。张三入伍又退伍回到学校就相当于一次进程切换。</p>
+<p>CPU上下文切换：其实际含义是任务切换，或者CPU寄存器切换。当多任务内核决定运另外的任务时，它保存正在运任务的当前状态，也就是CPU寄存器中的全部内容。这些内容被保存在任务自己的堆栈中，入栈工作完成后就把下一个将要运行的任务的当前状况从该任务的栈中重新装入CPU寄存器，并开始下一个任务的运行，这一过程就是contextswitch。进程切换最核心的就是保存和恢复当前进程的上下文数据，即CPU寄存器的内容。CPU运行非常快，切换的过程人类感觉不到，就像两个进程在同时运行一样。</p>
+<p>新创建的进程如何与运行过的进程区分？task_struct有一个标记位来区分。</p>
+<p>进程的上下文数据保存到了哪里？保存到了PCB里，但是现在的CPU寄存器里的数据已经很大了，现代的计算机里会给每个进程一个TSS（任务状态段），CPU可以通过PCB里的数据找到TSS。<br>
+<a href="https://elixir.bootlin.com/linux/0.11/source/include/linux/sched.h">查看</a>Linux0.11版本的源代码，早期的Linux内核里TSS还在task_struct结构体里，后期被转移到了其他地方。<br>
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-08_17-13-58.webp" alt="">
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-08_17-15-55.webp" alt=""></p>
+<p>操作系统内部存在一个全局的指针<code>struct task_struct *current</code>永远指向当前进程，CPU直接使用这个指针指向的进程。
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-08_19-58-09.webp" alt=""></p>
+<h4 id="切换调度算法">
+<a class="header-anchor" href="#%e5%88%87%e6%8d%a2%e8%b0%83%e5%ba%a6%e7%ae%97%e6%b3%95"></a>
+切换调度算法
+</h4><p>操作系统有分时操作系统和实时操作系统，实时操作系统就是来了一个进程就必须相应，所以调度算法比较简单，一般在工业领域应用，比如在安装在汽车上，来一个刹车进程必须优先响应，安装在生产流水线上，生产出问题了来一个暂停进程必须优先响应，假如是分时操作系统那么需要紧急运行的进程还需要排队，不过在绝大多数通用计算场景下，用户更关注交互流畅性与整体吞吐量，故桌面、服务器等领域普遍采用分时操作系统。</p>
+<p>一个CPU一个运行队列，多个CPU多个队列，<code>struct task_struct *queue[140]</code>是个指针数组，代表Linux有140个优先级，0到99代表实时优先级不考虑，剩下的40个优先级可以调整，进程队列按照优先级链入到对应的指针，有点像哈希桶一样，查找进程时从上到下遍历，局部上先进先出。
+<img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/PixPin_2026-04-08_20-37-48.webp" alt=""></p>
+<h5 id="过期队列">
+<a class="header-anchor" href="#%e8%bf%87%e6%9c%9f%e9%98%9f%e5%88%97"></a>
+过期队列
+</h5><p>遍历<code>queue[140]</code>虽然很快，但是感觉效率还是太低了，调度器如何快速选择进程？使用一个<code>unsigned int bitmap[5]</code>，比特位的内容和<code>queue[140]</code>一一对应，这样调度器只需要查看<code>unsigned int bitmap[5]</code>就知道哪里是非空队列，选择队列后再选进程，这就是Linux内核调度算法的的O(1)调度算法。<br>
+但是只是这样的话如果有高优先级的死循环进程就会一直占用CPU，低优先级的进程得不到CPU资源，会造成进程饥饿，为了解决单纯按优先级调度可能带来的进程饥饿问题，Linux 2.6调度器在运行队列中引入了双队列机制。除了活动队列外，系统还维护着一个结构完全相同的过期队列，它同样包含一个对应 140 个优先级的指针数组<code>queue[140]</code>和一个用于快速定位的位图<code>unsigned int bitmap[5]</code>。活动队列负责管理当前拥有时间片的进程，一旦某个进程耗尽了分配给它的时间片，调度器便会重新计算其优先级，并将它从活动队列中移出，放入过期队列的相应优先级链表中等待。随着进程运行活动队列里的进程越来越少，而过期队列中的进程则不断累积。运行队列中设置了<code>active</code>和<code>expired</code>两个指针，它们分别永远指向活动队列和过期队列的数据结构。当活动队列里没有进程了就交换两个指针，原来的过期队列变为新的活动队列，而原活动队列则成为新的空过期队列，这样不断循环往复就组成了O(1)调度算法。<br>
+创建的新进程会进入过期队列，代表运行状态，分时操作系统支持内核优先级抢占，高优先级的新进程可以插队到活动队列里。</p>
+<p>一个CPU一个运行队列，多个CPU多个队列，多CPU之间还有负载均衡机制。</p>
+<p>理解了O(1)调度算法，我们就可以知道为什么进程优先级要设置为PRI+NI了，进程优先级时是随时都能更改的，假如立即让优先级生效那进程在运行队列里时是不是还要把进程换个位置，所以等到进程进入过期队列时再修改优先级。</p>
+<h2 id="命令行参数和环境变量">
+<a class="header-anchor" href="#%e5%91%bd%e4%bb%a4%e8%a1%8c%e5%8f%82%e6%95%b0%e5%92%8c%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f"></a>
+命令行参数和环境变量
+</h2><h3 id="环境变量是什么东西">
+<a class="header-anchor" href="#%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e6%98%af%e4%bb%80%e4%b9%88%e4%b8%9c%e8%a5%bf"></a>
+环境变量是什么东西
+</h3><p>环境变量(environment variables)一般是指在操作系统中用来指定操作系统运行环境的一些参数。</p>
+<p>比如我们在编译C/C++代码时不知道库的位置，照样能链接上，背后是环境变量在起作用。</p>
+<h4 id="命令行参数">
+<a class="header-anchor" href="#%e5%91%bd%e4%bb%a4%e8%a1%8c%e5%8f%82%e6%95%b0"></a>
+命令行参数
+</h4><p>我们在写C语言的<code>main</code>函数时，也可以给<code>main</code>函数定义参数。<br>
+运行下面的程序。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span><span class="kt">char</span> <span class="o">*</span><span class="n">argc</span><span class="p">[])</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">argc</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;argv[%d]:%s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ ./path
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>0<span class="o">]</span>:./path
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ 
+</span></span></code></pre></div><p>运行后可以看见就只输出了<code>./path</code>，再用不同的命令执行试试。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ ./path
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>0<span class="o">]</span>:./path
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ ./path <span class="m">1</span>
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>0<span class="o">]</span>:./path
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>1<span class="o">]</span>:1
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ ./path <span class="m">1</span> <span class="m">2</span>
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>0<span class="o">]</span>:./path
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>1<span class="o">]</span>:1
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>2<span class="o">]</span>:2
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ ./path <span class="m">1</span> <span class="m">2</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>0<span class="o">]</span>:./path
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>1<span class="o">]</span>:1
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>2<span class="o">]</span>:2
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>3<span class="o">]</span>:3
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ ./path <span class="m">1</span> <span class="m">2</span> <span class="m">3</span> <span class="m">4</span>
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>0<span class="o">]</span>:./path
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>1<span class="o">]</span>:1
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>2<span class="o">]</span>:2
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>3<span class="o">]</span>:3
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>4<span class="o">]</span>:4
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ 
+</span></span></code></pre></div><p>实际上<code>argv[0]</code>就是个指针数组，把命令按空格分隔开储存起来，这个就是命令行参数。<br>
+命令也是个可执行程序，ls指令后面跟的选项其实就是不同的参数，<code>main</code>函数的命令行参数就是一个程序可以通过不同的选项实现不同子功能的方法，指令参数的原理就是这个。进程启动时，拥有一张argv表，用来实现选项功能。</p>
+<h3 id="常见环境变量">
+<a class="header-anchor" href="#%e5%b8%b8%e8%a7%81%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f"></a>
+常见环境变量
+</h3><h4 id="path">
+<a class="header-anchor" href="#path"></a>
+PATH
+</h4><p>我们运行自己的程序需要加上地址<code>./</code>，为什么运行系统的指令就不需要？<br>
+要执行一个程序就要先找到它，系统中存在环境变量，系统的指令一般都在<code>/usr/bin</code>目录下，使用指令时系统会在这个目录下寻找指令的可执行程序，我们把自己的程序拷贝到这个目录下之后，不需要加上地址就也可以像系统命令一样执行了。Linux系统中存在环境变量PATH，告诉系统在哪里查找。<br>
+使用<code>env</code>指令可以查看系统的所有环境变量。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ env
+</span></span><span class="line"><span class="cl"><span class="nv">XDG_SESSION_ID</span><span class="o">=</span><span class="m">1721</span>
+</span></span><span class="line"><span class="cl"><span class="nv">HOSTNAME</span><span class="o">=</span>iZ2zeh5i3yddf3p4q4ueo7Z
+</span></span><span class="line"><span class="cl"><span class="nv">TERM</span><span class="o">=</span>xterm
+</span></span><span class="line"><span class="cl"><span class="nv">SHELL</span><span class="o">=</span>/bin/bash
+</span></span><span class="line"><span class="cl"><span class="nv">HISTSIZE</span><span class="o">=</span><span class="m">1000</span>
+</span></span><span class="line"><span class="cl"><span class="nv">SSH_CLIENT</span><span class="o">=</span>223.101.61.1 <span class="m">19798</span> <span class="m">22</span>
+</span></span><span class="line"><span class="cl"><span class="nv">SSH_TTY</span><span class="o">=</span>/dev/pts/1
+</span></span><span class="line"><span class="cl"><span class="nv">USER</span><span class="o">=</span>user1
+</span></span><span class="line"><span class="cl"><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>:/home/user1/.VimForCpp/vim/bundle/YCM.so/el7.x86_64
+</span></span><span class="line"><span class="cl"><span class="nv">LS_COLORS</span><span class="o">=</span><span class="nv">rs</span><span class="o">=</span>0:di<span class="o">=</span>01<span class="p">;</span>34:ln<span class="o">=</span>01<span class="p">;</span>36:mh<span class="o">=</span>00:pi<span class="o">=</span>40<span class="p">;</span>33:so<span class="o">=</span>01<span class="p">;</span>35:do<span class="o">=</span>01<span class="p">;</span>35:bd<span class="o">=</span>40<span class="p">;</span>33<span class="p">;</span>01:cd<span class="o">=</span>40<span class="p">;</span>33<span class="p">;</span>01:or<span class="o">=</span>40<span class="p">;</span>31<span class="p">;</span>01:mi<span class="o">=</span>01<span class="p">;</span>05<span class="p">;</span>37<span class="p">;</span>41:su<span class="o">=</span>37<span class="p">;</span>41:sg<span class="o">=</span>30<span class="p">;</span>43:ca<span class="o">=</span>30<span class="p">;</span>41:tw<span class="o">=</span>30<span class="p">;</span>42:ow<span class="o">=</span>34<span class="p">;</span>42:st<span class="o">=</span>37<span class="p">;</span>44:ex<span class="o">=</span>01<span class="p">;</span>32:*.tar<span class="o">=</span>01<span class="p">;</span>31:*.tgz<span class="o">=</span>01<span class="p">;</span>31:*.arc<span class="o">=</span>01<span class="p">;</span>31:*.arj<span class="o">=</span>01<span class="p">;</span>31:*.taz<span class="o">=</span>01<span class="p">;</span>31:*.lha<span class="o">=</span>01<span class="p">;</span>31:*.lz4<span class="o">=</span>01<span class="p">;</span>31:*.lzh<span class="o">=</span>01<span class="p">;</span>31:*.lzma<span class="o">=</span>01<span class="p">;</span>31:*.tlz<span class="o">=</span>01<span class="p">;</span>31:*.txz<span class="o">=</span>01<span class="p">;</span>31:*.tzo<span class="o">=</span>01<span class="p">;</span>31:*.t7z<span class="o">=</span>01<span class="p">;</span>31:*.zip<span class="o">=</span>01<span class="p">;</span>31:*.z<span class="o">=</span>01<span class="p">;</span>31:*.Z<span class="o">=</span>01<span class="p">;</span>31:*.dz<span class="o">=</span>01<span class="p">;</span>31:*.gz<span class="o">=</span>01<span class="p">;</span>31:*.lrz<span class="o">=</span>01<span class="p">;</span>31:*.lz<span class="o">=</span>01<span class="p">;</span>31:*.lzo<span class="o">=</span>01<span class="p">;</span>31:*.xz<span class="o">=</span>01<span class="p">;</span>31:*.bz2<span class="o">=</span>01<span class="p">;</span>31:*.bz<span class="o">=</span>01<span class="p">;</span>31:*.tbz<span class="o">=</span>01<span class="p">;</span>31:*.tbz2<span class="o">=</span>01<span class="p">;</span>31:*.tz<span class="o">=</span>01<span class="p">;</span>31:*.deb<span class="o">=</span>01<span class="p">;</span>31:*.rpm<span class="o">=</span>01<span class="p">;</span>31:*.jar<span class="o">=</span>01<span class="p">;</span>31:*.war<span class="o">=</span>01<span class="p">;</span>31:*.ear<span class="o">=</span>01<span class="p">;</span>31:*.sar<span class="o">=</span>01<span class="p">;</span>31:*.rar<span class="o">=</span>01<span class="p">;</span>31:*.alz<span class="o">=</span>01<span class="p">;</span>31:*.ace<span class="o">=</span>01<span class="p">;</span>31:*.zoo<span class="o">=</span>01<span class="p">;</span>31:*.cpio<span class="o">=</span>01<span class="p">;</span>31:*.7z<span class="o">=</span>01<span class="p">;</span>31:*.rz<span class="o">=</span>01<span class="p">;</span>31:*.cab<span class="o">=</span>01<span class="p">;</span>31:*.jpg<span class="o">=</span>01<span class="p">;</span>35:*.jpeg<span class="o">=</span>01<span class="p">;</span>35:*.gif<span class="o">=</span>01<span class="p">;</span>35:*.bmp<span class="o">=</span>01<span class="p">;</span>35:*.pbm<span class="o">=</span>01<span class="p">;</span>35:*.pgm<span class="o">=</span>01<span class="p">;</span>35:*.ppm<span class="o">=</span>01<span class="p">;</span>35:*.tga<span class="o">=</span>01<span class="p">;</span>35:*.xbm<span class="o">=</span>01<span class="p">;</span>35:*.xpm<span class="o">=</span>01<span class="p">;</span>35:*.tif<span class="o">=</span>01<span class="p">;</span>35:*.tiff<span class="o">=</span>01<span class="p">;</span>35:*.png<span class="o">=</span>01<span class="p">;</span>35:*.svg<span class="o">=</span>01<span class="p">;</span>35:*.svgz<span class="o">=</span>01<span class="p">;</span>35:*.mng<span class="o">=</span>01<span class="p">;</span>35:*.pcx<span class="o">=</span>01<span class="p">;</span>35:*.mov<span class="o">=</span>01<span class="p">;</span>35:*.mpg<span class="o">=</span>01<span class="p">;</span>35:*.mpeg<span class="o">=</span>01<span class="p">;</span>35:*.m2v<span class="o">=</span>01<span class="p">;</span>35:*.mkv<span class="o">=</span>01<span class="p">;</span>35:*.webm<span class="o">=</span>01<span class="p">;</span>35:*.ogm<span class="o">=</span>01<span class="p">;</span>35:*.mp4<span class="o">=</span>01<span class="p">;</span>35:*.m4v<span class="o">=</span>01<span class="p">;</span>35:*.mp4v<span class="o">=</span>01<span class="p">;</span>35:*.vob<span class="o">=</span>01<span class="p">;</span>35:*.qt<span class="o">=</span>01<span class="p">;</span>35:*.nuv<span class="o">=</span>01<span class="p">;</span>35:*.wmv<span class="o">=</span>01<span class="p">;</span>35:*.asf<span class="o">=</span>01<span class="p">;</span>35:*.rm<span class="o">=</span>01<span class="p">;</span>35:*.rmvb<span class="o">=</span>01<span class="p">;</span>35:*.flc<span class="o">=</span>01<span class="p">;</span>35:*.avi<span class="o">=</span>01<span class="p">;</span>35:*.fli<span class="o">=</span>01<span class="p">;</span>35:*.flv<span class="o">=</span>01<span class="p">;</span>35:*.gl<span class="o">=</span>01<span class="p">;</span>35:*.dl<span class="o">=</span>01<span class="p">;</span>35:*.xcf<span class="o">=</span>01<span class="p">;</span>35:*.xwd<span class="o">=</span>01<span class="p">;</span>35:*.yuv<span class="o">=</span>01<span class="p">;</span>35:*.cgm<span class="o">=</span>01<span class="p">;</span>35:*.emf<span class="o">=</span>01<span class="p">;</span>35:*.axv<span class="o">=</span>01<span class="p">;</span>35:*.anx<span class="o">=</span>01<span class="p">;</span>35:*.ogv<span class="o">=</span>01<span class="p">;</span>35:*.ogx<span class="o">=</span>01<span class="p">;</span>35:*.aac<span class="o">=</span>01<span class="p">;</span>36:*.au<span class="o">=</span>01<span class="p">;</span>36:*.flac<span class="o">=</span>01<span class="p">;</span>36:*.mid<span class="o">=</span>01<span class="p">;</span>36:*.midi<span class="o">=</span>01<span class="p">;</span>36:*.mka<span class="o">=</span>01<span class="p">;</span>36:*.mp3<span class="o">=</span>01<span class="p">;</span>36:*.mpc<span class="o">=</span>01<span class="p">;</span>36:*.ogg<span class="o">=</span>01<span class="p">;</span>36:*.ra<span class="o">=</span>01<span class="p">;</span>36:*.wav<span class="o">=</span>01<span class="p">;</span>36:*.axa<span class="o">=</span>01<span class="p">;</span>36:*.oga<span class="o">=</span>01<span class="p">;</span>36:*.spx<span class="o">=</span>01<span class="p">;</span>36:*.xspf<span class="o">=</span>01<span class="p">;</span>36:
+</span></span><span class="line"><span class="cl"><span class="nv">MAIL</span><span class="o">=</span>/var/spool/mail/user1
+</span></span><span class="line"><span class="cl"><span class="nv">PATH</span><span class="o">=</span>/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/user1/.local/bin:/home/user1/bin
+</span></span><span class="line"><span class="cl"><span class="nv">PWD</span><span class="o">=</span>/home/user1/path
+</span></span><span class="line"><span class="cl"><span class="nv">LANG</span><span class="o">=</span>en_US.UTF-8
+</span></span><span class="line"><span class="cl"><span class="nv">HISTCONTROL</span><span class="o">=</span>ignoredups
+</span></span><span class="line"><span class="cl"><span class="nv">SHLVL</span><span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="nv">HOME</span><span class="o">=</span>/home/user1
+</span></span><span class="line"><span class="cl"><span class="nv">LOGNAME</span><span class="o">=</span>user1
+</span></span><span class="line"><span class="cl"><span class="nv">SSH_CONNECTION</span><span class="o">=</span>223.101.61.1 <span class="m">19798</span> 172.24.55.79 <span class="m">22</span>
+</span></span><span class="line"><span class="cl"><span class="nv">LESSOPEN</span><span class="o">=||</span>/usr/bin/lesspipe.sh %s
+</span></span><span class="line"><span class="cl"><span class="nv">XDG_RUNTIME_DIR</span><span class="o">=</span>/run/user/1001
+</span></span><span class="line"><span class="cl"><span class="nv">_</span><span class="o">=</span>/usr/bin/env
+</span></span><span class="line"><span class="cl"><span class="nv">OLDPWD</span><span class="o">=</span>/home/user1
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ 
+</span></span></code></pre></div><p>环境变量的构成是名字+内容，<code>env</code>打印的环境变量太多了，我们可以使用<code>echo $变量名</code>来查看对应的环境变量。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ <span class="nb">echo</span> <span class="nv">$PATH</span>
+</span></span><span class="line"><span class="cl">/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/user1/.local/bin:/home/user1/bin
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ 
+</span></span></code></pre></div><p>系统搜索命令时，默认在PATH变量的路径里搜索，假如我们把自己程序的目录添加到PATH里，是不是就能像系统命令一样使用了</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ <span class="nv">PATH</span><span class="o">=</span>/home/user1/path
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ path
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>0<span class="o">]</span>:path
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ path <span class="m">1</span> <span class="m">2</span> <span class="m">3</span>
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>0<span class="o">]</span>:path
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>1<span class="o">]</span>:1
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>2<span class="o">]</span>:2
+</span></span><span class="line"><span class="cl">argv<span class="o">[</span>3<span class="o">]</span>:3
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ ls
+</span></span><span class="line"><span class="cl">-bash: ls: <span class="nb">command</span> not found
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ 
+</span></span></code></pre></div><p>我们自己的程序可以直接使用了，但是系统命令怎么找不到了呢？</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ <span class="nb">echo</span> <span class="nv">$PATH</span>
+</span></span><span class="line"><span class="cl">/home/user1/path
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ 
+</span></span></code></pre></div><p>我们发现使用<code>PATH=/home/user1/path</code>指令会直接覆盖掉整个PATH，那么怎么恢复PATH呢？<br>
+可以使用指令<code>PATH=原理的路径</code>来恢复PATH，但是还要自己输入命令，太麻烦了，实际上可以关闭xshell再重新登录系统，这样就恢复正常了，因为每次用户登录bash都会重新加载环境变量到内存里。用户登录时，系统会为用户创建一个bash来让用户使用，bash会形成一张环境变量表，里面储存所有的环境变量（其实就是字符串），当用户输入指令时，比如<code>ls -a -l</code>，bash会将命令拆分形成命令行参数表，然后根据PATH变量找到ls命令的可执行文件，找到后再创建子进程执行命令，也就是说bash内有两张表，一张命令行参数表一张环境变量表，指令的查找是由bash完成的。<br>
+环境变量最开始是从系统的相关配置文件中来的，在账户家目录里执行指令<code>ls -al</code>可以看见文件.bash_profile和.bashrc，.bash_profile是系统在用户登录时判断.bashrc文件是否存在的，.bashrc文件会去加载系统的环境变量/etc/bashrc。假如我们把自己程序的路径添加到系统的配置文件里，那么每次登录时bash的环境变量表里的PATH就会添加上程序的路径，这样就能让我们的程序像命令一样使用了。<br>
+如果Linux系统有10个用户登录，系统会为用户创建10个bash，每个用户都有自己独立的bash。</p>
+<hr>
+<p>windows下也有PATH变量，在系统里搜索环境变量就能找到。</p>
+<h4 id="pwd">
+<a class="header-anchor" href="#pwd"></a>
+PWD
+</h4><p>PWD表示当前工作路径，<code>pwd</code>指令显示的就是这个。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">PWD</span><span class="o">=</span>/home/user1/path
+</span></span></code></pre></div><h4 id="oldpwd">
+<a class="header-anchor" href="#oldpwd"></a>
+OLDPWD
+</h4><p>OLDPWD表示上次的工作目录，<code>cd -</code>切换的就是这个。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">OLDPWD</span><span class="o">=</span>/home/user1
+</span></span></code></pre></div><h4 id="home">
+<a class="header-anchor" href="#home"></a>
+HOME
+</h4><p>环境变量HOME表示当前用户的家目录</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">HOME</span><span class="o">=</span>/home/user1
+</span></span></code></pre></div><h4 id="shell">
+<a class="header-anchor" href="#shell"></a>
+SHELL
+</h4><p>SHELL指的是当前Shell，它的值通常是/bin/bash。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">SHELL</span><span class="o">=</span>/bin/bash
+</span></span></code></pre></div><h4 id="user和logname">
+<a class="header-anchor" href="#user%e5%92%8clogname"></a>
+USER和LOGNAME
+</h4><p>LOGNAME表示登录用户，USER表示当前用户的用户名。普通用户使用<code>su -</code>指令提权后可以发现USER和LOGNAME都变成了root，使用<code>su</code>指令则不会变，<code>su -</code>指令其实是让root用户重新登录了。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">USER</span><span class="o">=</span>user1
+</span></span><span class="line"><span class="cl"><span class="nv">LOGNAME</span><span class="o">=</span>user1
+</span></span></code></pre></div><h4 id="histsize">
+<a class="header-anchor" href="#histsize"></a>
+HISTSIZE
+</h4><p>bash会记录历史指令，HISTSIZE变量代表记录的历史记录条数，HISTSIZE=1000说明最多记录1000条。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">HISTSIZE</span><span class="o">=</span><span class="m">1000</span>
+</span></span></code></pre></div><h4 id="hostname">
+<a class="header-anchor" href="#hostname"></a>
+HOSTNAME
+</h4><p>HOSTNAME就代表当前的主机名。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">HOSTNAME</span><span class="o">=</span>iZ2zeh5i3yddf3p4q4ueo7Z
+</span></span></code></pre></div><h4 id="ssh_tty">
+<a class="header-anchor" href="#ssh_tty"></a>
+SSH_TTY
+</h4><p>SSH_TTY表示当前使用的设备，多个用户使用屏幕设备时哪个用户使用哪个也是环境变量记录的。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">SSH_TTY</span><span class="o">=</span>/dev/pts/1
+</span></span></code></pre></div><h4 id="ls_colors">
+<a class="header-anchor" href="#ls_colors"></a>
+LS_COLORS
+</h4><p>LS_COLORS表示配色方案，ls命令显示的彩色都是LS_COLORS配置的。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">LS_COLORS</span><span class="o">=</span><span class="nv">rs</span><span class="o">=</span>0:di<span class="o">=</span>01<span class="p">;</span>34:ln<span class="o">=</span>01<span class="p">;</span>36:mh<span class="o">=</span>00:pi<span class="o">=</span>40<span class="p">;</span>33:so<span class="o">=</span>01<span class="p">;</span>35:do<span class="o">=</span>01<span class="p">;</span>35:bd<span class="o">=</span>40<span class="p">;</span>33<span class="p">;</span>01:cd<span class="o">=</span>40<span class="p">;</span>33<span class="p">;</span>01:or<span class="o">=</span>40<span class="p">;</span>31<span class="p">;</span>01:mi<span class="o">=</span>01<span class="p">;</span>05<span class="p">;</span>37<span class="p">;</span>41:su<span class="o">=</span>37<span class="p">;</span>41:sg<span class="o">=</span>30<span class="p">;</span>43:ca<span class="o">=</span>30<span class="p">;</span>41:tw<span class="o">=</span>30<span class="p">;</span>42:ow<span class="o">=</span>34<span class="p">;</span>42:st<span class="o">=</span>37<span class="p">;</span>44:ex<span class="o">=</span>01<span class="p">;</span>32:*.tar<span class="o">=</span>01<span class="p">;</span>31:*.tgz<span class="o">=</span>01<span class="p">;</span>31:*.arc<span class="o">=</span>01<span class="p">;</span>31:*.arj<span class="o">=</span>01<span class="p">;</span>31:*.taz<span class="o">=</span>01<span class="p">;</span>31:*.lha<span class="o">=</span>01<span class="p">;</span>31:*.lz4<span class="o">=</span>01<span class="p">;</span>31:*.lzh<span class="o">=</span>01<span class="p">;</span>31:*.lzma<span class="o">=</span>01<span class="p">;</span>31:*.tlz<span class="o">=</span>01<span class="p">;</span>31:*.txz<span class="o">=</span>01<span class="p">;</span>31:*.tzo<span class="o">=</span>01<span class="p">;</span>31:*.t7z<span class="o">=</span>01<span class="p">;</span>31:*.zip<span class="o">=</span>01<span class="p">;</span>31:*.z<span class="o">=</span>01<span class="p">;</span>31:*.Z<span class="o">=</span>01<span class="p">;</span>31:*.dz<span class="o">=</span>01<span class="p">;</span>31:*.gz<span class="o">=</span>01<span class="p">;</span>31:*.lrz<span class="o">=</span>01<span class="p">;</span>31:*.lz<span class="o">=</span>01<span class="p">;</span>31:*.lzo<span class="o">=</span>01<span class="p">;</span>31:*.xz<span class="o">=</span>01<span class="p">;</span>31:*.bz2<span class="o">=</span>01<span class="p">;</span>31:*.bz<span class="o">=</span>01<span class="p">;</span>31:*.tbz<span class="o">=</span>01<span class="p">;</span>31:*.tbz2<span class="o">=</span>01<span class="p">;</span>31:*.tz<span class="o">=</span>01<span class="p">;</span>31:*.deb<span class="o">=</span>01<span class="p">;</span>31:*.rpm<span class="o">=</span>01<span class="p">;</span>31:*.jar<span class="o">=</span>01<span class="p">;</span>31:*.war<span class="o">=</span>01<span class="p">;</span>31:*.ear<span class="o">=</span>01<span class="p">;</span>31:*.sar<span class="o">=</span>01<span class="p">;</span>31:*.rar<span class="o">=</span>01<span class="p">;</span>31:*.alz<span class="o">=</span>01<span class="p">;</span>31:*.ace<span class="o">=</span>01<span class="p">;</span>31:*.zoo<span class="o">=</span>01<span class="p">;</span>31:*.cpio<span class="o">=</span>01<span class="p">;</span>31:*.7z<span class="o">=</span>01<span class="p">;</span>31:*.rz<span class="o">=</span>01<span class="p">;</span>31:*.cab<span class="o">=</span>01<span class="p">;</span>31:*.jpg<span class="o">=</span>01<span class="p">;</span>35:*.jpeg<span class="o">=</span>01<span class="p">;</span>35:*.gif<span class="o">=</span>01<span class="p">;</span>35:*.bmp<span class="o">=</span>01<span class="p">;</span>35:*.pbm<span class="o">=</span>01<span class="p">;</span>35:*.pgm<span class="o">=</span>01<span class="p">;</span>35:*.ppm<span class="o">=</span>01<span class="p">;</span>35:*.tga<span class="o">=</span>01<span class="p">;</span>35:*.xbm<span class="o">=</span>01<span class="p">;</span>35:*.xpm<span class="o">=</span>01<span class="p">;</span>35:*.tif<span class="o">=</span>01<span class="p">;</span>35:*.tiff<span class="o">=</span>01<span class="p">;</span>35:*.png<span class="o">=</span>01<span class="p">;</span>35:*.svg<span class="o">=</span>01<span class="p">;</span>35:*.svgz<span class="o">=</span>01<span class="p">;</span>35:*.mng<span class="o">=</span>01<span class="p">;</span>35:*.pcx<span class="o">=</span>01<span class="p">;</span>35:*.mov<span class="o">=</span>01<span class="p">;</span>35:*.mpg<span class="o">=</span>01<span class="p">;</span>35:*.mpeg<span class="o">=</span>01<span class="p">;</span>35:*.m2v<span class="o">=</span>01<span class="p">;</span>35:*.mkv<span class="o">=</span>01<span class="p">;</span>35:*.webm<span class="o">=</span>01<span class="p">;</span>35:*.ogm<span class="o">=</span>01<span class="p">;</span>35:*.mp4<span class="o">=</span>01<span class="p">;</span>35:*.m4v<span class="o">=</span>01<span class="p">;</span>35:*.mp4v<span class="o">=</span>01<span class="p">;</span>35:*.vob<span class="o">=</span>01<span class="p">;</span>35:*.qt<span class="o">=</span>01<span class="p">;</span>35:*.nuv<span class="o">=</span>01<span class="p">;</span>35:*.wmv<span class="o">=</span>01<span class="p">;</span>35:*.asf<span class="o">=</span>01<span class="p">;</span>35:*.rm<span class="o">=</span>01<span class="p">;</span>35:*.rmvb<span class="o">=</span>01<span class="p">;</span>35:*.flc<span class="o">=</span>01<span class="p">;</span>35:*.avi<span class="o">=</span>01<span class="p">;</span>35:*.fli<span class="o">=</span>01<span class="p">;</span>35:*.flv<span class="o">=</span>01<span class="p">;</span>35:*.gl<span class="o">=</span>01<span class="p">;</span>35:*.dl<span class="o">=</span>01<span class="p">;</span>35:*.xcf<span class="o">=</span>01<span class="p">;</span>35:*.xwd<span class="o">=</span>01<span class="p">;</span>35:*.yuv<span class="o">=</span>01<span class="p">;</span>35:*.cgm<span class="o">=</span>01<span class="p">;</span>35:*.emf<span class="o">=</span>01<span class="p">;</span>35:*.axv<span class="o">=</span>01<span class="p">;</span>35:*.anx<span class="o">=</span>01<span class="p">;</span>35:*.ogv<span class="o">=</span>01<span class="p">;</span>35:*.ogx<span class="o">=</span>01<span class="p">;</span>35:*.aac<span class="o">=</span>01<span class="p">;</span>36:*.au<span class="o">=</span>01<span class="p">;</span>36:*.flac<span class="o">=</span>01<span class="p">;</span>36:*.mid<span class="o">=</span>01<span class="p">;</span>36:*.midi<span class="o">=</span>01<span class="p">;</span>36:*.mka<span class="o">=</span>01<span class="p">;</span>36:*.mp3<span class="o">=</span>01<span class="p">;</span>36:*.mpc<span class="o">=</span>01<span class="p">;</span>36:*.ogg<span class="o">=</span>01<span class="p">;</span>36:*.ra<span class="o">=</span>01<span class="p">;</span>36:*.wav<span class="o">=</span>01<span class="p">;</span>36:*.axa<span class="o">=</span>01<span class="p">;</span>36:*.oga<span class="o">=</span>01<span class="p">;</span>36:*.spx<span class="o">=</span>01<span class="p">;</span>36:*.xspf<span class="o">=</span>01<span class="p">;</span>36:
+</span></span><span class="line"><span class="cl"><span class="nv">MAIL</span><span class="o">=</span>/var/spool/mail/user1
+</span></span></code></pre></div><h4 id="lang">
+<a class="header-anchor" href="#lang"></a>
+LANG
+</h4><p>LANG表示编码格式。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">LANG</span><span class="o">=</span>en_US.UTF-8
+</span></span></code></pre></div><h3 id="获取环境变量的方法">
+<a class="header-anchor" href="#%e8%8e%b7%e5%8f%96%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e7%9a%84%e6%96%b9%e6%b3%95"></a>
+获取环境变量的方法
+</h3><p><code>ebv</code>指令查看所有环境变量，<code>echo $环境变量</code>指令查看对应的环境变量，<code>export</code>指令可以设置一个新的环境变量，<code>unset</code>指令用来取消环境变量。</p>
+<p>在程序里可以通过main函数的第三个参数获取环境变量，是父进程给的环境变量，运行以下程序可以打印出获取的环境变量。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span><span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[],</span><span class="kt">char</span> <span class="o">*</span><span class="n">env</span><span class="p">[])</span>  <span class="c1">//char *env[]获取环境变量
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">argc</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">argv</span><span class="p">;</span>                             <span class="c1">//强转void防止编译器警告
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">env</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;env[%d]:%s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">env</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ ./path
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>0<span class="o">]</span>:XDG_SESSION_ID<span class="o">=</span><span class="m">1726</span>
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>1<span class="o">]</span>:HOSTNAME<span class="o">=</span>iZ2zeh5i3yddf3p4q4ueo7Z
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>2<span class="o">]</span>:TERM<span class="o">=</span>xterm
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>3<span class="o">]</span>:SHELL<span class="o">=</span>/bin/bash
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>4<span class="o">]</span>:HISTSIZE<span class="o">=</span><span class="m">1000</span>
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>5<span class="o">]</span>:SSH_CLIENT<span class="o">=</span>223.101.61.1 <span class="m">19110</span> <span class="m">22</span>
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>6<span class="o">]</span>:OLDPWD<span class="o">=</span>/home/user1
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>7<span class="o">]</span>:SSH_TTY<span class="o">=</span>/dev/pts/2
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>8<span class="o">]</span>:USER<span class="o">=</span>user1
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>9<span class="o">]</span>:LD_LIBRARY_PATH<span class="o">=</span>:/home/user1/.VimForCpp/vim/bundle/YCM.so/el7.x86_64
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>10<span class="o">]</span>:LS_COLORS<span class="o">=</span><span class="nv">rs</span><span class="o">=</span>0:di<span class="o">=</span>01<span class="p">;</span>34:ln<span class="o">=</span>01<span class="p">;</span>36:mh<span class="o">=</span>00:pi<span class="o">=</span>40<span class="p">;</span>33:so<span class="o">=</span>01<span class="p">;</span>35:do<span class="o">=</span>01<span class="p">;</span>35:bd<span class="o">=</span>40<span class="p">;</span>33<span class="p">;</span>01:cd<span class="o">=</span>40<span class="p">;</span>33<span class="p">;</span>01:or<span class="o">=</span>40<span class="p">;</span>31<span class="p">;</span>01:mi<span class="o">=</span>01<span class="p">;</span>05<span class="p">;</span>37<span class="p">;</span>41:su<span class="o">=</span>37<span class="p">;</span>41:sg<span class="o">=</span>30<span class="p">;</span>43:ca<span class="o">=</span>30<span class="p">;</span>41:tw<span class="o">=</span>30<span class="p">;</span>42:ow<span class="o">=</span>34<span class="p">;</span>42:st<span class="o">=</span>37<span class="p">;</span>44:ex<span class="o">=</span>01<span class="p">;</span>32:*.tar<span class="o">=</span>01<span class="p">;</span>31:*.tgz<span class="o">=</span>01<span class="p">;</span>31:*.arc<span class="o">=</span>01<span class="p">;</span>31:*.arj<span class="o">=</span>01<span class="p">;</span>31:*.taz<span class="o">=</span>01<span class="p">;</span>31:*.lha<span class="o">=</span>01<span class="p">;</span>31:*.lz4<span class="o">=</span>01<span class="p">;</span>31:*.lzh<span class="o">=</span>01<span class="p">;</span>31:*.lzma<span class="o">=</span>01<span class="p">;</span>31:*.tlz<span class="o">=</span>01<span class="p">;</span>31:*.txz<span class="o">=</span>01<span class="p">;</span>31:*.tzo<span class="o">=</span>01<span class="p">;</span>31:*.t7z<span class="o">=</span>01<span class="p">;</span>31:*.zip<span class="o">=</span>01<span class="p">;</span>31:*.z<span class="o">=</span>01<span class="p">;</span>31:*.Z<span class="o">=</span>01<span class="p">;</span>31:*.dz<span class="o">=</span>01<span class="p">;</span>31:*.gz<span class="o">=</span>01<span class="p">;</span>31:*.lrz<span class="o">=</span>01<span class="p">;</span>31:*.lz<span class="o">=</span>01<span class="p">;</span>31:*.lzo<span class="o">=</span>01<span class="p">;</span>31:*.xz<span class="o">=</span>01<span class="p">;</span>31:*.bz2<span class="o">=</span>01<span class="p">;</span>31:*.bz<span class="o">=</span>01<span class="p">;</span>31:*.tbz<span class="o">=</span>01<span class="p">;</span>31:*.tbz2<span class="o">=</span>01<span class="p">;</span>31:*.tz<span class="o">=</span>01<span class="p">;</span>31:*.deb<span class="o">=</span>01<span class="p">;</span>31:*.rpm<span class="o">=</span>01<span class="p">;</span>31:*.jar<span class="o">=</span>01<span class="p">;</span>31:*.war<span class="o">=</span>01<span class="p">;</span>31:*.ear<span class="o">=</span>01<span class="p">;</span>31:*.sar<span class="o">=</span>01<span class="p">;</span>31:*.rar<span class="o">=</span>01<span class="p">;</span>31:*.alz<span class="o">=</span>01<span class="p">;</span>31:*.ace<span class="o">=</span>01<span class="p">;</span>31:*.zoo<span class="o">=</span>01<span class="p">;</span>31:*.cpio<span class="o">=</span>01<span class="p">;</span>31:*.7z<span class="o">=</span>01<span class="p">;</span>31:*.rz<span class="o">=</span>01<span class="p">;</span>31:*.cab<span class="o">=</span>01<span class="p">;</span>31:*.jpg<span class="o">=</span>01<span class="p">;</span>35:*.jpeg<span class="o">=</span>01<span class="p">;</span>35:*.gif<span class="o">=</span>01<span class="p">;</span>35:*.bmp<span class="o">=</span>01<span class="p">;</span>35:*.pbm<span class="o">=</span>01<span class="p">;</span>35:*.pgm<span class="o">=</span>01<span class="p">;</span>35:*.ppm<span class="o">=</span>01<span class="p">;</span>35:*.tga<span class="o">=</span>01<span class="p">;</span>35:*.xbm<span class="o">=</span>01<span class="p">;</span>35:*.xpm<span class="o">=</span>01<span class="p">;</span>35:*.tif<span class="o">=</span>01<span class="p">;</span>35:*.tiff<span class="o">=</span>01<span class="p">;</span>35:*.png<span class="o">=</span>01<span class="p">;</span>35:*.svg<span class="o">=</span>01<span class="p">;</span>35:*.svgz<span class="o">=</span>01<span class="p">;</span>35:*.mng<span class="o">=</span>01<span class="p">;</span>35:*.pcx<span class="o">=</span>01<span class="p">;</span>35:*.mov<span class="o">=</span>01<span class="p">;</span>35:*.mpg<span class="o">=</span>01<span class="p">;</span>35:*.mpeg<span class="o">=</span>01<span class="p">;</span>35:*.m2v<span class="o">=</span>01<span class="p">;</span>35:*.mkv<span class="o">=</span>01<span class="p">;</span>35:*.webm<span class="o">=</span>01<span class="p">;</span>35:*.ogm<span class="o">=</span>01<span class="p">;</span>35:*.mp4<span class="o">=</span>01<span class="p">;</span>35:*.m4v<span class="o">=</span>01<span class="p">;</span>35:*.mp4v<span class="o">=</span>01<span class="p">;</span>35:*.vob<span class="o">=</span>01<span class="p">;</span>35:*.qt<span class="o">=</span>01<span class="p">;</span>35:*.nuv<span class="o">=</span>01<span class="p">;</span>35:*.wmv<span class="o">=</span>01<span class="p">;</span>35:*.asf<span class="o">=</span>01<span class="p">;</span>35:*.rm<span class="o">=</span>01<span class="p">;</span>35:*.rmvb<span class="o">=</span>01<span class="p">;</span>35:*.flc<span class="o">=</span>01<span class="p">;</span>35:*.avi<span class="o">=</span>01<span class="p">;</span>35:*.fli<span class="o">=</span>01<span class="p">;</span>35:*.flv<span class="o">=</span>01<span class="p">;</span>35:*.gl<span class="o">=</span>01<span class="p">;</span>35:*.dl<span class="o">=</span>01<span class="p">;</span>35:*.xcf<span class="o">=</span>01<span class="p">;</span>35:*.xwd<span class="o">=</span>01<span class="p">;</span>35:*.yuv<span class="o">=</span>01<span class="p">;</span>35:*.cgm<span class="o">=</span>01<span class="p">;</span>35:*.emf<span class="o">=</span>01<span class="p">;</span>35:*.axv<span class="o">=</span>01<span class="p">;</span>35:*.anx<span class="o">=</span>01<span class="p">;</span>35:*.ogv<span class="o">=</span>01<span class="p">;</span>35:*.ogx<span class="o">=</span>01<span class="p">;</span>35:*.aac<span class="o">=</span>01<span class="p">;</span>36:*.au<span class="o">=</span>01<span class="p">;</span>36:*.flac<span class="o">=</span>01<span class="p">;</span>36:*.mid<span class="o">=</span>01<span class="p">;</span>36:*.midi<span class="o">=</span>01<span class="p">;</span>36:*.mka<span class="o">=</span>01<span class="p">;</span>36:*.mp3<span class="o">=</span>01<span class="p">;</span>36:*.mpc<span class="o">=</span>01<span class="p">;</span>36:*.ogg<span class="o">=</span>01<span class="p">;</span>36:*.ra<span class="o">=</span>01<span class="p">;</span>36:*.wav<span class="o">=</span>01<span class="p">;</span>36:*.axa<span class="o">=</span>01<span class="p">;</span>36:*.oga<span class="o">=</span>01<span class="p">;</span>36:*.spx<span class="o">=</span>01<span class="p">;</span>36:*.xspf<span class="o">=</span>01<span class="p">;</span>36:
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>11<span class="o">]</span>:MAIL<span class="o">=</span>/var/spool/mail/user1
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>12<span class="o">]</span>:PATH<span class="o">=</span>/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/user1/.local/bin:/home/user1/bin
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>13<span class="o">]</span>:PWD<span class="o">=</span>/home/user1/path
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>14<span class="o">]</span>:LANG<span class="o">=</span>en_US.UTF-8
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>15<span class="o">]</span>:HISTCONTROL<span class="o">=</span>ignoredups
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>16<span class="o">]</span>:SHLVL<span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>17<span class="o">]</span>:HOME<span class="o">=</span>/home/user1
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>18<span class="o">]</span>:LOGNAME<span class="o">=</span>user1
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>19<span class="o">]</span>:SSH_CONNECTION<span class="o">=</span>223.101.61.1 <span class="m">19110</span> 172.24.55.79 <span class="m">22</span>
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>20<span class="o">]</span>:LESSOPEN<span class="o">=||</span>/usr/bin/lesspipe.sh %s
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>21<span class="o">]</span>:XDG_RUNTIME_DIR<span class="o">=</span>/run/user/1001
+</span></span><span class="line"><span class="cl">env<span class="o">[</span>22<span class="o">]</span>:_<span class="o">=</span>./path
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ 
+</span></span></code></pre></div><p>main函数的参数列表获取的环境变量是父进程的，子进程可以获取父进程的环境变量，子进程的子进程也可以继承环境变量，所以环境变量在系统中通常具有全局性。</p>
+<p>使用<code>getenv()</code>系统调用可以获取指定的环境变量。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span><span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[],</span><span class="kt">char</span> <span class="o">*</span><span class="n">env</span><span class="p">[])</span>  <span class="c1">//char *env[]获取环境变量
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">argc</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">argv</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">env</span><span class="p">;</span>                              <span class="c1">//强转void防止编译器警告
+</span></span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">value</span><span class="o">=</span> <span class="nf">getenv</span><span class="p">(</span><span class="s">&#34;PATH&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">value</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span><span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;PAT-&gt; %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ ./path
+</span></span><span class="line"><span class="cl">PAT-&gt; /usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/user1/.local/bin:/home/user1/bin
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ 
+</span></span></code></pre></div><p>如果我们想让程序只有自己可以使用，我们可以使用<code>getenv()</code>系统调用获取当前用户的用户名，设置<code>if</code>判断，如果不是自己运行就直接退出，是自己运行就走正常运行逻辑。</p>
+<p>在系统中获取环境变量还有一种方法，使用通过第三方变量<code>environ</code>获取，<code>environ</code>是二级指针，因为环境变量表的类型的<code>char*</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="k">extern</span> <span class="kt">char</span> <span class="o">**</span><span class="n">environ</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(;</span> <span class="n">environ</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">environ</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="环境变量的特性">
+<a class="header-anchor" href="#%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e7%9a%84%e7%89%b9%e6%80%a7"></a>
+环境变量的特性
+</h3><p>环境变量具有全局特性。<br>
+shell不仅支持环境变量，还支持本地变量。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ <span class="nv">i</span><span class="o">=</span><span class="m">100</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ <span class="nb">echo</span> <span class="nv">$i</span>
+</span></span><span class="line"><span class="cl"><span class="m">100</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z path<span class="o">]</span>$ 
+</span></span></code></pre></div><p>使用<code>env</code>看不到刚刚设置的本地变量，使用<code>set</code>指令可以查看所有的环境变量和本地变量。bash会记录两套变量，环境变量和本地变量，本地变量不会被子进程继承，只在bash内部使用。<br>
+使用<code>set</code>查看时可以发现这几个变量。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">PS1</span><span class="o">=</span><span class="s1">&#39;[\u@\h \W]\$ &#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">PS2</span><span class="o">=</span><span class="s1">&#39;&gt; &#39;</span>
+</span></span></code></pre></div><p>PS1是当前bash命令行的格式，PS2表示换行继续指令输入的符号。</p>
+<p>子进程没法把环境变量给父进程，我们的环境变量是在bash里面，因为这个限制，有一些命令是bash的内建命令，执行时不需要创建子进程，由bash自己执行。</p>
+<h2 id="程序地址空间">
+<a class="header-anchor" href="#%e7%a8%8b%e5%ba%8f%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4"></a>
+程序地址空间
+</h2><p>C语言程序的内存空间布局大概长这样。</p>
+<p><img src="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/b9ba341d8459231e25c6ac234d89d0dc.webp" alt=""></p>
+<p>常量字符串被放在字符串常量区，常量字符串其实是被硬编码为代码，代码是只读的，常量字符串也是只读的。<br>
+<code>static</code>修饰的变量生命周期延长到全局，<code>static</code>修饰的变量和全局变量的地址是在同一块区域。<code>static</code>变量就是全局属性。</p>
+<hr>
+<p>上面这个程序空间图代表的是内存吗？<br>
+并不是内存，系统里面同时运行多个进程，假如每个进程都像这样使用内存，该怎么安排？所以上面这个程序空间图代表的是进程地址空间，也叫虚拟地址空间，是操作系统的概念，不是语言层的概念。<br>
+运行以下代码。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">g_val</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">pid_t</span> <span class="n">id</span> <span class="o">=</span> <span class="nf">fork</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;fork&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>  <span class="c1">//子进程肯定先跑完，也就是子进程先修改，完成之后，父进程再读取
+</span></span></span><span class="line"><span class="cl">        <span class="n">g_val</span><span class="o">=</span><span class="mi">100</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;child[%d]: %d : %p</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">getpid</span><span class="p">(),</span> <span class="n">g_val</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">g_val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span><span class="p">{</span>            <span class="c1">//父进程
+</span></span></span><span class="line"><span class="cl">        <span class="nf">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;parent[%d]: %d : %p</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">getpid</span><span class="p">(),</span> <span class="n">g_val</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">g_val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ ./test
+</span></span><span class="line"><span class="cl">parent<span class="o">[</span>22674<span class="o">]</span>: <span class="m">100</span> : 0x601058
+</span></span><span class="line"><span class="cl">child<span class="o">[</span>22675<span class="o">]</span>: <span class="m">0</span> : 0x601058
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ 
+</span></span></code></pre></div><p>我们可以发现两个进程访问同一个地址得到的值不一样，变量内容不一样,所以父子进程输出的变量绝对不是同一个变量，但地址值是一样的，说明，该地址绝对不是物理地址，在Linux地址下，这种地址叫做虚拟地址，我们在用C/C++语言所看到的地址，全部都是虚拟地，物理地址，用户一概看不到，由操作系统统一管理。</p>
+<h3 id="分页和虚拟地址空间">
+<a class="header-anchor" href="#%e5%88%86%e9%a1%b5%e5%92%8c%e8%99%9a%e6%8b%9f%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4"></a>
+分页和虚拟地址空间
+</h3><p>待更新。。。</p>
+</div>
     <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
     <a
       class="article-category-link"
@@ -917,6 +1354,20 @@ C语言的<code>main</code>函数都有一个<code>return 0</code>来表示程�
         rel="tag"
         >操作系统</a
       >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e8%b0%83%e5%ba%a6%e7%ae%97%e6%b3%95"
+        rel="tag"
+        >调度算法</a
+      >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f"
+        rel="tag"
+        >环境变量</a
+      >
     </li></ul>
 </footer>
   </div><nav
@@ -924,7 +1375,7 @@ C语言的<code>main</code>函数都有一个<code>return 0</code>来表示程�
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-104.webp"
+              data-src="/images/covers/covers-100.webp"
               data-sizes="auto"
               alt="【Linux】04 - Linux开发工具"
               class="lazyload"
@@ -956,10 +1407,10 @@ C语言的<code>main</code>函数都有一个<code>return 0</code>来表示程�
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;81.6k</span
+          >&nbsp;88.4k</span
         >
         &nbsp;|&nbsp;
-        <span class="icon-coffee">&nbsp;02:52</span>
+        <span class="icon-coffee">&nbsp;03:06</span>
       </div><div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"
@@ -1017,10 +1468,50 @@ C语言的<code>main</code>函数都有一个<code>return 0</code>来表示程�
                 <li><a href="#挂起状态">挂起状态</a></li>
                 <li><a href="#查看进程状态">查看进程状态</a></li>
                 <li><a href="#僵尸进程">僵尸进程</a></li>
+                <li><a href="#孤儿进程">孤儿进程</a></li>
               </ol>
             </li>
-            <li><a href="#进程优先级">进程优先级</a></li>
-            <li><a href="#进程切换">进程切换</a></li>
+            <li><a href="#进程优先级">进程优先级</a>
+              <ol>
+                <li><a href="#查看进程优先级">查看进程优先级</a></li>
+              </ol>
+            </li>
+            <li><a href="#进程切换">进程切换</a>
+              <ol>
+                <li><a href="#切换调度算法">切换调度算法</a></li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+        <li><a href="#命令行参数和环境变量">命令行参数和环境变量</a>
+          <ol>
+            <li><a href="#环境变量是什么东西">环境变量是什么东西</a>
+              <ol>
+                <li><a href="#命令行参数">命令行参数</a></li>
+              </ol>
+            </li>
+            <li><a href="#常见环境变量">常见环境变量</a>
+              <ol>
+                <li><a href="#path">PATH</a></li>
+                <li><a href="#pwd">PWD</a></li>
+                <li><a href="#oldpwd">OLDPWD</a></li>
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#shell">SHELL</a></li>
+                <li><a href="#user和logname">USER和LOGNAME</a></li>
+                <li><a href="#histsize">HISTSIZE</a></li>
+                <li><a href="#hostname">HOSTNAME</a></li>
+                <li><a href="#ssh_tty">SSH_TTY</a></li>
+                <li><a href="#ls_colors">LS_COLORS</a></li>
+                <li><a href="#lang">LANG</a></li>
+              </ol>
+            </li>
+            <li><a href="#获取环境变量的方法">获取环境变量的方法</a></li>
+            <li><a href="#环境变量的特性">环境变量的特性</a></li>
+          </ol>
+        </li>
+        <li><a href="#程序地址空间">程序地址空间</a>
+          <ol>
+            <li><a href="#分页和虚拟地址空间">分页和虚拟地址空间</a></li>
           </ol>
         </li>
       </ol>
@@ -1050,7 +1541,7 @@ C语言的<code>main</code>函数都有一个<code>return 0</code>来表示程�
   </a>
   <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
     <div>标签</div>
-    <div class="sidebar-state-number">13</div>
+    <div class="sidebar-state-number">15</div>
   </a>
 </div>
 <div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
@@ -1512,7 +2003,9 @@ C语言的<code>main</code>函数都有一个<code>return 0</code>来表示程�
     '/images/bg/bg30.webp',
     '/images/bg/bg31.webp',
     '/images/bg/bg32.webp',
-    '/images/bg/bg33.webp'
+    '/images/bg/bg33.webp',
+    '/images/bg/bg34.webp',
+    '/images/bg/bg35.webp'
   ];
 
   function getRandomBanner() {
