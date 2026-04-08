@@ -9,6 +9,8 @@ tags:
   - 进程
   - 冯诺依曼体系结构
   - 操作系统
+  - 调度算法
+  - 环境变量
 
 categories:
   - Linux
@@ -603,7 +605,70 @@ int main()
 [user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ 
 ```
 
-如果父进程一直不管，不回收，不获取子进程退出信息，那么僵尸状态的子进程会一直存在，那么就会导致**内存泄漏**。进程退出了操作系统会自动释放所有资源，一些需要长期运行的进程（常驻进程）一但发生内存泄漏没法通过退出进程来解决，所以在编译前就要考虑好。操作系统也是个软件，假如内部发生内存泄漏影响就比较大，出现了僵尸进程只能由用户来处理。
+如果父进程一直不管，不回收，不获取子进程退出信息，那么僵尸状态的子进程会一直存在，PCB一直都要维护，那么就会导致**内存泄漏**。个父进程创建了很多子进程，就是不回收，就会造成内存资源的浪费。进程退出了操作系统会自动释放所有资源，一些需要长期运行的进程（常驻进程）一但发生内存泄漏没法通过退出进程来解决，所以在编译前就要考虑好。操作系统也是个软件，假如内部发生内存泄漏影响就比较大，出现了僵尸进程只能由用户来处理。
+
+
+#### 孤儿进程
+
+父进程先退出，子进程就称之为“孤儿进程”。
+
+
+运行以下程序让父进程比子进程先退出。
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+int main()
+{
+    pid_t id = fork();
+    if(id < 0){
+        perror("fork");
+        return 1;
+    }
+    else if(id == 0){             //子进程
+        printf("I am child, pid : %d\n", getpid());
+        sleep(10);
+    }else{                       //父进程
+        printf("I am parent, pid: %d\n", getpid());
+        sleep(3);
+        exit(0);
+    }
+    return 0;
+}
+```
+
+
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ ps axj | head -1 ; ps axj| grep nige
+ PPID   PID  PGID   SID TTY      TPGID STAT   UID   TIME COMMAND
+15595 20477 20477 15595 pts/1    20477 S+    1001   0:00 ./nige
+20477 20478 20477 15595 pts/1    20477 S+    1001   0:00 ./nige
+15707 20482 20481 15707 pts/2    20481 S+    1001   0:00 grep --color=auto nige
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ ps axj | head -1 ; ps axj| grep nige
+ PPID   PID  PGID   SID TTY      TPGID STAT   UID   TIME COMMAND
+    1 20478 20477 15595 pts/1    15595 S     1001   0:00 ./nige
+15707 20486 20485 15707 pts/2    20485 S+    1001   0:00 grep --color=auto nige
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ 
+```
+查询进程我们可以看到，pid为20478的子进程一开始父进程id为20477，父进程退出后再查询就变成了1。父子进程关系中，如果父进程先退出，子进程要被1号进程领养，这个被领养的进程(子进程)，叫做孤儿进程。  
+
+
+
+1号进程是谁，我们查询一下。
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ ps axj | head -1 ; ps axj| grep systemd
+ PPID   PID  PGID   SID TTY      TPGID STAT   UID   TIME COMMAND
+    0     1     1     1 ?           -1 Ss       0   0:17 /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+    1   368   368   368 ?           -1 Ss       0   0:08 /usr/lib/systemd/systemd-journald
+    1   389   389   389 ?           -1 Ss       0   0:00 /usr/lib/systemd/systemd-udevd
+    1   539   539   539 ?           -1 Ss      81   0:13 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation
+    1   555   555   555 ?           -1 Ss       0   0:08 /usr/lib/systemd/systemd-logind
+15707 20512 20511 15707 pts/2    20511 S+    1001   0:00 grep --color=auto systemd
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ 
+```
+1号进程是systemd，我们可以认为这是操作系统或者操作系统的一部分，登录时是1号进程创建的bash给用户使用。0号进程在开机之后被1号替换了，所以没有0号进程。  
+如果1号进程不领养孤儿进程，子进程进入僵尸状态之后就没人管了，会造成内存泄漏，所以由操作系统来负责回收孤儿进程的资源。孤儿进程被领养后，会自动变成后台进程，cirl+c快捷键没法直接杀掉，只能用`kill`指令。
+
 
 
 
@@ -611,118 +676,462 @@ int main()
 
 
 ### 进程优先级
+
+进程优先级是进程得到CPU资源的先后顺序。CPU资源稀缺，而进程有很多个，所以要排队，优先权高的进程有优先执行权利。  
+优先级决定的是得到资源的先后顺序，权限决定的是能否得到资源。
+
+Linux系统内进程优先级也是一个数字，值越低优先级越高。大多数操作系统都叫做基于时间片的分时操作系统，考虑公平性。
+
+
+#### 查看进程优先级
+
+运行之前查看进程的程序（[点击跳转查看](#查看进程)），查看进程状态。
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ ps -al | head -1 ; ps -al | grep task
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+0 T  1001 15686 15595  0  80   0 -  1053 do_sig pts/1    00:03:08 task
+0 T  1001 17673 15595  0  80   0 -  1054 do_sig pts/1    00:00:00 task
+0 S  1001 20557 15595  0  80   0 -  1054 hrtime pts/1    00:00:00 task
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z PCB]$ 
+```
+- 我们可以看到有一列UID，UID代表执行者的身份，Linux里是通过UID(user id)来区分不同用户的，文件在创建时就写入了UID，系统通过UID来判断对应用户是拥有者，所属组还是其他。Linux系统中，访问任何资源，都是进程访问，进程就代表用户。  
+- PRI代表进程的优先级，默认为80，NI(nice)是进程优先级的修正数据，进程真实的优先级等于PRI(默认80)+NI。
+- 调整进程优先级，在Linux下，就是调整进程NI值。
+- 调整进程NI值后，进程优先级就会更新，优先级等于PRI(默认80)+新的NI，例如原来的优先级为PRI(默认80)+NI(10)=90，更新NI值为-5后新优先级为PRI(默认80)+NI(-5)=75
+- NI其取值范围是-20至19，一共40个级别，用指令设置NI值为-100，系统自动取到-20，设置为100，系统自动取到19，所以Linux进程的优先级范围就是[60,99]一共40个优先级。
+
+使用 `top`,`nice`,`renice`命令都可以修改进程优先级，
+
+
+##### 竞争、独立、并行、并发
+
+- 竞争性：系统进程数目众多，而CPU资源只有少量，甚至1个，所以进程之间是具有竞争属性的。为了高效完成任务，更合理竞争相关资源，便具有了优先级。
+- 独立性：多进程运行，需要独享各种资源，多进程运行期间互不干扰。
+- 并行:多个进程在多个CPU下分别，同时进运行，这称之为并行，比如同时运行浏览器，音乐播放器等等软件互不干扰，可以同时运行。
+- 并发:多个进程在一个CPU下采用进程**切换**的方式，在一段时间之内，让多个进程都得以推进，称之为并发，比如10毫秒运行A进程，下一个10毫秒切换运行B进程等等，CPU切换非常快，人类感觉不到。
+
+
+###  进程切换
+
+一旦一个进程占有CPU，不会把自己的代码全部跑完，系统会给进程分配一个时间片的东西。死循环进程不会打死系统，不会一直占用CPU。
+
+CPU要执行进程，会根据PCB访问进程的代码和数据，CPU内部有很多寄存器，会保存正在运行的进程的临时数据。寄存器就是CPU内部的临时空间，寄存器不等于寄存器内部保存的数据，空间只有一份，保存的内容可以变化。
+
+
+---
+
+假如张三在学校里准备参军入伍，就需要向学校递交相关材料保留学籍，退伍回来后~~正步踢进夜总会~~根据保留的学籍继续在学校里学习。  
+学校就是CPU，校长就是调度器，张三是进程；学籍材料就是进程运行时的临时数据，CPU内寄存器的内容(当前进程的上下文数据)；保留学籍材料就是保存CPU运行进程的上下文数据，也就是寄存器里的内容；恢复学籍就是恢复上下文数据，恢复到寄存器里。张三入伍又退伍回到学校就相当于一次进程切换。
+
+CPU上下文切换：其实际含义是任务切换，或者CPU寄存器切换。当多任务内核决定运另外的任务时，它保存正在运任务的当前状态，也就是CPU寄存器中的全部内容。这些内容被保存在任务自己的堆栈中，入栈工作完成后就把下一个将要运行的任务的当前状况从该任务的栈中重新装入CPU寄存器，并开始下一个任务的运行，这一过程就是contextswitch。进程切换最核心的就是保存和恢复当前进程的上下文数据，即CPU寄存器的内容。CPU运行非常快，切换的过程人类感觉不到，就像两个进程在同时运行一样。
+
+
+新创建的进程如何与运行过的进程区分？task_struct有一个标记位来区分。
+
+进程的上下文数据保存到了哪里？保存到了PCB里，但是现在的CPU寄存器里的数据已经很大了，现代的计算机里会给每个进程一个TSS（任务状态段），CPU可以通过PCB里的数据找到TSS。  
+[查看](https://elixir.bootlin.com/linux/0.11/source/include/linux/sched.h)Linux0.11版本的源代码，早期的Linux内核里TSS还在task_struct结构体里，后期被转移到了其他地方。  
+![](PixPin_2026-04-08_17-13-58.webp)
+![](PixPin_2026-04-08_17-15-55.webp)
+
+操作系统内部存在一个全局的指针`struct task_struct *current`永远指向当前进程，CPU直接使用这个指针指向的进程。
+![](PixPin_2026-04-08_19-58-09.webp)
+
+
+#### 切换调度算法
+
+
+
+操作系统有分时操作系统和实时操作系统，实时操作系统就是来了一个进程就必须相应，所以调度算法比较简单，一般在工业领域应用，比如在安装在汽车上，来一个刹车进程必须优先响应，安装在生产流水线上，生产出问题了来一个暂停进程必须优先响应，假如是分时操作系统那么需要紧急运行的进程还需要排队，不过在绝大多数通用计算场景下，用户更关注交互流畅性与整体吞吐量，故桌面、服务器等领域普遍采用分时操作系统。  
+
+一个CPU一个运行队列，多个CPU多个队列，`struct task_struct *queue[140]`是个指针数组，代表Linux有140个优先级，0到99代表实时优先级不考虑，剩下的40个优先级可以调整，进程队列按照优先级链入到对应的指针，有点像哈希桶一样，查找进程时从上到下遍历，局部上先进先出。
+![](PixPin_2026-04-08_20-37-48.webp)
+
+##### 过期队列
+
+遍历`queue[140]`虽然很快，但是感觉效率还是太低了，调度器如何快速选择进程？使用一个`unsigned int bitmap[5]`，比特位的内容和`queue[140]`一一对应，这样调度器只需要查看`unsigned int bitmap[5]`就知道哪里是非空队列，选择队列后再选进程，这就是Linux内核调度算法的的O(1)调度算法。  
+但是只是这样的话如果有高优先级的死循环进程就会一直占用CPU，低优先级的进程得不到CPU资源，会造成进程饥饿，为了解决单纯按优先级调度可能带来的进程饥饿问题，Linux 2.6调度器在运行队列中引入了双队列机制。除了活动队列外，系统还维护着一个结构完全相同的过期队列，它同样包含一个对应 140 个优先级的指针数组`queue[140]`和一个用于快速定位的位图`unsigned int bitmap[5]`。活动队列负责管理当前拥有时间片的进程，一旦某个进程耗尽了分配给它的时间片，调度器便会重新计算其优先级，并将它从活动队列中移出，放入过期队列的相应优先级链表中等待。随着进程运行活动队列里的进程越来越少，而过期队列中的进程则不断累积。运行队列中设置了`active`和`expired`两个指针，它们分别永远指向活动队列和过期队列的数据结构。当活动队列里没有进程了就交换两个指针，原来的过期队列变为新的活动队列，而原活动队列则成为新的空过期队列，这样不断循环往复就组成了O(1)调度算法。  
+创建的新进程会进入过期队列，代表运行状态，分时操作系统支持内核优先级抢占，高优先级的新进程可以插队到活动队列里。
+
+一个CPU一个运行队列，多个CPU多个队列，多CPU之间还有负载均衡机制。
+
+理解了O(1)调度算法，我们就可以知道为什么进程优先级要设置为PRI+NI了，进程优先级时是随时都能更改的，假如立即让优先级生效那进程在运行队列里时是不是还要把进程换个位置，所以等到进程进入过期队列时再修改优先级。
+
+
+
+## 命令行参数和环境变量
+
+### 环境变量是什么东西
+
+环境变量(environment variables)一般是指在操作系统中用来指定操作系统运行环境的一些参数。
+
+比如我们在编译C/C++代码时不知道库的位置，照样能链接上，背后是环境变量在起作用。
+
+#### 命令行参数
+
+我们在写C语言的`main`函数时，也可以给`main`函数定义参数。  
+运行下面的程序。
+```c
+#include <stdio.h>
+int main(int argc,char *argc[])
+{
+    for(int i=0;i<argc;i++)
+    {
+        printf("argv[%d]:%s\n",i,argv[i]);
+    }
+    return 0;
+}
+```
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ ./path
+argv[0]:./path
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ 
+```
+运行后可以看见就只输出了`./path`，再用不同的命令执行试试。
+
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ ./path
+argv[0]:./path
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ ./path 1
+argv[0]:./path
+argv[1]:1
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ ./path 1 2
+argv[0]:./path
+argv[1]:1
+argv[2]:2
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ ./path 1 2 3
+argv[0]:./path
+argv[1]:1
+argv[2]:2
+argv[3]:3
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ ./path 1 2 3 4
+argv[0]:./path
+argv[1]:1
+argv[2]:2
+argv[3]:3
+argv[4]:4
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ 
+```
+实际上`argv[0]`就是个指针数组，把命令按空格分隔开储存起来，这个就是命令行参数。  
+命令也是个可执行程序，ls指令后面跟的选项其实就是不同的参数，`main`函数的命令行参数就是一个程序可以通过不同的选项实现不同子功能的方法，指令参数的原理就是这个。进程启动时，拥有一张argv表，用来实现选项功能。
+
+### 常见环境变量
+
+#### PATH
+
+我们运行自己的程序需要加上地址`./`，为什么运行系统的指令就不需要？  
+要执行一个程序就要先找到它，系统中存在环境变量，系统的指令一般都在`/usr/bin`目录下，使用指令时系统会在这个目录下寻找指令的可执行程序，我们把自己的程序拷贝到这个目录下之后，不需要加上地址就也可以像系统命令一样执行了。Linux系统中存在环境变量PATH，告诉系统在哪里查找。  
+使用`env`指令可以查看系统的所有环境变量。
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ env
+XDG_SESSION_ID=1721
+HOSTNAME=iZ2zeh5i3yddf3p4q4ueo7Z
+TERM=xterm
+SHELL=/bin/bash
+HISTSIZE=1000
+SSH_CLIENT=223.101.61.1 19798 22
+SSH_TTY=/dev/pts/1
+USER=user1
+LD_LIBRARY_PATH=:/home/user1/.VimForCpp/vim/bundle/YCM.so/el7.x86_64
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:
+MAIL=/var/spool/mail/user1
+PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/user1/.local/bin:/home/user1/bin
+PWD=/home/user1/path
+LANG=en_US.UTF-8
+HISTCONTROL=ignoredups
+SHLVL=1
+HOME=/home/user1
+LOGNAME=user1
+SSH_CONNECTION=223.101.61.1 19798 172.24.55.79 22
+LESSOPEN=||/usr/bin/lesspipe.sh %s
+XDG_RUNTIME_DIR=/run/user/1001
+_=/usr/bin/env
+OLDPWD=/home/user1
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ 
+```
+环境变量的构成是名字+内容，`env`打印的环境变量太多了，我们可以使用`echo $变量名`来查看对应的环境变量。
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ echo $PATH
+/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/user1/.local/bin:/home/user1/bin
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ 
+```
+系统搜索命令时，默认在PATH变量的路径里搜索，假如我们把自己程序的目录添加到PATH里，是不是就能像系统命令一样使用了
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ PATH=/home/user1/path
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ path
+argv[0]:path
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ path 1 2 3
+argv[0]:path
+argv[1]:1
+argv[2]:2
+argv[3]:3
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ ls
+-bash: ls: command not found
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ 
+```
+我们自己的程序可以直接使用了，但是系统命令怎么找不到了呢？
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ echo $PATH
+/home/user1/path
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ 
+```
+我们发现使用`PATH=/home/user1/path`指令会直接覆盖掉整个PATH，那么怎么恢复PATH呢？  
+可以使用指令`PATH=原理的路径`来恢复PATH，但是还要自己输入命令，太麻烦了，实际上可以关闭xshell再重新登录系统，这样就恢复正常了，因为每次用户登录bash都会重新加载环境变量到内存里。用户登录时，系统会为用户创建一个bash来让用户使用，bash会形成一张环境变量表，里面储存所有的环境变量（其实就是字符串），当用户输入指令时，比如`ls -a -l`，bash会将命令拆分形成命令行参数表，然后根据PATH变量找到ls命令的可执行文件，找到后再创建子进程执行命令，也就是说bash内有两张表，一张命令行参数表一张环境变量表，指令的查找是由bash完成的。  
+环境变量最开始是从系统的相关配置文件中来的，在账户家目录里执行指令`ls -al`可以看见文件.bash_profile和.bashrc，.bash_profile是系统在用户登录时判断.bashrc文件是否存在的，.bashrc文件会去加载系统的环境变量/etc/bashrc。假如我们把自己程序的路径添加到系统的配置文件里，那么每次登录时bash的环境变量表里的PATH就会添加上程序的路径，这样就能让我们的程序像命令一样使用了。  
+如果Linux系统有10个用户登录，系统会为用户创建10个bash，每个用户都有自己独立的bash。
+
+
+--- 
+
+windows下也有PATH变量，在系统里搜索环境变量就能找到。
+
+
+#### PWD
+PWD表示当前工作路径，`pwd`指令显示的就是这个。
+```bash
+PWD=/home/user1/path
+```
+
+#### OLDPWD
+OLDPWD表示上次的工作目录，`cd -`切换的就是这个。
+```bash
+OLDPWD=/home/user1
+```
+
+#### HOME
+
+环境变量HOME表示当前用户的家目录
+```bash
+HOME=/home/user1
+```
+
+#### SHELL
+SHELL指的是当前Shell，它的值通常是/bin/bash。
+```bash
+SHELL=/bin/bash
+```
+
+#### USER和LOGNAME
+LOGNAME表示登录用户，USER表示当前用户的用户名。普通用户使用`su -`指令提权后可以发现USER和LOGNAME都变成了root，使用`su`指令则不会变，`su -`指令其实是让root用户重新登录了。
+```bash
+USER=user1
+LOGNAME=user1
+```
+
+
+
+#### HISTSIZE
+bash会记录历史指令，HISTSIZE变量代表记录的历史记录条数，HISTSIZE=1000说明最多记录1000条。
+```bash
+HISTSIZE=1000
+```
+
+
+
+#### HOSTNAME
+HOSTNAME就代表当前的主机名。
+```bash
+HOSTNAME=iZ2zeh5i3yddf3p4q4ueo7Z
+```
+
+
+#### SSH_TTY
+SSH_TTY表示当前使用的设备，多个用户使用屏幕设备时哪个用户使用哪个也是环境变量记录的。
+```bash
+SSH_TTY=/dev/pts/1
+```
+
+#### LS_COLORS
+LS_COLORS表示配色方案，ls命令显示的彩色都是LS_COLORS配置的。
+```bash
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:
+MAIL=/var/spool/mail/user1
+```
+
+#### LANG
+LANG表示编码格式。
+```bash
+LANG=en_US.UTF-8
+```
+
+
+
+
+### 获取环境变量的方法
+`ebv`指令查看所有环境变量，`echo $环境变量`指令查看对应的环境变量，`export`指令可以设置一个新的环境变量，`unset`指令用来取消环境变量。
+
+在程序里可以通过main函数的第三个参数获取环境变量，是父进程给的环境变量，运行以下程序可以打印出获取的环境变量。
+```c
+#include <stdio.h>
+int main(int argc,char *argv[],char *env[])  //char *env[]获取环境变量
+{
+    (void)argc;
+    (void)argv;                             //强转void防止编译器警告
+    for(int i=0;env[i];i++)
+    {
+        printf("env[%d]:%s\n",i,env[i]);
+    }
+    return 0;
+}
+```
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ ./path
+env[0]:XDG_SESSION_ID=1726
+env[1]:HOSTNAME=iZ2zeh5i3yddf3p4q4ueo7Z
+env[2]:TERM=xterm
+env[3]:SHELL=/bin/bash
+env[4]:HISTSIZE=1000
+env[5]:SSH_CLIENT=223.101.61.1 19110 22
+env[6]:OLDPWD=/home/user1
+env[7]:SSH_TTY=/dev/pts/2
+env[8]:USER=user1
+env[9]:LD_LIBRARY_PATH=:/home/user1/.VimForCpp/vim/bundle/YCM.so/el7.x86_64
+env[10]:LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:
+env[11]:MAIL=/var/spool/mail/user1
+env[12]:PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/user1/.local/bin:/home/user1/bin
+env[13]:PWD=/home/user1/path
+env[14]:LANG=en_US.UTF-8
+env[15]:HISTCONTROL=ignoredups
+env[16]:SHLVL=1
+env[17]:HOME=/home/user1
+env[18]:LOGNAME=user1
+env[19]:SSH_CONNECTION=223.101.61.1 19110 172.24.55.79 22
+env[20]:LESSOPEN=||/usr/bin/lesspipe.sh %s
+env[21]:XDG_RUNTIME_DIR=/run/user/1001
+env[22]:_=./path
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ 
+```
+main函数的参数列表获取的环境变量是父进程的，子进程可以获取父进程的环境变量，子进程的子进程也可以继承环境变量，所以环境变量在系统中通常具有全局性。
+
+使用`getenv()`系统调用可以获取指定的环境变量。
+```c
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int main(int argc,char *argv[],char *env[])  //char *env[]获取环境变量
+{
+    (void)argc;
+    (void)argv;
+    (void)env;                              //强转void防止编译器警告
+    char *value= getenv("PATH");
+    if(value==NULL)return 1;
+    
+    printf("PAT-> %s\n",value);
+    return 0;
+}
+```
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ ./path
+PAT-> /usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/user1/.local/bin:/home/user1/bin
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ 
+```
+
+如果我们想让程序只有自己可以使用，我们可以使用`getenv()`系统调用获取当前用户的用户名，设置`if`判断，如果不是自己运行就直接退出，是自己运行就走正常运行逻辑。
+
+
+在系统中获取环境变量还有一种方法，使用通过第三方变量`environ`获取，`environ`是二级指针，因为环境变量表的类型的`char*`。
+```c
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+extern char **environ;
+int main()
+{
+    
+    int i = 0;
+    for(; environ[i]; i++){
+    printf("%s\n", environ[i]);
+    }
+    return 0;
+}
+```
+
+### 环境变量的特性
+
+环境变量具有全局特性。  
+shell不仅支持环境变量，还支持本地变量。
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ i=100
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ echo $i
+100
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z path]$ 
+```
+使用`env`看不到刚刚设置的本地变量，使用`set`指令可以查看所有的环境变量和本地变量。bash会记录两套变量，环境变量和本地变量，本地变量不会被子进程继承，只在bash内部使用。  
+使用`set`查看时可以发现这几个变量。
+```bash
+PS1='[\u@\h \W]\$ '
+PS2='> '
+```
+PS1是当前bash命令行的格式，PS2表示换行继续指令输入的符号。
+
+
+
+
+子进程没法把环境变量给父进程，我们的环境变量是在bash里面，因为这个限制，有一些命令是bash的内建命令，执行时不需要创建子进程，由bash自己执行。
+
+
+
+
+
+
+
+
+## 程序地址空间
+
+
+
+C语言程序的内存空间布局大概长这样。
+
+![](b9ba341d8459231e25c6ac234d89d0dc.webp)
+
+
+常量字符串被放在字符串常量区，常量字符串其实是被硬编码为代码，代码是只读的，常量字符串也是只读的。  
+`static`修饰的变量生命周期延长到全局，`static`修饰的变量和全局变量的地址是在同一块区域。`static`变量就是全局属性。
+
+---
+
+
+上面这个程序空间图代表的是内存吗？  
+并不是内存，系统里面同时运行多个进程，假如每个进程都像这样使用内存，该怎么安排？所以上面这个程序空间图代表的是进程地址空间，也叫虚拟地址空间，是操作系统的概念，不是语言层的概念。  
+运行以下代码。
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+int g_val = 0;
+int main()
+{
+    pid_t id = fork();
+    if(id < 0){
+        perror("fork");
+        return 0;
+    }
+    else if(id == 0){  //子进程肯定先跑完，也就是子进程先修改，完成之后，父进程再读取
+        g_val=100;
+        printf("child[%d]: %d : %p\n", getpid(), g_val, &g_val);
+    }else{            //父进程
+        sleep(3);
+        printf("parent[%d]: %d : %p\n", getpid(), g_val, &g_val);
+    }
+    sleep(1);
+    return 0;
+}
+```
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z 111]$ ./test
+parent[22674]: 100 : 0x601058
+child[22675]: 0 : 0x601058
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z 111]$ 
+```
+我们可以发现两个进程访问同一个地址得到的值不一样，变量内容不一样,所以父子进程输出的变量绝对不是同一个变量，但地址值是一样的，说明，该地址绝对不是物理地址，在Linux地址下，这种地址叫做虚拟地址，我们在用C/C++语言所看到的地址，全部都是虚拟地，物理地址，用户一概看不到，由操作系统统一管理。
+
+
+
+
+
+### 分页和虚拟地址空间
+
 待更新。。。
-
-### 进程切换
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
