@@ -61,7 +61,12 @@ categories:
 - [ ] 待办事项
 
 
+## 快捷键测试
 
+ `<kbd>自定义按键</kbd>，如：`
+
+ 
+<kbd>ctrl</kbd>+<kbd>c</kbd>
 
 ## 图片粘贴测试
 图片粘贴测试
