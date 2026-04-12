@@ -279,9 +279,9 @@ Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sap
 ### 带有出处的引用
 
 > 不要通过共享内存来通信，而要通过通信来共享内存。<br>
-> — <cite>Rob Pike[^1]</cite>
+> — <cite>Rob Pike[^2]</cite>
 
-[^1]: 以上引用摘自 Rob Pike 在 2015 年 11 月 18 日 Gopherfest 期间的[演讲](https://www.youtube.com/watch?v=PAAkCSZUG1c)。
+[^2]: 以上引用摘自 Rob Pike 在 2015 年 11 月 18 日 Gopherfest 期间的[演讲](https://www.youtube.com/watch?v=PAAkCSZUG1c)。
 
 ### 带提示的引用
 
