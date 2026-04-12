@@ -2,17 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://cialloking.com/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/</loc>
-    <lastmod>2026-04-10T00:00:00+08:00</lastmod>
+    <loc>https://cialloking.com/post/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/</loc>
+    <lastmod>2026-04-01T00:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://cialloking.com/en/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/"
+                href="https://cialloking.com/en/post/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://cialloking.com/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/"
+                href="https://cialloking.com/post/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/"
                 />
   </url><url>
     <loc>https://cialloking.com/categories/</loc>
@@ -65,6 +65,32 @@
                 rel="alternate"
                 hreflang="zh-CN"
                 href="https://cialloking.com/tags/"
+                />
+  </url><url>
+    <loc>https://cialloking.com/tags/%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/</loc>
+    <lastmod>2026-04-01T00:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://cialloking.com/en/tags/%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="https://cialloking.com/tags/%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/"
+                />
+  </url><url>
+    <loc>https://cialloking.com/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/</loc>
+    <lastmod>2026-04-10T00:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://cialloking.com/en/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="https://cialloking.com/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/"
                 />
   </url><url>
     <loc>https://cialloking.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</loc>
@@ -419,7 +445,7 @@
                 href="https://cialloking.com/link/"
                 />
   </url><url>
-    <loc>https://cialloking.com/post/firs-test/</loc>
+    <loc>https://cialloking.com/post/first-test/</loc>
     <lastmod>2026-03-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://cialloking.com/post/hello/</loc>

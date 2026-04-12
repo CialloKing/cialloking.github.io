@@ -8,7 +8,7 @@
   name="viewport"
   content="width=device-width, initial-scale=1, shrink-to-fit=no"
 /><title>
-  第一篇测试文章 | CialloKing
+  【Linux】06 - 进程控制 | CialloKing
 </title>
 <meta name="description" content="少女祈祷中..."/><script>
   window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"Lang\":\"zh-cn\",\"Title\":\"CialloKing 的博客\",\"Weight\":1,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"简体中文\",\"Locale\":\"zh-CN\"},{\"Lang\":\"en\",\"Title\":\"CialloKing Blog\",\"Weight\":2,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"English\",\"Locale\":\"en\"}],\"icon_font\":\"4552607_a0oqhord1y\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
@@ -27,20 +27,20 @@
     type="font/woff2"
     crossorigin="anonymous"
   /><link rel="stylesheet" href="/css/loader.min.4eac6555838cbcb8a5d15bf9bae0c688b74fae83b16a5613692de3f476051979.css" /><meta property="og:type" content="website" />
-  <meta property="og:title" content="第一篇测试文章 | CialloKing" />
+  <meta property="og:title" content="【Linux】06 - 进程控制 | CialloKing" />
   <meta
     property="og:description"
     content="少女祈祷中..."
   />
-  <meta property="og:url" content="https://cialloking.com/post/firs-test/" />
+  <meta property="og:url" content="https://cialloking.com/post/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/" />
   <meta
     property="og:site_name"
     content="CialloKing 的博客"
   />
   <meta property="og:image" content="https://cialloking.com/images/bg/bg1.webp" />
   <meta property="article:author" content="CialloKing" />
-  <meta property="article:published_time" content="2026-03-17T00:00:00&#43;00:00" />
-  <meta property="article:modified_time" content="2026-03-18T00:00:00&#43;00:00" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
+  <meta property="article:published_time" content="2026-04-10T00:00:00&#43;08:00" />
+  <meta property="article:modified_time" content="2026-04-01T00:00:00&#43;08:00" /><meta property="article:tag" content="进程控制" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
 <link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.42c2ff6576a8f7440f141db001877cdde6d4907355753cb3bbd43efbad8597c9.css" /><link
     rel="preload"
     as="style"
@@ -242,7 +242,7 @@
 
         selectOptions.forEach((item) => {
           item.addEventListener("click", () => {
-            const langMap = {};selectedLang.textContent = item.textContent;
+            const langMap = {};langMap['en'] = '\/en\/post\/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6\/';selectedLang.textContent = item.textContent;
             selectItems.classList.remove("show");
             selectOptions.forEach((option) => {
               option.classList.remove("selected");
@@ -270,9 +270,9 @@
         });
       </script>
     </nav></div>
-<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg1.webp" alt="第一篇测试文章"><div id="header-outer">
+<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg1.webp" alt="【Linux】06 - 进程控制"><div id="header-outer">
     <div id="header-title"><span id="logo">
-            <h1 data-aos="slide-up">第一篇测试文章</h1>
+            <h1 data-aos="slide-up">【Linux】06 - 进程控制</h1>
           </span><h2 id="subtitle-wrap" data-aos="slide-down"></h2></div>
   </div>
 </header><div id="content"
@@ -286,63 +286,31 @@
 <div class="sidebar-toc-wrapper toc-div-class">
   <nav id="TableOfContents">
   <ol>
-    <li><a href="#第一篇测试文章">第一篇测试文章</a>
+    <li><a href="#进程控制">进程控制</a>
       <ol>
-        <li><a href="#二级测试标题">二级测试标题</a>
+        <li><a href="#进程创建">进程创建</a>
           <ol>
-            <li><a href="#三级测试标题">三级测试标题</a></li>
+            <li><a href="#fork函数">fork函数</a>
+              <ol>
+                <li><a href="#fork的常规用法">fork的常规用法</a></li>
+                <li><a href="#fork调用失败">fork调用失败</a></li>
+              </ol>
+            </li>
+            <li><a href="#写时拷贝">写时拷贝</a></li>
           </ol>
         </li>
-        <li><a href="#字体强调设置">字体强调设置</a></li>
-        <li><a href="#列表设置">列表设置</a></li>
-        <li><a href="#任务事项">任务事项</a></li>
-        <li><a href="#图片粘贴测试">图片粘贴测试</a></li>
-        <li><a href="#公式测试">公式测试</a></li>
-        <li><a href="#表格测试">表格测试</a></li>
-        <li><a href="#链接粘贴测试">链接粘贴测试</a></li>
-        <li><a href="#代码块测试">代码块测试</a></li>
-        <li><a href="#分割线">分割线</a></li>
-        <li><a href="#引用">引用</a></li>
-        <li><a href="#其他小技巧">其他小技巧</a></li>
-        <li><a href="#md文档发表">md文档发表</a></li>
-        <li><a href="#标题-headings">标题 (Headings)</a>
+        <li><a href="#进程终止">进程终止</a>
           <ol>
-            <li><a href="#h3">H3</a>
+            <li><a href="#进程退出的场景">进程退出的场景</a></li>
+            <li><a href="#进程常见退出方法">进程常见退出方法</a>
               <ol>
-                <li><a href="#h4">H4</a></li>
+                <li><a href="#exit和_exit">exit和_exit</a></li>
               </ol>
             </li>
           </ol>
         </li>
-        <li><a href="#段落-paragraph">段落 (Paragraph)</a></li>
-        <li><a href="#引用-blockquotes">引用 (Blockquotes)</a>
-          <ol>
-            <li><a href="#不带出处的引用">不带出处的引用</a></li>
-            <li><a href="#带有出处的引用">带有出处的引用</a></li>
-            <li><a href="#带提示的引用">带提示的引用</a></li>
-          </ol>
-        </li>
-        <li><a href="#表格-tables">表格 (Tables)</a>
-          <ol>
-            <li><a href="#表格内的行内-markdown">表格内的行内 Markdown</a></li>
-          </ol>
-        </li>
-        <li><a href="#代码块-code-blocks">代码块 (Code Blocks)</a>
-          <ol>
-            <li><a href="#使用反引号的代码块">使用反引号的代码块</a></li>
-            <li><a href="#使用四个空格缩进的代码块">使用四个空格缩进的代码块</a></li>
-            <li><a href="#diff-代码块">Diff 代码块</a></li>
-            <li><a href="#单行代码块">单行代码块</a></li>
-          </ol>
-        </li>
-        <li><a href="#列表类型-list-types">列表类型 (List Types)</a>
-          <ol>
-            <li><a href="#有序列表">有序列表</a></li>
-            <li><a href="#无序列表">无序列表</a></li>
-            <li><a href="#嵌套列表">嵌套列表</a></li>
-          </ol>
-        </li>
-        <li><a href="#其他元素--abbr-sub-sup-kbd-mark">其他元素 — abbr, sub, sup, kbd, mark</a></li>
+        <li><a href="#进程等待">进程等待</a></li>
+        <li><a href="#进程程序替换">进程程序替换</a></li>
       </ol>
     </li>
   </ol>
@@ -360,7 +328,7 @@
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>文章</div><div class="sidebar-state-number">16</div>
+    <div>文章</div><div class="sidebar-state-number">17</div>
   </div>
   <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
     <div>分类</div>
@@ -370,7 +338,7 @@
   </a>
   <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
     <div>标签</div>
-    <div class="sidebar-state-number">17</div>
+    <div class="sidebar-state-number">18</div>
   </a>
 </div>
 <div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
@@ -416,480 +384,144 @@
     class="article-date-link icon-calendar"
     data-aos="zoom-in"
   >
-    <time datetime="2026-03-17 00:00:00 &#43;0000 UTC" itemprop="datePublished"
-      >2026-03-17</time
+    <time datetime="2026-04-10 00:00:00 &#43;0800 &#43;0800" itemprop="datePublished"
+      >2026-04-10</time
     >
     <time style="display: none;" id="post-update-time"
-      >2026-03-18</time
+      >2026-04-01</time
     >
   </span></div>
-</div><div class="hr-line"></div><div class="e-content article-entry" itemprop="articleBody"><h1 id="第一篇测试文章">
-<a class="header-anchor" href="#%e7%ac%ac%e4%b8%80%e7%af%87%e6%b5%8b%e8%af%95%e6%96%87%e7%ab%a0"></a>
-第一篇测试文章
-</h1><h2 id="二级测试标题">
-<a class="header-anchor" href="#%e4%ba%8c%e7%ba%a7%e6%b5%8b%e8%af%95%e6%a0%87%e9%a2%98"></a>
-二级测试标题
-</h2><h3 id="三级测试标题">
-<a class="header-anchor" href="#%e4%b8%89%e7%ba%a7%e6%b5%8b%e8%af%95%e6%a0%87%e9%a2%98"></a>
-三级测试标题
-</h3><p>这是正文测试
-666666666666666666666</p>
-<p>22222222222222222233333333333333333333333333</p>
-<h2 id="字体强调设置">
-<a class="header-anchor" href="#%e5%ad%97%e4%bd%93%e5%bc%ba%e8%b0%83%e8%ae%be%e7%bd%ae"></a>
-字体强调设置
-</h2><p><em>斜体测试 CTRL+i</em></p>
-<p><strong>加粗测试 ctrl+b</strong></p>
-<p><em>我是斜体</em>
-<strong>我是粗体</strong>
-<em><strong>我是粗斜体</strong></em>
-<del>我是删除线</del>
-<!-- raw HTML omitted -->我是下划线<!-- raw HTML omitted -->
-==我是高亮标记==</p>
-<h2 id="列表设置">
-<a class="header-anchor" href="#%e5%88%97%e8%a1%a8%e8%ae%be%e7%bd%ae"></a>
-列表设置
-</h2><ol>
-<li>一级列表
+</div><div class="hr-line"></div><div class="e-content article-entry" itemprop="articleBody"><h1 id="进程控制">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e6%8e%a7%e5%88%b6"></a>
+进程控制
+</h1><h2 id="进程创建">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e5%88%9b%e5%bb%ba"></a>
+进程创建
+</h2><h3 id="fork函数">
+<a class="header-anchor" href="#fork%e5%87%bd%e6%95%b0"></a>
+fork函数
+</h3><p>linux中<code>fork</code>函数是非常重要的函数，它从已存在进程中创建一个新进程。新进程为子进程，而原进程为父进程，给子进程返回0，父进程返回子进程pid，创建进程失败返回-1。</p>
+<p>进程调用<code>fork</code>，当控制转移到内核中的<code>fork</code>代码后，内核会做：</p>
+<ul>
+<li>分配新的内存块和内核数据结构给子进程</li>
+<li>将父进程部分数据结构内容拷贝至子进程</li>
+<li>添加子进程到系统进程列表当中</li>
+<li><code>fork</code>函数返回，开始调度器调度</li>
+</ul>
+<p>父子进程相对独立，假如父进程创建的子进程是另一款操作系统，这样我们就可以在Linux系统里运行起来其他操作系统，这就是内核级虚拟机的原理。</p>
+<h4 id="fork的常规用法">
+<a class="header-anchor" href="#fork%e7%9a%84%e5%b8%b8%e8%a7%84%e7%94%a8%e6%b3%95"></a>
+fork的常规用法
+</h4><p>我们创建一个子进程一般有两种用法，一种是创建子进程来执行代码的一部分，比如使用<code>if eles</code>分流，父子进程各自执行后续代码的一部分，另一种是创建子进程去执行全新的程序，比如在命令行中执行命令，父进程bash会创建一个子进程来执行命令。</p>
+<h4 id="fork调用失败">
+<a class="header-anchor" href="#fork%e8%b0%83%e7%94%a8%e5%a4%b1%e8%b4%a5"></a>
+fork调用失败
+</h4><p>fork函数调用失败可能有多种原因，比如操作系统创建进程数据结构失败，或者加载到内存失败，总之失败原因都是内存空间不足。</p>
+<h3 id="写时拷贝">
+<a class="header-anchor" href="#%e5%86%99%e6%97%b6%e6%8b%b7%e8%b4%9d"></a>
+写时拷贝
+</h3><p>通常父子代码共享，父子再不写入时，数据也是共享的，当任意一试图写入，便以写时拷贝的方式各自一份副本。<br>
+修改前父子的页表相同，代码和数据地址指向同一块物理地址，创建子进程前父进程页表的代码区是只读的，数据区可以读写，创建子进程后父进程页表的代码和数据权限都被修改为只读的，子进程直接拷贝父进程的页表，权限也是一样的；当有进程要修改数据时，操作系统发现访问的数据区是只读的，这时就会触发写时拷贝。也就是说操作系统是通过页表的权限来知道有子进程要修改数据，进而执行写时拷贝。</p>
+<p>假如不采用写时拷贝的话创建子进程时就要深拷贝父进程的所有数据，速度会慢，而且当子进程只修改少部分变量时子进程的数据大部分和父进程相同，却在内存里存了两份。所以写时拷贝可以减少子进程创建的成本和内存空间的浪费。</p>
+<h2 id="进程终止">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e7%bb%88%e6%ad%a2"></a>
+进程终止
+</h2><h3 id="进程退出的场景">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e9%80%80%e5%87%ba%e7%9a%84%e5%9c%ba%e6%99%af"></a>
+进程退出的场景
+</h3><ul>
+<li>代码运行完毕结果正确</li>
+<li>代码运行完毕结果不正确</li>
+<li>代码异常终止</li>
+</ul>
+<p>子进程也是进程，父进程需要知道子进程的运行结果来进行下一步决策。</p>
+<p>在c/c++里我们用<code>main</code>函数作为程序入口</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span></code></pre></div><p><code>main</code>函数的返回值，通常表明程序的执行情况，运行完毕结果正确返回0，运行完毕结果不正确返回非0，有些编译器在不写返回值时也能编译通过，默认返回值是0。一般的返回值是通过寄存器返回的。<br>
+张三考试成绩好的时候回家爸妈不会问为什么成绩好，考得差的时候回家爸妈会连着问为什么考这么差，代码也是一样，成功运行的时候没人问为什么成功，运行失败了就要寻找失败原因。运行成功返回0，失败返回非0，如返回1代表没权限，返回2代表访问的文件不存在等待，使用不同的返回值代表不同的错误原因。</p>
+<p><code>main</code>函数的返回值一般返回给父进程，使用<code>echo $?</code>可以查看<code>main</code>函数的返回值。使用bash运行可执行程序时，可执行程序的父进程就是bash，父进程bash需要知道子进程运行得正常还是不正常，所以要获得子进程的退出码。<code>$?</code>的含义是打印最近一个进程退出的退出码，<code>main</code>函数的返回值我们称为退出码。进程的退出码要写入到进程的<code>task_struct</code>内，所以父进程读取僵尸进程的PCB就能获取到退出码。<code>echo $?</code>命令执行时也是一个进程，假如连续两次使用<code>echo $?</code>命令，第二个<code>echo $?</code>命令输出的就是第一个<code>echo $?</code>命令的退出码。<br>
+运行指令<code>ls -l 不存在的文件</code>，会报错，此时使用<code>echo $?</code>查看退出码就会得到2，C语言准备了一套退出码给用户使用，如果不想使用C语言提供的，也可以自定义退出码。总之代码执行完毕结果，结果对不对由进程的退出码决定。</p>
+<p>一旦代码运行出异常，退出码就无意义了，就像考试正常结束看分数就知道结果怎么样，但是考试作弊被抓着了考试的分数也就不重要了。一旦进程出现异常，一般是进程收到了信号。</p>
+<h3 id="进程常见退出方法">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e5%b8%b8%e8%a7%81%e9%80%80%e5%87%ba%e6%96%b9%e6%b3%95"></a>
+进程常见退出方法
+</h3><p>正常终止（可以通过<code>echo $?</code>查看进程退出码）：</p>
 <ol>
-<li>次级列表</li>
-<li>次级列表2</li>
+<li>从<code>main</code>函数返回</li>
+<li>调用<code>exit()</code></li>
+<li>调用<code>_exit()</code></li>
 </ol>
-</li>
-<li>二级列表</li>
-<li>三级列表</li>
-<li>四级列表</li>
-</ol>
-<ul>
-<li>无序列表
-<ul>
-<li>次级无序列表</li>
-</ul>
-</li>
-<li>无序列表2</li>
-</ul>
-<h2 id="任务事项">
-<a class="header-anchor" href="#%e4%bb%bb%e5%8a%a1%e4%ba%8b%e9%a1%b9"></a>
-任务事项
-</h2><ul>
-<li><input checked="" disabled="" type="checkbox"> 已完成任务</li>
-<li><input disabled="" type="checkbox"> 未完成任务</li>
-<li><input disabled="" type="checkbox"> 待办事项</li>
-</ul>
-<h2 id="图片粘贴测试">
-<a class="header-anchor" href="#%e5%9b%be%e7%89%87%e7%b2%98%e8%b4%b4%e6%b5%8b%e8%af%95"></a>
-图片粘贴测试
-</h2><p>图片粘贴测试
-<img src="/post/firs-test/2026-03-17-17-03-12.webp" alt="">
-<em>图片测试</em></p>
-<h2 id="公式测试">
-<a class="header-anchor" href="#%e5%85%ac%e5%bc%8f%e6%b5%8b%e8%af%95"></a>
-公式测试
-</h2><p>ctrl+M+M
-段落插入公式</p>
-$$
-公式测试  \lim_{x\to \infin}\frac{sin(t)}{x}=1
-$$<p>ctrl+m正文插入公式 $\lim_{x\to \infin}\frac{sin(t)}{x}=1$  测试</p>
-<h2 id="表格测试">
-<a class="header-anchor" href="#%e8%a1%a8%e6%a0%bc%e6%b5%8b%e8%af%95"></a>
-表格测试
-</h2><p>alt+shift+f快捷键自动格式化
-默认左对齐</p>
-<table>
-  <thead>
-      <tr>
-          <th style="text-align: left">左对齐</th>
-          <th style="text-align: center">居中</th>
-          <th style="text-align: right">右对齐</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td style="text-align: left">内容</td>
-          <td style="text-align: center">内容</td>
-          <td style="text-align: right">内容</td>
-      </tr>
-  </tbody>
-</table>
-<table>
-  <thead>
-      <tr>
-          <th>张三</th>
-          <th>李四</th>
-          <th>王五</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>3</td>
-          <td>4</td>
-          <td>5</td>
-      </tr>
-  </tbody>
-</table>
-<h2 id="链接粘贴测试">
-<a class="header-anchor" href="#%e9%93%be%e6%8e%a5%e7%b2%98%e8%b4%b4%e6%b5%8b%e8%af%95"></a>
-链接粘贴测试
-</h2><p>这是一个<a href="https://www.bilibili.com/video/av540702386/">链接</a></p>
-<p><a href="https://www.bilibili.com/video/av540702386/">https://www.bilibili.com/video/av540702386/</a></p>
-<p><a href="https://www.bilibili.com/video/av540702386/">链接文字</a>
-<a href="https://www.bilibili.com/video/av540702386/" title="鼠标悬停提示">带提示的链接</a></p>
-<h2 id="代码块测试">
-<a class="header-anchor" href="#%e4%bb%a3%e7%a0%81%e5%9d%97%e6%b5%8b%e8%af%95"></a>
-代码块测试
-</h2><p>这是插入正文<code>std::cout&lt;&lt;&quot;hello world&quot;&lt;&lt;endl;</code>的代码</p>
-<p>下面是代码块</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">srd</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;hello world&#34;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="err">“</span><span class="n">Python</span> <span class="n">语法高亮</span><span class="err">”</span><span class="nb">print</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="err">“</span><span class="nx">JavaScript</span> <span class="nx">语法高亮</span><span class="err">”</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="nx">警报</span><span class="p">;</span>
-</span></span></code></pre></div><h2 id="分割线">
-<a class="header-anchor" href="#%e5%88%86%e5%89%b2%e7%ba%bf"></a>
-分割线
-</h2><p>下面是分割线</p>
-<hr>
-<p>这是分割线</p>
-<p>这也是分割线</p>
-<hr>
-<h2 id="引用">
-<a class="header-anchor" href="#%e5%bc%95%e7%94%a8"></a>
-引用
-</h2><p>引用：在需要有用的一行前加上&gt;</p>
-<blockquote>
-<p>我是引用
-我是引用
-我是引用</p>
-</blockquote>
-<blockquote>
-<p>一级引用</p>
-<blockquote>
-<p>二级引用</p>
-<blockquote>
-<p>三级引用</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<h2 id="其他小技巧">
-<a class="header-anchor" href="#%e5%85%b6%e4%bb%96%e5%b0%8f%e6%8a%80%e5%b7%a7"></a>
-其他小技巧
-</h2><p>这里需要注释<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
-<details class="details custom-block">
-  <summary>点击展开查看</summary>
-  <div class="details-content"><p>这里是折叠起来的内容</p>
+<h4 id="exit和_exit">
+<a class="header-anchor" href="#exit%e5%92%8c_exit"></a>
+exit和_exit
+</h4><p><code>main</code>函数结束，进程退出，其他函数，只表示自己函数调用完成，返回。C语言的<code>exit()</code>函数可以使进程退出，函数的参数就是退出码。任何地方调用<code>exit()</code>函数，都表示进程结束，并返回退出码给父进程，后续代码不执行，函数不返回。进程退出的具体做法就是<code>main</code>函数返回和调用<code>exit()</code>函数这两个。</p>
+<p><code>exit()</code>是C语言提供的，<code>_exit()</code>是系统调用，由操作系统提供。</p>
+<p>运行以下程序，使用<code>exit()</code>函数退出进程</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;        //包含头文件</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$  ./hello
+</span></span><span class="line"><span class="cl">hello<span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$
+</span></span></code></pre></div><p>可以看到刷新了缓冲区后进程退出。</p>
+<p>运行以下程序，使用系统调用<code>_exit()</code>退出进程</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;         //包含头文件</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nf">_exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$  ./hello
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$
+</span></span></code></pre></div><p>可以看到进程退出前并没有刷新缓冲区。</p>
+<p>进程调用<code>exit()</code>函数退出，会进行缓冲区的刷新，使用<code>_exit()</code>退出，不会进行缓冲区的刷新。<br>
+<code>exit()</code>是库函数，<code>_exit()</code>是系统调用，库函数和系统调用是上下层的关系，库函数会使用系统调用来完成任务。只有操作系统能决定进程是否退出，所以库函数<code>exit()</code>就是封装了系统调用<code>_exit()</code>。<br>
+使用<code>_exit()</code>退出，不会进行缓冲区的刷新，说明缓冲区不在操作系统内部，缓冲区其实是库缓冲区，是C语言提供的。</p>
+<h2 id="进程等待">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e7%ad%89%e5%be%85"></a>
+进程等待
+</h2><h2 id="进程程序替换">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e7%a8%8b%e5%ba%8f%e6%9b%bf%e6%8d%a2"></a>
+进程程序替换
+</h2><p>待更新。。。</p>
 </div>
-</details>
-<!-- raw HTML omitted -->
-<ul>
-<li></li>
-<li>下面是流程图 / 时序图（Mermaid）</li>
-</ul>
-<pre class="mermaid">
-  graph TD
-A[开始] --> B{判断}
-B -->|是| C[执行]
-B -->|否| D[结束]
-</pre><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">1. **强制换行**：行尾加 **两个空格** 再回车
-</span></span><span class="line"><span class="cl">2. **空格缩进**：用 `&amp;emsp;` 表示中文全角空格
-</span></span><span class="line"><span class="cl">3. **特殊符号转义**：在 `* # _ ~ [ ] ( )` 前加 `\` 即可正常显示
-</span></span><span class="line"><span class="cl">4. **目录自动生成**：很多编辑器输入 `[toc]` 可自动生成目录
-</span></span></code></pre></div><p>如果你常用某一款软件（比如 Typora、VSCode、语雀、GitHub），我可以再给你一份<strong>对应平台专属的 MD 快捷键+技巧</strong>。</p>
-<h2 id="md文档发表">
-<a class="header-anchor" href="#md%e6%96%87%e6%a1%a3%e5%8f%91%e8%a1%a8"></a>
-md文档发表
-</h2><p><a href="https://www.limfx.pro/ReadArticle/57/yi-zhong-xie-zuo-de-xin-fang-fa">https://www.limfx.pro/ReadArticle/57/yi-zhong-xie-zuo-de-xin-fang-fa</a></p>
-<hr>
-<p>title: Markdown 语法指南
-date: 2026-01-25
-description: 展示基本 Markdown 语法和 HTML 元素格式的示例文章。
-tags:
-- markdown
-- css
-- html
-- themes
-categories:
-- Documentation
-image: pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg</p>
-<hr>
-<p>这篇文章提供了可以在 Hugo 内容文件中使用的基本 Markdown 语法示例，同时也展示了 Hugo 主题中基本 HTML 元素是否应用了 CSS 装饰。</p>
-<h2 id="标题-headings">
-<a class="header-anchor" href="#%e6%a0%87%e9%a2%98-headings"></a>
-标题 (Headings)
-</h2><p>以下 HTML <code>&lt;h1&gt;</code>—<code>&lt;h6&gt;</code> 元素代表了六个级别的章节标题。<code>&lt;h1&gt;</code> 是最高级别，而 <code>&lt;h6&gt;</code> 是最低级别。</p>
-<h3 id="h3">
-<a class="header-anchor" href="#h3"></a>
-H3
-</h3><h4 id="h4">
-<a class="header-anchor" href="#h4"></a>
-H4
-</h4><h5 id="h5">
-<a class="header-anchor" href="#h5"></a>
-H5
-</h5><h6 id="h6">
-<a class="header-anchor" href="#h6"></a>
-H6
-</h6><h2 id="段落-paragraph">
-<a class="header-anchor" href="#%e6%ae%b5%e8%90%bd-paragraph"></a>
-段落 (Paragraph)
-</h2><p>Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.</p>
-<p>Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.</p>
-<h2 id="引用-blockquotes">
-<a class="header-anchor" href="#%e5%bc%95%e7%94%a8-blockquotes"></a>
-引用 (Blockquotes)
-</h2><p>引用元素代表从另一个来源引用的内容，可以选择带有引用说明（必须在 <code>footer</code> 或 <code>cite</code> 元素内），也可以选择带有行内更改（如注释和缩写）。</p>
-<h3 id="不带出处的引用">
-<a class="header-anchor" href="#%e4%b8%8d%e5%b8%a6%e5%87%ba%e5%a4%84%e7%9a%84%e5%bc%95%e7%94%a8"></a>
-不带出处的引用
-</h3><blockquote>
-<p>Tiam, ad mint andaepu dandae nostion secatur sequo quae.
-<strong>注意</strong>：你可以在引用中使用 <em>Markdown 语法</em>。</p>
-</blockquote>
-<h3 id="带有出处的引用">
-<a class="header-anchor" href="#%e5%b8%a6%e6%9c%89%e5%87%ba%e5%a4%84%e7%9a%84%e5%bc%95%e7%94%a8"></a>
-带有出处的引用
-</h3><blockquote>
-<p>不要通过共享内存来通信，而要通过通信来共享内存。<!-- raw HTML omitted -->
-— <!-- raw HTML omitted -->Rob Pike<sup id="fnref1:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup><!-- raw HTML omitted --></p>
-</blockquote>
-<h3 id="带提示的引用">
-<a class="header-anchor" href="#%e5%b8%a6%e6%8f%90%e7%a4%ba%e7%9a%84%e5%bc%95%e7%94%a8"></a>
-带提示的引用
-</h3>
-  <blockquote class="alert-blockquote note">
-    <p class="alert-heading">
-      Note
-    </p>
-    <p><p>突出显示用户在快速浏览时也应注意的信息。</p></p>
-  </blockquote>
-
-
-  <blockquote class="alert-blockquote tip">
-    <p class="alert-heading">
-      Tip
-    </p>
-    <p><p>可选信息，帮助用户更顺利地完成任务。</p></p>
-  </blockquote>
-
-
-  <blockquote class="alert-blockquote important">
-    <p class="alert-heading">
-      Important
-    </p>
-    <p><p>用户成功所必需的关键信息。</p></p>
-  </blockquote>
-
-
-  <blockquote class="alert-blockquote warning">
-    <p class="alert-heading">
-      Warning
-    </p>
-    <p><p>由于潜在风险而需要用户立即关注的关键内容。</p></p>
-  </blockquote>
-
-
-  <blockquote class="alert-blockquote caution">
-    <p class="alert-heading">
-      Caution
-    </p>
-    <p><p>某个操作可能带来的负面后果。</p></p>
-  </blockquote>
-
-
-  <blockquote class="alert-blockquote note">
-    <p class="alert-heading">
-      Note
-    </p>
-    <p><p>如果你想使用自定义标题，可以在方括号后面添加标题文本，如上所示。</p></p>
-  </blockquote>
-
-<h2 id="表格-tables">
-<a class="header-anchor" href="#%e8%a1%a8%e6%a0%bc-tables"></a>
-表格 (Tables)
-</h2><p>表格虽然不是 Markdown 核心规范的一部分，但 Hugo 出箱即用地支持它们。</p>
-<table>
-  <thead>
-      <tr>
-          <th>姓名</th>
-          <th>年龄</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>Bob</td>
-          <td>27</td>
-      </tr>
-      <tr>
-          <td>Alice</td>
-          <td>23</td>
-      </tr>
-  </tbody>
-</table>
-<h3 id="表格内的行内-markdown">
-<a class="header-anchor" href="#%e8%a1%a8%e6%a0%bc%e5%86%85%e7%9a%84%e8%a1%8c%e5%86%85-markdown"></a>
-表格内的行内 Markdown
-</h3><table>
-  <thead>
-      <tr>
-          <th>斜体</th>
-          <th>加粗</th>
-          <th>代码</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><em>italics</em></td>
-          <td><strong>bold</strong></td>
-          <td><code>code</code></td>
-      </tr>
-  </tbody>
-</table>
-<table>
-  <thead>
-      <tr>
-          <th>A</th>
-          <th>B</th>
-          <th>C</th>
-          <th>D</th>
-          <th>E</th>
-          <th>F</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-          <td>Phasellus ultricies, sapien non euismod aliquam, dui ligula tincidunt odio, at accumsan nulla sapien eget ex.</td>
-          <td>Proin eleifend dictum ipsum, non euismod ipsum pulvinar et. Vivamus sollicitudin, quam in pulvinar aliquam, metus elit pretium purus</td>
-          <td>Proin sit amet velit nec enim imperdiet vehicula.</td>
-          <td>Ut bibendum vestibulum quam, eu egestas turpis gravida nec</td>
-          <td>Sed scelerisque nec turpis vel viverra. Vivamus vitae pretium sapien</td>
-      </tr>
-  </tbody>
-</table>
-<h2 id="代码块-code-blocks">
-<a class="header-anchor" href="#%e4%bb%a3%e7%a0%81%e5%9d%97-code-blocks"></a>
-代码块 (Code Blocks)
-</h2><h3 id="使用反引号的代码块">
-<a class="header-anchor" href="#%e4%bd%bf%e7%94%a8%e5%8f%8d%e5%bc%95%e5%8f%b7%e7%9a%84%e4%bb%a3%e7%a0%81%e5%9d%97"></a>
-使用反引号的代码块
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!doctype html&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Example HTML5 Document<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Test<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span></code></pre></div><h3 id="使用四个空格缩进的代码块">
-<a class="header-anchor" href="#%e4%bd%bf%e7%94%a8%e5%9b%9b%e4%b8%aa%e7%a9%ba%e6%a0%bc%e7%bc%a9%e8%bf%9b%e7%9a%84%e4%bb%a3%e7%a0%81%e5%9d%97"></a>
-使用四个空格缩进的代码块
-</h3><pre><code>&lt;!doctype html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-  &lt;meta charset=&quot;utf-8&quot;&gt;
-  &lt;title&gt;Example HTML5 Document&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;p&gt;Test&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<h3 id="diff-代码块">
-<a class="header-anchor" href="#diff-%e4%bb%a3%e7%a0%81%e5%9d%97"></a>
-Diff 代码块
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-diff" data-lang="diff"><span class="line"><span class="cl">[dependencies.bevy]
-</span></span><span class="line"><span class="cl">git = &#34;https://github.com/bevyengine/bevy&#34;
-</span></span><span class="line"><span class="cl">rev = &#34;11f52b8c72fc3a568e8bb4a4cd1f3eb025ac2e13&#34;
-</span></span><span class="line"><span class="cl"><span class="gd">- features = [&#34;dynamic&#34;]
-</span></span></span><span class="line"><span class="cl"><span class="gi">+ features = [&#34;jpeg&#34;, &#34;dynamic&#34;]
-</span></span></span></code></pre></div><h3 id="单行代码块">
-<a class="header-anchor" href="#%e5%8d%95%e8%a1%8c%e4%bb%a3%e7%a0%81%e5%9d%97"></a>
-单行代码块
-</h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>A paragraph<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</span></span></code></pre></div><h2 id="列表类型-list-types">
-<a class="header-anchor" href="#%e5%88%97%e8%a1%a8%e7%b1%bb%e5%9e%8b-list-types"></a>
-列表类型 (List Types)
-</h2><h3 id="有序列表">
-<a class="header-anchor" href="#%e6%9c%89%e5%ba%8f%e5%88%97%e8%a1%a8"></a>
-有序列表
-</h3><ol>
-<li>第一项</li>
-<li>第二项</li>
-<li>第三项</li>
-</ol>
-<h3 id="无序列表">
-<a class="header-anchor" href="#%e6%97%a0%e5%ba%8f%e5%88%97%e8%a1%a8"></a>
-无序列表
-</h3><ul>
-<li>列表项</li>
-<li>另一项</li>
-<li>还有一项</li>
-</ul>
-<h3 id="嵌套列表">
-<a class="header-anchor" href="#%e5%b5%8c%e5%a5%97%e5%88%97%e8%a1%a8"></a>
-嵌套列表
-</h3><ul>
-<li>水果
-<ul>
-<li>苹果</li>
-<li>橘子</li>
-<li>香蕉</li>
-</ul>
-</li>
-<li>乳制品
-<ul>
-<li>牛奶</li>
-<li>奶酪</li>
-</ul>
-</li>
-</ul>
-<h2 id="其他元素--abbr-sub-sup-kbd-mark">
-<a class="header-anchor" href="#%e5%85%b6%e4%bb%96%e5%85%83%e7%b4%a0--abbr-sub-sup-kbd-mark"></a>
-其他元素 — abbr, sub, sup, kbd, mark
-</h2><p><!-- raw HTML omitted -->GIF<!-- raw HTML omitted --> 是一种位图图像格式。</p>
-<p>H<!-- raw HTML omitted -->2<!-- raw HTML omitted -->O</p>
-<p>X<!-- raw HTML omitted -->n<!-- raw HTML omitted --> + Y<!-- raw HTML omitted -->n<!-- raw HTML omitted --> = Z<!-- raw HTML omitted -->n<!-- raw HTML omitted --></p>
-<p>按 <!-- raw HTML omitted -->CTRL<!-- raw HTML omitted --> + <!-- raw HTML omitted -->ALT<!-- raw HTML omitted --> + <!-- raw HTML omitted -->Delete<!-- raw HTML omitted --> 结束会话。</p>
-<p>大多数<!-- raw HTML omitted -->蝾螈<!-- raw HTML omitted -->是夜行性的，捕食昆虫、蠕虫和其他小型生物。</p>
-<div class="footnotes" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn:1">
-<p>这是脚注的详细说明&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a>&#160;<a href="#fnref1:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-</ol>
-</div></div>
-    <footer class="article-footer"><ul class="article-category-list"></ul>
-<ul class="article-tag-list" itemprop="keywords"></ul>
+    <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
+    <a
+      class="article-category-link"
+      href="/categories/linux"
+      data-aos="zoom-in"
+      >Linux</a
+    >
+    </li></ul>
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e8%bf%9b%e7%a8%8b%e6%8e%a7%e5%88%b6"
+        rel="tag"
+        >进程控制</a
+      >
+    </li></ul>
 </footer>
   </div><nav
     id="article-nav"
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-120.webp"
+              data-src="/images/covers/covers-32.webp"
               data-sizes="auto"
-              alt="Hello World"
+              alt="【Linux】05 - 进程概念"
               class="lazyload"
             /><a
-          href="/post/hello/"
-          aria-label="前一篇:Hello World"
-          title="前一篇:Hello World"
+          href="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/"
+          aria-label="前一篇:【Linux】05 - 进程概念"
+          title="前一篇:【Linux】05 - 进程概念"
         ></a>
         <div class="article-nav-caption">前一篇</div>
-        <h3 class="article-nav-title">Hello World</h3>
-      </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-101.webp"
-              data-sizes="auto"
-              alt="【C语言】01 - 什么是C语言"
-              class="lazyload"
-            /><a
-          href="/post/c%E8%AF%AD%E8%A8%8001---%E4%BB%80%E4%B9%88%E6%98%AFc%E8%AF%AD%E8%A8%80/"
-          aria-label="后一篇:【C语言】01 - 什么是C语言"
-          title="后一篇:【C语言】01 - 什么是C语言"
-        ></a>
-        <div class="article-nav-caption">后一篇</div>
-        <h3 class="article-nav-title">【C语言】01 - 什么是C语言</h3>
+        <h3 class="article-nav-title">【Linux】05 - 进程概念</h3>
       </div></nav></article></section>
         </div><footer id="footer" aria-label="Site footer">
   <div style="width: 100%; overflow: hidden">
@@ -911,10 +543,10 @@ Diff 代码块
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;90.8k</span
+          >&nbsp;93.0k</span
         >
         &nbsp;|&nbsp;
-        <span class="icon-coffee">&nbsp;03:11</span>
+        <span class="icon-coffee">&nbsp;03:16</span>
       </div><div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"
@@ -940,63 +572,31 @@ Diff 代码块
 <div class="sidebar-toc-wrapper toc-div-class">
   <nav id="TableOfContents">
   <ol>
-    <li><a href="#第一篇测试文章">第一篇测试文章</a>
+    <li><a href="#进程控制">进程控制</a>
       <ol>
-        <li><a href="#二级测试标题">二级测试标题</a>
+        <li><a href="#进程创建">进程创建</a>
           <ol>
-            <li><a href="#三级测试标题">三级测试标题</a></li>
+            <li><a href="#fork函数">fork函数</a>
+              <ol>
+                <li><a href="#fork的常规用法">fork的常规用法</a></li>
+                <li><a href="#fork调用失败">fork调用失败</a></li>
+              </ol>
+            </li>
+            <li><a href="#写时拷贝">写时拷贝</a></li>
           </ol>
         </li>
-        <li><a href="#字体强调设置">字体强调设置</a></li>
-        <li><a href="#列表设置">列表设置</a></li>
-        <li><a href="#任务事项">任务事项</a></li>
-        <li><a href="#图片粘贴测试">图片粘贴测试</a></li>
-        <li><a href="#公式测试">公式测试</a></li>
-        <li><a href="#表格测试">表格测试</a></li>
-        <li><a href="#链接粘贴测试">链接粘贴测试</a></li>
-        <li><a href="#代码块测试">代码块测试</a></li>
-        <li><a href="#分割线">分割线</a></li>
-        <li><a href="#引用">引用</a></li>
-        <li><a href="#其他小技巧">其他小技巧</a></li>
-        <li><a href="#md文档发表">md文档发表</a></li>
-        <li><a href="#标题-headings">标题 (Headings)</a>
+        <li><a href="#进程终止">进程终止</a>
           <ol>
-            <li><a href="#h3">H3</a>
+            <li><a href="#进程退出的场景">进程退出的场景</a></li>
+            <li><a href="#进程常见退出方法">进程常见退出方法</a>
               <ol>
-                <li><a href="#h4">H4</a></li>
+                <li><a href="#exit和_exit">exit和_exit</a></li>
               </ol>
             </li>
           </ol>
         </li>
-        <li><a href="#段落-paragraph">段落 (Paragraph)</a></li>
-        <li><a href="#引用-blockquotes">引用 (Blockquotes)</a>
-          <ol>
-            <li><a href="#不带出处的引用">不带出处的引用</a></li>
-            <li><a href="#带有出处的引用">带有出处的引用</a></li>
-            <li><a href="#带提示的引用">带提示的引用</a></li>
-          </ol>
-        </li>
-        <li><a href="#表格-tables">表格 (Tables)</a>
-          <ol>
-            <li><a href="#表格内的行内-markdown">表格内的行内 Markdown</a></li>
-          </ol>
-        </li>
-        <li><a href="#代码块-code-blocks">代码块 (Code Blocks)</a>
-          <ol>
-            <li><a href="#使用反引号的代码块">使用反引号的代码块</a></li>
-            <li><a href="#使用四个空格缩进的代码块">使用四个空格缩进的代码块</a></li>
-            <li><a href="#diff-代码块">Diff 代码块</a></li>
-            <li><a href="#单行代码块">单行代码块</a></li>
-          </ol>
-        </li>
-        <li><a href="#列表类型-list-types">列表类型 (List Types)</a>
-          <ol>
-            <li><a href="#有序列表">有序列表</a></li>
-            <li><a href="#无序列表">无序列表</a></li>
-            <li><a href="#嵌套列表">嵌套列表</a></li>
-          </ol>
-        </li>
-        <li><a href="#其他元素--abbr-sub-sup-kbd-mark">其他元素 — abbr, sub, sup, kbd, mark</a></li>
+        <li><a href="#进程等待">进程等待</a></li>
+        <li><a href="#进程程序替换">进程程序替换</a></li>
       </ol>
     </li>
   </ol>
@@ -1014,7 +614,7 @@ Diff 代码块
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>文章</div><div class="sidebar-state-number">16</div>
+    <div>文章</div><div class="sidebar-state-number">17</div>
   </div>
   <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
     <div>分类</div>
@@ -1024,7 +624,7 @@ Diff 代码块
   </a>
   <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
     <div>标签</div>
-    <div class="sidebar-state-number">17</div>
+    <div class="sidebar-state-number">18</div>
   </a>
 </div>
 <div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
@@ -1123,110 +723,11 @@ Diff 代码块
   <div><script data-pjax>
         window.REIMU_POST = {
           author: "CialloKing",
-          title: "第一篇测试文章",
-          url: "https:\/\/cialloking.com\/post\/firs-test\/",
-          description: " 第一篇测试文章 二级测试标题 三级测试标题 这是正文测试 666666666666666666666\n22222222222222222233333333333333333333333333\n字体强调设置 斜体测试 CTRL\u002bi\n加粗测试 ctrl\u002bb\n我是斜体 我是粗体 我是粗斜体 我是删除线 我是下划线 ==我是高亮标记==\n列表设置 一级列表 次级列表 次级列表2 二级列表 三级列表 四级列表 无序列表 次级无序列表 无序列表2 任务事项 已完成任务 未完成任务 待办事项 图片粘贴测试 图片粘贴测试 图片测试\n公式测试 ctrl\u002bM\u002bM 段落插入公式\n$$ 公式测试 …",
+          title: "【Linux】06 - 进程控制",
+          url: "https:\/\/cialloking.com\/post\/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6\/",
+          description: " 进程控制 进程创建 fork函数 linux中fork函数是非常重要的函数，它从已存在进程中创建一个新进程。新进程为子进程，而原进程为父进程，给子进程返回0，父进程返回子进程pid，创建进程失败返回-1。\n",
           cover: "https:\/\/cialloking.com\/images\/bg\/bg1.webp",
         };
-      </script><script
-    src="https://npm.webcache.cn/mermaid@11.12.0/dist/mermaid.min.js"
-    
-    
-    data-pjax
-    
-    integrity="sha384-o&#43;g/BxPwhi0C3RK7oQBxQuNimeafQ3GE/ST4iT2BxVI4Wzt60SH4pq9iXVYujjaS" crossorigin="anonymous"></script><script
-    src="https://npm.webcache.cn/dompurify@3.2.6/dist/purify.min.js"
-    
-    
-    data-pjax
-    
-    integrity="sha384-JEyTNhjM6R1ElGoJns4U2Ln4ofPcqzSsynQkmEc/KGy6336qAZl70tDLufbkla&#43;3" crossorigin="anonymous"></script><script data-pjax>
-        if (window.mermaid) {
-          
-          const elementCode = '.mermaid'
-          const processElements = (callback) => {
-            const els = _$$(elementCode);
-            if (!els.length) return Promise.resolve();
-            
-            return new Promise((resolve, reject) => {
-              try {
-                els.forEach(callback);
-                resolve();
-              } catch (error) {
-                reject(error);
-              }
-            });
-          };
-          const saveOriginalData = () => processElements(el => {
-            if (!el.getAttribute('data-original-code')) {
-              el.setAttribute('data-original-code', el.innerHTML);
-            }
-          });
-
-          const resetProcessed = () => processElements(el => {
-            const originalCode = el.getAttribute('data-original-code');
-            if (originalCode) {
-              el.removeAttribute('data-processed');
-              el.innerHTML = DOMPurify.sanitize(originalCode);
-            }
-          });
-          const loadMermaid = async (theme) => {
-            window.mermaid.initialize({theme, startOnLoad: false})
-            await window.mermaid.run({querySelector: elementCode, suppressErrors: true})
-            if (window.svgPanZoom) {
-              window.__panZoomList?.forEach(panZoom => {try {panZoom.destroy()} catch {}});
-              window.__panZoomList = [];
-              _$$('.mermaid > svg').forEach(el => {
-                const bbox = el.getBBox();
-                el.setAttribute('height', Math.max(bbox.height, 80));
-                window.__panZoomList.push(window.svgPanZoom(el, {
-                  zoomEnabled: true,
-                  controlIconsEnabled: true,
-                  fit: true,
-                  center: true
-                }));
-              });
-              if (window.__resizeMermaidSvg) {
-                window.removeEventListener('resize', window.__resizeMermaidSvg);
-              }
-              window.__resizeMermaidSvg = () => {
-                try {
-                  window.__panZoomList.forEach(panZoom => {
-                    panZoom.resize();
-                    panZoom.fit();
-                    panZoom.center();
-                  });
-                } catch {
-                  window.removeEventListener('resize', window.__resizeMermaidSvg);
-                  window.__panZoomList = [];
-                }
-              }
-              window.addEventListener('resize', window.__resizeMermaidSvg);
-            }
-          }
-          const initMermaid = async (theme) => {
-            try {
-              await saveOriginalData();
-              await resetProcessed();
-              await loadMermaid(theme);
-            } catch (error) {
-              console.error(error);
-            }
-          };
-          
-          document.body.addEventListener('reimu:theme-set', (e) => {
-            const isDark = e.detail.isDark;
-            initMermaid(isDark ? 'dark' : 'default');
-          });
-
-          const mode = localStorage.getItem('dark_mode');
-          if (mode === 'auto') {
-            const osMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            initMermaid(osMode ? 'dark' : 'default');
-          } else {
-            initMermaid(mode === 'true' ? 'dark' : 'default');
-          }
-        }
       </script><script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax ></script><script src="/js/tabs.js" integrity="" crossorigin="anonymous" data-pjax defer></script><script type="module" data-pjax>const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;const initPswp = (gallery, children) => {
           if (_$$(`${gallery} ${children}`).length > 0) {
             new PhotoSwipeLightbox({

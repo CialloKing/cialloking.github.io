@@ -12,12 +12,32 @@
     
     <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
     
-    <lastBuildDate>Wed, 01 Apr 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 10 Apr 2026 00:00:00 +0800</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/en/post/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>【Linux】06 - Process Control</title>
+      <link>https://cialloking.com/en/post/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/</link>
+      <pubDate>Fri, 10 Apr 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/en/post/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】06 - Process Control</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
+        
+        <hr><p>Published on 2026-04-10 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-04-10</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
     
     
 
@@ -196,26 +216,6 @@
       </description>
       
         <category>C</category>
-      
-    </item>
-    
-    
-
-    <item>
-      <title>【C&#43;&#43;】04 - References</title>
-      <link>https://cialloking.com/en/post/c&#43;&#43;04---%E5%BC%95%E7%94%A8/</link>
-      <pubDate>Sun, 22 Mar 2026 00:00:00 &#43;0000</pubDate>
-      <author>xxx@example.com (CialloKing)</author>
-      <guid>https://cialloking.com/en/post/c&#43;&#43;04---%E5%BC%95%E7%94%A8/</guid>
-      <description>
-        <![CDATA[<h1>【C++】04 - References</h1><p>Author: CialloKing(xxx@example.com)</p>
-        
-          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
-        
-        <hr><p>Published on 2026-03-22 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-22</p>]]>
-      </description>
-      
-        <category>C&#43;&#43;</category>
       
     </item>
     

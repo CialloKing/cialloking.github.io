@@ -139,6 +139,35 @@ Xshell的下载和使用
     
 
     <item>
+      <title>【Linux】06 - 进程控制</title>
+      <link>https://cialloking.com/post/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/</link>
+      <pubDate>Fri, 10 Apr 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】06 - 进程控制</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h1 id="进程控制">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e6%8e%a7%e5%88%b6"></a>
+进程控制
+</h1><h2 id="进程创建">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e5%88%9b%e5%bb%ba"></a>
+进程创建
+</h2><h3 id="fork函数">
+<a class="header-anchor" href="#fork%e5%87%bd%e6%95%b0"></a>
+fork函数
+</h3><p>linux中<code>fork</code>函数是非常重要的函数，它从已存在进程中创建一个新进程。新进程为子进程，而原进程为父进程，给子进程返回0，父进程返回子进程pid，创建进程失败返回-1。</p>
+        
+        <hr><p>本文2026-04-10首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-01</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
+    
+    
+
+    <item>
       <title>【Linux】01 - 什么是Linux</title>
       <link>https://cialloking.com/post/linux01---%E4%BB%80%E4%B9%88%E6%98%AFlinux/</link>
       <pubDate>Sat, 28 Mar 2026 00:00:00 &#43;0800</pubDate>
