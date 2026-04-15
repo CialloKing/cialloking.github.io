@@ -12,12 +12,41 @@
     
     <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
-    <lastBuildDate>Fri, 10 Apr 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 15 Apr 2026 00:00:00 +0800</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>【Linux】06 - 进程控制</title>
+      <link>https://cialloking.com/post/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/</link>
+      <pubDate>Fri, 10 Apr 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】06 - 进程控制</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h1 id="进程控制">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e6%8e%a7%e5%88%b6"></a>
+进程控制
+</h1><h2 id="进程创建">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e5%88%9b%e5%bb%ba"></a>
+进程创建
+</h2><h3 id="fork函数">
+<a class="header-anchor" href="#fork%e5%87%bd%e6%95%b0"></a>
+fork函数
+</h3><p>linux中<code>fork</code>函数是非常重要的函数，它从已存在进程中创建一个新进程。新进程为子进程，而原进程为父进程，给子进程返回0，父进程返回子进程pid，创建进程失败返回-1。</p>
+        
+        <hr><p>本文2026-04-10首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-15</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
     
     
 
@@ -130,35 +159,6 @@ Xshell的下载和使用
 <p>打开Xshell后，输入 <code>ssh root@云服务器的IP</code>，这时会提示输入密码(password)，输入密码时不会在屏幕上显示，输入完了按回车确认，如果不知道密码可在云服务器厂商的控制面板处重置密码后再使用Xshell登录，注意<strong>一定要设置复杂一点的密码</strong>，有黑客会 24 小时不间断扫描所有IP，如果密码过于简单会很容易被黑客破解，黑客进入我们的服务器后会偷偷干坏事，所有<strong>一定要设置复杂的密码</strong>。</p>
         
         <hr><p>本文2026-03-28首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-02</p>]]>
-      </description>
-      
-        <category>Linux</category>
-      
-    </item>
-    
-    
-
-    <item>
-      <title>【Linux】06 - 进程控制</title>
-      <link>https://cialloking.com/post/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/</link>
-      <pubDate>Fri, 10 Apr 2026 00:00:00 &#43;0800</pubDate>
-      <author>xxx@example.com (CialloKing)</author>
-      <guid>https://cialloking.com/post/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/</guid>
-      <description>
-        <![CDATA[<h1>【Linux】06 - 进程控制</h1><p>作者：CialloKing（xxx@example.com）</p>
-        
-          <h1 id="进程控制">
-<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e6%8e%a7%e5%88%b6"></a>
-进程控制
-</h1><h2 id="进程创建">
-<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e5%88%9b%e5%bb%ba"></a>
-进程创建
-</h2><h3 id="fork函数">
-<a class="header-anchor" href="#fork%e5%87%bd%e6%95%b0"></a>
-fork函数
-</h3><p>linux中<code>fork</code>函数是非常重要的函数，它从已存在进程中创建一个新进程。新进程为子进程，而原进程为父进程，给子进程返回0，父进程返回子进程pid，创建进程失败返回-1。</p>
-        
-        <hr><p>本文2026-04-10首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-01</p>]]>
       </description>
       
         <category>Linux</category>
