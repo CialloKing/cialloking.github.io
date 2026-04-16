@@ -1118,7 +1118,21 @@ injector:                                    # 代码注入器
         '/images/covers/covers-392.webp',
         '/images/covers/covers-393.webp',
         '/images/covers/covers-394.webp',
-        '/images/covers/covers-395.webp'
+        '/images/covers/covers-395.webp',
+        '/images/covers/covers-396.webp',
+        '/images/covers/covers-397.webp',
+        '/images/covers/covers-398.webp',
+        '/images/covers/covers-399.webp',
+        '/images/covers/covers-400.webp',
+        '/images/covers/covers-401.webp',
+        '/images/covers/covers-402.webp',
+        '/images/covers/covers-403.webp',
+        '/images/covers/covers-404.webp',
+        '/images/covers/covers-405.webp',
+        '/images/covers/covers-406.webp',
+        '/images/covers/covers-407.webp',
+        '/images/covers/covers-408.webp',
+        '/images/covers/covers-409.webp'
       ];
 
       // 【关键修改1】扩展选择器，覆盖搜索页所有可能的封面容器
