@@ -5,6 +5,19 @@
   },
   "docs": [
       {
+        "id": "aed7c27f50535f758320b10a18e22d7d",
+        "title": "【Linux】07 - Basic I/O",
+        "date": "2026-04-14",
+        "wordCount": 24,
+        "readingTime": 1,
+        "content": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "summary": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "cover": null,
+        "tags": ["IO"],
+        "categories": ["Linux"],
+        "permalink": "https://cialloking.com/en/post/linux07---%E5%9F%BA%E7%A1%80io/"
+      },
+      {
         "id": "53ae374cf3e2b41a6222120fe0491e62",
         "title": "【Linux】06 - Process Control",
         "date": "2026-04-10",

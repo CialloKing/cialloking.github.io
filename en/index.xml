@@ -12,12 +12,32 @@
     
     <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
     
-    <lastBuildDate>Fri, 10 Apr 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 14 Apr 2026 00:00:00 +0800</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/en/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>【Linux】07 - Basic I/O</title>
+      <link>https://cialloking.com/en/post/linux07---%E5%9F%BA%E7%A1%80io/</link>
+      <pubDate>Tue, 14 Apr 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/en/post/linux07---%E5%9F%BA%E7%A1%80io/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】07 - Basic I/O</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
+        
+        <hr><p>Published on 2026-04-14 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-04-14</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
     
     
 
@@ -193,26 +213,6 @@
           <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
         
         <hr><p>Published on 2026-03-23 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-23</p>]]>
-      </description>
-      
-        <category>C</category>
-      
-    </item>
-    
-    
-
-    <item>
-      <title>【C语言】01 - 什么是C语言</title>
-      <link>https://cialloking.com/en/post/c%E8%AF%AD%E8%A8%8002---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</link>
-      <pubDate>Sun, 22 Mar 2026 00:00:00 &#43;0000</pubDate>
-      <author>xxx@example.com (CialloKing)</author>
-      <guid>https://cialloking.com/en/post/c%E8%AF%AD%E8%A8%8002---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</guid>
-      <description>
-        <![CDATA[<h1>【C语言】01 - 什么是C语言</h1><p>Author: CialloKing(xxx@example.com)</p>
-        
-          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
-        
-        <hr><p>Published on 2026-03-22 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-22</p>]]>
       </description>
       
         <category>C</category>

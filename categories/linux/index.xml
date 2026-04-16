@@ -51,6 +51,29 @@ fork函数
     
 
     <item>
+      <title>【Linux】07 - 基础IO</title>
+      <link>https://cialloking.com/post/linux07---%E5%9F%BA%E7%A1%80io/</link>
+      <pubDate>Tue, 14 Apr 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/linux07---%E5%9F%BA%E7%A1%80io/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】07 - 基础IO</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h2 id="文件">
+<a class="header-anchor" href="#%e6%96%87%e4%bb%b6"></a>
+文件
+</h2><p>一个大小为0的空文件在磁盘上也要占据空间。文件=内容+属性，虽然内容为空，但是文件的创建时间，权限等属性还是需要存储的，所以还是要占磁盘空间。所有的文件操作本质是文件内容操作和文件属性操作。</p>
+        
+        <hr><p>本文2026-04-14首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-14</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
+    
+    
+
+    <item>
       <title>【Linux】05 - 进程概念</title>
       <link>https://cialloking.com/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/</link>
       <pubDate>Mon, 06 Apr 2026 00:00:00 &#43;0800</pubDate>
