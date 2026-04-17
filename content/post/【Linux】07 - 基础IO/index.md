@@ -7,6 +7,8 @@ title: '【Linux】07 - 基础IO'
 
 tags:
   - IO
+  - 一切皆文件
+  - 缓冲区
 
 categories:
   - Linux
@@ -25,7 +27,7 @@ categories:
 Linux里一切皆文件，Linux系统里把显示器，键盘，网卡等外设全部抽象成文件。
 
 文件按加载情况可以分为两类，一类是在内存中被打开的文件，另一类是在磁盘中没被打开的文件。  
-访问文件，需要先打开文件，可执行程序执行了打开文件的代码这个文件才算打开，是进程在打开文件。对文件的操作本质是进程在对文件操作。操作系统负责管理所有的硬件，磁盘的管理者是操作系统，C语言或者其他语言提供的库函数底层是封装了系统提供的系统调用来打开文件。  
+访问文件，需要先打开文件，进程调用 `open` 系统调用打开文件，只有执行了打开操作，文件才被进程打开，是进程在打开文件。对文件的操作本质是进程在对文件操作。操作系统负责管理所有的硬件，磁盘的管理者是操作系统，C语言或者其他语言提供的库函数底层是封装了系统提供的系统调用来打开文件。  
 一个进程可能会打开多个文件，系统里又在同时运行多个进程，被打开的文件数量可能会非常多，所以操作系统要对这些文件进行管理，怎么管理？**先描述，再组织**。
 
 ## C语言文件接口
@@ -244,7 +246,7 @@ close(f);
 ```c
 const char *msg ="hello oldfe666";
 int f = open("hello.txt",O_CREAT | O_WRONLY ,0666);
-write(fd,msg,strlen(msg));
+write(f,msg,strlen(msg));
 ```
 
 向文件内写入时不需要带上`\0`。  
@@ -291,10 +293,10 @@ int f1 = open("log1.txt",O_CREAT | O_WRONLY | O_APPEND,0666);
 printf("%d",f1);
 
 int f2 = open("log2.txt",O_CREAT | O_WRONLY | O_APPEND,0666);  
-printf("%d",f1);
+printf("%d",f2);
 
 int f3 = open("log3.txt",O_CREAT | O_WRONLY | O_APPEND,0666);  
-printf("%d",f1);
+printf("%d",f3);
 ```
 打开后可以发现，文件描述是从3开始的，后面依次往下递增，0，1，2号文件去哪里了？0，1，2号文件叫做标准输入，标准输出，标准错误，也就是程序启动时自动打开的三个文件。C语言里面的`fopen`函数返回值是，`FILE*`,`*`是指针，`FILE`是C语言提供的一个结构体，里面有文件的各种属性。在操作系统这一层只认识文件描述符，`FILE`里封装了文件描述符。
 
@@ -351,9 +353,379 @@ printf("%d",f2);
 
 `dup2(fd, 1)`会使用下标为fd的指针拷贝覆盖下标1的指针，那么标准输出标准输出要怎么关闭？文件的struct file内部会维护一个引用计数，一个文件可以被多个进程打开，有进程关闭文件时其实就是引用计数--，使用`dup2(fd, 1)`时会自动给1下标的标准输出的引用计数--，所以不需要手动管理。
 
+---
+
+运行以下代码。
+```cpp
+#include<cstdio>
+#include<iostream>
+
+int main()
+{
+    //向标准输出打印,stdin,cout,对应1号文件
+    printf("hello printf\n");
+    std::cout<<"hello cout"<<std::endl;
+
+    //向标准错误打印,stderr,cerr,对应2号文件
+    fprintf(stderr,"hello stderr\n");
+    std::cerr<<"hello cerr"<<std::endl;
+    
+    return 0;
+}
+```
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z cfile]$ g++ -o test2 test2.cc 
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z cfile]$ ./test2
+hello printf
+hello cout
+hello stderr
+hello cerr
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z cfile]$ ./test2 > test2.txt
+hello stderr
+hello cerr
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z cfile]$ cat test2.txt
+hello printf
+hello cout
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z cfile]$ 
+```
+直接运行程序可以正常打印出所有消息，但是使用重定向输出到test2.txt文件里时只有标准输出写入到文件里，标准错误继续输出到显示器上。因为重定向`>`只做了标准输出的重定向，没做标准错误的重定向。  
+假如想让标准错误也重定向，需要修改一下指令。使用`./test2 1> test2.txt 2>test2.txt`指令来让标准输出和标准错误都重定向到test2.txt文件。
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z cfile]$ cat test2.txt
+hello stderr
+hello cerr
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z cfile]$ 
+```
+但是第二个重定向输出时会先清空文件，我们可以使用`./test2 1> test2.txt 2>>test2.txt`来让标准错误进行追加重定向，但是这样指令太长了，使用`./test2 1> test2.txt 2>&1`可以做到一样的效果。
+```bash
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z cfile]$ ./test2 1> test2.txt 2>&1
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z cfile]$ cat test2.txt
+hello printf
+hello cout
+hello stderr
+hello cerr
+[user1@iZ2zeh5i3yddf3p4q4ueo7Z cfile]$ 
+```
+`./test2 1> test2.txt 2>&1`这条命令里，`1> test2.txt` 将标准输出（文件描述符 1）重定向到 `test2.txt`；`2>&1` 将标准错误（文件描述符 2）重定向到标准输出当前指向的位置（即 test2.txt），这样文件描述符表下标1和2对应的指针都指向test2.txt文件，这样就做到了标准输出和标准错误都重定向到test2.txt文件。
+
+可以通过重定向能力，把常规消息和错误消息进行分离。
+
+---
+
+查看Linux内核2.6.18版本的源代码[^1]，可以看见内核创建的文件结构体对象。
+![](PixPin_2026-04-17_21-14-45.webp)
+![](PixPin_2026-04-17_21-23-46.webp)
+![](PixPin_2026-04-17_1.webp)
+查看源代码可以清楚看到，进程的`task_struct`内有`files_struct`的指针，进程通过这个指针找到`files_struct`并访问文件描述符表数组，通过数组内储存的`*file`指针来找到对应的文件对象`struct file`。操作系统通过`task_struct`管理进程，通过`struct file`管理文件，两者是解耦的，通过`files_struct`联系。  
+通过`file`可以找到文件属性的数据结构，也可以找到里对应的文件缓冲区`struct address_space	*f_mapping;`，加载文件时就是把文件从磁盘拷贝到缓冲区，操作系统把内存分为一个个4KB大小的块来管理，内存也有用来管理的对应的数据结构。
+
+
+
+
+[^1]: 在bootlin的[网站](https://elixir.bootlin.com/linux/v2.6.18/source/include/linux/sched.h)和Linux内核官网的这个[网页](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/sched.h?h=v2.6.18&id=3752aee96538b582b089f4a97a26e2ccd9403929)以及GitHub的这个[网页](https://github.com/torvalds/linux/blob/v2.6.18/include/linux/sched.h) 都能查看Linux2.6.18版本的源代码
+
+
 
 
 
 
 ## 一切皆文件
-待更新。。。
+
+
+一切皆文件是Linux设计的结果。
+
+计算机里有不同的外设，如屏幕，键盘，磁盘，网卡等，这些外设的读写方法都不一样，操作系统负责管理所有软硬件设备，要管理硬件设备，也可以像管理进程和文件一样创建一个硬件的结构体对象struct decice，对象内包含了各种硬件设备的状态属性读写方法等，再把这些对象连起来组成链表来管理。`struct file`里通过函数指针回调来访问对应硬件设备的读写方法；访问设备，都是通过函数指针指向的方法进行访问的，函数指针类型命名，参数，都一样。对于进程来说访问文件都是使用了系统调用，访问不同硬件设备上的文件都使用相同的系统调用，系统里通过一层struct file软件封装来让进程认为一切皆文件。进程只要能找到`struct file`就能访问硬件，不需要关心底层硬件设备的差异，这就是Linux的VFS虚拟文件系统。  
+进程通过`struct file`使用相同的系统调用就能调用到不同硬件设备对应的读写方法，这就相当于是C语言版本的**多态**，`struct file`就相当于基类。
+
+
+![](PixPin_2026-04-17_2.webp)
+
+
+上面的图由python生成。
+```python
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+
+# 解决中文乱码问题
+plt.rcParams['font.sans-serif'] = ['WenQuanYi Zen Hei', 'SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+
+plt.figure(figsize=(16, 10), dpi=150)
+ax = plt.gca()
+ax.set_xlim(0, 10)
+ax.set_ylim(0, 12)
+ax.axis('off')
+
+# 绘制四个层级的大框
+task_struct_layer = Rectangle((0.8, 9.5), 9, 2.0, ec='black', fc='white', lw=2)
+files_struct_layer = Rectangle((0.8, 7.0), 9, 2.2, ec='black', fc='white', lw=2)
+os_layer = Rectangle((0.8, 4.0), 9, 2.7, ec='black', fc='white', lw=2)
+driver_layer = Rectangle((0.8, 0.5), 9, 3.2, ec='black', fc='white', lw=2)
+ax.add_patch(task_struct_layer)
+ax.add_patch(files_struct_layer)
+ax.add_patch(os_layer)
+ax.add_patch(driver_layer)
+
+# 左侧层级标签
+ax.text(0.4, 10.5, "进程", fontsize=12, weight='bold', ha='center')
+ax.text(0.4, 8.1, "文件描述符", fontsize=12, weight='bold', ha='center')
+ax.text(0.4, 5.3, "OS", fontsize=14, weight='bold', ha='center')
+ax.text(0.4, 2.1, "驱动开发", fontsize=12, weight='bold', ha='center')
+
+# 设备列表
+devices = [
+    {"name": "磁盘", "x": 1.2, "fd": "0"},
+    {"name": "显示器", "x": 3.0, "fd": "1"},
+    {"name": "键盘", "x": 4.8, "fd": "2"},
+    {"name": "网卡", "x": 6.6, "fd": "3"},
+    {"name": "...", "x": 8.2, "fd": "..."}
+]
+
+# 为每个设备绘制结构
+for dev in devices:
+    x = dev["x"]
+    fd = dev["fd"]
+
+    # --- 第1层：task_struct ---
+    ax.text(x, 10.8, "struct task_struct {", fontsize=11, color='#337ab7', ha='left')
+    ax.text(x+0.2, 10.4, "    struct files_struct *files;", fontsize=10, color='#337ab7', ha='left')
+    ax.text(x, 10.0, "}", fontsize=11, color='#337ab7', ha='left')
+
+    # --- 第2层：files_struct（内部包含 fd_array）---
+    ax.text(x, 8.8, "struct files_struct {", fontsize=11, color='#5cb85c', ha='left')
+    # 将 fd_array 画在结构体内部，体现包含关系
+    ax.text(x+0.2, 8.4, "    struct file *fd_array[];", fontsize=10, color='#5cb85c', ha='left')
+    # 在结构体内部标注具体的 fd 索引
+    ax.text(x+0.6, 7.8, f"    [{fd}]", fontsize=10, color='#5cb85c', ha='center')
+    ax.text(x, 7.4, "}", fontsize=11, color='#5cb85c', ha='left')
+
+    # --- 第3层：struct file & file_operations ---
+    ax.text(x, 6.3, "struct file {", fontsize=11, color='#d9534f', ha='left')
+    ax.text(x+0.2, 5.9, "*f_op;", fontsize=11, color='#d9534f', ha='left')
+    ax.text(x, 5.5, "}", fontsize=11, color='#d9534f', ha='left')
+
+    ax.text(x, 5.0, "struct file_operations {", fontsize=11, color='#d9534f', ha='left')
+    ax.text(x+0.2, 4.6, "ssize_t (*read)(...);", fontsize=10, color='#d9534f', ha='left')
+    ax.text(x+0.2, 4.2, "ssize_t (*write)(...);", fontsize=10, color='#d9534f', ha='left')
+    ax.text(x, 3.8, "}", fontsize=11, color='#d9534f', ha='left')
+
+    # --- 第4层：驱动开发 ---
+    ax.text(x, 3.2, "int read(...)", fontsize=11, ha='left')
+    ax.text(x, 2.8, "int write(...)", fontsize=11, ha='left')
+
+    # 设备框
+    dev_rect = Rectangle((x-0.1, 1.0), 1.4, 1.2, color='#555555', ec='white', lw=1)
+    ax.add_patch(dev_rect)
+    ax.text(x+0.6, 1.6, dev["name"], fontsize=14, color='white', weight='bold', ha='center')
+
+plt.tight_layout()
+plt.show()
+```
+
+
+## 缓冲区
+
+
+### 缓冲区是什么
+
+缓冲区就是内存里的一段空间，用来缓存输入或输出的数据。
+
+### 缓存区机制的作用
+
+缓冲区就相当于菜鸟驿站，张三在家打游戏，快递员把快递送到菜鸟驿站，张三去菜鸟驿站取就行了。假如没有菜鸟驿站，来一个快递张三就要暂停手上的事情去拿快递，快递员也必须等待张三来拿快递，对于双方来说效率都不高，有了菜鸟驿站双方就提高自己的效率。
+
+
+
+### 缓冲类型
+
+
+C语言里有语言层用户级的C标准库缓冲区，Linux系统里有文件内核缓冲区，当发生强制刷新，或者刷新条件满足，或者进程退出时，标准库会把库缓冲区里的内容拷贝到系统里的文件内核缓冲区。`FILE`是C语言提供的一个结构体，里面封装了文件描述符，缓冲区等，标准库的缓冲区就在`FILE`结构体里。C语言里任何一个文件都有缓冲区，因为每个文件都有`FILE`对象。
+
+强制刷新，即使用`fflush()`来强制刷，进程退出就是退出时刷新，那么刷新条件满足是什么？  
+系统里存在不同的刷新方式：
+1. 立即刷新，无缓冲，也可以称为写透模式WT
+2. 缓冲区满了再刷新，也称为全缓冲
+3. 行刷新，这种缓冲方式称为行缓冲
+
+为什么标准库也有自己的缓冲区，因为调用系统调用也是有成本的，如果没有库缓冲区就会频繁使用系统调用，降低效率，所以标准库也提供了库缓冲区来提高效率。比如张三需要下楼倒垃圾，一次丢一个瓶子下一次楼，一次丢一整袋垃圾也是下一次楼，每次下楼都是有成本的，所以就需要垃圾桶（缓冲区）来提高效率。普通文件使用的使用刷新方式一般都是全缓冲，尽可能提高效率，显示器文件采用的是行刷新，用来打印消息。Linux系统里文件内核缓冲区的刷新方式由操作系统决定，因为需要面对多种情况，刷新调度方式也更复杂一些。进程不需要关系操作系统如何调度文件内核缓冲区，可以认为只要把数据交给操作系统，就相当于交给了硬件了。  
+数据交给系统，交给硬件，本质全是拷贝。计算机数据流动的本质:一切皆拷贝。
+
+
+运行以下代码
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
+
+int main() {
+    // 1. 关闭标准输出描述符 (fd = 1)
+    close(1);
+
+    // 2. 打开文件，由于 1 是最小未用描述符，open 将返回 1
+    int fd = open("log.txt", O_CREAT | O_WRONLY | O_APPEND, 0666);
+    // 此时 fd == 1，所有向标准输出的操作都会进入 log.txt
+
+    // 3. 库函数 printf：输出进入 FILE* 缓冲区（默认全缓冲）
+    printf("fd: %d\n", fd);
+    printf("hello world\n");
+    printf("hello world\n");
+    printf("hello world\n");
+
+    // 4. 系统调用 write：绕过库缓冲区，直接写入文件描述符
+    const char *msg = "hello write\n";
+    write(fd, msg, strlen(msg));
+
+    // 5. 关键点：若直接退出，printf 缓冲区数据将丢失（未刷新）
+    //    close(fd);  // 仅关闭描述符，不刷新 stdio 缓冲
+    //    fflush(stdout);  // 显式刷新可保留 printf 内容
+    //    fclose(stdout);  // fclose 会自动刷新缓冲区
+
+    // 演示丢失效果：不做任何刷新，直接关闭描述符并退出
+    close(fd);
+    return 0;
+}
+```
+运行完毕后可以发现log.txt文件里只有hello write。只有 `write` 调用的输出被写入文件。四个 `printf` 的输出虽然在程序执行时已进入 `stdout` 缓冲区，但由于标准输出被重定向到普通文件（从行缓冲变成全缓冲），且程序退出前未调用 `fflush` 或 `fclose`，缓冲区内容随进程结束而丢失。进程退出前已经执行了`close(fd);`库缓冲区想找文件内核缓冲区也找不着，自然没法拷贝缓冲区内容。
+
+
+运行以下代码
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
+
+int main() {
+    // 重定向标准输出到文件，使库函数变为全缓冲
+    close(1);
+    int fd = open("output.txt", O_CREAT | O_WRONLY | O_TRUNC, 0666);
+    // 此时 fd == 1，所有标准输出写入文件
+
+    // 库函数（数据暂存在 FILE* 缓冲区）
+    printf("hello printf\n");
+    fprintf(stdout, "hello fprintf\n");
+    const char *s = "hello fwrite\n";
+    fwrite(s, strlen(s), 1, stdout);
+
+    // 系统调用（直接写入内核，无用户态缓冲）
+    const char *ss = "hello write\n";
+    write(1, ss, strlen(ss));
+
+    // 关键：fork 复制进程空间，包括未刷新的库函数缓冲区
+    fork();
+
+    // 进程结束前刷新缓冲区（否则可能丢失数据）
+    fflush(stdout);
+    close(fd);
+    return 0;
+}
+```
+运行后查看output.txt文件的内容，发现库函数都打印了两次，系统调用只打印了一次，这是什么原因？
+
+创建子进程时子进程也有自己的缓冲区，缓冲区内容和父进程的相同，父子进程各自拥有一份相同的待输出内容。在创建子进程前，三个库函数调用的输出仍位于stdout缓冲区中（因为重定向到文件导致变为全缓冲），未写入内核。打印时会输出两次，而系统调用`write`会直接输出到系统的文件内核缓冲区，所以子进程的缓冲区内没有`write`打印的消息，只有父进程会打印。  
+若不重定向直接输出到显示器，那么刷新方式为行刷新，由于每个输出字符串均以 `\n` 结尾，缓冲会在创建子进程前被刷新，此时创建子进程不会复制任何缓冲数据，输出不会重复。
+
+
+#### 实现模拟封装
+基于上面的知识，我们可以封装简单的glibc文件接口。
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
+#include <stdlib.h>
+
+// 缓冲区大小（小一些以快速触发刷新）
+#define BUFFER_SIZE 8
+
+// 模拟 FILE 结构体
+typedef struct {
+    int fd;                 // 底层文件描述符
+    char buf[BUFFER_SIZE];  // 用户态缓冲区
+    int buf_used;           // 缓冲区已用字节数
+} MYFILE;
+
+// 模拟 fopen：打开文件并初始化 MYFILE
+MYFILE *my_fopen(const char *pathname, const char *mode) {
+    int flags = O_CREAT | O_WRONLY | O_TRUNC;
+    int fd = open(pathname, flags, 0666);
+    if (fd < 0) return NULL;
+
+    MYFILE *fp = (MYFILE *)malloc(sizeof(MYFILE));
+    if (!fp) {
+        close(fd);
+        return NULL;
+    }
+    fp->fd = fd;
+    fp->buf_used = 0;
+    memset(fp->buf, 0, BUFFER_SIZE);
+    return fp;
+}
+
+// 模拟 fflush：将缓冲区内容写入文件描述符
+int my_fflush(MYFILE *fp) {
+    if (fp->buf_used > 0) {
+        ssize_t n = write(fp->fd, fp->buf, fp->buf_used);
+        if (n < 0) return -1;
+        fp->buf_used = 0;
+    }
+    return 0;
+}
+
+// 模拟 fwrite：先写入缓冲区，满时自动刷新
+size_t my_fwrite(const void *ptr, size_t size, size_t nmemb, MYFILE *fp) {
+    const char *data = (const char *)ptr;
+    size_t total = size * nmemb;
+    size_t written = 0;
+
+    while (written < total) {
+        // 缓冲区剩余空间
+        int space = BUFFER_SIZE - fp->buf_used;
+        if (space == 0) {
+            // 缓冲区满，刷新
+            if (my_fflush(fp) < 0) break;
+            space = BUFFER_SIZE;
+        }
+        int copy = (total - written < space) ? (total - written) : space;
+        memcpy(fp->buf + fp->buf_used, data + written, copy);
+        fp->buf_used += copy;
+        written += copy;
+    }
+    return written;
+}
+
+// 模拟 fclose：刷新缓冲区并关闭文件描述符
+int my_fclose(MYFILE *fp) {
+    if (!fp) return -1;
+    my_fflush(fp);
+    close(fp->fd);
+    free(fp);
+    return 0;
+}
+
+// 主函数演示：对比库函数封装与系统调用
+int main() {
+    // 1. 使用我们封装的接口（带缓冲区）
+    MYFILE *fp = my_fopen("test.txt", "w");
+    if (!fp) {
+        perror("my_fopen");
+        return 1;
+    }
+
+    // 写入短数据（小于缓冲区，不会立即写入磁盘）
+    my_fwrite("Hello", 1, 5, fp);
+    my_fwrite(" ", 1, 1, fp);
+    my_fwrite("World", 1, 5, fp);
+    // 此时缓冲区未满，内容尚未写入文件
+
+    // 2. 直接用系统调用 write 写入（立即落盘）
+    write(fp->fd, "\nDirect write\n", 14);
+
+    // 3. 关闭文件（会触发缓冲区刷新）
+    my_fclose(fp);
+
+    return 0;
+}
+```
+
