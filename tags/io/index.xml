@@ -30,7 +30,10 @@
       <description>
         <![CDATA[<h1>【Linux】07 - 基础IO</h1><p>作者：CialloKing（xxx@example.com）</p>
         
-          <h2 id="文件">
+          <h1 id="基础io">
+<a class="header-anchor" href="#%e5%9f%ba%e7%a1%80io"></a>
+基础IO
+</h1><h2 id="文件">
 <a class="header-anchor" href="#%e6%96%87%e4%bb%b6"></a>
 文件
 </h2><p>一个大小为0的空文件在磁盘上也要占据空间。文件=内容+属性，虽然内容为空，但是文件的创建时间，权限等属性还是需要存储的，所以还是要占磁盘空间。所有的文件操作本质是文件内容操作和文件属性操作。</p>

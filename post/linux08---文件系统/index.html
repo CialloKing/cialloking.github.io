@@ -1,0 +1,1526 @@
+<!doctype html>
+<html
+  lang="zh-CN" 
+  data-theme-mode="auto"
+  >
+  <head><meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/><title>
+  【Linux】08 - 文件系统 | CialloKing
+</title>
+<meta name="description" content="少女祈祷中..."/><script>
+  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"Lang\":\"zh-cn\",\"Title\":\"CialloKing 的博客\",\"Weight\":1,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"简体中文\",\"Locale\":\"zh-CN\"},{\"Lang\":\"en\",\"Title\":\"CialloKing Blog\",\"Weight\":2,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"English\",\"Locale\":\"en\"}],\"icon_font\":\"4552607_a0oqhord1y\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
+  
+</script>
+<link
+    rel="preload"
+    as="style"
+    crossorigin
+    href="/css/custom-fonts.css"
+    onload="this.rel='stylesheet'"
+  /><link
+    rel="preload"
+    href="//at.alicdn.com/t/c/font_4552607_a0oqhord1y.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  /><link rel="stylesheet" href="/css/loader.min.4eac6555838cbcb8a5d15bf9bae0c688b74fae83b16a5613692de3f476051979.css" /><meta property="og:type" content="website" />
+  <meta property="og:title" content="【Linux】08 - 文件系统 | CialloKing" />
+  <meta
+    property="og:description"
+    content="少女祈祷中..."
+  />
+  <meta property="og:url" content="https://cialloking.com/post/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" />
+  <meta
+    property="og:site_name"
+    content="CialloKing 的博客"
+  />
+  <meta property="og:image" content="https://cialloking.com/images/bg/bg1.webp" />
+  <meta property="article:author" content="CialloKing" />
+  <meta property="article:published_time" content="2026-04-17T00:00:00&#43;08:00" />
+  <meta property="article:modified_time" content="2026-04-19T00:00:00&#43;08:00" /><meta property="article:tag" content="文件, 磁盘, ext2, 软硬链接" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
+<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.42c2ff6576a8f7440f141db001877cdde6d4907355753cb3bbd43efbad8597c9.css" /><link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
+    integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei&#43;Zx/1oA/0l8ysE" crossorigin="anonymous"
+    onload="this.onload=null;this.rel='stylesheet'"
+  /><link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css"
+    integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz&#43;YI" crossorigin="anonymous"
+    onload="this.onload=null;this.rel='stylesheet'"
+  /><script
+    src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"
+    
+    
+    
+    
+    integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script><link
+    rel="stylesheet"
+    href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css"
+    integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous"/><link
+    rel="stylesheet"
+    href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css"
+    integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj&#43;vDDLIL&#43;xBGQU/voDBY5XE2lVh" crossorigin="anonymous"/>
+<link rel="stylesheet" href="/css/custom.css"><style>
+  .post-cover img {
+    transition: opacity 0.3s ease;
+    opacity: 0;
+  }
+  .post-cover img[data-cover-set="true"],
+  .post-cover img[data-custom-cover="true"] {
+    opacity: 1;
+  }
+</style>
+
+
+<style>
+/* 解除头图纵向高度限制 */
+#header {
+  min-height: auto !important;  /* 允许容器高度自适应 */
+}
+#header img {
+  height: auto !important;      /* 图片高度自适应 */
+  max-height: 8192px !important; /* 最大高度提升到 8192px */
+  width: 100%;
+  object-fit: cover;            /* 保持比例填充，不拉伸变形 */
+}
+</style>
+
+
+
+<style>
+  #content {
+    transition: opacity 0.2s ease; /* 移出时快速恢复 */
+  }
+</style>
+<script>
+  (function() {
+    let animFrame = null;
+    let startTime = null;
+    const duration1 = 1000;   // 第一阶段 1 秒,第一阶段持续时间（毫秒），例如 1 秒 = 1000
+    const duration2 = 2000;   // 第二阶段 2 秒,第二阶段持续时间（毫秒），例如 2 秒 = 2000
+    const startOpacity = 1;   // 起始透明度
+    const midOpacity = 0.1;   // 中间透明度（第一阶段结束时的值）
+    const endOpacity = 0;     // 最终透明度
+
+    function updateOpacity(now) {
+      const elapsed = now - startTime;
+      let opacity;
+      if (elapsed < duration1) {
+        // 第一阶段：线性插值 1 -> 0.1
+        const t = elapsed / duration1;
+        opacity = startOpacity + (midOpacity - startOpacity) * t;
+      } else if (elapsed < duration1 + duration2) {
+        // 第二阶段：线性插值 0.1 -> 0
+        const t = (elapsed - duration1) / duration2;
+        opacity = midOpacity + (endOpacity - midOpacity) * t;
+      } else {
+        opacity = endOpacity;
+      }
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = opacity;
+      if (elapsed < duration1 + duration2) {
+        animFrame = requestAnimationFrame(updateOpacity);
+      }
+    }
+
+    function startFade() {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = startOpacity;
+      startTime = performance.now();
+      animFrame = requestAnimationFrame(updateOpacity);
+    }
+
+    function resetOpacity() {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = '1';
+    }
+
+    function bindEvents() {
+      const header = document.getElementById('header');
+      if (!header) return;
+      header.removeEventListener('mouseenter', startFade);
+      header.removeEventListener('mouseleave', resetOpacity);
+      header.addEventListener('mouseenter', startFade);
+      header.addEventListener('mouseleave', resetOpacity);
+    }
+
+    function init() {
+      bindEvents();
+      document.addEventListener('pjax:complete', bindEvents);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
+</head>
+  <body><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate"><svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+          M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg></div><div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script><div id="copy-tooltip"></div>
+<div id="lang-tooltip">
+本文章没有找到对应的语言版本
+</div>
+<div id="heatmap-tooltip"></div><div id="container">
+      <div id="wrap"><div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation"><a class="main-nav-link-wrap" href="/"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">首页</span>
+      </a><a class="main-nav-link-wrap" href="/archives"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">归档</span>
+      </a><a class="main-nav-link-wrap" href="/about"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">关于</span>
+      </a><a class="main-nav-link-wrap" href="/link"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">友链</span>
+      </a><a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+<a id="nav-search-page" class="nav-icon" href="/search/" title="搜索" aria-label="搜索"></a></nav>
+
+
+  </nav><nav id="i18n-nav" aria-label="Language selection">
+      <div class="custom-dropdown">
+        <div class="select-selected" id="select-selected" role="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language menu">
+          <span id="nav-language-btn" class="nav-icon" style="padding: 0 20px 0 0"></span>
+          <span id="selected-lang">简体中文</span>
+        </div>
+        <ul class="select-items" id="select-items" role="listbox" aria-label="Languages"><li data-value="zh-cn" role="option" class="selected" aria-selected="true" >简体中文</li><li data-value="en" role="option" aria-selected="false" >English</li></ul>
+      </div>
+      <script>
+        var selectSelected = document.getElementById("select-selected");
+        var selectedLang = document.getElementById("selected-lang");
+        var selectItems = document.getElementById("select-items");
+        var selectOptions = selectItems.querySelectorAll("li");
+
+        selectSelected.addEventListener("click", () => {
+          selectItems.classList.toggle("show");
+          var expanded = selectSelected.getAttribute("aria-expanded") === "true";
+          selectSelected.setAttribute("aria-expanded", (!expanded).toString());
+        });
+
+        selectOptions.forEach((item) => {
+          item.addEventListener("click", () => {
+            const langMap = {};langMap['en'] = '\/en\/post\/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F\/';selectedLang.textContent = item.textContent;
+            selectItems.classList.remove("show");
+            selectOptions.forEach((option) => {
+              option.classList.remove("selected");
+            });
+            item.classList.add("selected");
+            if (item.dataset.value === 'zh-cn') {
+              return;
+            }
+            if (!langMap[item.dataset.value]) {
+              _$("#lang-tooltip").style.opacity = "1";
+              setTimeout(() => {
+                _$("#lang-tooltip").style.opacity = "0";
+              }, 1000);
+              return;
+            }
+            window.location = langMap[item.dataset.value];
+          });
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!event.target.closest(".custom-dropdown")) {
+            selectItems.classList.remove("show");
+            selectSelected.setAttribute("aria-expanded", "false");
+          }
+        });
+      </script>
+    </nav></div>
+<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg1.webp" alt="【Linux】08 - 文件系统"><div id="header-outer">
+    <div id="header-title"><span id="logo">
+            <h1 data-aos="slide-up">【Linux】08 - 文件系统</h1>
+          </span><h2 id="subtitle-wrap" data-aos="slide-down"></h2></div>
+  </div>
+</header><div id="content"
+          aria-label="Page content"
+          class="sidebar-left"
+            ><aside id="sidebar" aria-label="Sidebar"><div class="sidebar-wrapper-container sticky"><div class="sidebar-wrapper">
+    <div
+      class="sidebar-wrap"
+      data-aos="fade-up"
+    ><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#文件系统">文件系统</a>
+      <ol>
+        <li><a href="#磁盘">磁盘</a>
+          <ol>
+            <li><a href="#磁盘工作原理">磁盘工作原理</a></li>
+            <li><a href="#扇区定位">扇区定位</a>
+              <ol>
+                <li><a href="#chs地址和lba地址相互转换">CHS地址和LBA地址相互转换</a></li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+        <li><a href="#文件系统概念和ext2文件系统">文件系统概念和ext2文件系统</a>
+          <ol>
+            <li><a href="#块">块</a></li>
+            <li><a href="#分区">分区</a></li>
+            <li><a href="#块组的内部构成">块组的内部构成</a></li>
+            <li><a href="#inode和data-block映射">inode和data block映射</a></li>
+            <li><a href="#目录与文件名与路径解析">目录与文件名与路径解析</a></li>
+            <li><a href="#路径缓存">路径缓存</a></li>
+            <li><a href="#挂载分区">挂载分区</a></li>
+          </ol>
+        </li>
+        <li><a href="#软硬链接">软硬链接</a>
+          <ol>
+            <li><a href="#软链接">软链接</a></li>
+            <li><a href="#硬链接">硬链接</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img
+    data-src="/avatar/my-avatar.webp"
+    data-sizes="auto"
+    alt="CialloKing"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">CialloKing</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div><div class="sidebar-state-number">19</div>
+  </div>
+  <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
+    <div>分类</div>
+    <div class="sidebar-state-number">
+      3
+    </div>
+  </a>
+  <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </a>
+</div>
+<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="首页"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">首页</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="归档"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">归档</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="关于"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">关于</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/link"
+        aria-label="友链"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
+    </div></div></div><div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div></div>
+  </div><div class="sidebar-widget"></div></div></aside>
+<section id="main" aria-label="Main content"><article
+  class="h-entry article"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div
+    class="article-inner"
+    data-aos="fade-up"
+  >
+    <div class="article-meta"><div class="article-date">
+  <span
+    class="article-date-link icon-calendar"
+    data-aos="zoom-in"
+  >
+    <time datetime="2026-04-17 00:00:00 &#43;0800 &#43;0800" itemprop="datePublished"
+      >2026-04-17</time
+    >
+    <time style="display: none;" id="post-update-time"
+      >2026-04-19</time
+    >
+  </span></div>
+</div><div class="hr-line"></div><div class="e-content article-entry" itemprop="articleBody"><h1 id="文件系统">
+<a class="header-anchor" href="#%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f"></a>
+文件系统
+</h1><p>被打开的文件在内存里，没有打开的文件储存在磁盘上，文件系统的工作就是让我们能找到文件。</p>
+<h2 id="磁盘">
+<a class="header-anchor" href="#%e7%a3%81%e7%9b%98"></a>
+磁盘
+</h2><h3 id="磁盘工作原理">
+<a class="header-anchor" href="#%e7%a3%81%e7%9b%98%e5%b7%a5%e4%bd%9c%e5%8e%9f%e7%90%86"></a>
+磁盘工作原理
+</h3><p>机械磁盘是计算机中唯一的一个机械设备，属于外设的一种。</p>
+<p>机械磁盘容量大，价格较低，是服务器存储中不可或缺的设备。服务器待的房间叫机房，许多个机房集中在一起就是数据中心，我们使用的微信QQ抖音等应用都是由各个公司机房里面的服务器提供服务。磁铁在高温环境下会退磁，机械磁盘退磁后就会丢失数据，所以机房怕着火。</p>
+
+  <blockquote class="alert-blockquote tip">
+    <p class="alert-heading">
+      Tip
+    </p>
+    <p><p>关于服务器的组成可以观看这个视频：<a href="https://www.bilibili.com/video/BV1D3411i7RD">为什么它被称为互联网之魂？服务器硬件知识科普</a></p></p>
+  </blockquote>
+
+<p>机械磁盘由主要由盘面和读取磁头组成，一个盘面上划分了许多扇区，扇区是机械磁盘读写的最小单位，主轴上有许多盘片，相同半径的扇区组成一个柱面。不同品牌的磁盘扇区大小不同，有的扇区是512字节，有的扇区是4KB，下面以512字节的扇区为例。磁盘的磁头是同进退的，所以磁盘写入的时候，是向柱面进行批量写入的。</p>
+<p><img src="/post/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/e232b91893a0485e856b5b61466e14be~tplv-k3u1fbpfcp-zoom-in-crop-mark_1512_0_0_0.webp" alt="">
+<img src="/post/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/78b14b842a3a4ab5bc67e1a5274365bc~tplv-k3u1fbpfcp-jj-mark_3024_0_0_0_q75.webp" alt=""></p>
+
+  <blockquote class="alert-blockquote tip">
+    <p class="alert-heading">
+      Tip
+    </p>
+    <p><p>关于磁盘工作原理可以观看其他优质讲解视频：<br>
+<a href="https://www.bilibili.com/video/BV1vw411s7YV">3D动画演示机械硬盘工作原理，教你如何选购高性能硬盘</a> <a href="https://www.bilibili.com/video/BV1vw411s7YV">https://www.bilibili.com/video/BV1vw411s7YV</a><br>
+<a href="https://www.bilibili.com/video/BV1bDpEz6EPA">用最好的动画为你讲解&ndash;机械硬盘的原理</a> <a href="https://www.bilibili.com/video/BV1bDpEz6EPA">https://www.bilibili.com/video/BV1bDpEz6EPA</a><br>
+有些服务器还会使用高速的固态硬盘(SSD))来加快文件读写，可以观看视频了解flash的存储原理<br>
+<a href="https://www.bilibili.com/video/BV1i54y1M7oi">你的U盘，其实是个监狱｜flash存储原理：固态硬盘，U盘，SD卡</a> <a href="https://www.bilibili.com/video/BV1i54y1M7oi">https://www.bilibili.com/video/BV1i54y1M7oi</a></p></p>
+  </blockquote>
+
+<h3 id="扇区定位">
+<a class="header-anchor" href="#%e6%89%87%e5%8c%ba%e5%ae%9a%e4%bd%8d"></a>
+扇区定位
+</h3><p>如果想要找到某一个扇区读写数据，需要先定位扇区所在的柱面(cylinder)，然后再找对应读写的磁头(header)，最后才能找到想要读写的扇区(sector)，这种定位方法叫CHS地址定位。</p>
+<p>在机械磁盘诞生之前计算机还在使用磁带储存数据。</p>
+<p><img src="/post/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/0d7299446140b668500ffe7a.webp" alt=""></p>
+<p>磁带可以拉长为一整条，我们可以把磁带看作一个超长的一维数组。逻辑上我们可以把磁盘想象成为卷在一起的磁带，把磁盘的每一个盘面按磁道分开拉直，再把所有扇区盘成一排，也可以组成一个超长的一维数组，这样每一个扇区都有一个下标，我们叫做LBA（Logical Block Address）地址，其实就是线性地址。操作系统使用这个LBA地址来访问扇区，这样在操作系统看来磁盘就是线性结构。</p>
+<p>把一个磁道展开，就形成了一个一维数组。</p>
+<p><img src="/post/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/6d753d7bcd7f1255841f77c62dbcfea1.webp" alt=""></p>
+<p>把一个柱面展开，就形成了一个二维数组。</p>
+<p><img src="/post/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/adac3d22361e5b6ea285c47b512b349a.webp" alt=""></p>
+<p>把所有柱面展开，就形成了一个三维数组。</p>
+<p><img src="/post/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/7f7a824ffa8b808403c04824cd14a6b7.webp" alt=""></p>
+<p>CHS地址定位其实在逻辑上就相当于定位三维数组某一个数据的过程。</p>
+<p>操作系统使用LBA地址，磁盘使用CHS地址，LBA地址和CHS地址之间的转换由磁盘的固件（硬件电路等系统）来完成。</p>
+<h4 id="chs地址和lba地址相互转换">
+<a class="header-anchor" href="#chs%e5%9c%b0%e5%9d%80%e5%92%8clba%e5%9c%b0%e5%9d%80%e7%9b%b8%e4%ba%92%e8%bd%ac%e6%8d%a2"></a>
+CHS地址和LBA地址相互转换
+</h4><p>CHS转LBA：<br>
+LBA= 柱面号C <em>（磁头数 * 每磁道扇区数）+ 磁头号H * 每磁道扇区数 + 扇区号S - 1<br>
+磁头数</em>每磁道扇区数=单个柱面的扇区总数，扇区号通常是从1开始的，而在LBA中，地址是从0开始的，柱面和磁道都是从0开始编号的<br>
+总柱面，磁道个数，扇区总数等信息，在磁盘内部会自动维护，上层开机的时候，会获取到这些参数。</p>
+<p>LBA转CHS：
+柱面号 C = LBA // (磁头数 × 每磁道扇区数)<br>
+磁头号 H = [ LBA % (磁头数 × 每磁道扇区数) ] // 每磁道扇区数<br>
+扇区号 S = ( LBA % 每磁道扇区数 ) + 1</p>
+<p>其中，// 表示整除（取整数商），% 表示取余数</p>
+<p>从此往后，在磁盘使用者看来，根本就不关心CHS地址，而是直接使用LBA地址，磁盘内部自己转换。<br>
+所以从现在开始，磁盘就可以看作是一个元素为扇区的一维数组，数组的下标就是每一个扇区的LBA地址。操作系统使用磁盘，就可以用一个数字访问磁盘扇区了。</p>
+<h2 id="文件系统概念和ext2文件系统">
+<a class="header-anchor" href="#%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f%e6%a6%82%e5%bf%b5%e5%92%8cext2%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f"></a>
+文件系统概念和ext2文件系统
+</h2><p>Linux 支持多种文件系统，如 ext2、ext3、ext4、XFS、Btrfs 等。ext2 是早期 Linux 的经典文件系统，结构清晰，适合用于理解文件系统的基本原理。ext3/ext4 在 ext2 基础上增加了日志（Journal）等特性以提升可靠性与性能，但磁盘布局思想一脉相承。</p>
+<h3 id="块">
+<a class="header-anchor" href="#%e5%9d%97"></a>
+块
+</h3><p>操作系统的文件系统访问磁盘，不以扇区为单位，而是以“块”为单位，因为以扇区为单位效率低，“块”一般是4KB大小(可以调整)，“块”是文件存取的最小单位。假如一个扇区的大小为512字节，那么8个扇区就组成了一个“块”。</p>
+<h3 id="分区">
+<a class="header-anchor" href="#%e5%88%86%e5%8c%ba"></a>
+分区
+</h3><p>文件系统的载体是分区，不同的分区可以使用不同的文件系统。<br>
+假如一个磁盘有1024GB大小，那么为了方便管理，可以把磁盘分为一个个区域，就像一个国家的面积太大了，必然要划分次一级的行政区划管理。假如分一个区的大小为256GB，那么这个磁盘就可以分为4个区。但是一个区域也很大，Linux里还可以继续把一个区划分为一个个组来管理。使用分治的思想，把整个磁盘的管理就一步步划分为对一个个组的管理。</p>
+<h3 id="块组的内部构成">
+<a class="header-anchor" href="#%e5%9d%97%e7%bb%84%e7%9a%84%e5%86%85%e9%83%a8%e6%9e%84%e6%88%90"></a>
+块组的内部构成
+</h3><p>一个组里储存着不同的数据，Linux里文件的内容和属性是分开存储的，一个分组的基本单位数据块Block是4KB。</p>
+<p><img src="/post/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/20180315215959767.webp" alt=""></p>
+<p>Block Group里的最小的基本单位是数据块Block，4KB大小。文件的内容储存在Data Blocks里，文件属性储存在inode Table里。Linux中，任何文件都要有自己的属性集合，文件的属性本质就是一个struct结构体，这个结构体我们称为inode，里面包含了文件的类型，大小，权限等属性，结构体 inode 的大小通常为 128 字节（不同文件系统可能不同，如 ext4 默认为 256 字节），但同一文件系统中所有 inode 大小相同。一个4KB的数据块可以保存32个inode。<br>
+文件名不保存在inode中。</p>
+<p>每个文件都有自己的inode编号来区分，使用<code>ls -li</code>指令可以查看编号。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ ls -li
+</span></span><span class="line"><span class="cl">total <span class="m">64</span>
+</span></span><span class="line"><span class="cl"><span class="m">922940</span> drwxrwxr-x <span class="m">3</span> user1 user1  <span class="m">4096</span> Apr  <span class="m">2</span> 21:01 <span class="m">222</span>
+</span></span><span class="line"><span class="cl"><span class="m">927303</span> drwxrwxr-x <span class="m">2</span> user1 user1  <span class="m">4096</span> Apr  <span class="m">1</span> 16:51 def
+</span></span><span class="line"><span class="cl"><span class="m">927245</span> -rwxrwxr-x <span class="m">1</span> user1 user1  <span class="m">8408</span> Apr  <span class="m">1</span> 15:54 hello
+</span></span><span class="line"><span class="cl"><span class="m">928053</span> -rwxrwxr-x <span class="m">1</span> user1 user1  <span class="m">8592</span> Apr  <span class="m">9</span> 01:52 <span class="nb">test</span>
+</span></span><span class="line"><span class="cl"><span class="m">922935</span> -rw-rw-r-- <span class="m">1</span> user1 user1   <span class="m">528</span> Apr  <span class="m">9</span> 01:52 test.c
+</span></span><span class="line"><span class="cl"><span class="m">927238</span> -rw-rw-r-- <span class="m">1</span> user1 user1 <span class="m">16929</span> Apr  <span class="m">1</span> 15:35 test.i
+</span></span><span class="line"><span class="cl"><span class="m">927240</span> -rw-rw-r-- <span class="m">1</span> user1 user1  <span class="m">1672</span> Apr  <span class="m">1</span> 15:48 test.o
+</span></span><span class="line"><span class="cl"><span class="m">927239</span> -rw-rw-r-- <span class="m">1</span> user1 user1   <span class="m">592</span> Apr  <span class="m">1</span> 15:43 test.s
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z 111<span class="o">]</span>$ 
+</span></span></code></pre></div><p>一个Data Blocks里面有非常多的4KB大小的数据块Block来存储文件内容，但是如果我们需要新建文件，怎么知道哪个Block用过了哪个数据块Block没用过呢？块位图(Block Bitmap)就是用来区分的，Block Bitmap中记录着DataBlock中哪个数据块已经被占用，哪个数据块没有被占用，使用位图的方式储存，类似传递标志位的方法。同样的，我们也需要知道inode Table里哪个数据块Block用过了，和块位图(Block Bitmap)类似，inode位图(Inode Bitmap)就是用来区分的inode Table里Block的状态。删除文件其实就是在块位图(Block Bitmap)和inode位图(Inode Bitmap)里把待删除文件的数据块Block标记为未使用，这就是我们感觉删除文件特别快的原因，假如误删文件了，最好是不要进行任何写入操作，以免覆盖待恢复文件的数据。<br>
+GDT (Group Descriptor Table)是块组描述符表，描述块组属性信息，整个分区分成多个块组就对应有多少个块组描述符。每个块组描述符存储一个块组的描述信息，如在这个块组中从哪里开始是inode Table，从哪里开始是Data Blocks，空闲的inode和数据块还有多少个等等。块组描述符在每个块组的开头都有一份拷贝。<br>
+超级块(Super Block)，存放文件系统本身的结构信息，描述整个分区的文件系统信息。记录的信息主要有：block和inode的总量，未使用的block和inode的数量，一个block和inode的大小，最近一次挂载的时间，最近一次写入数据的时间，最近一次检验磁盘的时间等其他文件系统的相关信息。因为每个块Block的大小是固定4KB的，决定总数就知道了每个Data Block，Block Bitmap，等等组里的所有信息。Super Block的信息被破坏，可以说整个文件系统结构就被破坏了。<br>
+超级块(Super Block)表示的是一个分区的整体情况，一个分区没有储存过文件，Data Blocks和inode Table全空，对应的Block Bitmap，Inode Bitmap也没有任何信息，使用组之前就应该把Super Block，GDT等管理信息全部初始化写入到磁盘中，一个分区那么多组都要进行相同的操作，这个过程叫<strong>格式化</strong>。为什么格式化后所有文件就清空了，因为格式化后管理信息全部清零，Block Bitmap和Inode Bitmap会标记所有Block都是未使用的状态，文件数据全没了。格式化的本质就是写入文件系统的管理信息。<br>
+不是所有的分组都有Super Block，只有个别分组会有，不同组的Super Block内容完全相同，因为Super Block一旦出问题，整个文件系统都没法工作，为了防止意外，所以Super Block会在多个组内都有备份，Super Block出问题了可以从其他组的备份恢复。</p>
+<p>inode和数据块Block是跨组编号的，不能跨分区，因为其他分区可能是不同的文件系统。所以，在同一个分区内inode编号和Block块号都是唯一的，拿着一个文件的inode，就可以找到文件的所有内容，因为每个组的Block数量是已知的，通过一些简单的运算就能找到文件的inode对应的分组。计算机在开机时操作系统要把已挂载的分区的超级块、块组描述符等核心元数据读入内存，以便后续进行文件操作，要修改文件需要把文件加载到内存里，同样的要修改文件系统的管理消息也需要先加载到内存里。</p>
+<h3 id="inode和data-block映射">
+<a class="header-anchor" href="#inode%e5%92%8cdata-block%e6%98%a0%e5%b0%84"></a>
+inode和data block映射
+</h3><p>当文件很大时，inode和block的映射有三级间接索引来储存文件。这样文件=内容+属性，就都能找到了
+<img src="/post/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/3144128-20250211121450360-1627908535.webp" alt=""></p>
+<h3 id="目录与文件名与路径解析">
+<a class="header-anchor" href="#%e7%9b%ae%e5%bd%95%e4%b8%8e%e6%96%87%e4%bb%b6%e5%90%8d%e4%b8%8e%e8%b7%af%e5%be%84%e8%a7%a3%e6%9e%90"></a>
+目录与文件名与路径解析
+</h3><p>目录也是一个文件，和其他文件一样也按上面的方式保存，目录文件也有自己的inode和内容，磁盘里不存在目录结构，只有目录文件。我们平时使用文件名访问文件的时候，其实都是带上了路径的，没有显示指定路径时进程就通过环境变量储存的信息自动加上当前工作目录来访问文件。目录文件里会放上文件名和inode的映射关系，文件的文件名保存在当前文件所属的目录的数据内容当中。通过路径+文件名访问文件，就是先打开所在的路径，读取对应目录里面的数据内容，得到文件名和inode的映射关系，通过文件名找到inode，再通过inode进行文件的查找。我们访问任何文件都必须得有路径。</p>
+<h3 id="路径缓存">
+<a class="header-anchor" href="#%e8%b7%af%e5%be%84%e7%bc%93%e5%ad%98"></a>
+路径缓存
+</h3><p>假如访问任何文件都从根目录/进行路径解析，那就是一直在进行大量的磁盘IO，降低了效率。为了提高效率，操作系统在进行路径解析的时候，会把我们历史访问的所有的目录(路径)形成一颗多叉树，进行保存，这样就形成了Linux系统的树状目录结构，打开的文件是目录的话，由操作系统自己在内存中进行路径维护。比如使用find指令从根目录查找文件时，第一次会有点慢，需要加载一会，之后第二第三次查找时由于有了缓存，展示查找结果就非常快。Linux中，在内核中维护树状路径结构的内核结构体叫做：<code>struct dentry</code>。Linux 内核通过目录项缓存（dentry cache）维护已解析过的路径组件，其核心结构体就是 <code>struct dentry</code>，可将路径名快速映射到对应的 inode，从而避免频繁的磁盘 I/O。</p>
+<h3 id="挂载分区">
+<a class="header-anchor" href="#%e6%8c%82%e8%bd%bd%e5%88%86%e5%8c%ba"></a>
+挂载分区
+</h3><p>我们能通过inode找到文件，那么怎么知道文件是在哪个分区下的？磁盘进行分区，并且每个分区格式化后，我们依然无法直接使用这个分区。我们的分区，一定是要个特定的一个目录进行关联，通过进入这个目录，就相当于进入这个分区，这种关联我们称为挂载。分区写入文件系统，无法直接使用，需要和指定的目录关联，进挂载才能使用。访问文件时可以根据访问目标文件的&quot;路径前缀&quot;准确判断在哪个分区。</p>
+<h2 id="软硬链接">
+<a class="header-anchor" href="#%e8%bd%af%e7%a1%ac%e9%93%be%e6%8e%a5"></a>
+软硬链接
+</h2><h3 id="软链接">
+<a class="header-anchor" href="#%e8%bd%af%e9%93%be%e6%8e%a5"></a>
+软链接
+</h3><p>软链接是一个独立的文件，软链接文件和被引用的文件的inode不同，可以理解为windows系统里的快捷方式。文件=内容+属性，软链接的内容是保存了的目标文件路径。使用<code>ls -l</code>指令查看软链接文件，文件权限前的第一个字母是l，代表这是一个软链接文件。</p>
+<h3 id="硬链接">
+<a class="header-anchor" href="#%e7%a1%ac%e9%93%be%e6%8e%a5"></a>
+硬链接
+</h3><p>硬链接不是独立的文件，硬链接的inode和被引用的文件相同。硬链接本质是一组新的文件名和目标inode编号的映射关系。文件新增一个硬链接会让文件的引用计数属性+1。硬链接可以用来给文件备份，删除文件时会先让引用计数-1，直到最后引用计数被减为0了才会删除文件。新建一个空目录时，其硬链接计数为 2（因为目录自身和其中的 <code>.</code> 条目）。当在该目录下创建子目录后，子目录中的 <code>..</code> 条目会增加父目录的链接计数，每创建一个子目录，父目录的硬链接计数就 +1 。例如：创建第 1 个子目录后，父目录计数变为 3；创建第 2 个后，变为 4，依此类推。
+硬链接的另一个重要限制是：<strong>不能跨文件系统创建</strong>。因为 inode 编号仅在当前分区内唯一，硬链接本质是共享 inode，因此源文件和链接必须在同一个挂载分区下。<br>
+硬链接只能给普通文件进行建立，Linux系统只支持给目录建立软链接，不支持任何用户给目录建立硬链接，目录的硬链接由操作系统来管理。Linux系统的目录结构是一颗多叉树，假如允许用户建立目录的硬链接，比如在某个目录下新建根目录的硬链接，这样会形成环状目录，出现路径环问题，破坏目录结构的多叉树结构。操作系统为了防止<code>.</code>和<code>..</code>在局部出现路径环问题，对<code>.</code>和<code>..</code>做了特殊处理。</p>
+</div>
+    <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
+    <a
+      class="article-category-link"
+      href="/categories/linux"
+      data-aos="zoom-in"
+      >Linux</a
+    >
+    </li></ul>
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e6%96%87%e4%bb%b6"
+        rel="tag"
+        >文件</a
+      >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e7%a3%81%e7%9b%98"
+        rel="tag"
+        >磁盘</a
+      >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/ext2"
+        rel="tag"
+        >ext2</a
+      >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e8%bd%af%e7%a1%ac%e9%93%be%e6%8e%a5"
+        rel="tag"
+        >软硬链接</a
+      >
+    </li></ul>
+</footer>
+  </div><nav
+    id="article-nav"
+    aria-label="Article navigation"
+    data-aos="fade-up"
+  ><div class="article-nav-link-wrap left"><img
+              data-src="/images/covers/covers-167.webp"
+              data-sizes="auto"
+              alt="【Linux】07 - 基础IO"
+              class="lazyload"
+            /><a
+          href="/post/linux07---%E5%9F%BA%E7%A1%80io/"
+          aria-label="前一篇:【Linux】07 - 基础IO"
+          title="前一篇:【Linux】07 - 基础IO"
+        ></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">【Linux】07 - 基础IO</h3>
+      </div></nav></article></section>
+        </div><footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info"><div>
+      <span class="icon-copyright"></span>2020-2026<span class="footer-info-sep rotate"></span>CialloKing
+    </div><div>
+        基于&nbsp;<a
+          href="https://gohugo.io/"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          >Hugo</a
+        >&nbsp;Theme.<a
+          href="https://github.com/D-Sketon/hugo-theme-reimu"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          >Reimu</a
+        >
+      </div><div>
+        <span class="icon-brush"
+          >&nbsp;118.7k</span
+        >
+        &nbsp;|&nbsp;
+        <span class="icon-coffee">&nbsp;04:08</span>
+      </div><div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv"
+          >总访问量&nbsp;<span
+            id="busuanzi_value_site_pv"
+          ></span
+        ></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv"
+          >总访客量&nbsp;<span
+            id="busuanzi_value_site_uv"
+          ></span
+        ></span>
+      </div></div>
+</footer>
+<div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div><div id="mask" class="hide"></div>
+      </div><nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap"><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#文件系统">文件系统</a>
+      <ol>
+        <li><a href="#磁盘">磁盘</a>
+          <ol>
+            <li><a href="#磁盘工作原理">磁盘工作原理</a></li>
+            <li><a href="#扇区定位">扇区定位</a>
+              <ol>
+                <li><a href="#chs地址和lba地址相互转换">CHS地址和LBA地址相互转换</a></li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+        <li><a href="#文件系统概念和ext2文件系统">文件系统概念和ext2文件系统</a>
+          <ol>
+            <li><a href="#块">块</a></li>
+            <li><a href="#分区">分区</a></li>
+            <li><a href="#块组的内部构成">块组的内部构成</a></li>
+            <li><a href="#inode和data-block映射">inode和data block映射</a></li>
+            <li><a href="#目录与文件名与路径解析">目录与文件名与路径解析</a></li>
+            <li><a href="#路径缓存">路径缓存</a></li>
+            <li><a href="#挂载分区">挂载分区</a></li>
+          </ol>
+        </li>
+        <li><a href="#软硬链接">软硬链接</a>
+          <ol>
+            <li><a href="#软链接">软链接</a></li>
+            <li><a href="#硬链接">硬链接</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img
+    data-src="/avatar/my-avatar.webp"
+    data-sizes="auto"
+    alt="CialloKing"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">CialloKing</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div><div class="sidebar-state-number">19</div>
+  </div>
+  <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
+    <div>分类</div>
+    <div class="sidebar-state-number">
+      3
+    </div>
+  </a>
+  <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
+    <div>标签</div>
+    <div class="sidebar-state-number">25</div>
+  </a>
+</div>
+<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="首页"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">首页</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="归档"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">归档</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="关于"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">关于</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/link"
+        aria-label="友链"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
+    </div></div></div></div><div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div></nav>
+</div><div id="aplayer" theme="var(--color-link)"></div><script
+    src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"
+    
+    
+    
+    
+    integrity="sha384-3gT/vsepWkfz/ff7PpWNUeMzeWoH3cDhm/A8jM7ouoAK0/fP/9bcHHR5kHq2nf&#43;e" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"
+    
+    
+    
+    
+    integrity="sha384-J08i8An/QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script><script src="/js/main.js" integrity="" crossorigin="anonymous"  ></script><script src="/js/aos.js" integrity="" crossorigin="anonymous"  ></script><script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", aosInit);
+    } else {
+      aosInit();
+    }
+  </script><script src="/js/pjax_main.js" integrity="" crossorigin="anonymous" data-pjax ></script><script>
+  var setupFirework = () => {
+    if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
+      if (window.firework) {
+        const options = JSON.parse("{\"excludeelements\":[\"a\",\"button\"],\"particles\":[{\"colors\":[\"var(--red-1)\",\"var(--red-2)\",\"var(--red-3)\",\"var(--red-4)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"emit\"],\"number\":20,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.3,0.5],\"radius\":[16,32]}},{\"colors\":[\"var(--red-0)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"diffuse\"],\"number\":1,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.2,0.5],\"lineWidth\":6,\"radius\":20}}]}");
+        options.excludeElements = options.excludeelements;
+        delete options.excludeelements;
+        window.firework(options);
+      }
+    }
+  }
+</script><script
+    src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js"
+    defer
+    
+    
+    onload="setupFirework()"
+    integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8&#43;pUoWX8n1rgq282T" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js"
+    
+    
+    
+    
+    integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE/jMSCxD&#43;jAPU55x/jj3wlf" crossorigin="anonymous"></script><script src="/js/pjax.js" integrity="" crossorigin="anonymous"  ></script><script
+    src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js"
+    
+    
+    
+    
+    integrity="sha384-caMDqvgav/HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb&#43;bEHtwlmYjD" crossorigin="anonymous"></script><script data-pjax>
+    window.quicklink?.listen({
+      timeout:  3000 ,
+      priority:  true ,
+      ignores: JSON.parse("[]")
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div><script data-pjax>
+        window.REIMU_POST = {
+          author: "CialloKing",
+          title: "【Linux】08 - 文件系统",
+          url: "https:\/\/cialloking.com\/post\/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F\/",
+          description: " 文件系统 被打开的文件在内存里，没有打开的文件储存在磁盘上，文件系统的工作就是让我们能找到文件。\n磁盘 磁盘工作原理 机械磁盘是计算机中唯一的一个机械设备，属于外设的一种。\n",
+          cover: "https:\/\/cialloking.com\/images\/bg\/bg1.webp",
+        };
+      </script><script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax ></script><script src="/js/tabs.js" integrity="" crossorigin="anonymous" data-pjax defer></script><script type="module" data-pjax>const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;const initPswp = (gallery, children) => {
+          if (_$$(`${gallery} ${children}`).length > 0) {
+            new PhotoSwipeLightbox({
+              gallery,
+              children,pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")}).init();
+          }
+        }
+        const pswp = () => {
+          initPswp('.article-entry', 'a.article-gallery-item');
+          initPswp('.article-gallery', 'a.article-gallery-item');
+        }
+        pswp()
+      </script><script
+    src="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.js"
+    
+    
+    data-pjax
+    
+    integrity="sha384-MWNUH0WmtsYGhn2cbH6ELRCbf9LG3QDqCC&#43;gqPB3IBNO35xjZK3Ejb6oONRpDbPg" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/katex@0.16.24/dist/contrib/auto-render.min.js"
+    
+    
+    data-pjax
+    
+    integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv&#43;fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script><script data-pjax>
+          var renderMath = () => {
+            if (!window.renderMathInElement) return;
+            window.renderMathInElement(_$("article"), {
+              delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "\\[", right: "\\]", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+              ],
+            });
+          };
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", renderMath, { once: true });
+          } else {
+            renderMath();
+          }
+        </script></div>
+</div><script
+    src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js"
+    
+    async
+    
+    
+    integrity="sha384-0M75wtSkhjIInv4coYlaJU83&#43;OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id&#43;S" crossorigin="anonymous"></script><script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script><script>
+  const reimuCopyright = String.raw`
+   ______     ______     __     __    __     __  __    
+  /\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+  \ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+   \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+    \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                    
+  `;
+  console.log(String.raw`%c ${reimuCopyright}`, "color: #ff5252;");
+  console.log(
+    "%c Theme.Reimu" + " %c https://github.com/D-Sketon/hugo-theme-reimu ",
+    "color: white; background: #ff5252; padding:5px 0;",
+    "padding:4px;border:1px solid #ff5252;",
+  );
+</script>
+
+<script>
+    var setupAPlayer = () => {
+      if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
+        if (window.matchMedia('(max-width: 959px)').matches) {
+          const aplayer = document.getElementById('aplayer');
+          if (aplayer) {
+            const aside = aplayer.parentNode?.parentNode;
+            if (aside?.tagName === 'ASIDE') {
+              aplayer.removeAttribute('data-aos');
+              aside.parentNode.removeChild(aplayer);
+              document.body.appendChild(aplayer);
+            }
+          }
+        }
+        
+        var audioData = [{"artist":"PIKASONIC; なこたんまる","cover":"/audio/追憶 (feat. nakotanmaru) - PIKASONIC; なこたんまる.webp","name":"追憶 (feat. nakotanmaru)","url":"/audio/追憶 (feat. nakotanmaru) - PIKASONIC; なこたんまる.m4a"},{"artist":"Wisp X; Xomu","cover":"/audio/Lumina - Wisp X Xomu.webp","name":"Lumina","url":"/audio/Lumina - Wisp X; Xomu.m4a"},{"artist":"Wisp X; DJ Okawari","cover":"/audio/Luv Letter (Wisp X Remix) - Wisp X DJ Okawari.webp","name":"Luv Letter (Wisp X Remix)","url":"/audio/Luv Letter (Wisp X Remix) - Wisp X,DJ Okawari.m4a"},{"artist":"Yonder Voice","cover":"/audio/花月夜 - Yonder Voice.webp","name":"花月夜","url":"/audio/花月夜 - Yonder Voice.m4a"},{"artist":"森永真由美","cover":"/audio/色は匂へど 散りぬるを -Full Version- - 森永真由美.webp","name":"色は匂へど 散りぬるを -Full Version-","url":"/audio/色は匂へど 散りぬるを -Full Version- - 森永真由美.m4a"},{"artist":"のみこ","cover":"/audio/Bad Apple!! - のみこ.webp","name":"Bad Apple!!","url":"/audio/Bad Apple!! - のみこ.m4a"},{"artist":"上海アリス幻樂団","cover":"/audio/少女綺想曲 ～ Dream Battle - 上海アリス幻樂団.webp","name":"少女綺想曲 ～ Dream Battle","url":"/audio/少女綺想曲 ～ Dream Battle - 上海アリス幻樂団.m4a"},{"artist":"Famishin; 井ノ原智","cover":"/audio/恋ひ恋ふ縁 (Title Version) - Famishin 井ノ原智.webp","name":"恋ひ恋ふ縁 (Title Version)","url":"/audio/恋ひ恋ふ縁 (Title Version) - Famishin,井ノ原智.m4a"}];
+        new APlayer({
+            theme: "var(--color-link)",
+            container: document.getElementById('aplayer'),
+            audio: audioData || [],
+            fixed:  true ,
+            autoplay:  false ,
+            loop: 'all',
+            order: 'random',
+            preload: 'auto',
+            volume:  0.7 ,
+            mutex:  true ,
+            listFolded:  true ,
+            lrcType:  0 ,
+        });
+      }
+    }
+    </script><script
+    src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js"
+    defer
+    
+    
+    onload="setupAPlayer()"
+    integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr&#43;h5UfruuRL/aORyw&#43;5&#43;HZoU6e" crossorigin="anonymous"></script><script>
+(function() {
+  // 封面图片列表（保持你现有路径不变，无需修改）
+  window.covers = [
+    '/images/covers/covers-01.webp',
+    '/images/covers/covers-02.webp',
+    '/images/covers/covers-03.webp',
+    '/images/covers/covers-04.webp',
+    '/images/covers/covers-05.webp',
+    '/images/covers/covers-06.webp',
+    '/images/covers/covers-07.webp',
+    '/images/covers/covers-08.webp',
+    '/images/covers/covers-09.webp',
+    '/images/covers/covers-10.webp',
+    '/images/covers/covers-11.webp',
+    '/images/covers/covers-12.webp',
+    '/images/covers/covers-13.webp',
+    '/images/covers/covers-14.webp',
+    '/images/covers/covers-15.webp',
+    '/images/covers/covers-16.webp',
+    '/images/covers/covers-17.webp',
+    '/images/covers/covers-18.webp',
+    '/images/covers/covers-19.webp',
+    '/images/covers/covers-20.webp',
+    '/images/covers/covers-21.webp',
+    '/images/covers/covers-22.webp',
+    '/images/covers/covers-23.webp',
+    '/images/covers/covers-24.webp',
+    '/images/covers/covers-25.webp',
+    '/images/covers/covers-26.webp',
+    '/images/covers/covers-27.webp',
+    '/images/covers/covers-28.webp',
+    '/images/covers/covers-29.webp',
+    '/images/covers/covers-30.webp',
+    '/images/covers/covers-31.webp',
+    '/images/covers/covers-32.webp',
+    '/images/covers/covers-33.webp',
+    '/images/covers/covers-34.webp',
+    '/images/covers/covers-35.webp',
+    '/images/covers/covers-36.webp',
+    '/images/covers/covers-37.webp',
+    '/images/covers/covers-38.webp',
+    '/images/covers/covers-39.webp',
+    '/images/covers/covers-40.webp',
+    '/images/covers/covers-41.webp',
+    '/images/covers/covers-42.webp',
+    '/images/covers/covers-43.webp',
+    '/images/covers/covers-44.webp',
+    '/images/covers/covers-45.webp',
+    '/images/covers/covers-46.webp',
+    '/images/covers/covers-47.webp',
+    '/images/covers/covers-48.webp',
+    '/images/covers/covers-49.webp',
+    '/images/covers/covers-50.webp',
+    '/images/covers/covers-51.webp',
+    '/images/covers/covers-52.webp',
+    '/images/covers/covers-53.webp',
+    '/images/covers/covers-54.webp',
+    '/images/covers/covers-55.webp',
+    '/images/covers/covers-56.webp',
+    '/images/covers/covers-57.webp',
+    '/images/covers/covers-58.webp',
+    '/images/covers/covers-59.webp',
+    '/images/covers/covers-60.webp',
+    '/images/covers/covers-61.webp',
+    '/images/covers/covers-62.webp',
+    '/images/covers/covers-63.webp',
+    '/images/covers/covers-64.webp',
+    '/images/covers/covers-65.webp',
+    '/images/covers/covers-66.webp',
+    '/images/covers/covers-67.webp',
+    '/images/covers/covers-68.webp',
+    '/images/covers/covers-69.webp',
+    '/images/covers/covers-70.webp',
+    '/images/covers/covers-71.webp',
+    '/images/covers/covers-72.webp',
+    '/images/covers/covers-73.webp',
+    '/images/covers/covers-74.webp',
+    '/images/covers/covers-75.webp',
+    '/images/covers/covers-76.webp',
+    '/images/covers/covers-77.webp',
+    '/images/covers/covers-78.webp',
+    '/images/covers/covers-79.webp',
+    '/images/covers/covers-80.webp',
+    '/images/covers/covers-81.webp',
+    '/images/covers/covers-82.webp',
+    '/images/covers/covers-83.webp',
+    '/images/covers/covers-84.webp',
+    '/images/covers/covers-85.webp',
+    '/images/covers/covers-86.webp',
+    '/images/covers/covers-87.webp',
+    '/images/covers/covers-88.webp',
+    '/images/covers/covers-89.webp',
+    '/images/covers/covers-90.webp',
+    '/images/covers/covers-91.webp',
+    '/images/covers/covers-92.webp',
+    '/images/covers/covers-93.webp',
+    '/images/covers/covers-94.webp',
+    '/images/covers/covers-95.webp',
+    '/images/covers/covers-96.webp',
+    '/images/covers/covers-97.webp',
+    '/images/covers/covers-98.webp',
+    '/images/covers/covers-99.webp',
+    '/images/covers/covers-100.webp',
+    '/images/covers/covers-101.webp',
+    '/images/covers/covers-102.webp',
+    '/images/covers/covers-103.webp',
+    '/images/covers/covers-104.webp',
+    '/images/covers/covers-105.webp',
+    '/images/covers/covers-106.webp',
+    '/images/covers/covers-107.webp',
+    '/images/covers/covers-108.webp',
+    '/images/covers/covers-109.webp',
+    '/images/covers/covers-110.webp',
+    '/images/covers/covers-111.webp',
+    '/images/covers/covers-112.webp',
+    '/images/covers/covers-113.webp',
+    '/images/covers/covers-114.webp',
+    '/images/covers/covers-115.webp',
+    '/images/covers/covers-116.webp',
+    '/images/covers/covers-117.webp',
+    '/images/covers/covers-118.webp',
+    '/images/covers/covers-119.webp',
+    '/images/covers/covers-120.webp',
+    '/images/covers/covers-121.webp',
+    '/images/covers/covers-122.webp',
+    '/images/covers/covers-123.webp',
+    '/images/covers/covers-124.webp',
+    '/images/covers/covers-125.webp',
+    '/images/covers/covers-126.webp',
+    '/images/covers/covers-127.webp',
+    '/images/covers/covers-128.webp',
+    '/images/covers/covers-129.webp',
+    '/images/covers/covers-130.webp',
+    '/images/covers/covers-131.webp',
+    '/images/covers/covers-132.webp',
+    '/images/covers/covers-133.webp',
+    '/images/covers/covers-134.webp',
+    '/images/covers/covers-135.webp',
+    '/images/covers/covers-136.webp',
+    '/images/covers/covers-137.webp',
+    '/images/covers/covers-138.webp',
+    '/images/covers/covers-139.webp',
+    '/images/covers/covers-140.webp',
+    '/images/covers/covers-141.webp',
+    '/images/covers/covers-142.webp',
+    '/images/covers/covers-143.webp',
+    '/images/covers/covers-144.webp',
+    '/images/covers/covers-145.webp',
+    '/images/covers/covers-146.webp',
+    '/images/covers/covers-147.webp',
+    '/images/covers/covers-148.webp',
+    '/images/covers/covers-149.webp',
+    '/images/covers/covers-150.webp',
+    '/images/covers/covers-151.webp',
+    '/images/covers/covers-152.webp',
+    '/images/covers/covers-153.webp',
+    '/images/covers/covers-154.webp',
+    '/images/covers/covers-155.webp',
+    '/images/covers/covers-156.webp',
+    '/images/covers/covers-157.webp',
+    '/images/covers/covers-158.webp',
+    '/images/covers/covers-159.webp',
+    '/images/covers/covers-160.webp',
+    '/images/covers/covers-161.webp',
+    '/images/covers/covers-162.webp',
+    '/images/covers/covers-163.webp',
+    '/images/covers/covers-164.webp',
+    '/images/covers/covers-165.webp',
+    '/images/covers/covers-166.webp',
+    '/images/covers/covers-167.webp',
+    '/images/covers/covers-168.webp',
+    '/images/covers/covers-169.webp',
+    '/images/covers/covers-170.webp',
+    '/images/covers/covers-171.webp',
+    '/images/covers/covers-172.webp',
+    '/images/covers/covers-173.webp',
+    '/images/covers/covers-174.webp',
+    '/images/covers/covers-175.webp',
+    '/images/covers/covers-176.webp',
+    '/images/covers/covers-177.webp',
+    '/images/covers/covers-178.webp',
+    '/images/covers/covers-179.webp',
+    '/images/covers/covers-180.webp',
+    '/images/covers/covers-181.webp',
+    '/images/covers/covers-182.webp',
+    '/images/covers/covers-183.webp',
+    '/images/covers/covers-184.webp',
+    '/images/covers/covers-185.webp',
+    '/images/covers/covers-186.webp',
+    '/images/covers/covers-187.webp',
+    '/images/covers/covers-188.webp',
+    '/images/covers/covers-189.webp',
+    '/images/covers/covers-190.webp',
+    '/images/covers/covers-191.webp',
+    '/images/covers/covers-192.webp',
+    '/images/covers/covers-193.webp',
+    '/images/covers/covers-194.webp',
+    '/images/covers/covers-195.webp',
+    '/images/covers/covers-196.webp',
+    '/images/covers/covers-197.webp',
+    '/images/covers/covers-198.webp',
+    '/images/covers/covers-199.webp',
+    '/images/covers/covers-200.webp',
+    '/images/covers/covers-201.webp',
+    '/images/covers/covers-202.webp',
+    '/images/covers/covers-203.webp',
+    '/images/covers/covers-204.webp',
+    '/images/covers/covers-205.webp',
+    '/images/covers/covers-206.webp',
+    '/images/covers/covers-207.webp',
+    '/images/covers/covers-208.webp',
+    '/images/covers/covers-209.webp',
+    '/images/covers/covers-210.webp',
+    '/images/covers/covers-211.webp',
+    '/images/covers/covers-212.webp',
+    '/images/covers/covers-213.webp',
+    '/images/covers/covers-214.webp',
+    '/images/covers/covers-215.webp',
+    '/images/covers/covers-216.webp',
+    '/images/covers/covers-217.webp',
+    '/images/covers/covers-218.webp',
+    '/images/covers/covers-219.webp',
+    '/images/covers/covers-220.webp',
+    '/images/covers/covers-221.webp',
+    '/images/covers/covers-222.webp',
+    '/images/covers/covers-223.webp',
+    '/images/covers/covers-224.webp',
+    '/images/covers/covers-225.webp',
+    '/images/covers/covers-226.webp',
+    '/images/covers/covers-227.webp',
+    '/images/covers/covers-228.webp',
+    '/images/covers/covers-229.webp',
+    '/images/covers/covers-230.webp',
+    '/images/covers/covers-231.webp',
+    '/images/covers/covers-232.webp',
+    '/images/covers/covers-233.webp',
+    '/images/covers/covers-234.webp',
+    '/images/covers/covers-235.webp',
+    '/images/covers/covers-236.webp',
+    '/images/covers/covers-237.webp',
+    '/images/covers/covers-238.webp',
+    '/images/covers/covers-239.webp',
+    '/images/covers/covers-240.webp',
+    '/images/covers/covers-241.webp',
+    '/images/covers/covers-242.webp',
+    '/images/covers/covers-243.webp',
+    '/images/covers/covers-244.webp',
+    '/images/covers/covers-245.webp',
+    '/images/covers/covers-246.webp',
+    '/images/covers/covers-247.webp',
+    '/images/covers/covers-248.webp',
+    '/images/covers/covers-249.webp',
+    '/images/covers/covers-250.webp',
+    '/images/covers/covers-251.webp',
+    '/images/covers/covers-252.webp',
+    '/images/covers/covers-253.webp',
+    '/images/covers/covers-254.webp',
+    '/images/covers/covers-255.webp',
+    '/images/covers/covers-256.webp',
+    '/images/covers/covers-257.webp',
+    '/images/covers/covers-258.webp',
+    '/images/covers/covers-259.webp',
+    '/images/covers/covers-260.webp',
+    '/images/covers/covers-261.webp',
+    '/images/covers/covers-262.webp',
+    '/images/covers/covers-263.webp',
+    '/images/covers/covers-264.webp',
+    '/images/covers/covers-265.webp',
+    '/images/covers/covers-266.webp',
+    '/images/covers/covers-267.webp',
+    '/images/covers/covers-268.webp',
+    '/images/covers/covers-269.webp',
+    '/images/covers/covers-270.webp',
+    '/images/covers/covers-271.webp',
+    '/images/covers/covers-272.webp',
+    '/images/covers/covers-273.webp',
+    '/images/covers/covers-274.webp',
+    '/images/covers/covers-275.webp',
+    '/images/covers/covers-276.webp',
+    '/images/covers/covers-277.webp',
+    '/images/covers/covers-278.webp',
+    '/images/covers/covers-279.webp',
+    '/images/covers/covers-280.webp',
+    '/images/covers/covers-281.webp',
+    '/images/covers/covers-282.webp',
+    '/images/covers/covers-283.webp',
+    '/images/covers/covers-284.webp',
+    '/images/covers/covers-285.webp',
+    '/images/covers/covers-286.webp',
+    '/images/covers/covers-287.webp',
+    '/images/covers/covers-288.webp',
+    '/images/covers/covers-289.webp',
+    '/images/covers/covers-290.webp',
+    '/images/covers/covers-291.webp',
+    '/images/covers/covers-292.webp',
+    '/images/covers/covers-293.webp',
+    '/images/covers/covers-294.webp',
+    '/images/covers/covers-295.webp',
+    '/images/covers/covers-296.webp',
+    '/images/covers/covers-297.webp',
+    '/images/covers/covers-298.webp',
+    '/images/covers/covers-299.webp',
+    '/images/covers/covers-300.webp',
+    '/images/covers/covers-301.webp',
+    '/images/covers/covers-302.webp',
+    '/images/covers/covers-303.webp',
+    '/images/covers/covers-304.webp',
+    '/images/covers/covers-305.webp',
+    '/images/covers/covers-306.webp',
+    '/images/covers/covers-307.webp',
+    '/images/covers/covers-308.webp',
+    '/images/covers/covers-309.webp',
+    '/images/covers/covers-310.webp',
+    '/images/covers/covers-311.webp',
+    '/images/covers/covers-312.webp',
+    '/images/covers/covers-313.webp',
+    '/images/covers/covers-314.webp',
+    '/images/covers/covers-315.webp',
+    '/images/covers/covers-316.webp',
+    '/images/covers/covers-317.webp',
+    '/images/covers/covers-318.webp',
+    '/images/covers/covers-319.webp',
+    '/images/covers/covers-320.webp',
+    '/images/covers/covers-321.webp',
+    '/images/covers/covers-322.webp',
+    '/images/covers/covers-323.webp',
+    '/images/covers/covers-324.webp',
+    '/images/covers/covers-325.webp',
+    '/images/covers/covers-326.webp',
+    '/images/covers/covers-327.webp',
+    '/images/covers/covers-328.webp',
+    '/images/covers/covers-329.webp',
+    '/images/covers/covers-330.webp',
+    '/images/covers/covers-331.webp',
+    '/images/covers/covers-332.webp',
+    '/images/covers/covers-333.webp',
+    '/images/covers/covers-334.webp',
+    '/images/covers/covers-335.webp',
+    '/images/covers/covers-336.webp',
+    '/images/covers/covers-337.webp',
+    '/images/covers/covers-338.webp',
+    '/images/covers/covers-339.webp',
+    '/images/covers/covers-340.webp',
+    '/images/covers/covers-341.webp',
+    '/images/covers/covers-342.webp',
+    '/images/covers/covers-343.webp',
+    '/images/covers/covers-344.webp',
+    '/images/covers/covers-345.webp',
+    '/images/covers/covers-346.webp',
+    '/images/covers/covers-347.webp',
+    '/images/covers/covers-348.webp',
+    '/images/covers/covers-349.webp',
+    '/images/covers/covers-350.webp',
+    '/images/covers/covers-351.webp',
+    '/images/covers/covers-352.webp',
+    '/images/covers/covers-353.webp',
+    '/images/covers/covers-354.webp',
+    '/images/covers/covers-355.webp',
+    '/images/covers/covers-356.webp',
+    '/images/covers/covers-357.webp',
+    '/images/covers/covers-358.webp',
+    '/images/covers/covers-359.webp',
+    '/images/covers/covers-360.webp',
+    '/images/covers/covers-361.webp',
+    '/images/covers/covers-362.webp',
+    '/images/covers/covers-363.webp',
+    '/images/covers/covers-364.webp',
+    '/images/covers/covers-365.webp',
+    '/images/covers/covers-366.webp',
+    '/images/covers/covers-367.webp',
+    '/images/covers/covers-368.webp',
+    '/images/covers/covers-369.webp',
+    '/images/covers/covers-370.webp',
+    '/images/covers/covers-371.webp',
+    '/images/covers/covers-372.webp',
+    '/images/covers/covers-373.webp',
+    '/images/covers/covers-374.webp',
+    '/images/covers/covers-375.webp',
+    '/images/covers/covers-376.webp',
+    '/images/covers/covers-377.webp',
+    '/images/covers/covers-378.webp',
+    '/images/covers/covers-379.webp',
+    '/images/covers/covers-380.webp',
+    '/images/covers/covers-381.webp',
+    '/images/covers/covers-382.webp',
+    '/images/covers/covers-383.webp',
+    '/images/covers/covers-384.webp',
+    '/images/covers/covers-385.webp',
+    '/images/covers/covers-386.webp',
+    '/images/covers/covers-387.webp',
+    '/images/covers/covers-388.webp',
+    '/images/covers/covers-389.webp',
+    '/images/covers/covers-390.webp',
+    '/images/covers/covers-391.webp',
+    '/images/covers/covers-392.webp',
+    '/images/covers/covers-393.webp',
+    '/images/covers/covers-394.webp',
+    '/images/covers/covers-395.webp',
+    '/images/covers/covers-396.webp',
+    '/images/covers/covers-397.webp',
+    '/images/covers/covers-398.webp',
+    '/images/covers/covers-399.webp',
+    '/images/covers/covers-400.webp',
+    '/images/covers/covers-401.webp',
+    '/images/covers/covers-402.webp',
+    '/images/covers/covers-403.webp',
+    '/images/covers/covers-404.webp',
+    '/images/covers/covers-405.webp',
+    '/images/covers/covers-406.webp',
+    '/images/covers/covers-407.webp',
+    '/images/covers/covers-408.webp',
+    '/images/covers/covers-409.webp'
+  ];
+
+  // 【关键修改1】扩展选择器，覆盖搜索页所有可能的封面容器
+  const coverSelectors = [
+    '.post-cover img',
+    '#search .post-cover img',
+    '.search-result .post-cover img',
+    '.algolia-hits .post-cover img', // 适配Algolia搜索结果卡片
+    '.search-page .post-cover img'
+  ].join(', ');
+
+  // 【关键修改2】适配动态DOM的封面赋值逻辑
+  function setRandomCovers() {
+    // 搜索页跳过（已在 single.html 处理）
+    if (document.getElementById('search-results')) {
+      return;
+    }
+    const coverImgs = document.querySelectorAll(coverSelectors);
+    if (coverImgs.length === 0) {
+      setTimeout(setRandomCovers, 150);
+      return;
+    }
+    coverImgs.forEach(img => {
+      // 有自定义封面的图片：直接显示，不随机替换
+      if (img.hasAttribute('data-custom-cover')) {
+        img.style.opacity = '1';
+        return;
+      }
+      // 已经设置过随机封面的图片：不再重复设置
+      if (img.hasAttribute('data-cover-set')) {
+        return;
+      }
+      const randomIndex = Math.floor(Math.random() * window.covers.length);
+      const newSrc = window.covers[randomIndex];
+      img.setAttribute('data-src', newSrc);
+      img.src = newSrc;
+      img.setAttribute('data-cover-set', 'true');
+      img.style.opacity = '1';
+      img.style.display = 'block';
+      img.style.visibility = 'visible';
+    });
+  }
+
+  // 【关键修改3】调整执行时机，适配搜索页加载流程
+  // 1. 页面加载完成后执行（适配直接打开搜索页）
+  window.addEventListener('load', setRandomCovers);
+  // 2. PJAX跳转后执行（适配从首页跳转到搜索页）
+  document.addEventListener('pjax:complete', setRandomCovers);
+  // 3. 搜索框输入后执行（适配动态搜索结果）
+  //document.querySelector('.search-input')?.addEventListener('input', () => {
+    //setTimeout(setRandomCovers, 200); // 延迟200ms，等待搜索结果渲染
+  //});
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      setTimeout(setRandomCovers, 200);
+    });
+  }
+
+
+
+})();
+</script>
+
+
+<script>
+(function() {
+  const bannerImages = [
+    '/images/bg/bg1.webp',
+    '/images/bg/bg2.webp',
+    '/images/bg/bg3.webp',
+    '/images/bg/bg4.webp',
+    '/images/bg/bg5.webp',
+    '/images/bg/bg6.webp',
+    '/images/bg/bg7.webp',
+    '/images/bg/bg8.webp',
+    '/images/bg/bg9.webp',
+    '/images/bg/bg10.webp',
+    '/images/bg/bg11.webp',
+    '/images/bg/bg12.webp',
+    '/images/bg/bg13.webp',
+    '/images/bg/bg14.webp',
+    '/images/bg/bg15.webp',
+    '/images/bg/bg16.webp',
+    '/images/bg/bg17.webp',
+    '/images/bg/bg18.webp',
+    '/images/bg/bg19.webp',
+    '/images/bg/bg20.webp',
+    '/images/bg/bg21.webp',
+    '/images/bg/bg22.webp',
+    '/images/bg/bg23.webp',
+    '/images/bg/bg24.webp',
+    '/images/bg/bg25.webp',
+    '/images/bg/bg26.webp',
+    '/images/bg/bg27.webp',
+    '/images/bg/bg28.webp',
+    '/images/bg/bg29.webp',
+    '/images/bg/bg30.webp',
+    '/images/bg/bg31.webp',
+    '/images/bg/bg32.webp',
+    '/images/bg/bg33.webp',
+    '/images/bg/bg34.webp',
+    '/images/bg/bg35.webp',
+    '/images/bg/bg36.webp',
+    '/images/bg/bg37.webp',
+    '/images/bg/bg38.webp',
+    '/images/bg/bg39.webp',
+    '/images/bg/bg40.webp',
+    '/images/bg/bg41.webp',
+    '/images/bg/bg42.webp',
+    '/images/bg/bg43.webp',
+    '/images/bg/bg44.webp',
+    '/images/bg/bg45.webp',
+    '/images/bg/bg46.webp',
+    '/images/bg/bg47.webp',
+    '/images/bg/bg48.webp',
+    '/images/bg/bg49.webp',
+    '/images/bg/bg50.webp',
+    '/images/bg/bg51.webp',
+    '/images/bg/bg52.webp',
+    '/images/bg/bg53.webp',
+    '/images/bg/bg54.webp',
+    '/images/bg/bg55.webp',
+    '/images/bg/bg56.webp',
+    '/images/bg/bg57.webp',
+    '/images/bg/bg58.webp',
+    '/images/bg/bg59.webp',
+    '/images/bg/bg60.webp',
+    '/images/bg/bg61.webp',
+    '/images/bg/bg62.webp',
+    '/images/bg/bg63.webp',
+    '/images/bg/bg64.webp',
+    '/images/bg/bg65.webp',
+    '/images/bg/bg66.webp',
+    '/images/bg/bg67.webp',
+    '/images/bg/bg68.webp',
+    '/images/bg/bg69.webp',
+    '/images/bg/bg70.webp',
+    '/images/bg/bg71.webp',
+    '/images/bg/bg72.webp',
+    '/images/bg/bg73.webp',
+    '/images/bg/bg74.webp',
+    '/images/bg/bg75.webp',
+    '/images/bg/bg76.webp',
+    '/images/bg/bg77.webp',
+    '/images/bg/bg78.webp',
+    '/images/bg/bg79.webp',
+    '/images/bg/bg80.webp',
+    '/images/bg/bg81.webp',
+    '/images/bg/bg82.webp',
+    '/images/bg/bg83.webp',
+    '/images/bg/bg84.webp',
+    '/images/bg/bg85.webp',
+    '/images/bg/bg86.webp',
+    '/images/bg/bg87.webp',
+    '/images/bg/bg88.webp',
+    '/images/bg/bg89.webp',
+    '/images/bg/bg90.webp',
+    '/images/bg/bg91.webp',
+    '/images/bg/bg92.webp',
+    '/images/bg/bg93.webp',
+    '/images/bg/bg94.webp',
+    '/images/bg/bg95.webp',
+    '/images/bg/bg96.webp',
+    '/images/bg/bg97.webp',
+    '/images/bg/bg98.webp'
+  ];
+
+  function getRandomBanner() {
+    return bannerImages[Math.floor(Math.random() * bannerImages.length)];
+  }
+
+  // 立即检查并设置，如果图片已存在
+  function setRandomBanner() {
+    const headerImg = document.querySelector('#header img');
+    if (headerImg && !headerImg.hasAttribute('data-random-set')) {
+      const randomUrl = getRandomBanner();
+      headerImg.setAttribute('data-src', randomUrl);
+      headerImg.src = randomUrl;
+      headerImg.setAttribute('data-random-set', 'true');
+      headerImg.style.opacity = '1';
+      headerImg.style.visibility = 'visible';
+    }
+  }
+
+  // 使用 MutationObserver 监听 DOM 变化，确保尽早捕捉到 header 图片
+  const observer = new MutationObserver((mutations, obs) => {
+    const img = document.querySelector('#header img');
+    if (img) {
+      setRandomBanner();
+      obs.disconnect(); // 找到后停止观察
+    }
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+
+  // 页面完全加载后兜底（防止 observer 遗漏）
+  window.addEventListener('load', setRandomBanner);
+  // PJAX 跳转后重新设置
+  document.addEventListener('pjax:complete', () => {
+    // 清除标记，允许重新设置
+    const headerImg = document.querySelector('#header img');
+    if (headerImg) headerImg.removeAttribute('data-random-set');
+    setRandomBanner();
+  });
+})();
+</script>
+</body>
+</html>

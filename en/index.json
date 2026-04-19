@@ -5,6 +5,19 @@
   },
   "docs": [
       {
+        "id": "92e1ca70db19013b31388dd5a44507fb",
+        "title": "【Linux】08 - File System",
+        "date": "2026-04-17",
+        "wordCount": 35,
+        "readingTime": 1,
+        "content": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "summary": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "cover": null,
+        "tags": ["文件"],
+        "categories": ["Linux"],
+        "permalink": "https://cialloking.com/en/post/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/"
+      },
+      {
         "id": "aed7c27f50535f758320b10a18e22d7d",
         "title": "【Linux】07 - Basic I/O",
         "date": "2026-04-14",

@@ -12,12 +12,42 @@
     
     <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
-    <lastBuildDate>Wed, 15 Apr 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 19 Apr 2026 00:00:00 +0800</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/categories/linux/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>【Linux】08 - 文件系统</title>
+      <link>https://cialloking.com/post/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Fri, 17 Apr 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】08 - 文件系统</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h1 id="文件系统">
+<a class="header-anchor" href="#%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f"></a>
+文件系统
+</h1><p>被打开的文件在内存里，没有打开的文件储存在磁盘上，文件系统的工作就是让我们能找到文件。</p>
+<h2 id="磁盘">
+<a class="header-anchor" href="#%e7%a3%81%e7%9b%98"></a>
+磁盘
+</h2><h3 id="磁盘工作原理">
+<a class="header-anchor" href="#%e7%a3%81%e7%9b%98%e5%b7%a5%e4%bd%9c%e5%8e%9f%e7%90%86"></a>
+磁盘工作原理
+</h3><p>机械磁盘是计算机中唯一的一个机械设备，属于外设的一种。</p>
+        
+        <hr><p>本文2026-04-17首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-19</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
     
     
 
@@ -59,7 +89,10 @@ fork函数
       <description>
         <![CDATA[<h1>【Linux】07 - 基础IO</h1><p>作者：CialloKing（xxx@example.com）</p>
         
-          <h2 id="文件">
+          <h1 id="基础io">
+<a class="header-anchor" href="#%e5%9f%ba%e7%a1%80io"></a>
+基础IO
+</h1><h2 id="文件">
 <a class="header-anchor" href="#%e6%96%87%e4%bb%b6"></a>
 文件
 </h2><p>一个大小为0的空文件在磁盘上也要占据空间。文件=内容+属性，虽然内容为空，但是文件的创建时间，权限等属性还是需要存储的，所以还是要占磁盘空间。所有的文件操作本质是文件内容操作和文件属性操作。</p>
