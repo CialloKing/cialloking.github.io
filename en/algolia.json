@@ -5,6 +5,15 @@
   },
   "docs": [
       {
+        "id": "78cf6820134d9bbcb77d5546dabe36dc",
+        "title": "【Linux】09 - Library Creation and Principles",
+        "content": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "summary": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "tags": ["库"],
+        "categories": ["Linux"],
+        "permalink": "https://cialloking.com/en/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/"
+      },
+      {
         "id": "92e1ca70db19013b31388dd5a44507fb",
         "title": "【Linux】08 - File System",
         "content": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",

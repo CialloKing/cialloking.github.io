@@ -1,0 +1,2059 @@
+<!doctype html>
+<html
+  lang="zh-CN" 
+  data-theme-mode="auto"
+  >
+  <head><meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/><title>
+  【Linux】09 - 库制作与原理 | CialloKing
+</title>
+<meta name="description" content="少女祈祷中..."/><script>
+  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"Lang\":\"zh-cn\",\"Title\":\"CialloKing 的博客\",\"Weight\":1,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"简体中文\",\"Locale\":\"zh-CN\"},{\"Lang\":\"en\",\"Title\":\"CialloKing Blog\",\"Weight\":2,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"English\",\"Locale\":\"en\"}],\"icon_font\":\"4552607_a0oqhord1y\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
+  
+</script>
+<link
+    rel="preload"
+    as="style"
+    crossorigin
+    href="/css/custom-fonts.css"
+    onload="this.rel='stylesheet'"
+  /><link
+    rel="preload"
+    href="//at.alicdn.com/t/c/font_4552607_a0oqhord1y.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  /><link rel="stylesheet" href="/css/loader.min.4eac6555838cbcb8a5d15bf9bae0c688b74fae83b16a5613692de3f476051979.css" /><meta property="og:type" content="website" />
+  <meta property="og:title" content="【Linux】09 - 库制作与原理 | CialloKing" />
+  <meta
+    property="og:description"
+    content="少女祈祷中..."
+  />
+  <meta property="og:url" content="https://cialloking.com/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/" />
+  <meta
+    property="og:site_name"
+    content="CialloKing 的博客"
+  />
+  <meta property="og:image" content="https://cialloking.com/images/bg/bg1.webp" />
+  <meta property="article:author" content="CialloKing" />
+  <meta property="article:published_time" content="2026-04-19T00:00:00&#43;08:00" />
+  <meta property="article:modified_time" content="2026-04-21T00:00:00&#43;08:00" /><meta property="article:tag" content="库, 链接, ELF" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
+<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.42c2ff6576a8f7440f141db001877cdde6d4907355753cb3bbd43efbad8597c9.css" /><link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
+    integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei&#43;Zx/1oA/0l8ysE" crossorigin="anonymous"
+    onload="this.onload=null;this.rel='stylesheet'"
+  /><link
+    rel="preload"
+    as="style"
+    href="https://npm.webcache.cn/katex@0.16.24/dist/katex.min.css"
+    integrity="sha384-tTgKLjMYmJr94v8qu2PE5MUGSMbyN2xiH266JUB3gpm8vnnJywd1dWSOEfrFz&#43;YI" crossorigin="anonymous"
+    onload="this.onload=null;this.rel='stylesheet'"
+  /><script
+    src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js"
+    
+    
+    
+    
+    integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script><link
+    rel="stylesheet"
+    href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css"
+    integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous"/><link
+    rel="stylesheet"
+    href="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.css"
+    integrity="sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj&#43;vDDLIL&#43;xBGQU/voDBY5XE2lVh" crossorigin="anonymous"/>
+<link rel="stylesheet" href="/css/custom.css"><style>
+  .post-cover img {
+    transition: opacity 0.3s ease;
+    opacity: 0;
+  }
+  .post-cover img[data-cover-set="true"],
+  .post-cover img[data-custom-cover="true"] {
+    opacity: 1;
+  }
+</style>
+
+
+<style>
+/* 解除头图纵向高度限制 */
+#header {
+  min-height: auto !important;  /* 允许容器高度自适应 */
+}
+#header img {
+  height: auto !important;      /* 图片高度自适应 */
+  max-height: 8192px !important; /* 最大高度提升到 8192px */
+  width: 100%;
+  object-fit: cover;            /* 保持比例填充，不拉伸变形 */
+}
+</style>
+
+
+
+<style>
+  #content {
+    transition: opacity 0.2s ease; /* 移出时快速恢复 */
+  }
+</style>
+<script>
+  (function() {
+    let animFrame = null;
+    let startTime = null;
+    const duration1 = 1000;   // 第一阶段 1 秒,第一阶段持续时间（毫秒），例如 1 秒 = 1000
+    const duration2 = 2000;   // 第二阶段 2 秒,第二阶段持续时间（毫秒），例如 2 秒 = 2000
+    const startOpacity = 1;   // 起始透明度
+    const midOpacity = 0.1;   // 中间透明度（第一阶段结束时的值）
+    const endOpacity = 0;     // 最终透明度
+
+    function updateOpacity(now) {
+      const elapsed = now - startTime;
+      let opacity;
+      if (elapsed < duration1) {
+        // 第一阶段：线性插值 1 -> 0.1
+        const t = elapsed / duration1;
+        opacity = startOpacity + (midOpacity - startOpacity) * t;
+      } else if (elapsed < duration1 + duration2) {
+        // 第二阶段：线性插值 0.1 -> 0
+        const t = (elapsed - duration1) / duration2;
+        opacity = midOpacity + (endOpacity - midOpacity) * t;
+      } else {
+        opacity = endOpacity;
+      }
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = opacity;
+      if (elapsed < duration1 + duration2) {
+        animFrame = requestAnimationFrame(updateOpacity);
+      }
+    }
+
+    function startFade() {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = startOpacity;
+      startTime = performance.now();
+      animFrame = requestAnimationFrame(updateOpacity);
+    }
+
+    function resetOpacity() {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      const content = document.getElementById('content');
+      if (content) content.style.opacity = '1';
+    }
+
+    function bindEvents() {
+      const header = document.getElementById('header');
+      if (!header) return;
+      header.removeEventListener('mouseenter', startFade);
+      header.removeEventListener('mouseleave', resetOpacity);
+      header.addEventListener('mouseenter', startFade);
+      header.addEventListener('mouseleave', resetOpacity);
+    }
+
+    function init() {
+      bindEvents();
+      document.addEventListener('pjax:complete', bindEvents);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
+</head>
+  <body><div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate"><svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+          M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg></div><div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script><div id="copy-tooltip"></div>
+<div id="lang-tooltip">
+本文章没有找到对应的语言版本
+</div>
+<div id="heatmap-tooltip"></div><div id="container">
+      <div id="wrap"><div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation"><a class="main-nav-link-wrap" href="/"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">首页</span>
+      </a><a class="main-nav-link-wrap" href="/archives"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">归档</span>
+      </a><a class="main-nav-link-wrap" href="/about"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">关于</span>
+      </a><a class="main-nav-link-wrap" href="/link"><div class='main-nav-icon icon rotate'>&#xe62b;</div><span class="main-nav-link">友链</span>
+      </a><a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+<a id="nav-search-page" class="nav-icon" href="/search/" title="搜索" aria-label="搜索"></a></nav>
+
+
+  </nav><nav id="i18n-nav" aria-label="Language selection">
+      <div class="custom-dropdown">
+        <div class="select-selected" id="select-selected" role="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language menu">
+          <span id="nav-language-btn" class="nav-icon" style="padding: 0 20px 0 0"></span>
+          <span id="selected-lang">简体中文</span>
+        </div>
+        <ul class="select-items" id="select-items" role="listbox" aria-label="Languages"><li data-value="zh-cn" role="option" class="selected" aria-selected="true" >简体中文</li><li data-value="en" role="option" aria-selected="false" >English</li></ul>
+      </div>
+      <script>
+        var selectSelected = document.getElementById("select-selected");
+        var selectedLang = document.getElementById("selected-lang");
+        var selectItems = document.getElementById("select-items");
+        var selectOptions = selectItems.querySelectorAll("li");
+
+        selectSelected.addEventListener("click", () => {
+          selectItems.classList.toggle("show");
+          var expanded = selectSelected.getAttribute("aria-expanded") === "true";
+          selectSelected.setAttribute("aria-expanded", (!expanded).toString());
+        });
+
+        selectOptions.forEach((item) => {
+          item.addEventListener("click", () => {
+            const langMap = {};langMap['en'] = '\/en\/post\/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86\/';selectedLang.textContent = item.textContent;
+            selectItems.classList.remove("show");
+            selectOptions.forEach((option) => {
+              option.classList.remove("selected");
+            });
+            item.classList.add("selected");
+            if (item.dataset.value === 'zh-cn') {
+              return;
+            }
+            if (!langMap[item.dataset.value]) {
+              _$("#lang-tooltip").style.opacity = "1";
+              setTimeout(() => {
+                _$("#lang-tooltip").style.opacity = "0";
+              }, 1000);
+              return;
+            }
+            window.location = langMap[item.dataset.value];
+          });
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!event.target.closest(".custom-dropdown")) {
+            selectItems.classList.remove("show");
+            selectSelected.setAttribute("aria-expanded", "false");
+          }
+        });
+      </script>
+    </nav></div>
+<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg1.webp" alt="【Linux】09 - 库制作与原理"><div id="header-outer">
+    <div id="header-title"><span id="logo">
+            <h1 data-aos="slide-up">【Linux】09 - 库制作与原理</h1>
+          </span><h2 id="subtitle-wrap" data-aos="slide-down"></h2></div>
+  </div>
+</header><div id="content"
+          aria-label="Page content"
+          class="sidebar-left"
+            ><aside id="sidebar" aria-label="Sidebar"><div class="sidebar-wrapper-container sticky"><div class="sidebar-wrapper">
+    <div
+      class="sidebar-wrap"
+      data-aos="fade-up"
+    ><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#库制作与原理">库制作与原理</a>
+      <ol>
+        <li><a href="#什么是库">什么是库</a></li>
+        <li><a href="#动静态库">动静态库</a>
+          <ol>
+            <li><a href="#静态库">静态库</a></li>
+            <li><a href="#动态库">动态库</a></li>
+            <li><a href="#动静态库结论">动静态库结论</a></li>
+          </ol>
+        </li>
+        <li><a href="#目标文件">目标文件</a></li>
+        <li><a href="#elf文件">ELF文件</a>
+          <ol>
+            <li><a href="#elf形成可执行文件">ELF形成可执行文件</a></li>
+            <li><a href="#elf可执行文件加载">ELF可执行文件加载</a></li>
+          </ol>
+        </li>
+        <li><a href="#连接与加载">连接与加载</a>
+          <ol>
+            <li><a href="#静态链接">静态链接</a></li>
+            <li><a href="#elf加载与进程地址空间">ELF加载与进程地址空间</a>
+              <ol>
+                <li><a href="#逻辑地址与虚拟地址">逻辑地址与虚拟地址</a></li>
+                <li><a href="#重新理解进程虚拟地址空间">重新理解进程虚拟地址空间</a></li>
+                <li><a href="#程序的加载">程序的加载</a></li>
+              </ol>
+            </li>
+            <li><a href="#动态链接与动态库加载">动态链接与动态库加载</a>
+              <ol>
+                <li><a href="#进程如何看到动态库以及如何共享">进程如何看到动态库以及如何共享</a></li>
+                <li><a href="#动态链接">动态链接</a></li>
+                <li><a href="#总结">总结</a></li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img
+    data-src="/avatar/my-avatar.webp"
+    data-sizes="auto"
+    alt="CialloKing"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">CialloKing</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div><div class="sidebar-state-number">20</div>
+  </div>
+  <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
+    <div>分类</div>
+    <div class="sidebar-state-number">
+      3
+    </div>
+  </a>
+  <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
+    <div>标签</div>
+    <div class="sidebar-state-number">28</div>
+  </a>
+</div>
+<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="首页"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">首页</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="归档"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">归档</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="关于"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">关于</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/link"
+        aria-label="友链"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
+    </div></div></div><div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div></div>
+  </div><div class="sidebar-widget"></div></div></aside>
+<section id="main" aria-label="Main content"><article
+  class="h-entry article"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div
+    class="article-inner"
+    data-aos="fade-up"
+  >
+    <div class="article-meta"><div class="article-date">
+  <span
+    class="article-date-link icon-calendar"
+    data-aos="zoom-in"
+  >
+    <time datetime="2026-04-19 00:00:00 &#43;0800 &#43;0800" itemprop="datePublished"
+      >2026-04-19</time
+    >
+    <time style="display: none;" id="post-update-time"
+      >2026-04-21</time
+    >
+  </span></div>
+</div><div class="hr-line"></div><div class="e-content article-entry" itemprop="articleBody"><h1 id="库制作与原理">
+<a class="header-anchor" href="#%e5%ba%93%e5%88%b6%e4%bd%9c%e4%b8%8e%e5%8e%9f%e7%90%86"></a>
+库制作与原理
+</h1><h2 id="什么是库">
+<a class="header-anchor" href="#%e4%bb%80%e4%b9%88%e6%98%af%e5%ba%93"></a>
+什么是库
+</h2><p>库是写好的现有的，成熟的，可以复用的代码。现实中每个程序都要依赖很多基础的底层库，不可能每个的代码都从零开始，因此库的存在意义非同寻常。</p>
+<p>假如C语言不提供标准库，每个人需要打印消息时都要自己从头写一个<code>printf</code>函数，这样效率就太低了，而且每个人写的<code>printf</code>也不一样，标准库就可以把这些常用的函数统一起来。</p>
+<p>Linux里的静态库后缀是<code>.a</code>动态库的后缀是<code>.so</code>、windows系统里静态库后缀是<code>.lib</code>动态库的后缀是<code>.dll</code>。编译出可执行程序的最后一步是通过链接器进行链接，也就是把一堆<code>.o</code>后缀的文件连在一起形成可执行文件。库就是打包在一起的<code>.o</code>后缀文件，在链接这一步库和我们的代码链接最后形成可执行文件。所有的库(无论是动还是静)，本质都是源文件对应的<code>.o</code>。
+库是被其他文件链接的，没有<code>main</code>函数。</p>
+<h2 id="动静态库">
+<a class="header-anchor" href="#%e5%8a%a8%e9%9d%99%e6%80%81%e5%ba%93"></a>
+动静态库
+</h2><h3 id="静态库">
+<a class="header-anchor" href="#%e9%9d%99%e6%80%81%e5%ba%93"></a>
+静态库
+</h3><p>使用gcc的 <code>-c</code> 选项来让源文件生成同名的<code>.o</code>后缀文件，使用<code>ar</code>命令可以把我们生成的一堆<code>.o</code>文件打包成静态库文件，如<code>ar -rc libmystdio.a my_stdio.o my_string.o</code>，rc 表示(replace and create)，执行这条命令我们就把<code>my_stdio.o my_string.o</code>文件打包为<code>libmystdio.a</code>静态库文件了。同时我们还需要提供头文件，头文件其实是源文件的使用方法说明文档。<br>
+Linux里静态库的文件名必须遵循 lib前缀 + 库名 + .a后缀 的格式。例如库名为 <code>mystdio</code>，则生成的文件名为 <code>libmystdio.a</code>。<br>
+<code>.a</code>静态库，本质是一种归档文件，不需要使用者解包，而用gcc/g++直接进行链接即可。</p>
+<p>现在已经生成了我们自己的静态库文件<code>libmystdio.a</code>，可以把静态库文件和对应的头文件安装到系统的静态库目录下，其实就是拷贝，安装后使用<code>gcc main.c -lmystdio</code>来链接生成对应的可执行文件。但是安装到系统路径下还是不太方便，如果头文件和库文件和我们自己的源文件在同一个路径下，可以使用<code>gcc main.c -L . -l mystdio -o main</code>，<code>-L</code>选项告诉gcc要去哪里找库，<code>-l</code>选项告诉gcc要链接什么库，填的库名不需要带上前缀lib和后缀<code>.a</code>。假如头文件和库文件在其他目录下，可以使用<code>gcc main.c -I 头文件路径 -L 库文件路径 -l mystdio</code>来链接。C语言的标准库是默认的，不需要显示命令指定。</p>
+<h3 id="动态库">
+<a class="header-anchor" href="#%e5%8a%a8%e6%80%81%e5%ba%93"></a>
+动态库
+</h3><p>使用 gcc 的 <code>-shared</code> 选项将位置无关的目标文件（通常由 <code>gcc -c -fPIC</code> 生成）打包为动态库，如<code>gcc -shared -fPIC my_stdio.o my_string.o -o libmystdio.so</code>。注意：编译生成 <code>.o</code> 时需加上 <code>-fPIC</code> 选项，以生成位置无关代码，这是动态库能被多个进程共享的基础。gcc既可以生成可执行程序，又可以生成动态库。使用动态库时，链接阶段和静态库命令一致，同样使用 <code>-L</code> 和 <code>-l</code> 选项，如<code>gcc main.c -L . -l mystdio -o main</code>。在生成时指定了路径，仅仅是告诉了gcc动态库的路径，运行时由于操作系统不知道动态库的路径，会报错。</p>
+<p>想要让程序能找到我们自己的动态库有4种方法：</p>
+<ol>
+<li>可以把动态库安装到系统路径里，如<code>sudo cp libmystdio.so /usr/lib64/</code>但是需要root权限，而且可能污染系统目录。</li>
+<li>创建软链接，如<code>sudo ln -s /真实路径/libmystdio.so /usr/lib/libmystdio.so</code>，效果和直接拷贝相同。</li>
+<li>修改环境变量LD_LIBRARY_PATH，将动态库所在的目录路径添加到LD_LIBRARY_PATH环境变量当中即可，但是这种修改是临时的，重新登陆终端时就会重置，除非修改shell读取的系统的环境变量配置文件。</li>
+<li>修改配置文件，在 <code>/etc/ld.so.conf.d/</code> 下新建 <code>自定义文件名.conf</code> 文件，写入库所在目录的绝对路径，然后执行 <code>sudo ldconfig</code> 更新缓存。永久有效，且无需污染系统默认目录。</li>
+</ol>
+<h3 id="动静态库结论">
+<a class="header-anchor" href="#%e5%8a%a8%e9%9d%99%e6%80%81%e5%ba%93%e7%bb%93%e8%ae%ba"></a>
+动静态库结论
+</h3><p>只有静态库时只能静态链接，只有动态库时只能动态链接。动静态库都存在时gcc默认使用动态库，如果需要强制全静态链接时可以加上<code>-static</code>选项，并且要保证静态库存在。</p>
+<p>在Linux系统里，默认情况下安装大部分的库，都优先安装动态库。</p>
+<p>一个库有多个应用使用，比例一定是1：n的。</p>
+<p>gcc可以生成可执行程序和动静态库，Visual Studio也可以。</p>
+<h2 id="目标文件">
+<a class="header-anchor" href="#%e7%9b%ae%e6%a0%87%e6%96%87%e4%bb%b6"></a>
+目标文件
+</h2><p>把.c文件编译为.o文件，整个过程是独立的，和其他任何文件没有关系，只有在链接时才和其他文件产生联系。假如这是一个大型项目，有一万个.c文件，其中一个.c文件更新了新代码，就只需要编译这个.c文件，然后再链接，不需要把其他9999个.c文件一起重新编译，这样就节约时间提升了效率。<br>
+一些大型项目往往还可以分成几个不同的模块，每个模块都可以各自形成一个静态库，最后链接的时候再生成可执行文件。目标文件是一个二进制的文件，文件的格式是<code>ELF</code>，是对二进制代码的一种封装。
+<img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5.webp" alt=""></p>
+<h2 id="elf文件">
+<a class="header-anchor" href="#elf%e6%96%87%e4%bb%b6"></a>
+ELF文件
+</h2><p>动静态库，可执行程序，.o文件都是ELF格式的。</p>
+<p><img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/ELF%E6%A0%BC%E5%BC%8F.webp" alt=""></p>
+<h3 id="elf形成可执行文件">
+<a class="header-anchor" href="#elf%e5%bd%a2%e6%88%90%e5%8f%af%e6%89%a7%e8%a1%8c%e6%96%87%e4%bb%b6"></a>
+ELF形成可执行文件
+</h3><p>形成可执行文件在这里可以看为两步，第一步，将多份C/C++源代码，翻译成为目标.O文件+动静态库(ELF)，第二步，将多份.o文件section进行合并。链接形成可执行文件的本质其实是将ELF格式的.o文件里面的section进行合并，section有代码节和数据节，一合并就变成可执行文件，本质就是进行二进制文件的合并。</p>
+
+  <blockquote class="alert-blockquote tip">
+    <p class="alert-heading">
+      Tip
+    </p>
+    <p><p>实际合并是在链接时进的，但是并不是这么简单的合并，也会涉及对库合并，此处不做过多追究。</p></p>
+  </blockquote>
+
+<p><img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/%E9%93%BE%E6%8E%A5%E5%90%88%E5%B9%B6.webp" alt=""></p>
+<h3 id="elf可执行文件加载">
+<a class="header-anchor" href="#elf%e5%8f%af%e6%89%a7%e8%a1%8c%e6%96%87%e4%bb%b6%e5%8a%a0%e8%bd%bd"></a>
+ELF可执行文件加载
+</h3><p>一个ELF会有多种不同的Section，在加载到内存的时候，也会进Section合并，形成segment。合并原则：相同属性，比如：可读，可写，可执，需要加载时申请空间等。这样，即便是不同的Section，在加载到内存中，可能会以segment的形式，加载到一起。</p>
+<p>使用<code>readelf -S /bin/ls</code>命令可以查看ls指令可执行文件的Section Header Table（节头表）</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ readelf -S /bin/ls
+</span></span><span class="line"><span class="cl">There are <span class="m">30</span> section headers, starting at offset 0x1c3e8:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Section Headers:
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>Nr<span class="o">]</span> Name              Type             Address           Offset
+</span></span><span class="line"><span class="cl">       Size              EntSize          Flags  Link  Info  Align
+</span></span><span class="line"><span class="cl">  <span class="o">[</span> 0<span class="o">]</span>                   NULL             <span class="m">0000000000000000</span>  <span class="m">00000000</span>
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000000</span>  <span class="m">0000000000000000</span>           <span class="m">0</span>     <span class="m">0</span>     <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span> 1<span class="o">]</span> .interp           PROGBITS         <span class="m">0000000000400238</span>  <span class="m">00000238</span>
+</span></span><span class="line"><span class="cl">       000000000000001c  <span class="m">0000000000000000</span>   A       <span class="m">0</span>     <span class="m">0</span>     <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span> 2<span class="o">]</span> .note.ABI-tag     NOTE             <span class="m">0000000000400254</span>  <span class="m">00000254</span>
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000020</span>  <span class="m">0000000000000000</span>   A       <span class="m">0</span>     <span class="m">0</span>     <span class="m">4</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span> 3<span class="o">]</span> .note.gnu.build-i NOTE             <span class="m">0000000000400274</span>  <span class="m">00000274</span>
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000024</span>  <span class="m">0000000000000000</span>   A       <span class="m">0</span>     <span class="m">0</span>     <span class="m">4</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span> 4<span class="o">]</span> .gnu.hash         GNU_HASH         <span class="m">0000000000400298</span>  <span class="m">00000298</span>
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000038</span>  <span class="m">0000000000000000</span>   A       <span class="m">5</span>     <span class="m">0</span>     <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span> 5<span class="o">]</span> .dynsym           DYNSYM           00000000004002d0  000002d0
+</span></span><span class="line"><span class="cl">       0000000000000c18  <span class="m">0000000000000018</span>   A       <span class="m">6</span>     <span class="m">1</span>     <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span> 6<span class="o">]</span> .dynstr           STRTAB           0000000000400ee8  00000ee8
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000572</span>  <span class="m">0000000000000000</span>   A       <span class="m">0</span>     <span class="m">0</span>     <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span> 7<span class="o">]</span> .gnu.version      VERSYM           000000000040145a  0000145a
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000102</span>  <span class="m">0000000000000002</span>   A       <span class="m">5</span>     <span class="m">0</span>     <span class="m">2</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span> 8<span class="o">]</span> .gnu.version_r    VERNEED          <span class="m">0000000000401560</span>  <span class="m">00001560</span>
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000090</span>  <span class="m">0000000000000000</span>   A       <span class="m">6</span>     <span class="m">2</span>     <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span> 9<span class="o">]</span> .rela.dyn         RELA             00000000004015f0  000015f0
+</span></span><span class="line"><span class="cl">       00000000000000d8  <span class="m">0000000000000018</span>   A       <span class="m">5</span>     <span class="m">0</span>     <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>10<span class="o">]</span> .rela.plt         RELA             00000000004016c8  000016c8
+</span></span><span class="line"><span class="cl">       0000000000000ac8  <span class="m">0000000000000018</span>  AI       <span class="m">5</span>    <span class="m">24</span>     <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>11<span class="o">]</span> .init             PROGBITS         <span class="m">0000000000402190</span>  <span class="m">00002190</span>
+</span></span><span class="line"><span class="cl">       000000000000001a  <span class="m">0000000000000000</span>  AX       <span class="m">0</span>     <span class="m">0</span>     <span class="m">4</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>12<span class="o">]</span> .plt              PROGBITS         00000000004021b0  000021b0
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000740</span>  <span class="m">0000000000000010</span>  AX       <span class="m">0</span>     <span class="m">0</span>     <span class="m">16</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>13<span class="o">]</span> .text             PROGBITS         00000000004028f0  000028f0
+</span></span><span class="line"><span class="cl">       000000000001014a  <span class="m">0000000000000000</span>  AX       <span class="m">0</span>     <span class="m">0</span>     <span class="m">16</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>14<span class="o">]</span> .fini             PROGBITS         0000000000412a3c  00012a3c
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000009</span>  <span class="m">0000000000000000</span>  AX       <span class="m">0</span>     <span class="m">0</span>     <span class="m">4</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>15<span class="o">]</span> .rodata           PROGBITS         0000000000412a60  00012a60
+</span></span><span class="line"><span class="cl">       0000000000003cce  <span class="m">0000000000000000</span>   A       <span class="m">0</span>     <span class="m">0</span>     <span class="m">32</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>16<span class="o">]</span> .eh_frame_hdr     PROGBITS         <span class="m">0000000000416730</span>  <span class="m">00016730</span>
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000754</span>  <span class="m">0000000000000000</span>   A       <span class="m">0</span>     <span class="m">0</span>     <span class="m">4</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>17<span class="o">]</span> .eh_frame         PROGBITS         0000000000416e88  00016e88
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000002704</span>  <span class="m">0000000000000000</span>   A       <span class="m">0</span>     <span class="m">0</span>     <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>18<span class="o">]</span> .init_array       INIT_ARRAY       000000000061a328  0001a328
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000008</span>  <span class="m">0000000000000008</span>  WA       <span class="m">0</span>     <span class="m">0</span>     <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>19<span class="o">]</span> .fini_array       FINI_ARRAY       000000000061a330  0001a330
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000008</span>  <span class="m">0000000000000008</span>  WA       <span class="m">0</span>     <span class="m">0</span>     <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>20<span class="o">]</span> .jcr              PROGBITS         000000000061a338  0001a338
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000008</span>  <span class="m">0000000000000000</span>  WA       <span class="m">0</span>     <span class="m">0</span>     <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>21<span class="o">]</span> .data.rel.ro      PROGBITS         000000000061a340  0001a340
+</span></span><span class="line"><span class="cl">       0000000000000a68  <span class="m">0000000000000000</span>  WA       <span class="m">0</span>     <span class="m">0</span>     <span class="m">32</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>22<span class="o">]</span> .dynamic          DYNAMIC          000000000061ada8  0001ada8
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000200</span>  <span class="m">0000000000000010</span>  WA       <span class="m">6</span>     <span class="m">0</span>     <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>23<span class="o">]</span> .got              PROGBITS         000000000061afa8  0001afa8
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000048</span>  <span class="m">0000000000000008</span>  WA       <span class="m">0</span>     <span class="m">0</span>     <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>24<span class="o">]</span> .got.plt          PROGBITS         000000000061b000  0001b000
+</span></span><span class="line"><span class="cl">       00000000000003b0  <span class="m">0000000000000008</span>  WA       <span class="m">0</span>     <span class="m">0</span>     <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>25<span class="o">]</span> .data             PROGBITS         000000000061b3c0  0001b3c0
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000240</span>  <span class="m">0000000000000000</span>  WA       <span class="m">0</span>     <span class="m">0</span>     <span class="m">32</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>26<span class="o">]</span> .bss              NOBITS           000000000061b600  0001b600
+</span></span><span class="line"><span class="cl">       0000000000000d20  <span class="m">0000000000000000</span>  WA       <span class="m">0</span>     <span class="m">0</span>     <span class="m">32</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>27<span class="o">]</span> .gnu_debuglink    PROGBITS         <span class="m">0000000000000000</span>  0001b600
+</span></span><span class="line"><span class="cl">       <span class="m">0000000000000010</span>  <span class="m">0000000000000000</span>           <span class="m">0</span>     <span class="m">0</span>     <span class="m">4</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>28<span class="o">]</span> .gnu_debugdata    PROGBITS         <span class="m">0000000000000000</span>  0001b610
+</span></span><span class="line"><span class="cl">       0000000000000cb8  <span class="m">0000000000000000</span>           <span class="m">0</span>     <span class="m">0</span>     <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>29<span class="o">]</span> .shstrtab         STRTAB           <span class="m">0000000000000000</span>  0001c2c8
+</span></span><span class="line"><span class="cl">       000000000000011a  <span class="m">0000000000000000</span>           <span class="m">0</span>     <span class="m">0</span>     <span class="m">1</span>
+</span></span><span class="line"><span class="cl">Key to Flags:
+</span></span><span class="line"><span class="cl">  W <span class="o">(</span>write<span class="o">)</span>, A <span class="o">(</span>alloc<span class="o">)</span>, X <span class="o">(</span>execute<span class="o">)</span>, M <span class="o">(</span>merge<span class="o">)</span>, S <span class="o">(</span>strings<span class="o">)</span>, I <span class="o">(</span>info<span class="o">)</span>,
+</span></span><span class="line"><span class="cl">  L <span class="o">(</span>link order<span class="o">)</span>, O <span class="o">(</span>extra OS processing required<span class="o">)</span>, G <span class="o">(</span>group<span class="o">)</span>, T <span class="o">(</span>TLS<span class="o">)</span>,
+</span></span><span class="line"><span class="cl">  C <span class="o">(</span>compressed<span class="o">)</span>, x <span class="o">(</span>unknown<span class="o">)</span>, o <span class="o">(</span>OS specific<span class="o">)</span>, E <span class="o">(</span>exclude<span class="o">)</span>,
+</span></span><span class="line"><span class="cl">  l <span class="o">(</span>large<span class="o">)</span>, p <span class="o">(</span>processor specific<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ 
+</span></span></code></pre></div><p>一个文件我们可以想象为一个超长的一维数组，只需要知道每个Section相对于起始位置的偏移量以及Section的长度，就能获取这个Section的数据。比如编号13的位置是.text，就是代码，根据对应的Address和Offset数据就能读取.text的内容。<br>
+.data里面放的是定义好的全局数组或变量，.bss里面放的是未初始化的全局数组或变量，为了节约空间，只描述变量的数量，加载到内存时再开辟空间全设为0，所以未初始化的全局变量默认值都是0。<br>
+.symtab是Symbol Table符号表，就是源码里面那些函数名，变量名和代码的对应关系。可以看做一个char类型的一维数组，储存了程序里出现的各种符号，比如<code>char lable[]=&quot;hello worle\0funtion\0abc\0&quot;</code>，每个符号末尾都是<code>\0</code>，这样只需要记录起始偏移量就可以读取。</p>
+<p>Section合并，形成segment时不是随便合并的，也不是让操作系统合并的，是需要文件自己定义合并方式。怎样合并由程序头表Program Header Table来决定。<br>
+使用<code>readelf -l /bin/ls</code>命令可以查看ls指令可执行文件的程序头表Program Header Table</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ readelf -l /bin/ls
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Elf file <span class="nb">type</span> is EXEC <span class="o">(</span>Executable file<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Entry point 0x404324
+</span></span><span class="line"><span class="cl">There are <span class="m">9</span> program headers, starting at offset <span class="m">64</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Program Headers:
+</span></span><span class="line"><span class="cl">  Type           Offset             VirtAddr           PhysAddr
+</span></span><span class="line"><span class="cl">                 FileSiz            MemSiz              Flags  Align
+</span></span><span class="line"><span class="cl">  PHDR           0x0000000000000040 0x0000000000400040 0x0000000000400040
+</span></span><span class="line"><span class="cl">                 0x00000000000001f8 0x00000000000001f8  R E    <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  INTERP         0x0000000000000238 0x0000000000400238 0x0000000000400238
+</span></span><span class="line"><span class="cl">                 0x000000000000001c 0x000000000000001c  R      <span class="m">1</span>
+</span></span><span class="line"><span class="cl">      <span class="o">[</span>Requesting program interpreter: /lib64/ld-linux-x86-64.so.2<span class="o">]</span>
+</span></span><span class="line"><span class="cl">  LOAD           0x0000000000000000 0x0000000000400000 0x0000000000400000
+</span></span><span class="line"><span class="cl">                 0x000000000001958c 0x000000000001958c  R E    <span class="m">200000</span>
+</span></span><span class="line"><span class="cl">  LOAD           0x000000000001a328 0x000000000061a328 0x000000000061a328
+</span></span><span class="line"><span class="cl">                 0x00000000000012d8 0x0000000000001ff8  RW     <span class="m">200000</span>
+</span></span><span class="line"><span class="cl">  DYNAMIC        0x000000000001ada8 0x000000000061ada8 0x000000000061ada8
+</span></span><span class="line"><span class="cl">                 0x0000000000000200 0x0000000000000200  RW     <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  NOTE           0x0000000000000254 0x0000000000400254 0x0000000000400254
+</span></span><span class="line"><span class="cl">                 0x0000000000000044 0x0000000000000044  R      <span class="m">4</span>
+</span></span><span class="line"><span class="cl">  GNU_EH_FRAME   0x0000000000016730 0x0000000000416730 0x0000000000416730
+</span></span><span class="line"><span class="cl">                 0x0000000000000754 0x0000000000000754  R      <span class="m">4</span>
+</span></span><span class="line"><span class="cl">  GNU_STACK      0x0000000000000000 0x0000000000000000 0x0000000000000000
+</span></span><span class="line"><span class="cl">                 0x0000000000000000 0x0000000000000000  RW     <span class="m">10</span>
+</span></span><span class="line"><span class="cl">  GNU_RELRO      0x000000000001a328 0x000000000061a328 0x000000000061a328
+</span></span><span class="line"><span class="cl">                 0x0000000000000cd8 0x0000000000000cd8  R      <span class="m">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> Section to Segment mapping:
+</span></span><span class="line"><span class="cl">  Segment Sections...
+</span></span><span class="line"><span class="cl">   <span class="m">00</span>     
+</span></span><span class="line"><span class="cl">   <span class="m">01</span>     .interp 
+</span></span><span class="line"><span class="cl">   <span class="m">02</span>     .interp .note.ABI-tag .note.gnu.build-id .gnu.hash .dynsym .dynstr .gnu.version .gnu.version_r .rela.dyn .rela.plt .init .plt .text .fini .rodata .eh_frame_hdr .eh_frame 
+</span></span><span class="line"><span class="cl">   <span class="m">03</span>     .init_array .fini_array .jcr .data.rel.ro .dynamic .got .got.plt .data .bss 
+</span></span><span class="line"><span class="cl">   <span class="m">04</span>     .dynamic 
+</span></span><span class="line"><span class="cl">   <span class="m">05</span>     .note.ABI-tag .note.gnu.build-id 
+</span></span><span class="line"><span class="cl">   <span class="m">06</span>     .eh_frame_hdr 
+</span></span><span class="line"><span class="cl">   <span class="m">07</span>     
+</span></span><span class="line"><span class="cl">   <span class="m">08</span>     .init_array .fini_array .jcr .data.rel.ro .dynamic .got 
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ 
+</span></span></code></pre></div><p>There are 9 program headers, starting at offset 64，翻译一下就是有9个program headers，偏移量是64。查看03编号的program headers，发现包含了.data .bss，说明把已初始化变量和未初始化变量放在一起了。查看03编号，包含了.text .rodata，说明把代码和只读数据放一起了。<br>
+程序头表Program Header Table告诉操作系统哪些模块可以被加载进内存。加载进内存之后哪些分段是可读可写，哪些分段是只读，哪些分段是可执行的，Flags这一列就代表权限，操纵系统读取Flags的数据把权限填写到页表里。</p>
+<p>一个可执行程序由一个个Section数据节构成，链接时要形成新的节头表Section Header Table，同时要填充程序头表Program Header Table，把哪些数据节合并记录下来，当程序运行时操作系统就会读取程序头表Program Header Table，根据Program Header Table来把Section数据节加载到内存里，此时就完成了加载的过程。程序在加载前就把加载方式写在Program Header Table里了。</p>
+
+  <blockquote class="alert-blockquote tip">
+    <p class="alert-heading">
+      Tip
+    </p>
+    <p><p>为什么要将section合并成为segment？
+Section合并的主要原因是为了减少页面碎，提高内存使用效率。如果不进合并，假设页面大小为4096字节（内存块基本大小，加载，管理的基本单位），如果.text部分为4097字节，.init部分为512字节，那么它们将占3个页，合并后，它们只需2个页面。<br>
+此外，操作系统在加载程序时，会将具有相同属性的section合并成一个的segment，这样就可以实现不同的访问权限，从而优化内存管理和权限访问控制。</p></p>
+  </blockquote>
+
+<p>对于节头表Section Header Table：链接时需要把所有.o文件里面的section合并，每个section起始结束位置改变了，需要更新节头表Section Header Table。<br>
+对于程序头表Program Header Table：会告诉操作系统，如何加载可执行文件，完成进程内存的初始化。一个可执行程序的格式中，一定有 program header table。<br>
+一个在链接时作用，一个在运行加载时作用。</p>
+<p>ELF Header是整个ELF格式的相关管理信息，使用<code>readelf -h /bin/ls</code>命令可以查看ls指令可执行文件的ELF Header。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ readelf -h /bin/ls
+</span></span><span class="line"><span class="cl">ELF Header:
+</span></span><span class="line"><span class="cl">  Magic:   7f <span class="m">45</span> 4c <span class="m">46</span> <span class="m">02</span> <span class="m">01</span> <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 
+</span></span><span class="line"><span class="cl">  Class:                             ELF64
+</span></span><span class="line"><span class="cl">  Data:                              2<span class="err">&#39;</span>s complement, little endian
+</span></span><span class="line"><span class="cl">  Version:                           <span class="m">1</span> <span class="o">(</span>current<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  OS/ABI:                            UNIX - System V
+</span></span><span class="line"><span class="cl">  ABI Version:                       <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  Type:                              EXEC <span class="o">(</span>Executable file<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  Machine:                           Advanced Micro Devices X86-64
+</span></span><span class="line"><span class="cl">  Version:                           0x1
+</span></span><span class="line"><span class="cl">  Entry point address:               0x404324
+</span></span><span class="line"><span class="cl">  Start of program headers:          <span class="m">64</span> <span class="o">(</span>bytes into file<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  Start of section headers:          <span class="m">115688</span> <span class="o">(</span>bytes into file<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  Flags:                             0x0
+</span></span><span class="line"><span class="cl">  Size of this header:               <span class="m">64</span> <span class="o">(</span>bytes<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  Size of program headers:           <span class="m">56</span> <span class="o">(</span>bytes<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  Number of program headers:         <span class="m">9</span>
+</span></span><span class="line"><span class="cl">  Size of section headers:           <span class="m">64</span> <span class="o">(</span>bytes<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  Number of section headers:         <span class="m">30</span>
+</span></span><span class="line"><span class="cl">  Section header string table index: <span class="m">29</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ 
+</span></span></code></pre></div><p>Magic是用来说明自己是什么东西的，操作系统会根据Magic来判断文件是什么格式的。几乎所有的二进制文件开头都会声明自己是什么格式的，webp图片zip压缩包mp3音乐等等开头都有自己的Magic来说明自己是什么格式的文件。<br>
+从下半部分的信息ELF Header还会记录Program Header和section header的起始位置与大小。</p>
+<p><img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/typical_elf.webp" alt=""></p>
+<h2 id="连接与加载">
+<a class="header-anchor" href="#%e8%bf%9e%e6%8e%a5%e4%b8%8e%e5%8a%a0%e8%bd%bd"></a>
+连接与加载
+</h2><h3 id="静态链接">
+<a class="header-anchor" href="#%e9%9d%99%e6%80%81%e9%93%be%e6%8e%a5"></a>
+静态链接
+</h3><p>无论是自己的.o文件，还是静态库中的.o文件，本质都是把.o文件进行连接的过程，所以研究静态链接，本质就是研究.o文件是如何链接的。</p>
+<p>创建以下两个.c文件并编译为.o文件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//main.c
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">run</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;hello world!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">run</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//run.c
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">run</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;running...</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>使用<code>objdump -d</code>命令：将代码段（.text）进行反汇编查看。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ku<span class="o">]</span>$ objdump -d main.o
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">main.o:     file format elf64-x86-64
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Disassembly of section .text:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">0000000000000000</span> &lt;main&gt;:
+</span></span><span class="line"><span class="cl">   0:	<span class="m">55</span>                   	push   %rbp
+</span></span><span class="line"><span class="cl">   1:	<span class="m">48</span> <span class="m">89</span> e5             	mov    %rsp,%rbp
+</span></span><span class="line"><span class="cl">   4:	bf <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x0,%edi
+</span></span><span class="line"><span class="cl">   9:	e8 <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	callq  e &lt;main+0xe&gt;
+</span></span><span class="line"><span class="cl">   e:	b8 <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x0,%eax
+</span></span><span class="line"><span class="cl">  13:	e8 <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	callq  <span class="m">18</span> &lt;main+0x18&gt;
+</span></span><span class="line"><span class="cl">  18:	b8 <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x0,%eax
+</span></span><span class="line"><span class="cl">  1d:	5d                   	pop    %rbp
+</span></span><span class="line"><span class="cl">  1e:	c3                   	retq   
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ku<span class="o">]</span>$ objdump -d run.o
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">run.o:     file format elf64-x86-64
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Disassembly of section .text:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">0000000000000000</span> &lt;run&gt;:
+</span></span><span class="line"><span class="cl">   0:	<span class="m">55</span>                   	push   %rbp
+</span></span><span class="line"><span class="cl">   1:	<span class="m">48</span> <span class="m">89</span> e5             	mov    %rsp,%rbp
+</span></span><span class="line"><span class="cl">   4:	bf <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x0,%edi
+</span></span><span class="line"><span class="cl">   9:	e8 <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	callq  e &lt;run+0xe&gt;
+</span></span><span class="line"><span class="cl">   e:	5d                   	pop    %rbp
+</span></span><span class="line"><span class="cl">   f:	c3                   	retq   
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ku<span class="o">]</span>$ 
+</span></span></code></pre></div><p>在main.o文件的反汇编查看到<code>13:	e8 00 00 00 00       	callq  18 &lt;main+0x18&gt;</code>，e8就是汇编callq命令对应的机器码，后面的数字是地址，e8 00 00 00 00地址是全0，说明main.o文件还不知道<code>run();</code>在哪里，甚至<code>run();</code>都不知道，因为编译时各个文件是相互独立的，互不知道其他文件的内容，因此只能先将地址设为0。查看两个.o文件的printf函数对应的汇编callq命令，地址也是全0，说明此时两个文件都没链接上C标准库。</p>
+<p>使用<code>readelf -s</code>命令查看两个文件的符号表。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ku<span class="o">]</span>$ readelf -s main.o
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Symbol table <span class="s1">&#39;.symtab&#39;</span> contains <span class="m">12</span> entries:
+</span></span><span class="line"><span class="cl">   Num:    Value          Size Type    Bind   Vis      Ndx Name
+</span></span><span class="line"><span class="cl">     0: <span class="m">0000000000000000</span>     <span class="m">0</span> NOTYPE  LOCAL  DEFAULT  UND 
+</span></span><span class="line"><span class="cl">     1: <span class="m">0000000000000000</span>     <span class="m">0</span> FILE    LOCAL  DEFAULT  ABS main.c
+</span></span><span class="line"><span class="cl">     2: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">1</span> 
+</span></span><span class="line"><span class="cl">     3: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">3</span> 
+</span></span><span class="line"><span class="cl">     4: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">4</span> 
+</span></span><span class="line"><span class="cl">     5: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">5</span> 
+</span></span><span class="line"><span class="cl">     6: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">7</span> 
+</span></span><span class="line"><span class="cl">     7: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">8</span> 
+</span></span><span class="line"><span class="cl">     8: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">6</span> 
+</span></span><span class="line"><span class="cl">     9: <span class="m">0000000000000000</span>    <span class="m">31</span> FUNC    GLOBAL DEFAULT    <span class="m">1</span> main
+</span></span><span class="line"><span class="cl">    10: <span class="m">0000000000000000</span>     <span class="m">0</span> NOTYPE  GLOBAL DEFAULT  UND puts
+</span></span><span class="line"><span class="cl">    11: <span class="m">0000000000000000</span>     <span class="m">0</span> NOTYPE  GLOBAL DEFAULT  UND run
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ku<span class="o">]</span>$ readelf -s run.o
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Symbol table <span class="s1">&#39;.symtab&#39;</span> contains <span class="m">11</span> entries:
+</span></span><span class="line"><span class="cl">   Num:    Value          Size Type    Bind   Vis      Ndx Name
+</span></span><span class="line"><span class="cl">     0: <span class="m">0000000000000000</span>     <span class="m">0</span> NOTYPE  LOCAL  DEFAULT  UND 
+</span></span><span class="line"><span class="cl">     1: <span class="m">0000000000000000</span>     <span class="m">0</span> FILE    LOCAL  DEFAULT  ABS run.c
+</span></span><span class="line"><span class="cl">     2: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">1</span> 
+</span></span><span class="line"><span class="cl">     3: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">3</span> 
+</span></span><span class="line"><span class="cl">     4: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">4</span> 
+</span></span><span class="line"><span class="cl">     5: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">5</span> 
+</span></span><span class="line"><span class="cl">     6: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">7</span> 
+</span></span><span class="line"><span class="cl">     7: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">8</span> 
+</span></span><span class="line"><span class="cl">     8: <span class="m">0000000000000000</span>     <span class="m">0</span> SECTION LOCAL  DEFAULT    <span class="m">6</span> 
+</span></span><span class="line"><span class="cl">     9: <span class="m">0000000000000000</span>    <span class="m">16</span> FUNC    GLOBAL DEFAULT    <span class="m">1</span> run
+</span></span><span class="line"><span class="cl">    10: <span class="m">0000000000000000</span>     <span class="m">0</span> NOTYPE  GLOBAL DEFAULT  UND puts
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ku<span class="o">]</span>$ 
+</span></span></code></pre></div><p>可以看见main.o里puts和run都是UND（Undefined）未定义的，run.o里puts是未定义的，在链接时main.o拿着未定义的run在run.o里面找找找，就能找到已定义的run。链接后再使用<code>readelf -s</code>命令查看符号表，就不是未定义的了，使用<code>objdump -d</code>命令再查看反汇编，callq命令e8后面跟着的地址就不是全0了。<br>
+最终，两个.o的代码段合并到了一起，并进了统一的编址：链接的时候，会修改.o中没有确定的函数地址，在合并完成之后，进相关call地址，完成代码调用。为什么.o文件叫可重定位目标文件，因为函数地址可以修改。</p>
+<p>静态链接就是把库中的.0进合并，和上述过程一样。<br>
+所以链接其实就是将编译之后的所有目标文件连同用到的一些静态库运时库组合，拼装成一个独立的可执行件。其中就包括我们之前提到的地址修正，当所有模块组合在一起之后，链接器会根据我们的.文件或者静态库中的重定位表找到那些需要被重定位的函数全局变量，从而修正它们的地址。这其实就是静态链接的过程。</p>
+<p><img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/60c5bfca6ec5437a82f0e9661f4ec7b2.webp" alt=""></p>
+<h3 id="elf加载与进程地址空间">
+<a class="header-anchor" href="#elf%e5%8a%a0%e8%bd%bd%e4%b8%8e%e8%bf%9b%e7%a8%8b%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4"></a>
+ELF加载与进程地址空间
+</h3><h4 id="逻辑地址与虚拟地址">
+<a class="header-anchor" href="#%e9%80%bb%e8%be%91%e5%9c%b0%e5%9d%80%e4%b8%8e%e8%99%9a%e6%8b%9f%e5%9c%b0%e5%9d%80"></a>
+逻辑地址与虚拟地址
+</h4><p>一个可执行程序，如果没有被加载到内存中，该可执行程序，也有地址。<br>
+对程序的各个函数函数变量，都记录下相对于起始地址的偏移量，访问时使用偏移量访问，这样对可执行程序，完成在磁盘上的编址，磁盘上的地址我们称为逻辑地址。当代操作系统使用“平坦模式”，即从0开始编址，编址起始偏移量都从0开始。平坦模式是操作系统的一个概念。</p>
+<p>使用<code>objdump -S</code>指令查看可执行文件main.exe的反汇编。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ku<span class="o">]</span>$ objdump -S main.exe 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">main.exe:     file format elf64-x86-64
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Disassembly of section .init:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">00000000004003e0 &lt;_init&gt;:
+</span></span><span class="line"><span class="cl">  4003e0:	<span class="m">48</span> <span class="m">83</span> ec <span class="m">08</span>          	sub    <span class="nv">$0</span>x8,%rsp
+</span></span><span class="line"><span class="cl">  4003e4:	<span class="m">48</span> 8b <span class="m">05</span> 0d 0c <span class="m">20</span> <span class="m">00</span> 	mov    0x200c0d<span class="o">(</span>%rip<span class="o">)</span>,%rax        <span class="c1"># 600ff8 &lt;__gmon_start__&gt;</span>
+</span></span><span class="line"><span class="cl">  4003eb:	<span class="m">48</span> <span class="m">85</span> c0             	<span class="nb">test</span>   %rax,%rax
+</span></span><span class="line"><span class="cl">  4003ee:	<span class="m">74</span> <span class="m">05</span>                	je     4003f5 &lt;_init+0x15&gt;
+</span></span><span class="line"><span class="cl">  4003f0:	e8 3b <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	callq  <span class="m">400430</span> &lt;__gmon_start__@plt&gt;
+</span></span><span class="line"><span class="cl">  4003f5:	<span class="m">48</span> <span class="m">83</span> c4 <span class="m">08</span>          	add    <span class="nv">$0</span>x8,%rsp
+</span></span><span class="line"><span class="cl">  4003f9:	c3                   	retq   
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Disassembly of section .plt:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">0000000000400400</span> &lt;.plt&gt;:
+</span></span><span class="line"><span class="cl">  400400:	ff <span class="m">35</span> <span class="m">02</span> 0c <span class="m">20</span> <span class="m">00</span>    	pushq  0x200c02<span class="o">(</span>%rip<span class="o">)</span>        <span class="c1"># 601008 &lt;_GLOBAL_OFFSET_TABLE_+0x8&gt;</span>
+</span></span><span class="line"><span class="cl">  400406:	ff <span class="m">25</span> <span class="m">04</span> 0c <span class="m">20</span> <span class="m">00</span>    	jmpq   *0x200c04<span class="o">(</span>%rip<span class="o">)</span>        <span class="c1"># 601010 &lt;_GLOBAL_OFFSET_TABLE_+0x10&gt;</span>
+</span></span><span class="line"><span class="cl">  40040c:	0f 1f <span class="m">40</span> <span class="m">00</span>          	nopl   0x0<span class="o">(</span>%rax<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">0000000000400410</span> &lt;puts@plt&gt;:
+</span></span><span class="line"><span class="cl">  400410:	ff <span class="m">25</span> <span class="m">02</span> 0c <span class="m">20</span> <span class="m">00</span>    	jmpq   *0x200c02<span class="o">(</span>%rip<span class="o">)</span>        <span class="c1"># 601018 &lt;puts@GLIBC_2.2.5&gt;</span>
+</span></span><span class="line"><span class="cl">  400416:	<span class="m">68</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	pushq  <span class="nv">$0</span>x0
+</span></span><span class="line"><span class="cl">  40041b:	e9 e0 ff ff ff       	jmpq   <span class="m">400400</span> &lt;.plt&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">0000000000400420</span> &lt;__libc_start_main@plt&gt;:
+</span></span><span class="line"><span class="cl">  400420:	ff <span class="m">25</span> fa 0b <span class="m">20</span> <span class="m">00</span>    	jmpq   *0x200bfa<span class="o">(</span>%rip<span class="o">)</span>        <span class="c1"># 601020 &lt;__libc_start_main@GLIBC_2.2.5&gt;</span>
+</span></span><span class="line"><span class="cl">  400426:	<span class="m">68</span> <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	pushq  <span class="nv">$0</span>x1
+</span></span><span class="line"><span class="cl">  40042b:	e9 d0 ff ff ff       	jmpq   <span class="m">400400</span> &lt;.plt&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">0000000000400430</span> &lt;__gmon_start__@plt&gt;:
+</span></span><span class="line"><span class="cl">  400430:	ff <span class="m">25</span> f2 0b <span class="m">20</span> <span class="m">00</span>    	jmpq   *0x200bf2<span class="o">(</span>%rip<span class="o">)</span>        <span class="c1"># 601028 &lt;__gmon_start__&gt;</span>
+</span></span><span class="line"><span class="cl">  400436:	<span class="m">68</span> <span class="m">02</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	pushq  <span class="nv">$0</span>x2
+</span></span><span class="line"><span class="cl">  40043b:	e9 c0 ff ff ff       	jmpq   <span class="m">400400</span> &lt;.plt&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Disassembly of section .text:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">0000000000400440</span> &lt;_start&gt;:
+</span></span><span class="line"><span class="cl">  400440:	<span class="m">31</span> ed                	xor    %ebp,%ebp
+</span></span><span class="line"><span class="cl">  400442:	<span class="m">49</span> <span class="m">89</span> d1             	mov    %rdx,%r9
+</span></span><span class="line"><span class="cl">  400445:	5e                   	pop    %rsi
+</span></span><span class="line"><span class="cl">  400446:	<span class="m">48</span> <span class="m">89</span> e2             	mov    %rsp,%rdx
+</span></span><span class="line"><span class="cl">  400449:	<span class="m">48</span> <span class="m">83</span> e4 f0          	and    <span class="nv">$0</span>xfffffffffffffff0,%rsp
+</span></span><span class="line"><span class="cl">  40044d:	<span class="m">50</span>                   	push   %rax
+</span></span><span class="line"><span class="cl">  40044e:	<span class="m">54</span>                   	push   %rsp
+</span></span><span class="line"><span class="cl">  40044f:	<span class="m">49</span> c7 c0 d0 <span class="m">05</span> <span class="m">40</span> <span class="m">00</span> 	mov    <span class="nv">$0</span>x4005d0,%r8
+</span></span><span class="line"><span class="cl">  400456:	<span class="m">48</span> c7 c1 <span class="m">60</span> <span class="m">05</span> <span class="m">40</span> <span class="m">00</span> 	mov    <span class="nv">$0</span>x400560,%rcx
+</span></span><span class="line"><span class="cl">  40045d:	<span class="m">48</span> c7 c7 2d <span class="m">05</span> <span class="m">40</span> <span class="m">00</span> 	mov    <span class="nv">$0</span>x40052d,%rdi
+</span></span><span class="line"><span class="cl">  400464:	e8 b7 ff ff ff       	callq  <span class="m">400420</span> &lt;__libc_start_main@plt&gt;
+</span></span><span class="line"><span class="cl">  400469:	f4                   	hlt    
+</span></span><span class="line"><span class="cl">  40046a:	<span class="m">66</span> 0f 1f <span class="m">44</span> <span class="m">00</span> <span class="m">00</span>    	nopw   0x0<span class="o">(</span>%rax,%rax,1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">0000000000400470</span> &lt;deregister_tm_clones&gt;:
+</span></span><span class="line"><span class="cl">  400470:	b8 3f <span class="m">10</span> <span class="m">60</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x60103f,%eax
+</span></span><span class="line"><span class="cl">  400475:	<span class="m">55</span>                   	push   %rbp
+</span></span><span class="line"><span class="cl">  400476:	<span class="m">48</span> 2d <span class="m">38</span> <span class="m">10</span> <span class="m">60</span> <span class="m">00</span>    	sub    <span class="nv">$0</span>x601038,%rax
+</span></span><span class="line"><span class="cl">  40047c:	<span class="m">48</span> <span class="m">83</span> f8 0e          	cmp    <span class="nv">$0</span>xe,%rax
+</span></span><span class="line"><span class="cl">  400480:	<span class="m">48</span> <span class="m">89</span> e5             	mov    %rsp,%rbp
+</span></span><span class="line"><span class="cl">  400483:	<span class="m">77</span> <span class="m">02</span>                	ja     <span class="m">400487</span> &lt;deregister_tm_clones+0x17&gt;
+</span></span><span class="line"><span class="cl">  400485:	5d                   	pop    %rbp
+</span></span><span class="line"><span class="cl">  400486:	c3                   	retq   
+</span></span><span class="line"><span class="cl">  400487:	b8 <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x0,%eax
+</span></span><span class="line"><span class="cl">  40048c:	<span class="m">48</span> <span class="m">85</span> c0             	<span class="nb">test</span>   %rax,%rax
+</span></span><span class="line"><span class="cl">  40048f:	<span class="m">74</span> f4                	je     <span class="m">400485</span> &lt;deregister_tm_clones+0x15&gt;
+</span></span><span class="line"><span class="cl">  400491:	5d                   	pop    %rbp
+</span></span><span class="line"><span class="cl">  400492:	bf <span class="m">38</span> <span class="m">10</span> <span class="m">60</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x601038,%edi
+</span></span><span class="line"><span class="cl">  400497:	ff e0                	jmpq   *%rax
+</span></span><span class="line"><span class="cl">  400499:	0f 1f <span class="m">80</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 	nopl   0x0<span class="o">(</span>%rax<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">00000000004004a0 &lt;register_tm_clones&gt;:
+</span></span><span class="line"><span class="cl">  4004a0:	b8 <span class="m">38</span> <span class="m">10</span> <span class="m">60</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x601038,%eax
+</span></span><span class="line"><span class="cl">  4004a5:	<span class="m">55</span>                   	push   %rbp
+</span></span><span class="line"><span class="cl">  4004a6:	<span class="m">48</span> 2d <span class="m">38</span> <span class="m">10</span> <span class="m">60</span> <span class="m">00</span>    	sub    <span class="nv">$0</span>x601038,%rax
+</span></span><span class="line"><span class="cl">  4004ac:	<span class="m">48</span> c1 f8 <span class="m">03</span>          	sar    <span class="nv">$0</span>x3,%rax
+</span></span><span class="line"><span class="cl">  4004b0:	<span class="m">48</span> <span class="m">89</span> e5             	mov    %rsp,%rbp
+</span></span><span class="line"><span class="cl">  4004b3:	<span class="m">48</span> <span class="m">89</span> c2             	mov    %rax,%rdx
+</span></span><span class="line"><span class="cl">  4004b6:	<span class="m">48</span> c1 ea 3f          	shr    <span class="nv">$0</span>x3f,%rdx
+</span></span><span class="line"><span class="cl">  4004ba:	<span class="m">48</span> <span class="m">01</span> d0             	add    %rdx,%rax
+</span></span><span class="line"><span class="cl">  4004bd:	<span class="m">48</span> d1 f8             	sar    %rax
+</span></span><span class="line"><span class="cl">  4004c0:	<span class="m">75</span> <span class="m">02</span>                	jne    4004c4 &lt;register_tm_clones+0x24&gt;
+</span></span><span class="line"><span class="cl">  4004c2:	5d                   	pop    %rbp
+</span></span><span class="line"><span class="cl">  4004c3:	c3                   	retq   
+</span></span><span class="line"><span class="cl">  4004c4:	ba <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x0,%edx
+</span></span><span class="line"><span class="cl">  4004c9:	<span class="m">48</span> <span class="m">85</span> d2             	<span class="nb">test</span>   %rdx,%rdx
+</span></span><span class="line"><span class="cl">  4004cc:	<span class="m">74</span> f4                	je     4004c2 &lt;register_tm_clones+0x22&gt;
+</span></span><span class="line"><span class="cl">  4004ce:	5d                   	pop    %rbp
+</span></span><span class="line"><span class="cl">  4004cf:	<span class="m">48</span> <span class="m">89</span> c6             	mov    %rax,%rsi
+</span></span><span class="line"><span class="cl">  4004d2:	bf <span class="m">38</span> <span class="m">10</span> <span class="m">60</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x601038,%edi
+</span></span><span class="line"><span class="cl">  4004d7:	ff e2                	jmpq   *%rdx
+</span></span><span class="line"><span class="cl">  4004d9:	0f 1f <span class="m">80</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 	nopl   0x0<span class="o">(</span>%rax<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">00000000004004e0 &lt;__do_global_dtors_aux&gt;:
+</span></span><span class="line"><span class="cl">  4004e0:	<span class="m">80</span> 3d 4d 0b <span class="m">20</span> <span class="m">00</span> <span class="m">00</span> 	cmpb   <span class="nv">$0</span>x0,0x200b4d<span class="o">(</span>%rip<span class="o">)</span>        <span class="c1"># 601034 &lt;_edata&gt;</span>
+</span></span><span class="line"><span class="cl">  4004e7:	<span class="m">75</span> <span class="m">11</span>                	jne    4004fa &lt;__do_global_dtors_aux+0x1a&gt;
+</span></span><span class="line"><span class="cl">  4004e9:	<span class="m">55</span>                   	push   %rbp
+</span></span><span class="line"><span class="cl">  4004ea:	<span class="m">48</span> <span class="m">89</span> e5             	mov    %rsp,%rbp
+</span></span><span class="line"><span class="cl">  4004ed:	e8 7e ff ff ff       	callq  <span class="m">400470</span> &lt;deregister_tm_clones&gt;
+</span></span><span class="line"><span class="cl">  4004f2:	5d                   	pop    %rbp
+</span></span><span class="line"><span class="cl">  4004f3:	c6 <span class="m">05</span> 3a 0b <span class="m">20</span> <span class="m">00</span> <span class="m">01</span> 	movb   <span class="nv">$0</span>x1,0x200b3a<span class="o">(</span>%rip<span class="o">)</span>        <span class="c1"># 601034 &lt;_edata&gt;</span>
+</span></span><span class="line"><span class="cl">  4004fa:	f3 c3                	repz retq 
+</span></span><span class="line"><span class="cl">  4004fc:	0f 1f <span class="m">40</span> <span class="m">00</span>          	nopl   0x0<span class="o">(</span>%rax<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">0000000000400500</span> &lt;frame_dummy&gt;:
+</span></span><span class="line"><span class="cl">  400500:	<span class="m">48</span> <span class="m">83</span> 3d <span class="m">18</span> <span class="m">09</span> <span class="m">20</span> <span class="m">00</span> 	cmpq   <span class="nv">$0</span>x0,0x200918<span class="o">(</span>%rip<span class="o">)</span>        <span class="c1"># 600e20 &lt;__JCR_END__&gt;</span>
+</span></span><span class="line"><span class="cl">  400507:	<span class="m">00</span> 
+</span></span><span class="line"><span class="cl">  400508:	<span class="m">74</span> 1e                	je     <span class="m">400528</span> &lt;frame_dummy+0x28&gt;
+</span></span><span class="line"><span class="cl">  40050a:	b8 <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x0,%eax
+</span></span><span class="line"><span class="cl">  40050f:	<span class="m">48</span> <span class="m">85</span> c0             	<span class="nb">test</span>   %rax,%rax
+</span></span><span class="line"><span class="cl">  400512:	<span class="m">74</span> <span class="m">14</span>                	je     <span class="m">400528</span> &lt;frame_dummy+0x28&gt;
+</span></span><span class="line"><span class="cl">  400514:	<span class="m">55</span>                   	push   %rbp
+</span></span><span class="line"><span class="cl">  400515:	bf <span class="m">20</span> 0e <span class="m">60</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x600e20,%edi
+</span></span><span class="line"><span class="cl">  40051a:	<span class="m">48</span> <span class="m">89</span> e5             	mov    %rsp,%rbp
+</span></span><span class="line"><span class="cl">  40051d:	ff d0                	callq  *%rax
+</span></span><span class="line"><span class="cl">  40051f:	5d                   	pop    %rbp
+</span></span><span class="line"><span class="cl">  400520:	e9 7b ff ff ff       	jmpq   4004a0 &lt;register_tm_clones&gt;
+</span></span><span class="line"><span class="cl">  400525:	0f 1f <span class="m">00</span>             	nopl   <span class="o">(</span>%rax<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  400528:	e9 <span class="m">73</span> ff ff ff       	jmpq   4004a0 &lt;register_tm_clones&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">000000000040052d &lt;main&gt;:
+</span></span><span class="line"><span class="cl">  40052d:	<span class="m">55</span>                   	push   %rbp
+</span></span><span class="line"><span class="cl">  40052e:	<span class="m">48</span> <span class="m">89</span> e5             	mov    %rsp,%rbp
+</span></span><span class="line"><span class="cl">  400531:	bf f0 <span class="m">05</span> <span class="m">40</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x4005f0,%edi
+</span></span><span class="line"><span class="cl">  400536:	e8 d5 fe ff ff       	callq  <span class="m">400410</span> &lt;puts@plt&gt;
+</span></span><span class="line"><span class="cl">  40053b:	b8 <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x0,%eax
+</span></span><span class="line"><span class="cl">  400540:	e8 <span class="m">07</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	callq  40054c &lt;run&gt;
+</span></span><span class="line"><span class="cl">  400545:	b8 <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x0,%eax
+</span></span><span class="line"><span class="cl">  40054a:	5d                   	pop    %rbp
+</span></span><span class="line"><span class="cl">  40054b:	c3                   	retq   
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">000000000040054c &lt;run&gt;:
+</span></span><span class="line"><span class="cl">  40054c:	<span class="m">55</span>                   	push   %rbp
+</span></span><span class="line"><span class="cl">  40054d:	<span class="m">48</span> <span class="m">89</span> e5             	mov    %rsp,%rbp
+</span></span><span class="line"><span class="cl">  400550:	bf fd <span class="m">05</span> <span class="m">40</span> <span class="m">00</span>       	mov    <span class="nv">$0</span>x4005fd,%edi
+</span></span><span class="line"><span class="cl">  400555:	e8 b6 fe ff ff       	callq  <span class="m">400410</span> &lt;puts@plt&gt;
+</span></span><span class="line"><span class="cl">  40055a:	5d                   	pop    %rbp
+</span></span><span class="line"><span class="cl">  40055b:	c3                   	retq   
+</span></span><span class="line"><span class="cl">  40055c:	0f 1f <span class="m">40</span> <span class="m">00</span>          	nopl   0x0<span class="o">(</span>%rax<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">0000000000400560</span> &lt;__libc_csu_init&gt;:
+</span></span><span class="line"><span class="cl">  400560:	<span class="m">41</span> <span class="m">57</span>                	push   %r15
+</span></span><span class="line"><span class="cl">  400562:	<span class="m">41</span> <span class="m">89</span> ff             	mov    %edi,%r15d
+</span></span><span class="line"><span class="cl">  400565:	<span class="m">41</span> <span class="m">56</span>                	push   %r14
+</span></span><span class="line"><span class="cl">  400567:	<span class="m">49</span> <span class="m">89</span> f6             	mov    %rsi,%r14
+</span></span><span class="line"><span class="cl">  40056a:	<span class="m">41</span> <span class="m">55</span>                	push   %r13
+</span></span><span class="line"><span class="cl">  40056c:	<span class="m">49</span> <span class="m">89</span> d5             	mov    %rdx,%r13
+</span></span><span class="line"><span class="cl">  40056f:	<span class="m">41</span> <span class="m">54</span>                	push   %r12
+</span></span><span class="line"><span class="cl">  400571:	4c 8d <span class="m">25</span> <span class="m">98</span> <span class="m">08</span> <span class="m">20</span> <span class="m">00</span> 	lea    0x200898<span class="o">(</span>%rip<span class="o">)</span>,%r12        <span class="c1"># 600e10 &lt;__frame_dummy_init_array_entry&gt;</span>
+</span></span><span class="line"><span class="cl">  400578:	<span class="m">55</span>                   	push   %rbp
+</span></span><span class="line"><span class="cl">  400579:	<span class="m">48</span> 8d 2d <span class="m">98</span> <span class="m">08</span> <span class="m">20</span> <span class="m">00</span> 	lea    0x200898<span class="o">(</span>%rip<span class="o">)</span>,%rbp        <span class="c1"># 600e18 &lt;__init_array_end&gt;</span>
+</span></span><span class="line"><span class="cl">  400580:	<span class="m">53</span>                   	push   %rbx
+</span></span><span class="line"><span class="cl">  400581:	4c <span class="m">29</span> e5             	sub    %r12,%rbp
+</span></span><span class="line"><span class="cl">  400584:	<span class="m">31</span> db                	xor    %ebx,%ebx
+</span></span><span class="line"><span class="cl">  400586:	<span class="m">48</span> c1 fd <span class="m">03</span>          	sar    <span class="nv">$0</span>x3,%rbp
+</span></span><span class="line"><span class="cl">  40058a:	<span class="m">48</span> <span class="m">83</span> ec <span class="m">08</span>          	sub    <span class="nv">$0</span>x8,%rsp
+</span></span><span class="line"><span class="cl">  40058e:	e8 4d fe ff ff       	callq  4003e0 &lt;_init&gt;
+</span></span><span class="line"><span class="cl">  400593:	<span class="m">48</span> <span class="m">85</span> ed             	<span class="nb">test</span>   %rbp,%rbp
+</span></span><span class="line"><span class="cl">  400596:	<span class="m">74</span> 1e                	je     4005b6 &lt;__libc_csu_init+0x56&gt;
+</span></span><span class="line"><span class="cl">  400598:	0f 1f <span class="m">84</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 	nopl   0x0<span class="o">(</span>%rax,%rax,1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  40059f:	<span class="m">00</span> 
+</span></span><span class="line"><span class="cl">  4005a0:	4c <span class="m">89</span> ea             	mov    %r13,%rdx
+</span></span><span class="line"><span class="cl">  4005a3:	4c <span class="m">89</span> f6             	mov    %r14,%rsi
+</span></span><span class="line"><span class="cl">  4005a6:	<span class="m">44</span> <span class="m">89</span> ff             	mov    %r15d,%edi
+</span></span><span class="line"><span class="cl">  4005a9:	<span class="m">41</span> ff <span class="m">14</span> dc          	callq  *<span class="o">(</span>%r12,%rbx,8<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  4005ad:	<span class="m">48</span> <span class="m">83</span> c3 <span class="m">01</span>          	add    <span class="nv">$0</span>x1,%rbx
+</span></span><span class="line"><span class="cl">  4005b1:	<span class="m">48</span> <span class="m">39</span> eb             	cmp    %rbp,%rbx
+</span></span><span class="line"><span class="cl">  4005b4:	<span class="m">75</span> ea                	jne    4005a0 &lt;__libc_csu_init+0x40&gt;
+</span></span><span class="line"><span class="cl">  4005b6:	<span class="m">48</span> <span class="m">83</span> c4 <span class="m">08</span>          	add    <span class="nv">$0</span>x8,%rsp
+</span></span><span class="line"><span class="cl">  4005ba:	5b                   	pop    %rbx
+</span></span><span class="line"><span class="cl">  4005bb:	5d                   	pop    %rbp
+</span></span><span class="line"><span class="cl">  4005bc:	<span class="m">41</span> 5c                	pop    %r12
+</span></span><span class="line"><span class="cl">  4005be:	<span class="m">41</span> 5d                	pop    %r13
+</span></span><span class="line"><span class="cl">  4005c0:	<span class="m">41</span> 5e                	pop    %r14
+</span></span><span class="line"><span class="cl">  4005c2:	<span class="m">41</span> 5f                	pop    %r15
+</span></span><span class="line"><span class="cl">  4005c4:	c3                   	retq   
+</span></span><span class="line"><span class="cl">  4005c5:	<span class="m">90</span>                   	nop
+</span></span><span class="line"><span class="cl">  4005c6:	<span class="m">66</span> 2e 0f 1f <span class="m">84</span> <span class="m">00</span> <span class="m">00</span> 	nopw   %cs:0x0<span class="o">(</span>%rax,%rax,1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  4005cd:	<span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">00000000004005d0 &lt;__libc_csu_fini&gt;:
+</span></span><span class="line"><span class="cl">  4005d0:	f3 c3                	repz retq 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Disassembly of section .fini:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">00000000004005d4 &lt;_fini&gt;:
+</span></span><span class="line"><span class="cl">  4005d4:	<span class="m">48</span> <span class="m">83</span> ec <span class="m">08</span>          	sub    <span class="nv">$0</span>x8,%rsp
+</span></span><span class="line"><span class="cl">  4005d8:	<span class="m">48</span> <span class="m">83</span> c4 <span class="m">08</span>          	add    <span class="nv">$0</span>x8,%rsp
+</span></span><span class="line"><span class="cl">  4005dc:	c3                   	retq   
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ku<span class="o">]</span>$ 
+</span></span></code></pre></div><p>最左侧的就是ELF的虚拟地址，其实，严格意义上应该叫做逻辑地址(起始地址+偏移量)，但是我们认为起始地址是0.也就是说，其实虚拟地址在我们的程序还没有加载到内存的时候，就已经把可执行程序进行统一编址了。从0开始编址不代表0地址一定要使用，查看左边的地址我们可以看到从4003e0开始，往下地址都是依次递增的，也可以称为线性地址。</p>
+<p>从0开始，很像之前几篇提到过的虚拟地址空间，其实虚拟地址空间不仅仅是进程看待内存的方式，磁盘上的可执行程序，代码和数据编址其实就是虚拟地址的统一编址。当程序编译好的时候，存在磁盘里时的地址就是虚拟地址了。</p>
+<p>进程的<code>mm_struct</code>、<code>vm_area_struct</code>在进程刚刚创建的时候，初始化数据从哪里来的？从ELF各个segment来，每个segment有自己的起始地址和自己的长度，用来初始化内核结构中的<code>[start，end]</code>等范围数据，另外在用详细地址，填充页表。<br>
+链接时就是在把多个.o文件的segment合并之后进行统一编址。</p>
+<p>所以虚拟地址机制，不光光操作系统要支持，编译器也要支持。</p>
+<h4 id="重新理解进程虚拟地址空间">
+<a class="header-anchor" href="#%e9%87%8d%e6%96%b0%e7%90%86%e8%a7%a3%e8%bf%9b%e7%a8%8b%e8%99%9a%e6%8b%9f%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4"></a>
+重新理解进程虚拟地址空间
+</h4><p><img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/9776166894dc30b05dd678da51ad6568.webp" alt=""></p>
+<p>程序在加载到内存前虚拟地址就存在磁盘里了，加载后，操作系统给进程创建了task_struct和mm_struct，mm_struct有一个代码区，这个代码区必须要有起始和结束地址，代码加载到内存也要有自己的物理地址，页表负责映射物理和虚拟地址。CPU内部存在EIP，读取ELF Header里面的Entry point address，Entry point address记录的就是程序的入口地址，入口地址会被加载到CPU的EIP里，CPU根据虚拟地址查页表得到物理地址，读取物理地址的内容。进入CPU的地址全部都是虚拟地址，CPU再也不关心物理地址了，只认为从全0地址到全F地址统一编址，和磁盘上的视角一模一样。<br>
+在内存在CPU内部用的叫虚拟地址，磁盘上叫逻辑地址，其实就是一个东西的两个名字。操作系统叫虚拟地址空间，编译器叫绝对编址，操作系统和编译器就达到统一了。</p>
+<p><img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/c2631b49248597a9635e361745341ddd.webp" alt=""></p>
+<p>mm_struct里又把每个区域的起始结束位置串起来，形成链表，对各个区域内存的管理就变成对这个链表的管理。</p>
+<h4 id="程序的加载">
+<a class="header-anchor" href="#%e7%a8%8b%e5%ba%8f%e7%9a%84%e5%8a%a0%e8%bd%bd"></a>
+程序的加载
+</h4><p><img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/0aedbaae63bc4444b6344cd0aa57116e.webp" alt="">
+（忽略上面的库，把库替换为可执行程序，过程是类似的）<br>
+有了上面的认识，我们可以了解程序是如何加载的了。操纵系统第一步要先加载可执行程序的管理信息，创建内核数据结构task_struct，构建地址空间形成mm_struct，构建页表，然后加载程序的代码和数据，使用ELF格式的管理信息初始化mm_struct的各个vm_area_struct，加载后物理地址和虚拟地址都有了，填写页表构建映射关系。操作系统如何找到可执行文件？可执行文在文件管理部分就相当于struct file，通过struct file一步步往下找找到inode，根据inode读取磁盘上的块block，然后就能读取数据了开始加载了。先通过文件管理找到文件，然后通过进程管理创建PCB，最后通过内存管理构建物理地址和虚拟地址映射关系，三个子系统之间是解耦的但是又相互配合。</p>
+<h3 id="动态链接与动态库加载">
+<a class="header-anchor" href="#%e5%8a%a8%e6%80%81%e9%93%be%e6%8e%a5%e4%b8%8e%e5%8a%a8%e6%80%81%e5%ba%93%e5%8a%a0%e8%bd%bd"></a>
+动态链接与动态库加载
+</h3><h4 id="进程如何看到动态库以及如何共享">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e5%a6%82%e4%bd%95%e7%9c%8b%e5%88%b0%e5%8a%a8%e6%80%81%e5%ba%93%e4%bb%a5%e5%8f%8a%e5%a6%82%e4%bd%95%e5%85%b1%e4%ba%ab"></a>
+进程如何看到动态库以及如何共享
+</h4><p><img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/image.webp" alt=""></p>
+<p>程序和动态库是两个独立的文件，程序运行时需要查找动态库。动态库也需要加载，加载时通过当前进程的页表映射到进程虚拟地址空间的共享区，程序需要调用库时，只需要跳转到共享区，完成后再返回。<br>
+库函数调用就两步：</p>
+<ol>
+<li>被进程看到：动态库映射到进程的地址空间</li>
+<li>被进程调用：在进程的地址空间中进行跳转</li>
+</ol>
+<p><img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/1a30c97d6bdf43c68522f43ca5c42aac.webp" alt=""></p>
+<p>假如有两个进程需要同一个动态库，动态库会通过两个进程的页表分别映射到进程各自的共享区。</p>
+<p>动态库的本质是把系统层面上公共的代码抽出来，不会在内存中重复，节约了内存空间，所有动态库也可以叫做共享库。</p>
+<h4 id="动态链接">
+<a class="header-anchor" href="#%e5%8a%a8%e6%80%81%e9%93%be%e6%8e%a5"></a>
+动态链接
+</h4><p>动态链接其实远比静态链接要常用得多。gcc默认使用动态链接。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ku<span class="o">]</span>$ ldd main.exe 
+</span></span><span class="line"><span class="cl">	linux-vdso.so.1 <span class="o">=</span>&gt;  <span class="o">(</span>0x00007ffc08d5e000<span class="o">)</span>
+</span></span><span class="line"><span class="cl">	libc.so.6 <span class="o">=</span>&gt; /lib64/libc.so.6 <span class="o">(</span>0x00007f75831de000<span class="o">)</span>
+</span></span><span class="line"><span class="cl">	/lib64/ld-linux-x86-64.so.2 <span class="o">(</span>0x00007f75835ac000<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ku<span class="o">]</span>$ 
+</span></span></code></pre></div><p>libc.so.6去掉前后缀就，库名就是c，代表的是C语言标准库，里面提供了常用的标准输入输出文件字符串处理等等这些功能。<br>
+那为什么编译器默认不使用静态链接呢？静态链接会将编译产生的所有自标文件，连同用到的各种库，合并形成一个独立的可执行文件，它不需要额外的依赖就可以运行。照理来说应该更加方便才对是吧?<br>
+静态链接最大的问题在于生成的文件体积大，并且相当耗费内存资源。随着软件复杂度的提升，我们的操作系统也越来越臃肿，不同的软件就有可能都包含了相同的功能和代码，显然会浪费大量的硬盘空间。<br>
+这个时候，动态链接的优势就体现出来了，我们可以将需要共享的代码单独提取出来，保存成一个独立的动态链接库，等到程序运的时候再将它们加载到内存，这样不但可以节省空间，因为同一个模块在内存中只需要保留一份副本，可以被不同的进程所共享。</p>
+<p>动态链接到底是如何工作的？？<br>
+首先要交代一个结论，<strong>动态链接实际上将链接的整个过程推迟到了程序加载的时候</strong>。比如我们去运一个程序，操作系统会首先将程序的数据代码连同它用到的一系列动态库先加载到内存，其中每个动态库的加载地址都是不固定的，操作系统会根据当前地址空间的使用情况为它们动态分配一段内存。当动态库被加载到内存以后，一旦它的内存地址被确定，我们就可以去修正动态库中的那些函数跳转地址了。</p>
+<h5 id="程序被编译器动了手脚">
+<a class="header-anchor" href="#%e7%a8%8b%e5%ba%8f%e8%a2%ab%e7%bc%96%e8%af%91%e5%99%a8%e5%8a%a8%e4%ba%86%e6%89%8b%e8%84%9a"></a>
+程序被编译器动了手脚
+</h5><p>查看依赖时，处理标准库，我们发现程序还依赖于这个东西<code>/lib64/ld-linux-x86-64.so.2 (0x00007f75835ac000)</code>，这个相当于加载器提供的方法。</p>
+<p>在C/C++程序中，当程序开始执行时，它首先并不会直接跳转到<code>main</code>函数。实际上，程序的入口点是<code>_start</code>，这是一个由C运行时库（通常是glibc）或链接器（如ld）提供的特殊函数。<br>
+在<code>_start</code> 函数中，会执行一系列初始化操作，这些操作包括：</p>
+<ol>
+<li>设置堆栈：为程序创建一个初始的堆栈环境。</li>
+<li>初始化数据段：将程序的数据段（如全局变量和静态变量）从初始化数据段复制到相应的内存位置，并清零未初始化的数据段。</li>
+<li>动态链接：这是关键的一步，<code>_start</code>函数会调用动态链接器的代码来解析和加载程序所依赖的动态库（sharedlibraries）。动态链接器会处理所有的符号解析和重定位，确保程序中的函数调用和变量访问能够正确地映射到动态库中的实际地址。</li>
+<li>调用<code>__libc_start_main</code>：一旦动态链接完成，<code>_start</code> 函数会调用<code>__libc_start_main</code> （这是glibc提供的—个函数）。 <code>__libc_start_main</code> 函数负责执行一些额外的初始化工作，比如设置信号处理函数、初始化线程库（如果使用了线程）等。</li>
+<li>调用main函数：最后，<code>__libc_start_main</code>函数会调用程序的<code>main</code>函数，此时程序的执行控制权才正式交给用户编写的代码。</li>
+<li>处理main函数的返回值：当main函数返回时， <code>__libc_start_main</code>会负责处理这个返回值，并最终调用<code>_exit</code>函数来终止程序。</li>
+</ol>
+<p>动态链接器：</p>
+<ul>
+<li>动态链接器（如ld-linux.so）负责在程序运行时加载动态库。</li>
+<li>当程序启动时，动态链接器会解析程序中的动态库依赖，并加载这些库到内存中。
+环境变量和配置文件：</li>
+<li>Linux系统通过环境变量（如LD_LIBRARY_PATH）和配置文件（如/etc/ld.so.Conf及其子配置文件）来指定动态库的搜索路径。</li>
+<li>这些路径会被动态链接器在加载动态库时搜索。
+缓存文件：</li>
+<li>为了提高动态库的加载效率，Linux系统会维护一个名为/etc/ld.so.cache的缓存文件。</li>
+<li>该文件包含了系统中所有已知动态库的路径和相关信息，动态链接器在加载动态库时会首先搜索这个缓存文件。</li>
+</ul>
+<hr>
+<p>其实就是在程序启动之后，程序的<code>_start</code>函数会调用Linux的加载器，把需要的动态库加载到内存。</p>
+<h5 id="动态库中的相对地址">
+<a class="header-anchor" href="#%e5%8a%a8%e6%80%81%e5%ba%93%e4%b8%ad%e7%9a%84%e7%9b%b8%e5%af%b9%e5%9c%b0%e5%9d%80"></a>
+动态库中的相对地址
+</h5><p>动态库为了随时进行加载，为了支持并映射到任意进程的任意位置，对动态库中的方法，统一编址，采用相对编址的方案进行编制的(其实可执行程序也一样，都要遵守平坦模式，只不过exe是直接加载的)。<br>
+动态库也是ELF，我们也理解成为起始地址(0)+偏移量，使用<code>objdump -S 库的路径 | less</code>指令可以查看库的反汇编。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>user1@iZ2zeh5i3yddf3p4q4ueo7Z ~<span class="o">]</span>$ objdump -S /lib64/libc-2.17.so <span class="p">|</span> less
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">/lib64/libc-2.17.so:     file format elf64-x86-64
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Disassembly of section .plt:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">000000000001f910 &lt;.plt&gt;:
+</span></span><span class="line"><span class="cl">   1f910:       ff <span class="m">35</span> f2 <span class="m">76</span> 3a <span class="m">00</span>       pushq  0x3a76f2<span class="o">(</span>%rip<span class="o">)</span>        <span class="c1"># 3c7008 &lt;_GLOBAL_OFFSET_TABLE_+0x8&gt;</span>
+</span></span><span class="line"><span class="cl">   1f916:       ff <span class="m">25</span> f4 <span class="m">76</span> 3a <span class="m">00</span>       jmpq   *0x3a76f4<span class="o">(</span>%rip<span class="o">)</span>        <span class="c1"># 3c7010 &lt;_GLOBAL_OFFSET_TABLE_+0x10&gt;</span>
+</span></span><span class="line"><span class="cl">   1f91c:       0f 1f <span class="m">40</span> <span class="m">00</span>             nopl   0x0<span class="o">(</span>%rax<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">000000000001f920 &lt;*ABS*+0x8f950@plt&gt;:
+</span></span><span class="line"><span class="cl">   1f920:       ff <span class="m">25</span> f2 <span class="m">76</span> 3a <span class="m">00</span>       jmpq   *0x3a76f2<span class="o">(</span>%rip<span class="o">)</span>        <span class="c1"># 3c7018 &lt;_GLOBAL_OFFSET_TABLE_+0x18&gt;</span>
+</span></span><span class="line"><span class="cl">   1f926:       <span class="m">68</span> 0c <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>          pushq  <span class="nv">$0</span>xc
+</span></span><span class="line"><span class="cl">   1f92b:       e9 e0 ff ff ff          jmpq   1f910 &lt;.plt&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">000000000001f930 &lt;*ABS*+0xb57d0@plt&gt;:
+</span></span><span class="line"><span class="cl">   1f930:       ff <span class="m">25</span> ea <span class="m">76</span> 3a <span class="m">00</span>       jmpq   *0x3a76ea<span class="o">(</span>%rip<span class="o">)</span>        <span class="c1"># 3c7020 &lt;_GLOBAL_OFFSET_TABLE_+0x20&gt;</span>
+</span></span><span class="line"><span class="cl">   1f936:       <span class="m">68</span> 0b <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>          pushq  <span class="nv">$0</span>xb
+</span></span><span class="line"><span class="cl">   1f93b:       e9 d0 ff ff ff          jmpq   1f910 &lt;.plt&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">000000000001f940 &lt;realloc@plt&gt;:
+</span></span><span class="line"><span class="cl">   1f940:       ff <span class="m">25</span> e2 <span class="m">76</span> 3a <span class="m">00</span>       jmpq   *0x3a76e2<span class="o">(</span>%rip<span class="o">)</span>        <span class="c1"># 3c7028 &lt;realloc@@GLIBC_2.2.5+0x3413e8&gt;</span>
+</span></span><span class="line"><span class="cl">   1f946:       <span class="m">68</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>          pushq  <span class="nv">$0</span>x0
+</span></span><span class="line"><span class="cl">   1f94b:       e9 c0 ff ff ff          jmpq   1f910 &lt;.plt&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">000000000001f950 &lt;malloc@plt&gt;:
+</span></span><span class="line"><span class="cl">   1f950:       ff <span class="m">25</span> da <span class="m">76</span> 3a <span class="m">00</span>       jmpq   *0x3a76da<span class="o">(</span>%rip<span class="o">)</span>        <span class="c1"># 3c7030 &lt;malloc@@GLIBC_2.2.5+0x3418f0&gt;</span>
+</span></span><span class="line"><span class="cl">   1f956:       <span class="m">68</span> <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>          pushq  <span class="nv">$0</span>x1
+</span></span><span class="line"><span class="cl">:
+</span></span></code></pre></div><p>观察左边的地址可以发现库里的地址也是从上往下递增的，按顺序依次编址。可执行程序从0开始编址，动态库映射到虚拟地址空间，确定起始地址和偏移量，也能找到任何一个方法的地址。</p>
+<h5 id="程序如何与动态库映射起来">
+<a class="header-anchor" href="#%e7%a8%8b%e5%ba%8f%e5%a6%82%e4%bd%95%e4%b8%8e%e5%8a%a8%e6%80%81%e5%ba%93%e6%98%a0%e5%b0%84%e8%b5%b7%e6%9d%a5"></a>
+程序如何与动态库映射起来
+</h5><p>动态库也是一个文件，要访问也是要被先加载，要加载也是要被打开的。<br>
+让我们的进程找到动态库的本质：也是文件操作，不过我们访问库函数，通过虚拟地址进跳转访问的，所以需要把动态库映射到进程的地址空间中。</p>
+<p><img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/0aedbaae63bc4444b6344cd0aa57116e.webp" alt=""></p>
+<p>程序加载时先执行<code>_start</code>函数，<code>_start</code>函数要找到程序需要的动态库，ELF里的符号表会记录下需要的动态库，所以在编译链接时就要告诉编译器动态库的位置。因为都是ELF格式，加载动态库的过程和加载可执行程序差不多，根据struct file一步步往下找到在磁盘上的文件位置，然后加载到内存，动态库里面也是采用绝对编址的，库里面的地址不当成虚拟地址，我们当成库中方法的偏移量。与此同时库也有自己的大小，那么就创建一个vm_are_struct插入到内存管理的链表中，用库的大小和起始地址初始化vm_are_struct里的vm_end和vm_start，库也有虚拟地址，通过页表映射到mm_struct的共享区，得到库的起始虚拟地址，再加上偏移量就能访问库中任意一个方法了。</p>
+<h5 id="程序如何调用库函数">
+<a class="header-anchor" href="#%e7%a8%8b%e5%ba%8f%e5%a6%82%e4%bd%95%e8%b0%83%e7%94%a8%e5%ba%93%e5%87%bd%e6%95%b0"></a>
+程序如何调用库函数
+</h5><p>库已经被我们映射到了当前进程的地址空间中库的虚拟起始地址我们也已经知道了，库中每一个方法的偏移量地址我们也知道。<br>
+访问库中任意方法，只需要知道库的起始虚拟地址+法偏移量即可定位库中的方法。并且，整个调用过程，是从代码区跳转到共享区，调完毕在返回到代码区，整个过程完全在进程地址空间中进行的。</p>
+<p><img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/1182c4bd307f63e44d7a08f20100d151.webp" alt=""></p>
+<p>偏移量在编译时就确定了，因为编译时要对代码进行编址，库加载和映射成功后，要修改代码区，将调用的库函数的名字修改为库起始地址+偏移量来访问。</p>
+<h5 id="全局偏移量表gotglobal-offset-table">
+<a class="header-anchor" href="#%e5%85%a8%e5%b1%80%e5%81%8f%e7%a7%bb%e9%87%8f%e8%a1%a8gotglobal-offset-table"></a>
+全局偏移量表GOT(global offset table)
+</h5><p>也就是说，我们的程序运行之前，先把所有库加载并映射，所有库的起始虚拟地址都应该提前知道。
+然后对我们加载到内存中的程序的库函数调用进地址修改，在内存中二次完成地址设置（这个叫做加载地址重定位）。</p>
+<p>等等，修改的竟然是代码区，代码区在进程中不是只读的吗？怎么能修改呢？</p>
+<p>代码区确实是只读的，不可修改。<br>
+所以，动态链接采用的做法是在<code>.data</code>（可执行程序或者库自己）中专门预留一片区域用来存放函数的跳转地址，它也被叫做全局偏移表GOT，表中每一项都是本运行模块要引用的一个全局变量或函数的地址。因为<code>.data</code>区域是可读写的，所以可以支持动态进行修改。</p>
+<p><img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/1182c4bd307f63e44d7a08f20100d151.webp" alt=""></p>
+<p>我们的可执行程序在编址时，代码就是代码区，数据区里额外开了一块区域，这个区域里保存的就是要用的库函数的偏移量和库名称，在链接时GOT表就存在了，在代码区里也不用库的起始地址和偏移量，代码区填写的是表的起始地址+表当中的偏移量。将来可执行程序需要用的所有库，用到的所有方法全部都更新到表里。可执行程序再也不关心自己要访问哪个库了，变成了要知道访问的方法在表里的位置。把动态库加载进来后，库在mm_struct里的起始虚拟地址初始化了，更改GOT表中库的地址，此时代码不做更改，也可以找到库当中的方法了，这就是<strong>加载重定向</strong>的原理。</p>
+<p>由于代码段只读，我们不能直接修改代码段。但有了GOT表，代码便可以被所有进程共享。但在不同进程的地址空间中，各动态库的绝对地址、相对位置都不同。<strong>反映到GOT表上，就是每个进程的每个动态库都有独立的GOT表，所以进程间不能共享GOT表。</strong><br>
+在单个<code>.so</code>下，由于GOT表与<code>.text</code> 的相对位置是固定的，我们完全可以利用CPU的相对寻址来找到GOT表。<br>
+在调用函数的时候会首先查表，然后根据表中的地址来进行跳转，这些地址在动态库加载的时候会被修改为真正的地址。库也是由多个<code>.o</code>文件打包构成的，编址时从0开始，认为所有的方法编址全是偏移量，就可以把库加载到内存的任意位置，被映射到进程的任意虚拟地址空间，通过修改GOT表就可以动态找到库。<br>
+这种方式实现的动态链接就被叫做<code>PIC地址无关代码</code>。换句话说，我们的动态库不需要做任何修改，被加载到任意内存地址都能够正常运行，并且能够被所有进程共享，这也是为什么之前我们给编译器指定-fPIC参数的原因，因为PIC=相对编址+GOT。</p>
+<h5 id="库间依赖">
+<a class="header-anchor" href="#%e5%ba%93%e9%97%b4%e4%be%9d%e8%b5%96"></a>
+库间依赖
+</h5><p>不仅仅有可执行程序调用库，库也会调用其他库。库之间是有依赖的，如何做到库和库之间互相调用也是与地址无关的呢？和可执行程序一样，库中也有.GOT，这也就是为什么大家为什么都是ELF的格式的原因。</p>
+<p><img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/1a4361caaf47466c822f7d6c1f036ce3.webp" alt=""></p>
+<p>由于动态链接在程序加载的时候需要对大量函数进行重定位，这一步显然是非常耗时的。为了进一步降低开销，我们的操作系统还做了一些其他的优化，比如<strong>延迟绑定</strong>，或者也叫PLT（过程连接表（ProcedureLinkageTable））。与其在程序一开始就对所有函数进重定位，不如将这个过程推迟到函数第一次被调用的时候，因为绝大多数动态库中的函数可能在程序运行期间一次都不会被使用到。
+思路是：GOT中的跳转地址默认会指向一段辅助代码，它也被叫做桩代码/stup。在我们第一次调用函数的时候，这段代码会负责查询真正函数的跳转地址，并且去更新GOT表。于是我们再次调用函数的时候，就会直接跳转到动态库中真正的函数实现。</p>
+<p><img src="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/b508b01c007f4698a59228da96803e70.webp" alt=""></p>
+<p>解析依赖关系的时候，就是加载并完善互相之间的GOT表的过程</p>
+<hr>
+<p>总而言之，动态链接实际上将链接的整个过程，比如符号查询、地址的重定位从编译时推迟到了程序的运行时，它虽然牺牲了一定的性能和程序加载时间，但绝对是物有所值的。因为动态链接能够更有
+效的利用磁盘空间和内存资源，以极大方便了代码的更新和维护，更关键的是，它实现了二进制级别的代码复用。</p>
+<h4 id="总结">
+<a class="header-anchor" href="#%e6%80%bb%e7%bb%93"></a>
+总结
+</h4><p>静态链接的出现，提高了程序的模块化水平。对于一个大的项目，不同的人可以独立地测试和开发自己的模块。通过静态链接，生成最终的可执行文件。<br>
+我们知道静态链接会将编译产生的所有目标文件，和用到的各种库合并成一个独立的可执行文件，其中我们会去修正模块间函数的跳转地址，也被叫做编译重定位(也叫做静态重定位)。<br>
+而动态链接实际上将链接的整个过程推迟到了程序加载的时候。比如我们去运一个程序，操作系统会首先将程序的数据代码连同它用到的一系列动态库先加载到内存，其中每个动态库的加载地址都是不固定的，但是无论加载到什么地方，都要映射到进程对应的地址空间，然后通过.GOT方式进行调用(运行重定位，也叫做动态地址重定位)。</p>
+</div>
+    <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
+    <a
+      class="article-category-link"
+      href="/categories/linux"
+      data-aos="zoom-in"
+      >Linux</a
+    >
+    </li></ul>
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e5%ba%93"
+        rel="tag"
+        >库</a
+      >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e9%93%be%e6%8e%a5"
+        rel="tag"
+        >链接</a
+      >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/elf"
+        rel="tag"
+        >ELF</a
+      >
+    </li></ul>
+</footer>
+  </div><nav
+    id="article-nav"
+    aria-label="Article navigation"
+    data-aos="fade-up"
+  ><div class="article-nav-link-wrap left"><img
+              data-src="/images/covers/covers-122.webp"
+              data-sizes="auto"
+              alt="【Linux】08 - 文件系统"
+              class="lazyload"
+            /><a
+          href="/post/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/"
+          aria-label="前一篇:【Linux】08 - 文件系统"
+          title="前一篇:【Linux】08 - 文件系统"
+        ></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">【Linux】08 - 文件系统</h3>
+      </div></nav></article></section>
+        </div><footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info"><div>
+      <span class="icon-copyright"></span>2020-2026<span class="footer-info-sep rotate"></span>CialloKing
+    </div><div>
+        基于&nbsp;<a
+          href="https://gohugo.io/"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          >Hugo</a
+        >&nbsp;Theme.<a
+          href="https://github.com/D-Sketon/hugo-theme-reimu"
+          target="_blank"
+          rel="noopener nofollow noreferrer"
+          >Reimu</a
+        >
+      </div><div>
+        <span class="icon-brush"
+          >&nbsp;131.7k</span
+        >
+        &nbsp;|&nbsp;
+        <span class="icon-coffee">&nbsp;04:35</span>
+      </div><div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv"
+          >总访问量&nbsp;<span
+            id="busuanzi_value_site_pv"
+          ></span
+        ></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv"
+          >总访客量&nbsp;<span
+            id="busuanzi_value_site_uv"
+          ></span
+        ></span>
+      </div></div>
+</footer>
+<div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div><div id="mask" class="hide"></div>
+      </div><nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap"><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#库制作与原理">库制作与原理</a>
+      <ol>
+        <li><a href="#什么是库">什么是库</a></li>
+        <li><a href="#动静态库">动静态库</a>
+          <ol>
+            <li><a href="#静态库">静态库</a></li>
+            <li><a href="#动态库">动态库</a></li>
+            <li><a href="#动静态库结论">动静态库结论</a></li>
+          </ol>
+        </li>
+        <li><a href="#目标文件">目标文件</a></li>
+        <li><a href="#elf文件">ELF文件</a>
+          <ol>
+            <li><a href="#elf形成可执行文件">ELF形成可执行文件</a></li>
+            <li><a href="#elf可执行文件加载">ELF可执行文件加载</a></li>
+          </ol>
+        </li>
+        <li><a href="#连接与加载">连接与加载</a>
+          <ol>
+            <li><a href="#静态链接">静态链接</a></li>
+            <li><a href="#elf加载与进程地址空间">ELF加载与进程地址空间</a>
+              <ol>
+                <li><a href="#逻辑地址与虚拟地址">逻辑地址与虚拟地址</a></li>
+                <li><a href="#重新理解进程虚拟地址空间">重新理解进程虚拟地址空间</a></li>
+                <li><a href="#程序的加载">程序的加载</a></li>
+              </ol>
+            </li>
+            <li><a href="#动态链接与动态库加载">动态链接与动态库加载</a>
+              <ol>
+                <li><a href="#进程如何看到动态库以及如何共享">进程如何看到动态库以及如何共享</a></li>
+                <li><a href="#动态链接">动态链接</a></li>
+                <li><a href="#总结">总结</a></li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img
+    data-src="/avatar/my-avatar.webp"
+    data-sizes="auto"
+    alt="CialloKing"
+    class="lazyload"
+  />
+  <div class="sidebar-author-name">CialloKing</div>
+  <div class="sidebar-description">少女祈祷中...</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div><div class="sidebar-state-number">20</div>
+  </div>
+  <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
+    <div>分类</div>
+    <div class="sidebar-state-number">
+      3
+    </div>
+  </a>
+  <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
+    <div>标签</div>
+    <div class="sidebar-state-number">28</div>
+  </a>
+</div>
+<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/"
+        aria-label="首页"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">首页</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/archives"
+        aria-label="归档"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">归档</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/about"
+        aria-label="关于"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">关于</div>
+    </div><div class="sidebar-menu-link-wrap">
+      <a
+        class="sidebar-menu-link-dummy"
+        href="/link"
+        aria-label="友链"
+      ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
+    </div></div></div></div><div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div></nav>
+</div><div id="aplayer" theme="var(--color-link)"></div><script
+    src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"
+    
+    
+    
+    
+    integrity="sha384-3gT/vsepWkfz/ff7PpWNUeMzeWoH3cDhm/A8jM7ouoAK0/fP/9bcHHR5kHq2nf&#43;e" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js"
+    
+    
+    
+    
+    integrity="sha384-J08i8An/QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script><script src="/js/main.js" integrity="" crossorigin="anonymous"  ></script><script src="/js/aos.js" integrity="" crossorigin="anonymous"  ></script><script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", aosInit);
+    } else {
+      aosInit();
+    }
+  </script><script src="/js/pjax_main.js" integrity="" crossorigin="anonymous" data-pjax ></script><script>
+  var setupFirework = () => {
+    if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
+      if (window.firework) {
+        const options = JSON.parse("{\"excludeelements\":[\"a\",\"button\"],\"particles\":[{\"colors\":[\"var(--red-1)\",\"var(--red-2)\",\"var(--red-3)\",\"var(--red-4)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"emit\"],\"number\":20,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.3,0.5],\"radius\":[16,32]}},{\"colors\":[\"var(--red-0)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"diffuse\"],\"number\":1,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.2,0.5],\"lineWidth\":6,\"radius\":20}}]}");
+        options.excludeElements = options.excludeelements;
+        delete options.excludeelements;
+        window.firework(options);
+      }
+    }
+  }
+</script><script
+    src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js"
+    defer
+    
+    
+    onload="setupFirework()"
+    integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8&#43;pUoWX8n1rgq282T" crossorigin="anonymous"></script><script
+    src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js"
+    
+    
+    
+    
+    integrity="sha384-xneY1WY8hOfUzswrE4CrYq35N4BdVcxqxwHPr9zawE/jMSCxD&#43;jAPU55x/jj3wlf" crossorigin="anonymous"></script><script src="/js/pjax.js" integrity="" crossorigin="anonymous"  ></script><script
+    src="https://npm.webcache.cn/quicklink@3.0.1/dist/quicklink.umd.js"
+    
+    
+    
+    
+    integrity="sha384-caMDqvgav/HWdEYQU1QRRHMLleigpL1YHAG0m371DhzfL8rRzUyOb&#43;bEHtwlmYjD" crossorigin="anonymous"></script><script data-pjax>
+    window.quicklink?.listen({
+      timeout:  3000 ,
+      priority:  true ,
+      ignores: JSON.parse("[]")
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div><script data-pjax>
+        window.REIMU_POST = {
+          author: "CialloKing",
+          title: "【Linux】09 - 库制作与原理",
+          url: "https:\/\/cialloking.com\/post\/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86\/",
+          description: " 库制作与原理 什么是库 库是写好的现有的，成熟的，可以复用的代码。现实中每个程序都要依赖很多基础的底层库，不可能每个的代码都从零开始，因此库的存在意义非同寻常。\n",
+          cover: "https:\/\/cialloking.com\/images\/bg\/bg1.webp",
+        };
+      </script><script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax ></script><script src="/js/tabs.js" integrity="" crossorigin="anonymous" data-pjax defer></script><script type="module" data-pjax>const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;const initPswp = (gallery, children) => {
+          if (_$$(`${gallery} ${children}`).length > 0) {
+            new PhotoSwipeLightbox({
+              gallery,
+              children,pswpModule: () => safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8\u002boTJ7m3DfYEWX1fu1scuS4\u002bs")}).init();
+          }
+        }
+        const pswp = () => {
+          initPswp('.article-entry', 'a.article-gallery-item');
+          initPswp('.article-gallery', 'a.article-gallery-item');
+        }
+        pswp()
+      </script></div>
+</div><script
+    src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js"
+    
+    async
+    
+    
+    integrity="sha384-0M75wtSkhjIInv4coYlaJU83&#43;OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id&#43;S" crossorigin="anonymous"></script><script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script><script>
+  const reimuCopyright = String.raw`
+   ______     ______     __     __    __     __  __    
+  /\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+  \ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+   \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+    \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                    
+  `;
+  console.log(String.raw`%c ${reimuCopyright}`, "color: #ff5252;");
+  console.log(
+    "%c Theme.Reimu" + " %c https://github.com/D-Sketon/hugo-theme-reimu ",
+    "color: white; background: #ff5252; padding:5px 0;",
+    "padding:4px;border:1px solid #ff5252;",
+  );
+</script>
+
+<script>
+    var setupAPlayer = () => {
+      if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
+        if (window.matchMedia('(max-width: 959px)').matches) {
+          const aplayer = document.getElementById('aplayer');
+          if (aplayer) {
+            const aside = aplayer.parentNode?.parentNode;
+            if (aside?.tagName === 'ASIDE') {
+              aplayer.removeAttribute('data-aos');
+              aside.parentNode.removeChild(aplayer);
+              document.body.appendChild(aplayer);
+            }
+          }
+        }
+        
+        var audioData = [{"artist":"PIKASONIC; なこたんまる","cover":"/audio/追憶 (feat. nakotanmaru) - PIKASONIC; なこたんまる.webp","name":"追憶 (feat. nakotanmaru)","url":"/audio/追憶 (feat. nakotanmaru) - PIKASONIC; なこたんまる.m4a"},{"artist":"Wisp X; Xomu","cover":"/audio/Lumina - Wisp X Xomu.webp","name":"Lumina","url":"/audio/Lumina - Wisp X; Xomu.m4a"},{"artist":"Wisp X; DJ Okawari","cover":"/audio/Luv Letter (Wisp X Remix) - Wisp X DJ Okawari.webp","name":"Luv Letter (Wisp X Remix)","url":"/audio/Luv Letter (Wisp X Remix) - Wisp X,DJ Okawari.m4a"},{"artist":"Yonder Voice","cover":"/audio/花月夜 - Yonder Voice.webp","name":"花月夜","url":"/audio/花月夜 - Yonder Voice.m4a"},{"artist":"森永真由美","cover":"/audio/色は匂へど 散りぬるを -Full Version- - 森永真由美.webp","name":"色は匂へど 散りぬるを -Full Version-","url":"/audio/色は匂へど 散りぬるを -Full Version- - 森永真由美.m4a"},{"artist":"のみこ","cover":"/audio/Bad Apple!! - のみこ.webp","name":"Bad Apple!!","url":"/audio/Bad Apple!! - のみこ.m4a"},{"artist":"上海アリス幻樂団","cover":"/audio/少女綺想曲 ～ Dream Battle - 上海アリス幻樂団.webp","name":"少女綺想曲 ～ Dream Battle","url":"/audio/少女綺想曲 ～ Dream Battle - 上海アリス幻樂団.m4a"},{"artist":"Famishin; 井ノ原智","cover":"/audio/恋ひ恋ふ縁 (Title Version) - Famishin 井ノ原智.webp","name":"恋ひ恋ふ縁 (Title Version)","url":"/audio/恋ひ恋ふ縁 (Title Version) - Famishin,井ノ原智.m4a"}];
+        new APlayer({
+            theme: "var(--color-link)",
+            container: document.getElementById('aplayer'),
+            audio: audioData || [],
+            fixed:  true ,
+            autoplay:  false ,
+            loop: 'all',
+            order: 'random',
+            preload: 'auto',
+            volume:  0.7 ,
+            mutex:  true ,
+            listFolded:  true ,
+            lrcType:  0 ,
+        });
+      }
+    }
+    </script><script
+    src="https://npm.webcache.cn/aplayer@1.10.1/dist/APlayer.min.js"
+    defer
+    
+    
+    onload="setupAPlayer()"
+    integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr&#43;h5UfruuRL/aORyw&#43;5&#43;HZoU6e" crossorigin="anonymous"></script><script>
+(function() {
+  // 封面图片列表（保持你现有路径不变，无需修改）
+  window.covers = [
+    '/images/covers/covers-01.webp',
+    '/images/covers/covers-02.webp',
+    '/images/covers/covers-03.webp',
+    '/images/covers/covers-04.webp',
+    '/images/covers/covers-05.webp',
+    '/images/covers/covers-06.webp',
+    '/images/covers/covers-07.webp',
+    '/images/covers/covers-08.webp',
+    '/images/covers/covers-09.webp',
+    '/images/covers/covers-10.webp',
+    '/images/covers/covers-11.webp',
+    '/images/covers/covers-12.webp',
+    '/images/covers/covers-13.webp',
+    '/images/covers/covers-14.webp',
+    '/images/covers/covers-15.webp',
+    '/images/covers/covers-16.webp',
+    '/images/covers/covers-17.webp',
+    '/images/covers/covers-18.webp',
+    '/images/covers/covers-19.webp',
+    '/images/covers/covers-20.webp',
+    '/images/covers/covers-21.webp',
+    '/images/covers/covers-22.webp',
+    '/images/covers/covers-23.webp',
+    '/images/covers/covers-24.webp',
+    '/images/covers/covers-25.webp',
+    '/images/covers/covers-26.webp',
+    '/images/covers/covers-27.webp',
+    '/images/covers/covers-28.webp',
+    '/images/covers/covers-29.webp',
+    '/images/covers/covers-30.webp',
+    '/images/covers/covers-31.webp',
+    '/images/covers/covers-32.webp',
+    '/images/covers/covers-33.webp',
+    '/images/covers/covers-34.webp',
+    '/images/covers/covers-35.webp',
+    '/images/covers/covers-36.webp',
+    '/images/covers/covers-37.webp',
+    '/images/covers/covers-38.webp',
+    '/images/covers/covers-39.webp',
+    '/images/covers/covers-40.webp',
+    '/images/covers/covers-41.webp',
+    '/images/covers/covers-42.webp',
+    '/images/covers/covers-43.webp',
+    '/images/covers/covers-44.webp',
+    '/images/covers/covers-45.webp',
+    '/images/covers/covers-46.webp',
+    '/images/covers/covers-47.webp',
+    '/images/covers/covers-48.webp',
+    '/images/covers/covers-49.webp',
+    '/images/covers/covers-50.webp',
+    '/images/covers/covers-51.webp',
+    '/images/covers/covers-52.webp',
+    '/images/covers/covers-53.webp',
+    '/images/covers/covers-54.webp',
+    '/images/covers/covers-55.webp',
+    '/images/covers/covers-56.webp',
+    '/images/covers/covers-57.webp',
+    '/images/covers/covers-58.webp',
+    '/images/covers/covers-59.webp',
+    '/images/covers/covers-60.webp',
+    '/images/covers/covers-61.webp',
+    '/images/covers/covers-62.webp',
+    '/images/covers/covers-63.webp',
+    '/images/covers/covers-64.webp',
+    '/images/covers/covers-65.webp',
+    '/images/covers/covers-66.webp',
+    '/images/covers/covers-67.webp',
+    '/images/covers/covers-68.webp',
+    '/images/covers/covers-69.webp',
+    '/images/covers/covers-70.webp',
+    '/images/covers/covers-71.webp',
+    '/images/covers/covers-72.webp',
+    '/images/covers/covers-73.webp',
+    '/images/covers/covers-74.webp',
+    '/images/covers/covers-75.webp',
+    '/images/covers/covers-76.webp',
+    '/images/covers/covers-77.webp',
+    '/images/covers/covers-78.webp',
+    '/images/covers/covers-79.webp',
+    '/images/covers/covers-80.webp',
+    '/images/covers/covers-81.webp',
+    '/images/covers/covers-82.webp',
+    '/images/covers/covers-83.webp',
+    '/images/covers/covers-84.webp',
+    '/images/covers/covers-85.webp',
+    '/images/covers/covers-86.webp',
+    '/images/covers/covers-87.webp',
+    '/images/covers/covers-88.webp',
+    '/images/covers/covers-89.webp',
+    '/images/covers/covers-90.webp',
+    '/images/covers/covers-91.webp',
+    '/images/covers/covers-92.webp',
+    '/images/covers/covers-93.webp',
+    '/images/covers/covers-94.webp',
+    '/images/covers/covers-95.webp',
+    '/images/covers/covers-96.webp',
+    '/images/covers/covers-97.webp',
+    '/images/covers/covers-98.webp',
+    '/images/covers/covers-99.webp',
+    '/images/covers/covers-100.webp',
+    '/images/covers/covers-101.webp',
+    '/images/covers/covers-102.webp',
+    '/images/covers/covers-103.webp',
+    '/images/covers/covers-104.webp',
+    '/images/covers/covers-105.webp',
+    '/images/covers/covers-106.webp',
+    '/images/covers/covers-107.webp',
+    '/images/covers/covers-108.webp',
+    '/images/covers/covers-109.webp',
+    '/images/covers/covers-110.webp',
+    '/images/covers/covers-111.webp',
+    '/images/covers/covers-112.webp',
+    '/images/covers/covers-113.webp',
+    '/images/covers/covers-114.webp',
+    '/images/covers/covers-115.webp',
+    '/images/covers/covers-116.webp',
+    '/images/covers/covers-117.webp',
+    '/images/covers/covers-118.webp',
+    '/images/covers/covers-119.webp',
+    '/images/covers/covers-120.webp',
+    '/images/covers/covers-121.webp',
+    '/images/covers/covers-122.webp',
+    '/images/covers/covers-123.webp',
+    '/images/covers/covers-124.webp',
+    '/images/covers/covers-125.webp',
+    '/images/covers/covers-126.webp',
+    '/images/covers/covers-127.webp',
+    '/images/covers/covers-128.webp',
+    '/images/covers/covers-129.webp',
+    '/images/covers/covers-130.webp',
+    '/images/covers/covers-131.webp',
+    '/images/covers/covers-132.webp',
+    '/images/covers/covers-133.webp',
+    '/images/covers/covers-134.webp',
+    '/images/covers/covers-135.webp',
+    '/images/covers/covers-136.webp',
+    '/images/covers/covers-137.webp',
+    '/images/covers/covers-138.webp',
+    '/images/covers/covers-139.webp',
+    '/images/covers/covers-140.webp',
+    '/images/covers/covers-141.webp',
+    '/images/covers/covers-142.webp',
+    '/images/covers/covers-143.webp',
+    '/images/covers/covers-144.webp',
+    '/images/covers/covers-145.webp',
+    '/images/covers/covers-146.webp',
+    '/images/covers/covers-147.webp',
+    '/images/covers/covers-148.webp',
+    '/images/covers/covers-149.webp',
+    '/images/covers/covers-150.webp',
+    '/images/covers/covers-151.webp',
+    '/images/covers/covers-152.webp',
+    '/images/covers/covers-153.webp',
+    '/images/covers/covers-154.webp',
+    '/images/covers/covers-155.webp',
+    '/images/covers/covers-156.webp',
+    '/images/covers/covers-157.webp',
+    '/images/covers/covers-158.webp',
+    '/images/covers/covers-159.webp',
+    '/images/covers/covers-160.webp',
+    '/images/covers/covers-161.webp',
+    '/images/covers/covers-162.webp',
+    '/images/covers/covers-163.webp',
+    '/images/covers/covers-164.webp',
+    '/images/covers/covers-165.webp',
+    '/images/covers/covers-166.webp',
+    '/images/covers/covers-167.webp',
+    '/images/covers/covers-168.webp',
+    '/images/covers/covers-169.webp',
+    '/images/covers/covers-170.webp',
+    '/images/covers/covers-171.webp',
+    '/images/covers/covers-172.webp',
+    '/images/covers/covers-173.webp',
+    '/images/covers/covers-174.webp',
+    '/images/covers/covers-175.webp',
+    '/images/covers/covers-176.webp',
+    '/images/covers/covers-177.webp',
+    '/images/covers/covers-178.webp',
+    '/images/covers/covers-179.webp',
+    '/images/covers/covers-180.webp',
+    '/images/covers/covers-181.webp',
+    '/images/covers/covers-182.webp',
+    '/images/covers/covers-183.webp',
+    '/images/covers/covers-184.webp',
+    '/images/covers/covers-185.webp',
+    '/images/covers/covers-186.webp',
+    '/images/covers/covers-187.webp',
+    '/images/covers/covers-188.webp',
+    '/images/covers/covers-189.webp',
+    '/images/covers/covers-190.webp',
+    '/images/covers/covers-191.webp',
+    '/images/covers/covers-192.webp',
+    '/images/covers/covers-193.webp',
+    '/images/covers/covers-194.webp',
+    '/images/covers/covers-195.webp',
+    '/images/covers/covers-196.webp',
+    '/images/covers/covers-197.webp',
+    '/images/covers/covers-198.webp',
+    '/images/covers/covers-199.webp',
+    '/images/covers/covers-200.webp',
+    '/images/covers/covers-201.webp',
+    '/images/covers/covers-202.webp',
+    '/images/covers/covers-203.webp',
+    '/images/covers/covers-204.webp',
+    '/images/covers/covers-205.webp',
+    '/images/covers/covers-206.webp',
+    '/images/covers/covers-207.webp',
+    '/images/covers/covers-208.webp',
+    '/images/covers/covers-209.webp',
+    '/images/covers/covers-210.webp',
+    '/images/covers/covers-211.webp',
+    '/images/covers/covers-212.webp',
+    '/images/covers/covers-213.webp',
+    '/images/covers/covers-214.webp',
+    '/images/covers/covers-215.webp',
+    '/images/covers/covers-216.webp',
+    '/images/covers/covers-217.webp',
+    '/images/covers/covers-218.webp',
+    '/images/covers/covers-219.webp',
+    '/images/covers/covers-220.webp',
+    '/images/covers/covers-221.webp',
+    '/images/covers/covers-222.webp',
+    '/images/covers/covers-223.webp',
+    '/images/covers/covers-224.webp',
+    '/images/covers/covers-225.webp',
+    '/images/covers/covers-226.webp',
+    '/images/covers/covers-227.webp',
+    '/images/covers/covers-228.webp',
+    '/images/covers/covers-229.webp',
+    '/images/covers/covers-230.webp',
+    '/images/covers/covers-231.webp',
+    '/images/covers/covers-232.webp',
+    '/images/covers/covers-233.webp',
+    '/images/covers/covers-234.webp',
+    '/images/covers/covers-235.webp',
+    '/images/covers/covers-236.webp',
+    '/images/covers/covers-237.webp',
+    '/images/covers/covers-238.webp',
+    '/images/covers/covers-239.webp',
+    '/images/covers/covers-240.webp',
+    '/images/covers/covers-241.webp',
+    '/images/covers/covers-242.webp',
+    '/images/covers/covers-243.webp',
+    '/images/covers/covers-244.webp',
+    '/images/covers/covers-245.webp',
+    '/images/covers/covers-246.webp',
+    '/images/covers/covers-247.webp',
+    '/images/covers/covers-248.webp',
+    '/images/covers/covers-249.webp',
+    '/images/covers/covers-250.webp',
+    '/images/covers/covers-251.webp',
+    '/images/covers/covers-252.webp',
+    '/images/covers/covers-253.webp',
+    '/images/covers/covers-254.webp',
+    '/images/covers/covers-255.webp',
+    '/images/covers/covers-256.webp',
+    '/images/covers/covers-257.webp',
+    '/images/covers/covers-258.webp',
+    '/images/covers/covers-259.webp',
+    '/images/covers/covers-260.webp',
+    '/images/covers/covers-261.webp',
+    '/images/covers/covers-262.webp',
+    '/images/covers/covers-263.webp',
+    '/images/covers/covers-264.webp',
+    '/images/covers/covers-265.webp',
+    '/images/covers/covers-266.webp',
+    '/images/covers/covers-267.webp',
+    '/images/covers/covers-268.webp',
+    '/images/covers/covers-269.webp',
+    '/images/covers/covers-270.webp',
+    '/images/covers/covers-271.webp',
+    '/images/covers/covers-272.webp',
+    '/images/covers/covers-273.webp',
+    '/images/covers/covers-274.webp',
+    '/images/covers/covers-275.webp',
+    '/images/covers/covers-276.webp',
+    '/images/covers/covers-277.webp',
+    '/images/covers/covers-278.webp',
+    '/images/covers/covers-279.webp',
+    '/images/covers/covers-280.webp',
+    '/images/covers/covers-281.webp',
+    '/images/covers/covers-282.webp',
+    '/images/covers/covers-283.webp',
+    '/images/covers/covers-284.webp',
+    '/images/covers/covers-285.webp',
+    '/images/covers/covers-286.webp',
+    '/images/covers/covers-287.webp',
+    '/images/covers/covers-288.webp',
+    '/images/covers/covers-289.webp',
+    '/images/covers/covers-290.webp',
+    '/images/covers/covers-291.webp',
+    '/images/covers/covers-292.webp',
+    '/images/covers/covers-293.webp',
+    '/images/covers/covers-294.webp',
+    '/images/covers/covers-295.webp',
+    '/images/covers/covers-296.webp',
+    '/images/covers/covers-297.webp',
+    '/images/covers/covers-298.webp',
+    '/images/covers/covers-299.webp',
+    '/images/covers/covers-300.webp',
+    '/images/covers/covers-301.webp',
+    '/images/covers/covers-302.webp',
+    '/images/covers/covers-303.webp',
+    '/images/covers/covers-304.webp',
+    '/images/covers/covers-305.webp',
+    '/images/covers/covers-306.webp',
+    '/images/covers/covers-307.webp',
+    '/images/covers/covers-308.webp',
+    '/images/covers/covers-309.webp',
+    '/images/covers/covers-310.webp',
+    '/images/covers/covers-311.webp',
+    '/images/covers/covers-312.webp',
+    '/images/covers/covers-313.webp',
+    '/images/covers/covers-314.webp',
+    '/images/covers/covers-315.webp',
+    '/images/covers/covers-316.webp',
+    '/images/covers/covers-317.webp',
+    '/images/covers/covers-318.webp',
+    '/images/covers/covers-319.webp',
+    '/images/covers/covers-320.webp',
+    '/images/covers/covers-321.webp',
+    '/images/covers/covers-322.webp',
+    '/images/covers/covers-323.webp',
+    '/images/covers/covers-324.webp',
+    '/images/covers/covers-325.webp',
+    '/images/covers/covers-326.webp',
+    '/images/covers/covers-327.webp',
+    '/images/covers/covers-328.webp',
+    '/images/covers/covers-329.webp',
+    '/images/covers/covers-330.webp',
+    '/images/covers/covers-331.webp',
+    '/images/covers/covers-332.webp',
+    '/images/covers/covers-333.webp',
+    '/images/covers/covers-334.webp',
+    '/images/covers/covers-335.webp',
+    '/images/covers/covers-336.webp',
+    '/images/covers/covers-337.webp',
+    '/images/covers/covers-338.webp',
+    '/images/covers/covers-339.webp',
+    '/images/covers/covers-340.webp',
+    '/images/covers/covers-341.webp',
+    '/images/covers/covers-342.webp',
+    '/images/covers/covers-343.webp',
+    '/images/covers/covers-344.webp',
+    '/images/covers/covers-345.webp',
+    '/images/covers/covers-346.webp',
+    '/images/covers/covers-347.webp',
+    '/images/covers/covers-348.webp',
+    '/images/covers/covers-349.webp',
+    '/images/covers/covers-350.webp',
+    '/images/covers/covers-351.webp',
+    '/images/covers/covers-352.webp',
+    '/images/covers/covers-353.webp',
+    '/images/covers/covers-354.webp',
+    '/images/covers/covers-355.webp',
+    '/images/covers/covers-356.webp',
+    '/images/covers/covers-357.webp',
+    '/images/covers/covers-358.webp',
+    '/images/covers/covers-359.webp',
+    '/images/covers/covers-360.webp',
+    '/images/covers/covers-361.webp',
+    '/images/covers/covers-362.webp',
+    '/images/covers/covers-363.webp',
+    '/images/covers/covers-364.webp',
+    '/images/covers/covers-365.webp',
+    '/images/covers/covers-366.webp',
+    '/images/covers/covers-367.webp',
+    '/images/covers/covers-368.webp',
+    '/images/covers/covers-369.webp',
+    '/images/covers/covers-370.webp',
+    '/images/covers/covers-371.webp',
+    '/images/covers/covers-372.webp',
+    '/images/covers/covers-373.webp',
+    '/images/covers/covers-374.webp',
+    '/images/covers/covers-375.webp',
+    '/images/covers/covers-376.webp',
+    '/images/covers/covers-377.webp',
+    '/images/covers/covers-378.webp',
+    '/images/covers/covers-379.webp',
+    '/images/covers/covers-380.webp',
+    '/images/covers/covers-381.webp',
+    '/images/covers/covers-382.webp',
+    '/images/covers/covers-383.webp',
+    '/images/covers/covers-384.webp',
+    '/images/covers/covers-385.webp',
+    '/images/covers/covers-386.webp',
+    '/images/covers/covers-387.webp',
+    '/images/covers/covers-388.webp',
+    '/images/covers/covers-389.webp',
+    '/images/covers/covers-390.webp',
+    '/images/covers/covers-391.webp',
+    '/images/covers/covers-392.webp',
+    '/images/covers/covers-393.webp',
+    '/images/covers/covers-394.webp',
+    '/images/covers/covers-395.webp',
+    '/images/covers/covers-396.webp',
+    '/images/covers/covers-397.webp',
+    '/images/covers/covers-398.webp',
+    '/images/covers/covers-399.webp',
+    '/images/covers/covers-400.webp',
+    '/images/covers/covers-401.webp',
+    '/images/covers/covers-402.webp',
+    '/images/covers/covers-403.webp',
+    '/images/covers/covers-404.webp',
+    '/images/covers/covers-405.webp',
+    '/images/covers/covers-406.webp',
+    '/images/covers/covers-407.webp',
+    '/images/covers/covers-408.webp',
+    '/images/covers/covers-409.webp'
+  ];
+
+  // 【关键修改1】扩展选择器，覆盖搜索页所有可能的封面容器
+  const coverSelectors = [
+    '.post-cover img',
+    '#search .post-cover img',
+    '.search-result .post-cover img',
+    '.algolia-hits .post-cover img', // 适配Algolia搜索结果卡片
+    '.search-page .post-cover img'
+  ].join(', ');
+
+  // 【关键修改2】适配动态DOM的封面赋值逻辑
+  function setRandomCovers() {
+    // 搜索页跳过（已在 single.html 处理）
+    if (document.getElementById('search-results')) {
+      return;
+    }
+    const coverImgs = document.querySelectorAll(coverSelectors);
+    if (coverImgs.length === 0) {
+      setTimeout(setRandomCovers, 150);
+      return;
+    }
+    coverImgs.forEach(img => {
+      // 有自定义封面的图片：直接显示，不随机替换
+      if (img.hasAttribute('data-custom-cover')) {
+        img.style.opacity = '1';
+        return;
+      }
+      // 已经设置过随机封面的图片：不再重复设置
+      if (img.hasAttribute('data-cover-set')) {
+        return;
+      }
+      const randomIndex = Math.floor(Math.random() * window.covers.length);
+      const newSrc = window.covers[randomIndex];
+      img.setAttribute('data-src', newSrc);
+      img.src = newSrc;
+      img.setAttribute('data-cover-set', 'true');
+      img.style.opacity = '1';
+      img.style.display = 'block';
+      img.style.visibility = 'visible';
+    });
+  }
+
+  // 【关键修改3】调整执行时机，适配搜索页加载流程
+  // 1. 页面加载完成后执行（适配直接打开搜索页）
+  window.addEventListener('load', setRandomCovers);
+  // 2. PJAX跳转后执行（适配从首页跳转到搜索页）
+  document.addEventListener('pjax:complete', setRandomCovers);
+  // 3. 搜索框输入后执行（适配动态搜索结果）
+  //document.querySelector('.search-input')?.addEventListener('input', () => {
+    //setTimeout(setRandomCovers, 200); // 延迟200ms，等待搜索结果渲染
+  //});
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      setTimeout(setRandomCovers, 200);
+    });
+  }
+
+
+
+})();
+</script>
+
+
+<script>
+(function() {
+  const bannerImages = [
+    '/images/bg/bg1.webp',
+    '/images/bg/bg2.webp',
+    '/images/bg/bg3.webp',
+    '/images/bg/bg4.webp',
+    '/images/bg/bg5.webp',
+    '/images/bg/bg6.webp',
+    '/images/bg/bg7.webp',
+    '/images/bg/bg8.webp',
+    '/images/bg/bg9.webp',
+    '/images/bg/bg10.webp',
+    '/images/bg/bg11.webp',
+    '/images/bg/bg12.webp',
+    '/images/bg/bg13.webp',
+    '/images/bg/bg14.webp',
+    '/images/bg/bg15.webp',
+    '/images/bg/bg16.webp',
+    '/images/bg/bg17.webp',
+    '/images/bg/bg18.webp',
+    '/images/bg/bg19.webp',
+    '/images/bg/bg20.webp',
+    '/images/bg/bg21.webp',
+    '/images/bg/bg22.webp',
+    '/images/bg/bg23.webp',
+    '/images/bg/bg24.webp',
+    '/images/bg/bg25.webp',
+    '/images/bg/bg26.webp',
+    '/images/bg/bg27.webp',
+    '/images/bg/bg28.webp',
+    '/images/bg/bg29.webp',
+    '/images/bg/bg30.webp',
+    '/images/bg/bg31.webp',
+    '/images/bg/bg32.webp',
+    '/images/bg/bg33.webp',
+    '/images/bg/bg34.webp',
+    '/images/bg/bg35.webp',
+    '/images/bg/bg36.webp',
+    '/images/bg/bg37.webp',
+    '/images/bg/bg38.webp',
+    '/images/bg/bg39.webp',
+    '/images/bg/bg40.webp',
+    '/images/bg/bg41.webp',
+    '/images/bg/bg42.webp',
+    '/images/bg/bg43.webp',
+    '/images/bg/bg44.webp',
+    '/images/bg/bg45.webp',
+    '/images/bg/bg46.webp',
+    '/images/bg/bg47.webp',
+    '/images/bg/bg48.webp',
+    '/images/bg/bg49.webp',
+    '/images/bg/bg50.webp',
+    '/images/bg/bg51.webp',
+    '/images/bg/bg52.webp',
+    '/images/bg/bg53.webp',
+    '/images/bg/bg54.webp',
+    '/images/bg/bg55.webp',
+    '/images/bg/bg56.webp',
+    '/images/bg/bg57.webp',
+    '/images/bg/bg58.webp',
+    '/images/bg/bg59.webp',
+    '/images/bg/bg60.webp',
+    '/images/bg/bg61.webp',
+    '/images/bg/bg62.webp',
+    '/images/bg/bg63.webp',
+    '/images/bg/bg64.webp',
+    '/images/bg/bg65.webp',
+    '/images/bg/bg66.webp',
+    '/images/bg/bg67.webp',
+    '/images/bg/bg68.webp',
+    '/images/bg/bg69.webp',
+    '/images/bg/bg70.webp',
+    '/images/bg/bg71.webp',
+    '/images/bg/bg72.webp',
+    '/images/bg/bg73.webp',
+    '/images/bg/bg74.webp',
+    '/images/bg/bg75.webp',
+    '/images/bg/bg76.webp',
+    '/images/bg/bg77.webp',
+    '/images/bg/bg78.webp',
+    '/images/bg/bg79.webp',
+    '/images/bg/bg80.webp',
+    '/images/bg/bg81.webp',
+    '/images/bg/bg82.webp',
+    '/images/bg/bg83.webp',
+    '/images/bg/bg84.webp',
+    '/images/bg/bg85.webp',
+    '/images/bg/bg86.webp',
+    '/images/bg/bg87.webp',
+    '/images/bg/bg88.webp',
+    '/images/bg/bg89.webp',
+    '/images/bg/bg90.webp',
+    '/images/bg/bg91.webp',
+    '/images/bg/bg92.webp',
+    '/images/bg/bg93.webp',
+    '/images/bg/bg94.webp',
+    '/images/bg/bg95.webp',
+    '/images/bg/bg96.webp',
+    '/images/bg/bg97.webp',
+    '/images/bg/bg98.webp'
+  ];
+
+  function getRandomBanner() {
+    return bannerImages[Math.floor(Math.random() * bannerImages.length)];
+  }
+
+  // 立即检查并设置，如果图片已存在
+  function setRandomBanner() {
+    const headerImg = document.querySelector('#header img');
+    if (headerImg && !headerImg.hasAttribute('data-random-set')) {
+      const randomUrl = getRandomBanner();
+      headerImg.setAttribute('data-src', randomUrl);
+      headerImg.src = randomUrl;
+      headerImg.setAttribute('data-random-set', 'true');
+      headerImg.style.opacity = '1';
+      headerImg.style.visibility = 'visible';
+    }
+  }
+
+  // 使用 MutationObserver 监听 DOM 变化，确保尽早捕捉到 header 图片
+  const observer = new MutationObserver((mutations, obs) => {
+    const img = document.querySelector('#header img');
+    if (img) {
+      setRandomBanner();
+      obs.disconnect(); // 找到后停止观察
+    }
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+
+  // 页面完全加载后兜底（防止 observer 遗漏）
+  window.addEventListener('load', setRandomBanner);
+  // PJAX 跳转后重新设置
+  document.addEventListener('pjax:complete', () => {
+    // 清除标记，允许重新设置
+    const headerImg = document.querySelector('#header img');
+    if (headerImg) headerImg.removeAttribute('data-random-set');
+    setRandomBanner();
+  });
+})();
+</script>
+</body>
+</html>

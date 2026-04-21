@@ -12,12 +12,38 @@
     
     <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
-    <lastBuildDate>Sun, 19 Apr 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2026 00:00:00 +0800</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>【Linux】09 - 库制作与原理</title>
+      <link>https://cialloking.com/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/</link>
+      <pubDate>Sun, 19 Apr 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】09 - 库制作与原理</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h1 id="库制作与原理">
+<a class="header-anchor" href="#%e5%ba%93%e5%88%b6%e4%bd%9c%e4%b8%8e%e5%8e%9f%e7%90%86"></a>
+库制作与原理
+</h1><h2 id="什么是库">
+<a class="header-anchor" href="#%e4%bb%80%e4%b9%88%e6%98%af%e5%ba%93"></a>
+什么是库
+</h2><p>库是写好的现有的，成熟的，可以复用的代码。现实中每个程序都要依赖很多基础的底层库，不可能每个的代码都从零开始，因此库的存在意义非同寻常。</p>
+        
+        <hr><p>本文2026-04-19首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-21</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
     
     
 
@@ -294,51 +320,6 @@ C 语言的结构体
 </span></span></code></pre></div><p>不能包含函数，只能在其他地方定义</p>
         
         <hr><p>本文2026-03-24首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-03-26</p>]]>
-      </description>
-      
-        <category>C&#43;&#43;</category>
-      
-    </item>
-    
-    
-
-    <item>
-      <title>【C&#43;&#43;】02 - 从[hello world]开始，走进C&#43;&#43;核心概念与基础语法</title>
-      <link>https://cialloking.com/post/c&#43;&#43;02---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc&#43;&#43;%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</link>
-      <pubDate>Sun, 22 Mar 2026 00:00:00 &#43;0000</pubDate>
-      <author>xxx@example.com (CialloKing)</author>
-      <guid>https://cialloking.com/post/c&#43;&#43;02---%E4%BB%8Ehello-world%E5%BC%80%E5%A7%8B%E8%B5%B0%E8%BF%9Bc&#43;&#43;%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</guid>
-      <description>
-        <![CDATA[<h1>【C++】02 - 从[hello world]开始，走进C++核心概念与基础语法</h1><p>作者：CialloKing（xxx@example.com）</p>
-        
-          <h1 id="hello-world如何运行">
-<a class="header-anchor" href="#hello-world%e5%a6%82%e4%bd%95%e8%bf%90%e8%a1%8c"></a>
-hello world如何运行
-</h1><h2 id="c-版-hello-world">
-<a class="header-anchor" href="#c-%e7%89%88-hello-world"></a>
-C++ 版 Hello World
-</h2><p>这是C++写法的hello world</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">  
-</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Hello, World!&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>C++兼容C语言，可以使用继续使用C的写法输出hello world</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">printf</span><span class="p">(</span><span class="s">&#34;Hello, World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h2 id="命名空间">
-<a class="header-anchor" href="#%e5%91%bd%e5%90%8d%e7%a9%ba%e9%97%b4"></a>
-命名空间
-</h2><h3 id="命名空间的作用">
-<a class="header-anchor" href="#%e5%91%bd%e5%90%8d%e7%a9%ba%e9%97%b4%e7%9a%84%e4%bd%9c%e7%94%a8"></a>
-命名空间的作用
-</h3><p>想象一下：你正在开发一个大型项目，有多个团队同时写代码。</p>
-        
-        <hr><p>本文2026-03-22首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-03-24</p>]]>
       </description>
       
         <category>C&#43;&#43;</category>
