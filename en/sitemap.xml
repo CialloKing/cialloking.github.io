@@ -2,21 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://cialloking.com/en/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/</loc>
-    <lastmod>2026-04-20T00:00:00+08:00</lastmod>
+    <loc>https://cialloking.com/en/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</loc>
+    <lastmod>2026-04-22T00:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
-                href="https://cialloking.com/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/"
+                href="https://cialloking.com/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://cialloking.com/en/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/"
+                href="https://cialloking.com/en/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/"
                 />
   </url><url>
     <loc>https://cialloking.com/en/categories/</loc>
-    <lastmod>2026-04-20T00:00:00+08:00</lastmod>
+    <lastmod>2026-04-22T00:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
@@ -29,7 +29,7 @@
                 />
   </url><url>
     <loc>https://cialloking.com/en/</loc>
-    <lastmod>2026-04-20T00:00:00+08:00</lastmod>
+    <lastmod>2026-04-22T00:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
@@ -42,7 +42,7 @@
                 />
   </url><url>
     <loc>https://cialloking.com/en/categories/linux/</loc>
-    <lastmod>2026-04-20T00:00:00+08:00</lastmod>
+    <lastmod>2026-04-22T00:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
@@ -55,7 +55,7 @@
                 />
   </url><url>
     <loc>https://cialloking.com/en/post/</loc>
-    <lastmod>2026-04-20T00:00:00+08:00</lastmod>
+    <lastmod>2026-04-22T00:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
@@ -68,7 +68,7 @@
                 />
   </url><url>
     <loc>https://cialloking.com/en/tags/</loc>
-    <lastmod>2026-04-20T00:00:00+08:00</lastmod>
+    <lastmod>2026-04-22T00:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-CN"
@@ -78,6 +78,32 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://cialloking.com/en/tags/"
+                />
+  </url><url>
+    <loc>https://cialloking.com/en/tags/%E8%BF%9B%E7%A8%8B/</loc>
+    <lastmod>2026-04-22T00:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="https://cialloking.com/tags/%E8%BF%9B%E7%A8%8B/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://cialloking.com/en/tags/%E8%BF%9B%E7%A8%8B/"
+                />
+  </url><url>
+    <loc>https://cialloking.com/en/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/</loc>
+    <lastmod>2026-04-20T00:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="https://cialloking.com/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://cialloking.com/en/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/"
                 />
   </url><url>
     <loc>https://cialloking.com/en/tags/%E5%BA%93/</loc>
@@ -182,19 +208,6 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://cialloking.com/en/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/"
-                />
-  </url><url>
-    <loc>https://cialloking.com/en/tags/%E8%BF%9B%E7%A8%8B/</loc>
-    <lastmod>2026-04-01T00:00:00+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-CN"
-                href="https://cialloking.com/tags/%E8%BF%9B%E7%A8%8B/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://cialloking.com/en/tags/%E8%BF%9B%E7%A8%8B/"
                 />
   </url><url>
     <loc>https://cialloking.com/en/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/</loc>

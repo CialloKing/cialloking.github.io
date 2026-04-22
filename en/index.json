@@ -5,6 +5,19 @@
   },
   "docs": [
       {
+        "id": "d1300e97a090bd96745d588601b5f6e6",
+        "title": "【Linux】10 - Inter-Process Communication",
+        "date": "2026-04-22",
+        "wordCount": 35,
+        "readingTime": 1,
+        "content": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "summary": "The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)\n",
+        "cover": null,
+        "tags": ["进程"],
+        "categories": ["Linux"],
+        "permalink": "https://cialloking.com/en/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/"
+      },
+      {
         "id": "78cf6820134d9bbcb77d5546dabe36dc",
         "title": "【Linux】09 - Library Creation and Principles",
         "date": "2026-04-19",

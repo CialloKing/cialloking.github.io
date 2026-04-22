@@ -12,12 +12,51 @@
     
     <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
-    <lastBuildDate>Tue, 21 Apr 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 00:00:00 +0800</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/categories/linux/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>【Linux】10 - 进程间通信</title>
+      <link>https://cialloking.com/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</link>
+      <pubDate>Wed, 22 Apr 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】10 - 进程间通信</h1><p>作者：CialloKing（xxx@example.com）</p>
+        
+          <h1 id="进程间通信">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e9%97%b4%e9%80%9a%e4%bf%a1"></a>
+进程间通信
+</h1><h2 id="进程间通信介绍">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e9%97%b4%e9%80%9a%e4%bf%a1%e4%bb%8b%e7%bb%8d"></a>
+进程间通信介绍
+</h2><h3 id="进程间通信目的">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e9%97%b4%e9%80%9a%e4%bf%a1%e7%9b%ae%e7%9a%84"></a>
+进程间通信目的
+</h3><p>进程之间相互独立，当需要多个进程相互协作时必定需要进程间通信。</p>
+<ul>
+<li>数据传输：一个进程需要将它的数据发送给另一个进程。</li>
+<li>资源共享：多个进程之间共享同样的资源。</li>
+<li>通知事件：一个进程需要向另一个或一组进程发送消息，通知它（它们）发生了某种事件（如进程终正时要通知父进程）。</li>
+<li>进程控制：有些进程希望完全控制另一个进程的执（如Debug进程），此时控制进程希望能够拦截另一个进程的所有陷入和异常，并能够及时知道它的状态改变。</li>
+</ul>
+<h3 id="进程间通信的方式">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e9%97%b4%e9%80%9a%e4%bf%a1%e7%9a%84%e6%96%b9%e5%bc%8f"></a>
+进程间通信的方式
+</h3><p>进程间通信（IPC,Inter-Process Communication）是指运行在同一台计算机或不同计算机上的多个进程之间进行数据交换和通信的技术。由于每个进程都有自己的地址空间，它们无法直接访问彼此的数据，因此需要通过特定的机制来实现通信。IPC是操作系统和多进程编程中的一个重要概念，广泛应用于分布式系统、多任务操作系统以及各种应用程序之间，IPC 是实现多进程协作的基础。</p>
+        
+        <hr><p>本文2026-04-22首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-22</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
     
     
 

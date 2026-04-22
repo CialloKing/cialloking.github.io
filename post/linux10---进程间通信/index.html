@@ -8,7 +8,7 @@
   name="viewport"
   content="width=device-width, initial-scale=1, shrink-to-fit=no"
 /><title>
-  进程状态 | CialloKing
+  【Linux】10 - 进程间通信 | CialloKing
 </title>
 <meta name="description" content="少女祈祷中..."/><script>
   window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"Lang\":\"zh-cn\",\"Title\":\"CialloKing 的博客\",\"Weight\":1,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"简体中文\",\"Locale\":\"zh-CN\"},{\"Lang\":\"en\",\"Title\":\"CialloKing Blog\",\"Weight\":2,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"English\",\"Locale\":\"en\"}],\"icon_font\":\"4552607_a0oqhord1y\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
@@ -27,20 +27,20 @@
     type="font/woff2"
     crossorigin="anonymous"
   /><link rel="stylesheet" href="/css/loader.min.4eac6555838cbcb8a5d15bf9bae0c688b74fae83b16a5613692de3f476051979.css" /><meta property="og:type" content="website" />
-  <meta property="og:title" content="进程状态 | CialloKing" />
+  <meta property="og:title" content="【Linux】10 - 进程间通信 | CialloKing" />
   <meta
     property="og:description"
     content="少女祈祷中..."
   />
-  <meta property="og:url" content="https://cialloking.com/tags/%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81/" />
+  <meta property="og:url" content="https://cialloking.com/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/" />
   <meta
     property="og:site_name"
     content="CialloKing 的博客"
   />
   <meta property="og:image" content="https://cialloking.com/images/bg/bg1.webp" />
   <meta property="article:author" content="CialloKing" />
-  <meta property="article:published_time" content="2026-04-06T00:00:00&#43;08:00" />
-  <meta property="article:modified_time" content="2026-04-10T00:00:00&#43;08:00" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" /><link rel="alternate" type="application/rss+xml" href="https://cialloking.com/tags/%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81/index.xml" title="CialloKing 的博客">
+  <meta property="article:published_time" content="2026-04-22T00:00:00&#43;08:00" />
+  <meta property="article:modified_time" content="2026-04-22T00:00:00&#43;08:00" /><meta property="article:tag" content="进程" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
 <link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.42c2ff6576a8f7440f141db001877cdde6d4907355753cb3bbd43efbad8597c9.css" /><link
     rel="preload"
     as="style"
@@ -242,7 +242,7 @@
 
         selectOptions.forEach((item) => {
           item.addEventListener("click", () => {
-            const langMap = {};selectedLang.textContent = item.textContent;
+            const langMap = {};langMap['en'] = '\/en\/post\/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1\/';selectedLang.textContent = item.textContent;
             selectItems.classList.remove("show");
             selectOptions.forEach((option) => {
               option.classList.remove("selected");
@@ -270,19 +270,42 @@
         });
       </script>
     </nav></div>
-<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg1.webp" alt="进程状态"><div id="header-outer">
+<header id="header" aria-label="Site header"><picture></picture><img  fetchpriority="high" src="/images/bg/bg1.webp" alt="【Linux】10 - 进程间通信"><div id="header-outer">
     <div id="header-title"><span id="logo">
-            <h1 data-aos="slide-up">标签</h1>
-          </span><h2 id="subtitle-wrap" data-aos="slide-down"><span id="subtitle">进程状态</span></h2></div>
+            <h1 data-aos="slide-up">【Linux】10 - 进程间通信</h1>
+          </span><h2 id="subtitle-wrap" data-aos="slide-down"></h2></div>
   </div>
 </header><div id="content"
           aria-label="Page content"
           class="sidebar-left"
-            ><aside id="sidebar" aria-label="Sidebar"><div class="sidebar-wrapper-container "><div class="sidebar-wrapper">
+            ><aside id="sidebar" aria-label="Sidebar"><div class="sidebar-wrapper-container sticky"><div class="sidebar-wrapper">
     <div
       class="sidebar-wrap"
       data-aos="fade-up"
-    ><div class="sidebar-author">
+    ><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#进程间通信">进程间通信</a>
+      <ol>
+        <li><a href="#进程间通信介绍">进程间通信介绍</a>
+          <ol>
+            <li><a href="#进程间通信目的">进程间通信目的</a></li>
+            <li><a href="#进程间通信的方式">进程间通信的方式</a></li>
+          </ol>
+        </li>
+        <li><a href="#管道">管道</a></li>
+        <li><a href="#匿名管道">匿名管道</a>
+          <ol>
+            <li><a href="#匿名管道原理">匿名管道原理</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
   <img
     data-src="/avatar/my-avatar.webp"
     data-sizes="auto"
@@ -331,557 +354,264 @@
         href="/link"
         aria-label="友链"
       ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
-    </div></div></div>
-  </div><div class="sidebar-widget"><div class="widget-wrapper">
-    <div
-      class="widget-wrap"
-      data-aos="fade-up"
-    >
-      <div style="display: flex; justify-content: space-between;">
-        <h3 class="widget-title">分类</h3></div>
-      <div class="widget">
-        <ul class="category-list"><li class="category-list-item">
-                <a class="category-list-link" href="/categories/c/" 
-                  title="C"
-                  >C</a
-                >
-              </li><li class="category-list-item">
-                <a class="category-list-link" href="/categories/c&#43;&#43;/" 
-                  title="C&#43;&#43;"
-                  >C&#43;&#43;</a
-                >
-              </li><li class="category-list-item">
-                <a class="category-list-link" href="/categories/linux/" 
-                  title="Linux"
-                  >Linux</a
-                >
-              </li></ul>
-      </div>
-    </div>
-  </div><div class="widget-wrapper">
-    <div
-      class="widget-wrap"
-      data-aos="fade-up"
-    >
-      <div style="display: flex; justify-content: space-between;">
-        <h3 class="widget-title">标签</h3><a class="widget-link" href="/tags/">查看更多</a></div>
-      <div class="widget">
-        <ul class="tag-list" itemprop="keywords"><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/elf/"
-                  aria-label="标签: ELF"
-                  title="ELF"
-                >
-                  ELF
-                </a>
-              </li><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/ext2/"
-                  aria-label="标签: Ext2"
-                  title="Ext2"
-                >
-                  Ext2
-                </a>
-              </li><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/gcc/"
-                  aria-label="标签: Gcc"
-                  title="Gcc"
-                >
-                  Gcc
-                </a>
-              </li><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/gdb/"
-                  aria-label="标签: Gdb"
-                  title="Gdb"
-                >
-                  Gdb
-                </a>
-              </li><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/git/"
-                  aria-label="标签: Git"
-                  title="Git"
-                >
-                  Git
-                </a>
-              </li><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/io/"
-                  aria-label="标签: IO"
-                  title="IO"
-                >
-                  IO
-                </a>
-              </li><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/makefile/"
-                  aria-label="标签: Makefile"
-                  title="Makefile"
-                >
-                  Makefile
-                </a>
-              </li><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/vim/"
-                  aria-label="标签: Vim"
-                  title="Vim"
-                >
-                  Vim
-                </a>
-              </li><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/%E4%B8%80%E5%88%87%E7%9A%86%E6%96%87%E4%BB%B6/"
-                  aria-label="标签: 一切皆文件"
-                  title="一切皆文件"
-                >
-                  一切皆文件
-                </a>
-              </li><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/"
-                  aria-label="标签: 冯诺依曼体系结构"
-                  title="冯诺依曼体系结构"
-                >
-                  冯诺依曼体系结构
-                </a>
-              </li><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/"
-                  aria-label="标签: 包管理器"
-                  title="包管理器"
-                >
-                  包管理器
-                </a>
-              </li><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/"
-                  aria-label="标签: 基础命令"
-                  title="基础命令"
-                >
-                  基础命令
-                </a>
-              </li><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"
-                  aria-label="标签: 基础语法"
-                  title="基础语法"
-                >
-                  基础语法
-                </a>
-              </li><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/%E5%BA%93/"
-                  aria-label="标签: 库"
-                  title="库"
-                >
-                  库
-                </a>
-              </li><li class="tag-item">
-                <a
-                  class="tag-link"
-                  href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"
-                  aria-label="标签: 操作系统"
-                  title="操作系统"
-                >
-                  操作系统
-                </a>
-              </li></ul>
-      </div>
-    </div>
-  </div><div class="widget-wrapper">
+    </div></div></div><div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div></div>
+  </div><div class="sidebar-widget"></div></div></aside>
+<section id="main" aria-label="Main content"><article
+  class="h-entry article"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
   <div
-    class="widget-wrap"
+    class="article-inner"
     data-aos="fade-up"
   >
-    <h3 class="widget-title">标签云</h3><div class="widget tagcloud"><a
-            style="font-size:10px"
-            href="/tags/elf/"
-            aria-label="标签: ELF"
-            >ELF</a
-          ><a
-            style="font-size:10px"
-            href="/tags/ext2/"
-            aria-label="标签: Ext2"
-            >Ext2</a
-          ><a
-            style="font-size:10px"
-            href="/tags/gcc/"
-            aria-label="标签: Gcc"
-            >Gcc</a
-          ><a
-            style="font-size:10px"
-            href="/tags/gdb/"
-            aria-label="标签: Gdb"
-            >Gdb</a
-          ><a
-            style="font-size:10px"
-            href="/tags/git/"
-            aria-label="标签: Git"
-            >Git</a
-          ><a
-            style="font-size:10px"
-            href="/tags/io/"
-            aria-label="标签: IO"
-            >IO</a
-          ><a
-            style="font-size:10px"
-            href="/tags/makefile/"
-            aria-label="标签: Makefile"
-            >Makefile</a
-          ><a
-            style="font-size:10px"
-            href="/tags/vim/"
-            aria-label="标签: Vim"
-            >Vim</a
-          ><a
-            style="font-size:10px"
-            href="/tags/%E4%B8%80%E5%88%87%E7%9A%86%E6%96%87%E4%BB%B6/"
-            aria-label="标签: 一切皆文件"
-            >一切皆文件</a
-          ><a
-            style="font-size:10px"
-            href="/tags/%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/"
-            aria-label="标签: 冯诺依曼体系结构"
-            >冯诺依曼体系结构</a
-          ><a
-            style="font-size:10px"
-            href="/tags/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/"
-            aria-label="标签: 包管理器"
-            >包管理器</a
-          ><a
-            style="font-size:10px"
-            href="/tags/%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/"
-            aria-label="标签: 基础命令"
-            >基础命令</a
-          ><a
-            style="font-size:10px"
-            href="/tags/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"
-            aria-label="标签: 基础语法"
-            >基础语法</a
-          ><a
-            style="font-size:10px"
-            href="/tags/%E5%BA%93/"
-            aria-label="标签: 库"
-            >库</a
-          ><a
-            style="font-size:10px"
-            href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"
-            aria-label="标签: 操作系统"
-            >操作系统</a
-          ><a
-            style="font-size:10px"
-            href="/tags/%E6%96%87%E4%BB%B6/"
-            aria-label="标签: 文件"
-            >文件</a
-          ><a
-            style="font-size:10px"
-            href="/tags/%E6%9D%83%E9%99%90/"
-            aria-label="标签: 权限"
-            >权限</a
-          ><a
-            style="font-size:10px"
-            href="/tags/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/"
-            aria-label="标签: 环境变量"
-            >环境变量</a
-          ><a
-            style="font-size:10px"
-            href="/tags/%E7%A3%81%E7%9B%98/"
-            aria-label="标签: 磁盘"
-            >磁盘</a
-          ><a
-            style="font-size:10px"
-            href="/tags/%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/"
-            aria-label="标签: 类和对象"
-            >类和对象</a
-          ></div>
-  </div>
-</div><div class="widget-wrapper">
-    <div
-      class="widget-wrap"
-      data-aos="fade-up"
+    <div class="article-meta"><div class="article-date">
+  <span
+    class="article-date-link icon-calendar"
+    data-aos="zoom-in"
+  >
+    <time datetime="2026-04-22 00:00:00 &#43;0800 &#43;0800" itemprop="datePublished"
+      >2026-04-22</time
     >
-      <h3 class="widget-title">最新文章</h3>
-      <div class="widget">
-        <ul><li>
-              <a href="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/" title="【Linux】10 - 进程间通信">【Linux】10 - 进程间通信</a>
-            </li><li>
-              <a href="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/" title="【Linux】09 - 库制作与原理">【Linux】09 - 库制作与原理</a>
-            </li><li>
-              <a href="/post/linux08---%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" title="【Linux】08 - 文件系统">【Linux】08 - 文件系统</a>
-            </li><li>
-              <a href="/post/linux07---%E5%9F%BA%E7%A1%80io/" title="【Linux】07 - 基础IO">【Linux】07 - 基础IO</a>
-            </li><li>
-              <a href="/post/linux06---%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/" title="【Linux】06 - 进程控制">【Linux】06 - 进程控制</a>
-            </li><li>
-              <a href="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/" title="【Linux】05 - 进程概念">【Linux】05 - 进程概念</a>
-            </li><li>
-              <a href="/post/linux04---linux%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" title="【Linux】04 - Linux开发工具">【Linux】04 - Linux开发工具</a>
-            </li><li>
-              <a href="/post/linux03---linux%E6%9D%83%E9%99%90/" title="【Linux】03 - Linux权限">【Linux】03 - Linux权限</a>
-            </li><li>
-              <a href="/post/linux01---%E4%BB%80%E4%B9%88%E6%98%AFlinux/" title="【Linux】01 - 什么是Linux">【Linux】01 - 什么是Linux</a>
-            </li><li>
-              <a href="/post/linux02---linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/" title="【Linux】02 - Linux基础命令">【Linux】02 - Linux基础命令</a>
-            </li></ul>
-      </div>
-    </div>
-  </div></div></div></aside>
-<section id="main" aria-label="Main content"><div
-    class="archives-outer-wrap"
-    data-aos="fade-up"
-  ><div class="tag-wrap"><div
-      class="archives-tag-list-item"
+    <time style="display: none;" id="post-update-time"
+      >2026-04-22</time
+    >
+  </span></div>
+</div><div class="hr-line"></div><div class="e-content article-entry" itemprop="articleBody"><h1 id="进程间通信">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e9%97%b4%e9%80%9a%e4%bf%a1"></a>
+进程间通信
+</h1><h2 id="进程间通信介绍">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e9%97%b4%e9%80%9a%e4%bf%a1%e4%bb%8b%e7%bb%8d"></a>
+进程间通信介绍
+</h2><h3 id="进程间通信目的">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e9%97%b4%e9%80%9a%e4%bf%a1%e7%9b%ae%e7%9a%84"></a>
+进程间通信目的
+</h3><p>进程之间相互独立，当需要多个进程相互协作时必定需要进程间通信。</p>
+<ul>
+<li>数据传输：一个进程需要将它的数据发送给另一个进程。</li>
+<li>资源共享：多个进程之间共享同样的资源。</li>
+<li>通知事件：一个进程需要向另一个或一组进程发送消息，通知它（它们）发生了某种事件（如进程终正时要通知父进程）。</li>
+<li>进程控制：有些进程希望完全控制另一个进程的执（如Debug进程），此时控制进程希望能够拦截另一个进程的所有陷入和异常，并能够及时知道它的状态改变。</li>
+</ul>
+<h3 id="进程间通信的方式">
+<a class="header-anchor" href="#%e8%bf%9b%e7%a8%8b%e9%97%b4%e9%80%9a%e4%bf%a1%e7%9a%84%e6%96%b9%e5%bc%8f"></a>
+进程间通信的方式
+</h3><p>进程间通信（IPC,Inter-Process Communication）是指运行在同一台计算机或不同计算机上的多个进程之间进行数据交换和通信的技术。由于每个进程都有自己的地址空间，它们无法直接访问彼此的数据，因此需要通过特定的机制来实现通信。IPC是操作系统和多进程编程中的一个重要概念，广泛应用于分布式系统、多任务操作系统以及各种应用程序之间，IPC 是实现多进程协作的基础。</p>
+<p>进程间通信的本质：是先让不同的进程，先看到同一份资源（内存），然后才有通信的条件。早期的进程间通信是单机的，在一台机器上实现进程间通信，后来随着技术发展，进程间通信的技术也拓展到网络范畴了，网络本质也是共享的资源。<br>
+进程间通信看到的同一份资源不是由任何一个进程提供的，因为进程之间相互独立，所以共享的资源只能由操作系统提供，操作系统也提供了相关的系统调用，系统调用也要设计统一的通信接口。慢慢的这些接口就发展成为了各种统一的标准。</p>
+<p>以下对主流 IPC 技术进行系统介绍。</p>
+<ol>
+<li>管道（Pipe）与命名管道（FIFO）</li>
+</ol>
+<ul>
+<li>管道是最古老的 IPC 形式，分为匿名管道和命名管道。</li>
+<li>匿名管道
+<ul>
+<li>原理：在内核中开辟一块缓冲区，一个进程写入，另一进程读取，数据流向是单向的。</li>
+<li>使用方式：通过 pipe() 系统调用创建，返回两个文件描述符（fd[0]读端、fd[1]写端），只能在具有亲缘关系的进程间使用（如父子进程通过 fork 继承）。</li>
+<li>特点：面向字节流，自带同步（读空时阻塞、写满时阻塞），生命周期随进程结束而销毁。</li>
+</ul>
+</li>
+<li>命名管道（FIFO）
+<ul>
+<li>原理：通过一个文件系统路径名（如 mkfifo 创建）标识的管道，允许任意两个进程通信，无需亲缘关系。</li>
+<li>特点：同样半双工（单向），但可通过打开两个 FIFO 实现双向通信。</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>消息队列（Message Queue）</li>
+</ol>
+<ul>
+<li>原理：在内核中维护一个消息链表，进程可以向队列发送带有类型字段的数据块（消息），接收方可按类型选择性读取。</li>
+<li>系统调用：msgget、msgsnd、msgrcv、msgctl（System V 标准），或 POSIX 消息队列 mq_open。</li>
+<li>优点：消息有边界，不必像管道那样处理流的分割。支持按类型优先级读取，可多对多通信。</li>
+<li>缺点：消息大小和队列总长度受限，内核态内存占用较高。</li>
+</ul>
+<ol start="3">
+<li>共享内存（Shared Memory）</li>
+</ol>
+<ul>
+<li>原理：多个进程将同一块物理内存映射到各自的虚拟地址空间，直接读写该内存区域，无需内核中转数据。</li>
+<li>效率：是最快的 IPC 方式，适合大数据量、高频交换场景（如音视频流处理）。</li>
+<li>同步问题：共享内存本身不提供同步，需配合信号量或互斥锁来避免竞态条件。</li>
+<li>实现形式：
+<ul>
+<li>System V 共享内存：shmget、shmat、shmdt。</li>
+<li>POSIX 共享内存：shm_open、mmap。</li>
+<li>内存映射文件（mmap + MAP_SHARED）。</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>信号量（Semaphore）</li>
+</ol>
+<ul>
+<li>性质：严格来说信号量是进程同步机制，而非数据交换手段，但常与共享内存搭配使用。</li>
+<li>原理：内核维护一个整型计数器，进程通过 P 操作（减一，若值为负则阻塞）和 V 操作（加一，唤醒等待者）来控制对临界资源的访问。</li>
+<li>分类：
+<ul>
+<li>System V 信号量：操作复杂，支持多资源、撤销操作。</li>
+<li>POSIX 命名/无名信号量：接口更简洁，适合线程或进程同步。</li>
+</ul>
+</li>
+</ul>
+<ol start="5">
+<li>信号（Signal）</li>
+</ol>
+<ul>
+<li>原理：一种异步通知机制，一个进程向另一个进程发送一个信号编号（如 SIGKILL、SIGUSR1），目标进程可在任何时候收到并执行预设的处理函数或采取默认动作。</li>
+<li>限制：
+<ul>
+<li>能传递的信息极少（仅信号编号），无法传输大量数据。</li>
+<li>不可靠信号（早期 Unix）可能丢失，可靠信号队列有限。</li>
+</ul>
+</li>
+<li>用途：主要用于进程控制（终止、挂起）、异常通知（段错误、除零）等。</li>
+</ul>
+<ol start="6">
+<li>套接字（Socket）</li>
+</ol>
+<ul>
+<li>范围：不仅可用于同一主机进程间通信（Unix Domain Socket），也是网络通信的标准接口。</li>
+<li>Unix Domain Socket
+<ul>
+<li>基于文件系统路径名（.sock 文件）寻址，不经过网络协议栈，效率高于 TCP 环回。</li>
+<li>支持面向流（SOCK_STREAM）和数据报（SOCK_DGRAM）两种模式，可传输文件描述符。</li>
+</ul>
+</li>
+<li>网络 Socket：使 IPC 扩展到不同主机的进程间通信。</li>
+</ul>
+<ol start="7">
+<li>其他 IPC 技术</li>
+</ol>
+<ul>
+<li>内存映射文件（Memory-Mapped File），通过 mmap 将磁盘文件映射到内存，多个进程映射同一文件即可共享数据，利用文件系统持久化。</li>
+<li>D-Bus，桌面环境（Linux）中的高级 IPC 框架，提供消息总线、服务激活和对象接口描述，常用于应用程序与系统服务交互。</li>
+<li>RPC（远程过程调用），抽象层更高的 IPC，让调用远端进程的函数像调用本地函数一样（如 gRPC、Thrift、CORBA）。</li>
+</ul>
+<h2 id="管道">
+<a class="header-anchor" href="#%e7%ae%a1%e9%81%93"></a>
+管道
+</h2><p>我们经常在命令里使用管道<code>|</code>来连接两个命令，在命令行里管道<code>|</code>会把上一条指令的结果输出给下一条指令，那么什么是管道？<br>
+管道是Unix中最古老的进程间通信的形式。<br>
+我们把从一个进程连接到另一个进程的一个数据流称为一个“管道”。</p>
+<p><img src="b84f4e0cf496455886bda63ac861cca7.png" alt=""></p>
+<h2 id="匿名管道">
+<a class="header-anchor" href="#%e5%8c%bf%e5%90%8d%e7%ae%a1%e9%81%93"></a>
+匿名管道
+</h2><h3 id="匿名管道原理">
+<a class="header-anchor" href="#%e5%8c%bf%e5%90%8d%e7%ae%a1%e9%81%93%e5%8e%9f%e7%90%86"></a>
+匿名管道原理
+</h3><p>在早期，Linux工程师们在想，能不能基于已有的技术，直接进行进程间通信。工程师们把目光投向了文件系统，把文件的缓冲区拿出来，让两个进程都能看到不就可以实现通信了吗。由操作系统在内存创建一个管道文件，因为管道文件是内存级的，也不需要文件名，所以被称为<strong>匿名管道</strong>，管道文件是内存级的，不需要写入到磁盘，两个进程都可以访问管道文件，这样就实现了通信。管道文件是被操作系统单独设计的，有自己的系统调用，同时实现管道时Linux工程师们也复用了一部分文件系统的代码。</p>
+<p>匿名管道，通常用来做父子进程通信。父进程先使用系统调用创建管道文件，以读写两种方式打开，分别返回读和写的文件描述符，写入到父进程的文件描述符表里。随后父进程创建子进程，子进程直接拷贝父进程的文件描述符表，相当于浅拷贝，文件描述符表里的文件描述符也指向同一个管道文件。这个管道文件只能用来做单向通信，也就是一个进程写另一个进程读，所以父子进程就关掉各自不需要的文件描述符，分别进行写和读操作。</p>
+<p><img src="b35da5f00d6d484b882e7e682705258c.png" alt=""></p>
+<p><img src="038b11dd88a9411eb9c8c81c89ea506e.png" alt=""></p>
+<p><img src="a90600c81fc04062ab305d72ddeb1289.png" alt=""></p>
+<p>创建匿名管道的系统调用是<code>int pipe(int pipefd[2]);</code>，创建成功返回0，失败则返回-1，<code>pipefd[2]</code>是输出型参数，创建成功时<code>pipefd[0]</code>是管道读端文件描述符（只读），<code>pipefd[1]</code>是管道写端文件描述符（只写）。创建管道文件不需要提供文件路径，因为管道文件是内存级的，也不需要文件名，所以叫<strong>匿名管道</strong>。</p>
+<p>运行下面的代码。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">pipefd</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// 创建管道
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">pipe</span><span class="p">(</span><span class="n">pipefd</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="o">&lt;&lt;</span><span class="s">&#34;pipe error&#34;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//pipefd[0]是读端，pipefd[1]是写端
+</span></span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;pipefd[0]:&#34;</span><span class="o">&lt;&lt;</span><span class="n">pipefd</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;pipefd[1]:&#34;</span><span class="o">&lt;&lt;</span><span class="n">pipefd</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="o">&lt;&lt;</span><span class="s">&#34;fork error&#34;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 子进程：写入数据
+</span></span></span><span class="line"><span class="cl">        <span class="n">close</span><span class="p">(</span><span class="n">pipefd</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>  <span class="c1">// 关闭读端
+</span></span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">msg</span> <span class="o">=</span> <span class="s">&#34;Hello from child!&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">write</span><span class="p">(</span><span class="n">pipefd</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">msg</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="n">close</span><span class="p">(</span><span class="n">pipefd</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 父进程：读取数据
+</span></span></span><span class="line"><span class="cl">        <span class="n">close</span><span class="p">(</span><span class="n">pipefd</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>  <span class="c1">// 关闭写端
+</span></span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="n">ssize_t</span> <span class="n">n</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">pipefd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">buffer</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">buffer</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;父进程收到: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">buffer</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="n">close</span><span class="p">(</span><span class="n">pipefd</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">wait</span><span class="p">(</span><span class="k">nullptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/mypipe$ make
+</span></span><span class="line"><span class="cl">g++ -o pipetest pipetest.cc -std<span class="o">=</span>c++11
+</span></span><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/mypipe$ ./pipetest 
+</span></span><span class="line"><span class="cl">pipefd<span class="o">[</span>0<span class="o">]</span>:3
+</span></span><span class="line"><span class="cl">pipefd<span class="o">[</span>1<span class="o">]</span>:4
+</span></span><span class="line"><span class="cl">父进程收到: Hello from child!
+</span></span></code></pre></div><p>我们可以看到管道文件的文件描述符分别返回3和4，因为012已经被占用了。</p>
+<p>管道有几个特点：</p>
+<ol>
+<li>匿名管道，只能用来进行具有血缘关系的进程进行进程间通信（常用与父子进程）</li>
+<li></li>
+</ol>
+</div>
+    <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
+    <a
+      class="article-category-link"
+      href="/categories/linux"
       data-aos="zoom-in"
+      >Linux</a
     >
-      <a class="archives-tag-list-link" href="/tags/elf/"
-        >ELF</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/ext2/"
-        >Ext2</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/gcc/"
-        >Gcc</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/gdb/"
-        >Gdb</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/git/"
-        >Git</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/io/"
-        >IO</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/makefile/"
-        >Makefile</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/vim/"
-        >Vim</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E4%B8%80%E5%88%87%E7%9A%86%E6%96%87%E4%BB%B6/"
-        >一切皆文件</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/"
-        >冯诺依曼体系结构</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8/"
-        >包管理器</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/"
-        >基础命令</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"
-        >基础语法</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E5%BA%93/"
-        >库</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"
-        >操作系统</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E6%96%87%E4%BB%B6/"
-        >文件</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E6%9D%83%E9%99%90/"
-        >权限</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/"
-        >环境变量</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E7%A3%81%E7%9B%98/"
-        >磁盘</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/"
-        >类和对象</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E7%BC%93%E5%86%B2%E5%8C%BA/"
-        >缓冲区</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/"
-        >虚拟地址空间</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/"
-        >调度算法</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E8%BD%AF%E7%A1%AC%E9%93%BE%E6%8E%A5/"
-        >软硬链接</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B/"
+    </li></ul>
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e8%bf%9b%e7%a8%8b"
+        rel="tag"
         >进程</a
       >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6/"
-        >进程控制</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81/"
-        >进程状态</a
-      >
-    </div><div
-      class="archives-tag-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-tag-list-link" href="/tags/%E9%93%BE%E6%8E%A5/"
-        >链接</a
-      >
-    </div></div>
-<div class="category-wrap"><div
-      class="archives-category-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-category-list-link" href="/categories/c/"
-        >C</a
-      >
-    </div><div
-      class="archives-category-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-category-list-link" href="/categories/c&#43;&#43;/"
-        >C&#43;&#43;</a
-      >
-    </div><div
-      class="archives-category-list-item"
-      data-aos="zoom-in"
-    >
-      <a class="archives-category-list-link" href="/categories/linux/"
-        >Linux</a
-      >
-    </div></div><section class="archives-wrap" data-aos="fade-up">
-    <div class="archive-year-wrap">
-      <span class="archive-year">2026</span>
-    </div>
-    <ul><li class="archive-article">
-          <div class="archive-article-date">
-            <span>
-              <time
-                class="dt-published"
-                datetime="2026-04-06 00:00:00 &#43;0800 &#43;0800"
-                itemprop="datePublished"
-                >2026-04</time
-              >
-            </span>
-          </div><a class="archive-article-title" href="/post/linux05---%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/"
-              >【Linux】05 - 进程概念</a
-            ></li></ul>
-  </section></div><nav id="page-nav" aria-label="Pagination navigation" data-aos="fade-up"><span class="page-number current">1</span></nav>
-</section>
+    </li></ul>
+</footer>
+  </div><nav
+    id="article-nav"
+    aria-label="Article navigation"
+    data-aos="fade-up"
+  ><div class="article-nav-link-wrap left"><img
+              data-src="/images/covers/covers-07.webp"
+              data-sizes="auto"
+              alt="【Linux】09 - 库制作与原理"
+              class="lazyload"
+            /><a
+          href="/post/linux09---%E5%BA%93%E5%88%B6%E4%BD%9C%E4%B8%8E%E5%8E%9F%E7%90%86/"
+          aria-label="前一篇:【Linux】09 - 库制作与原理"
+          title="前一篇:【Linux】09 - 库制作与原理"
+        ></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">【Linux】09 - 库制作与原理</h3>
+      </div></nav></article></section>
         </div><footer id="footer" aria-label="Site footer">
   <div style="width: 100%; overflow: hidden">
     <div class="footer-line"></div>
@@ -927,7 +657,30 @@
             <div class="arrow-up"></div>
           </div><div id="mask" class="hide"></div>
       </div><nav id="mobile-nav" aria-label="Mobile navigation">
-  <div class="sidebar-wrap"><div class="sidebar-author">
+  <div class="sidebar-wrap"><div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#进程间通信">进程间通信</a>
+      <ol>
+        <li><a href="#进程间通信介绍">进程间通信介绍</a>
+          <ol>
+            <li><a href="#进程间通信目的">进程间通信目的</a></li>
+            <li><a href="#进程间通信的方式">进程间通信的方式</a></li>
+          </ol>
+        </li>
+        <li><a href="#管道">管道</a></li>
+        <li><a href="#匿名管道">匿名管道</a>
+          <ol>
+            <li><a href="#匿名管道原理">匿名管道原理</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div></div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
   <img
     data-src="/avatar/my-avatar.webp"
     data-sizes="auto"
@@ -976,7 +729,10 @@
         href="/link"
         aria-label="友链"
       ></a><div class='sidebar-menu-icon icon rotate'>&#xe62b;</div><div class="sidebar-menu-link">友链</div>
-    </div></div></div></nav>
+    </div></div></div></div><div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div></nav>
 </div><div id="aplayer" theme="var(--color-link)"></div><script
     src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js"
     
@@ -1045,9 +801,9 @@
   <div><script data-pjax>
         window.REIMU_POST = {
           author: "CialloKing",
-          title: "进程状态",
-          url: "https:\/\/cialloking.com\/tags\/%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81\/",
-          description: "",
+          title: "【Linux】10 - 进程间通信",
+          url: "https:\/\/cialloking.com\/post\/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1\/",
+          description: " 进程间通信 进程间通信介绍 进程间通信目的 进程之间相互独立，当需要多个进程相互协作时必定需要进程间通信。\n数据传输：一个进程需要将它的数据发送给另一个进程。 资源共享：多个进程之间共享同样的资源。 通知事件：一个进程需要向另一个或一组进程发送消息，通知它（它们）发生了某种事件（如进程终正时要通知父进程）。 进程控制：有些进程希望完全控制另一个进程的执（如Debug进程），此时控制进程希望能够拦截另一个进程的所有陷入和异常，并能够及时知道它的状态改变。 进程间通信的方式 进程间通信（IPC,Inter-Process Communication）是指运行在同一台计算机或不同计算机上的多个进程 …",
           cover: "https:\/\/cialloking.com\/images\/bg\/bg1.webp",
         };
       </script><script src="/js/insert_highlight.js" integrity="" crossorigin="anonymous" data-pjax ></script><script src="/js/tabs.js" integrity="" crossorigin="anonymous" data-pjax defer></script><script type="module" data-pjax>const PhotoSwipeLightbox = (await safeImport("https:\/\/npm.webcache.cn\/photoswipe@5.4.4\/dist\/photoswipe-lightbox.esm.min.js", "sha384-DiL6M\/gG\u002bwmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF\/N6lrZi\/")).default;const initPswp = (gallery, children) => {

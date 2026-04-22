@@ -12,12 +12,32 @@
     
     <copyright>All articles on this blog are licensed under the BY-NC-SA license agreement unless otherwise stated. Please indicate the source when reprinting!</copyright>
     
-    <lastBuildDate>Mon, 20 Apr 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2026 00:00:00 +0800</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/en/post/index.xml" rel="self" type="application/rss&#43;xml" />
     
 
+    
+    
+
+    <item>
+      <title>【Linux】10 - Inter-Process Communication</title>
+      <link>https://cialloking.com/en/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</link>
+      <pubDate>Wed, 22 Apr 2026 00:00:00 &#43;0800</pubDate>
+      <author>xxx@example.com (CialloKing)</author>
+      <guid>https://cialloking.com/en/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</guid>
+      <description>
+        <![CDATA[<h1>【Linux】10 - Inter-Process Communication</h1><p>Author: CialloKing(xxx@example.com)</p>
+        
+          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
+        
+        <hr><p>Published on 2026-04-22 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-04-22</p>]]>
+      </description>
+      
+        <category>Linux</category>
+      
+    </item>
     
     
 
@@ -196,26 +216,6 @@
       </description>
       
         <category>Linux</category>
-      
-    </item>
-    
-    
-
-    <item>
-      <title>【C&#43;&#43;】06 - Classes and Objects</title>
-      <link>https://cialloking.com/en/post/c&#43;&#43;06---%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/</link>
-      <pubDate>Tue, 24 Mar 2026 00:00:00 &#43;0000</pubDate>
-      <author>xxx@example.com (CialloKing)</author>
-      <guid>https://cialloking.com/en/post/c&#43;&#43;06---%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/</guid>
-      <description>
-        <![CDATA[<h1>【C++】06 - Classes and Objects</h1><p>Author: CialloKing(xxx@example.com)</p>
-        
-          <p>The author was too lazy to write an English version—feel free to check out the Chinese version instead. (Yes, the author is that lazy.)</p>
-        
-        <hr><p>Published on 2026-03-24 at <a href='https://cialloking.com/'>CialloKing Blog</a>, last modified on 2026-03-24</p>]]>
-      </description>
-      
-        <category>C&#43;&#43;</category>
       
     </item>
     
