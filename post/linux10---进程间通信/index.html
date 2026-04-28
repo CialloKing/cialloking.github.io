@@ -40,7 +40,7 @@
   <meta property="og:image" content="https://cialloking.com/images/bg/bg1.webp" />
   <meta property="article:author" content="CialloKing" />
   <meta property="article:published_time" content="2026-04-22T00:00:00&#43;08:00" />
-  <meta property="article:modified_time" content="2026-04-22T00:00:00&#43;08:00" /><meta property="article:tag" content="进程" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
+  <meta property="article:modified_time" content="2026-04-29T00:00:00&#43;08:00" /><meta property="article:tag" content="进程, 管道, 共享内存, 消息队列, 信号量, systemV" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
 <link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.42c2ff6576a8f7440f141db001877cdde6d4907355753cb3bbd43efbad8597c9.css" /><link
     rel="preload"
     as="style"
@@ -298,6 +298,31 @@
         <li><a href="#匿名管道">匿名管道</a>
           <ol>
             <li><a href="#匿名管道原理">匿名管道原理</a></li>
+            <li><a href="#管道的容量和原子性">管道的容量和原子性</a></li>
+            <li><a href="#基于匿名管道的进程池">基于匿名管道的进程池</a></li>
+          </ol>
+        </li>
+        <li><a href="#命名管道">命名管道</a></li>
+        <li><a href="#systemv">systemV</a>
+          <ol>
+            <li><a href="#systemv-共享内存">systemV 共享内存</a>
+              <ol>
+                <li><a href="#共享内存的接口和特点">共享内存的接口和特点</a></li>
+                <li><a href="#使用共享内存通信示例">使用共享内存通信示例</a></li>
+              </ol>
+            </li>
+            <li><a href="#systemv-消息队列">systemV 消息队列</a></li>
+            <li><a href="#systemv-信号量">systemV 信号量</a>
+              <ol>
+                <li><a href="#并发编程概念">并发编程概念</a></li>
+                <li><a href="#原子性">原子性</a></li>
+              </ol>
+            </li>
+            <li><a href="#信号量">信号量</a>
+              <ol>
+                <li><a href="#信号量的接口">信号量的接口</a></li>
+              </ol>
+            </li>
           </ol>
         </li>
       </ol>
@@ -317,7 +342,7 @@
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>文章</div><div class="sidebar-state-number">21</div>
+    <div>文章</div><div class="sidebar-state-number">22</div>
   </div>
   <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
     <div>分类</div>
@@ -327,7 +352,7 @@
   </a>
   <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
     <div>标签</div>
-    <div class="sidebar-state-number">28</div>
+    <div class="sidebar-state-number">34</div>
   </a>
 </div>
 <div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
@@ -377,7 +402,7 @@
       >2026-04-22</time
     >
     <time style="display: none;" id="post-update-time"
-      >2026-04-22</time
+      >2026-04-29</time
     >
   </span></div>
 </div><div class="hr-line"></div><div class="e-content article-entry" itemprop="articleBody"><h1 id="进程间通信">
@@ -499,7 +524,7 @@
 </h2><p>我们经常在命令里使用管道<code>|</code>来连接两个命令，在命令行里管道<code>|</code>会把上一条指令的结果输出给下一条指令，那么什么是管道？<br>
 管道是Unix中最古老的进程间通信的形式。<br>
 我们把从一个进程连接到另一个进程的一个数据流称为一个“管道”。</p>
-<p><img src="b84f4e0cf496455886bda63ac861cca7.png" alt=""></p>
+<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/b84f4e0cf496455886bda63ac861cca7.webp" alt=""></p>
 <h2 id="匿名管道">
 <a class="header-anchor" href="#%e5%8c%bf%e5%90%8d%e7%ae%a1%e9%81%93"></a>
 匿名管道
@@ -508,9 +533,9 @@
 匿名管道原理
 </h3><p>在早期，Linux工程师们在想，能不能基于已有的技术，直接进行进程间通信。工程师们把目光投向了文件系统，把文件的缓冲区拿出来，让两个进程都能看到不就可以实现通信了吗。由操作系统在内存创建一个管道文件，因为管道文件是内存级的，也不需要文件名，所以被称为<strong>匿名管道</strong>，管道文件是内存级的，不需要写入到磁盘，两个进程都可以访问管道文件，这样就实现了通信。管道文件是被操作系统单独设计的，有自己的系统调用，同时实现管道时Linux工程师们也复用了一部分文件系统的代码。</p>
 <p>匿名管道，通常用来做父子进程通信。父进程先使用系统调用创建管道文件，以读写两种方式打开，分别返回读和写的文件描述符，写入到父进程的文件描述符表里。随后父进程创建子进程，子进程直接拷贝父进程的文件描述符表，相当于浅拷贝，文件描述符表里的文件描述符也指向同一个管道文件。这个管道文件只能用来做单向通信，也就是一个进程写另一个进程读，所以父子进程就关掉各自不需要的文件描述符，分别进行写和读操作。</p>
-<p><img src="b35da5f00d6d484b882e7e682705258c.png" alt=""></p>
-<p><img src="038b11dd88a9411eb9c8c81c89ea506e.png" alt=""></p>
-<p><img src="a90600c81fc04062ab305d72ddeb1289.png" alt=""></p>
+<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/b35da5f00d6d484b882e7e682705258c.webp" alt=""></p>
+<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/038b11dd88a9411eb9c8c81c89ea506e.webp" alt=""></p>
+<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/a90600c81fc04062ab305d72ddeb1289.webp" alt=""></p>
 <p>创建匿名管道的系统调用是<code>int pipe(int pipefd[2]);</code>，创建成功返回0，失败则返回-1，<code>pipefd[2]</code>是输出型参数，创建成功时<code>pipefd[0]</code>是管道读端文件描述符（只读），<code>pipefd[1]</code>是管道写端文件描述符（只写）。创建管道文件不需要提供文件路径，因为管道文件是内存级的，也不需要文件名，所以叫<strong>匿名管道</strong>。</p>
 <p>运行下面的代码。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
@@ -574,9 +599,924 @@
 </span></span></code></pre></div><p>我们可以看到管道文件的文件描述符分别返回3和4，因为012已经被占用了。</p>
 <p>管道有几个特点：</p>
 <ol>
-<li>匿名管道，只能用来进行具有血缘关系的进程进行进程间通信（常用与父子进程）</li>
-<li></li>
+<li>匿名管道，只能用来进行具有血缘关系的进程进行进程间通信（常用与父子进程）。</li>
+<li>管道文件自带同步机制，一个进程写完另一个进程才能读。</li>
+<li>管道是面向字节流的，写进程写入慢读进程读取快时就是写入一次输出一次，写进程写入快读进程读取慢时，怎么读取和怎么写入没有关系，取决于读进程的行为。</li>
+<li>管道是单向通信的，刚开始设计时就设计为单向通信，然后才因为单向通信的特性命名为管道。在任何时刻一个发一个收称为半双工，任何时刻双方可以同时收发称为全双工。管道属于半双工的特殊情况。</li>
+<li>管道文件的生命周期是随进程的。两个进程都退出了管道也就被关闭了。</li>
 </ol>
+<p>按照进程的读写速度和进程状态还可以把管道通信分为4种情况</p>
+<ol>
+<li>写慢读快，读取进程就要阻塞，等待写进程。</li>
+<li>写快读慢，写满了的时候写进程就要阻塞，等待读进程。</li>
+<li>写入进程关，读取进程继续读时，read就会读取直到返回0，表示读取到文件末尾。</li>
+<li>读取进程关，写入进程继续写时，写入进程在写入没有意义，操作系统为了不浪费资源，不做没有意义的事情。操作系统会发送异常信号13(SIGIEP)杀掉写入进程。</li>
+</ol>
+<h3 id="管道的容量和原子性">
+<a class="header-anchor" href="#%e7%ae%a1%e9%81%93%e7%9a%84%e5%ae%b9%e9%87%8f%e5%92%8c%e5%8e%9f%e5%ad%90%e6%80%a7"></a>
+管道的容量和原子性
+</h3><p>管道不是无限大的，也有自己的容量。
+运行下面的代码可以输出管道文件的字节数。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define _GNU_SOURCE
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">fd</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pipe</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="nf">fcntl</span><span class="p">(</span><span class="n">fd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">F_GETPIPE_SZ</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">close</span><span class="p">(</span><span class="n">fd</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">close</span><span class="p">(</span><span class="n">fd</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/pipe$ gcc -o pipe_size pipe_size.c 
+</span></span><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/pipe$ ./pipe_size 
+</span></span><span class="line"><span class="cl"><span class="m">65536</span>
+</span></span><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/pipe$ 
+</span></span></code></pre></div><p>输出65536，换算一下就是64KB，管道的默认容量是64KB。</p>
+<p>使用<code>man 7 pipe</code>指令查看手册可以看到：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"> PIPE_BUF
+</span></span><span class="line"><span class="cl">       POSIX.1 says that write<span class="o">(</span>2<span class="o">)</span>s of less than PIPE_BUF bytes must be atomic: the output data is written to the pipe
+</span></span><span class="line"><span class="cl">       as  a contiguous sequence.  Writes of more than PIPE_BUF bytes may be nonatomic: the kernel may interleave the
+</span></span><span class="line"><span class="cl">       data with data written by other processes.  POSIX.1 requires PIPE_BUF to be at least <span class="m">512</span>  bytes.   <span class="o">(</span>On  Linux,
+</span></span><span class="line"><span class="cl">       PIPE_BUF  is  <span class="m">4096</span> bytes.<span class="o">)</span>
+</span></span></code></pre></div><p>这段说明了当请求写入的字节数 <code>≤ PIPE_BUF</code> 时，<code>write()</code> 是原子的，Linux上<code>PIPE_BUF</code>通常是 4096 字节。<br>
+什么是原子的？原子性意味着：数据要么完整地写入管道（如果空间足够），要么一点都不写入（如果空间不足且管道是阻塞模式，调用会阻塞直到能完整写入；如果是非阻塞模式，则返回错误 EAGAIN），而且绝不会与其他进程的数据交叉。总结就是要么不写，要么写完。</p>
+<h3 id="基于匿名管道的进程池">
+<a class="header-anchor" href="#%e5%9f%ba%e4%ba%8e%e5%8c%bf%e5%90%8d%e7%ae%a1%e9%81%93%e7%9a%84%e8%bf%9b%e7%a8%8b%e6%b1%a0"></a>
+基于匿名管道的进程池
+</h3><p>一个父进程创建多个管道，再创建相同数量的子进程。父进程写入子进程读，当父进程没有写入时所有子进程都会阻塞等待父进程，往里写就可以唤醒子进程，这样就相当于暂停和唤醒子进程了。我们可以提前规定好任务码，如1代表下载任务，2代表上传任务，3代表输出日志等等，父进程传入任务码子进程就会执行任务码对应的任务。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">//人工智能生成
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/epoll.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/wait.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cassert&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 任务结构体（定长）
+</span></span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Task</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">data</span><span class="p">;</span>   <span class="c1">// 示例：求平方
+</span></span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 结果结构体（定长，且须与 Task 的 id 对应）
+</span></span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Result</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>  <span class="c1">// 平方值
+</span></span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 子进程信息
+</span></span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Worker</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">task_fd</span><span class="p">;</span>    <span class="c1">// 父进程写入任务
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">result_fd</span><span class="p">;</span>  <span class="c1">// 父进程读取结果
+</span></span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="n">idle</span><span class="p">;</span>      <span class="c1">// 是否空闲
+</span></span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">ProcessPool</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 构造函数，创建 num_workers 个子进程
+</span></span></span><span class="line"><span class="cl">    <span class="k">explicit</span> <span class="n">ProcessPool</span><span class="p">(</span><span class="n">size_t</span> <span class="n">num_workers</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">workers_</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">num_workers</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_workers</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">create_worker</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 创建 epoll 实例
+</span></span></span><span class="line"><span class="cl">        <span class="n">epoll_fd_</span> <span class="o">=</span> <span class="n">epoll_create1</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">epoll_fd_</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&#34;epoll_create1 failed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 将所有结果管道注册到 epoll
+</span></span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="nl">w</span> <span class="p">:</span> <span class="n">workers_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">add_result_fd</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">result_fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 禁止拷贝
+</span></span></span><span class="line"><span class="cl">    <span class="n">ProcessPool</span><span class="p">(</span><span class="k">const</span> <span class="n">ProcessPool</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ProcessPool</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">ProcessPool</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">ProcessPool</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">shutdown</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 提交一个任务，返回是否成功分配（若无空闲子进程则失败）
+</span></span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">submit</span><span class="p">(</span><span class="k">const</span> <span class="n">Task</span><span class="o">&amp;</span> <span class="n">task</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">w</span> <span class="p">:</span> <span class="n">workers_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">idle</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 向子进程写入任务
+</span></span></span><span class="line"><span class="cl">                <span class="n">ssize_t</span> <span class="n">n</span> <span class="o">=</span> <span class="n">write</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">task_fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">task</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">task</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">!=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">task</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Failed to write task to worker &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">w</span><span class="p">.</span><span class="n">pid</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="n">w</span><span class="p">.</span><span class="n">idle</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// 所有子进程忙
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 非阻塞地收集所有已完成的结果
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// 返回收集到的结果数量
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">collect</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Result</span><span class="o">&gt;&amp;</span> <span class="n">results</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">const</span> <span class="kt">int</span> <span class="n">MAX_EVENTS</span> <span class="o">=</span> <span class="n">workers_</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">epoll_event</span> <span class="n">events</span><span class="p">[</span><span class="n">MAX_EVENTS</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 使用 epoll_wait 检查可读的结果管道（超时设为 0 立刻返回）
+</span></span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">nfds</span> <span class="o">=</span> <span class="n">epoll_wait</span><span class="p">(</span><span class="n">epoll_fd_</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">MAX_EVENTS</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">nfds</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">==</span> <span class="n">EINTR</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&#34;epoll_wait failed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nfds</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">data</span><span class="p">.</span><span class="n">fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 找到对应的 worker
+</span></span></span><span class="line"><span class="cl">            <span class="n">Worker</span><span class="o">*</span> <span class="n">worker</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">w</span> <span class="p">:</span> <span class="n">workers_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">result_fd</span> <span class="o">==</span> <span class="n">fd</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">worker</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">w</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">worker</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1">// 读取结果（定长，假设一次 read 能读出一个完整结构体）
+</span></span></span><span class="line"><span class="cl">            <span class="n">Result</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ssize_t</span> <span class="n">n</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">res</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">res</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 子进程关闭了写端（异常情况）
+</span></span></span><span class="line"><span class="cl">                <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Worker &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">worker</span><span class="o">-&gt;</span><span class="n">pid</span> <span class="o">&lt;&lt;</span> <span class="s">&#34; closed result pipe</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">worker</span><span class="o">-&gt;</span><span class="n">idle</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// 不再使用
+</span></span></span><span class="line"><span class="cl">                <span class="c1">// 从 epoll 移除该 fd
+</span></span></span><span class="line"><span class="cl">                <span class="n">epoll_ctl</span><span class="p">(</span><span class="n">epoll_fd_</span><span class="p">,</span> <span class="n">EPOLL_CTL_DEL</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">worker</span><span class="o">-&gt;</span><span class="n">result_fd</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">Result</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">results</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">worker</span><span class="o">-&gt;</span><span class="n">idle</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>   <span class="c1">// 标记空闲，可接收新任务
+</span></span></span><span class="line"><span class="cl">            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">EAGAIN</span> <span class="o">&amp;&amp;</span> <span class="n">errno</span> <span class="o">!=</span> <span class="n">EWOULDBLOCK</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">perror</span><span class="p">(</span><span class="s">&#34;read result&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Partial read on result fd &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">fd</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">results</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 等待并收集所有子进程的结果（阻塞，直到所有提交的任务返回）
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// 仅适用于任务数已知且无新任务提交的情况
+</span></span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">wait_all</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Result</span><span class="o">&gt;&amp;</span> <span class="n">results</span><span class="p">,</span> <span class="kt">int</span> <span class="n">expected_tasks</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="n">results</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">expected_tasks</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">collect</span><span class="p">(</span><span class="n">results</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 关闭池：通知所有子进程退出，并回收资源
+</span></span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">shutdown</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">shutdown_done_</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">shutdown_done_</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 关闭所有任务写端，子进程将 read 到 0 后退出
+</span></span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">w</span> <span class="p">:</span> <span class="n">workers_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">task_fd</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">close</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">task_fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">w</span><span class="p">.</span><span class="n">task_fd</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 等待所有子进程退出
+</span></span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">w</span> <span class="p">:</span> <span class="n">workers_</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">pid</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">waitpid</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">w</span><span class="p">.</span><span class="n">pid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 关闭剩余的结果读端
+</span></span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">result_fd</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">epoll_ctl</span><span class="p">(</span><span class="n">epoll_fd_</span><span class="p">,</span> <span class="n">EPOLL_CTL_DEL</span><span class="p">,</span> <span class="n">w</span><span class="p">.</span><span class="n">result_fd</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">close</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">result_fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">w</span><span class="p">.</span><span class="n">result_fd</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">epoll_fd_</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">close</span><span class="p">(</span><span class="n">epoll_fd_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">epoll_fd_</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">workers_</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Worker</span><span class="o">&gt;</span> <span class="n">workers_</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">epoll_fd_</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="n">shutdown_done_</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 创建一个子进程并建立管道
+</span></span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">create_worker</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">task_pipe</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">result_pipe</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">pipe</span><span class="p">(</span><span class="n">task_pipe</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&#34;task pipe failed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">pipe</span><span class="p">(</span><span class="n">result_pipe</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">close</span><span class="p">(</span><span class="n">task_pipe</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="n">close</span><span class="p">(</span><span class="n">task_pipe</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&#34;result pipe failed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">pid_t</span> <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">close</span><span class="p">(</span><span class="n">task_pipe</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="n">close</span><span class="p">(</span><span class="n">task_pipe</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">close</span><span class="p">(</span><span class="n">result_pipe</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="n">close</span><span class="p">(</span><span class="n">result_pipe</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&#34;fork failed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 子进程
+</span></span></span><span class="line"><span class="cl">            <span class="n">close</span><span class="p">(</span><span class="n">task_pipe</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>   <span class="c1">// 关闭父进程用的写端
+</span></span></span><span class="line"><span class="cl">            <span class="n">close</span><span class="p">(</span><span class="n">result_pipe</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="c1">// 关闭父进程用的读端
+</span></span></span><span class="line"><span class="cl">            <span class="n">worker_loop</span><span class="p">(</span><span class="n">task_pipe</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">result_pipe</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 退出
+</span></span></span><span class="line"><span class="cl">            <span class="n">close</span><span class="p">(</span><span class="n">task_pipe</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">close</span><span class="p">(</span><span class="n">result_pipe</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">_exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 父进程
+</span></span></span><span class="line"><span class="cl">            <span class="n">close</span><span class="p">(</span><span class="n">task_pipe</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>   <span class="c1">// 关闭子进程用的读端
+</span></span></span><span class="line"><span class="cl">            <span class="n">close</span><span class="p">(</span><span class="n">result_pipe</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="c1">// 关闭子进程用的写端
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1">// 将任务写端设为非阻塞（可选，但推荐）
+</span></span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">flags</span> <span class="o">=</span> <span class="n">fcntl</span><span class="p">(</span><span class="n">task_pipe</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">F_GETFL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fcntl</span><span class="p">(</span><span class="n">task_pipe</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">F_SETFL</span><span class="p">,</span> <span class="n">flags</span> <span class="o">|</span> <span class="n">O_NONBLOCK</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1">// 将结果读端设为非阻塞
+</span></span></span><span class="line"><span class="cl">            <span class="n">flags</span> <span class="o">=</span> <span class="n">fcntl</span><span class="p">(</span><span class="n">result_pipe</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">F_GETFL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fcntl</span><span class="p">(</span><span class="n">result_pipe</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">F_SETFL</span><span class="p">,</span> <span class="n">flags</span> <span class="o">|</span> <span class="n">O_NONBLOCK</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">Worker</span> <span class="n">w</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">w</span><span class="p">.</span><span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">w</span><span class="p">.</span><span class="n">task_fd</span> <span class="o">=</span> <span class="n">task_pipe</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="n">w</span><span class="p">.</span><span class="n">result_fd</span> <span class="o">=</span> <span class="n">result_pipe</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="n">w</span><span class="p">.</span><span class="n">idle</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">workers_</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 子进程工作循环
+</span></span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">void</span> <span class="nf">worker_loop</span><span class="p">(</span><span class="kt">int</span> <span class="n">task_fd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">result_fd</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Task</span> <span class="n">task</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ssize_t</span> <span class="n">n</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">((</span><span class="n">n</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">task_fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">task</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">task</span><span class="p">)))</span> <span class="o">==</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">task</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 处理任务：计算平方
+</span></span></span><span class="line"><span class="cl">            <span class="n">Result</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">task</span><span class="p">.</span><span class="n">id</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">res</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">task</span><span class="p">.</span><span class="n">data</span> <span class="o">*</span> <span class="n">task</span><span class="p">.</span><span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 发送结果
+</span></span></span><span class="line"><span class="cl">            <span class="c1">// 注意：如果写阻塞，子进程会停住，父进程会检测到结果管道可读而继续
+</span></span></span><span class="line"><span class="cl">            <span class="n">ssize_t</span> <span class="n">w</span> <span class="o">=</span> <span class="n">write</span><span class="p">(</span><span class="n">result_fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">res</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">res</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">w</span> <span class="o">!=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">res</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 父进程可能已关闭读端，退出循环
+</span></span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// read 返回 0 或出错：父进程关闭了 task_fd，正常退出
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 将结果 fd 加入 epoll 监听
+</span></span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">add_result_fd</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">epoll_event</span> <span class="n">ev</span><span class="p">{};</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ev</span><span class="p">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">EPOLLIN</span><span class="p">;</span>     <span class="c1">// 可读
+</span></span></span><span class="line"><span class="cl">        <span class="n">ev</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">fd</span> <span class="o">=</span> <span class="n">fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">epoll_ctl</span><span class="p">(</span><span class="n">epoll_fd_</span><span class="p">,</span> <span class="n">EPOLL_CTL_ADD</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ev</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&#34;epoll_ctl ADD failed&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ========== 使用示例 ==========
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="n">size_t</span> <span class="n">NUM_WORKERS</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ProcessPool</span> <span class="n">pool</span><span class="p">(</span><span class="n">NUM_WORKERS</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 提交 10 个任务
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Task</span> <span class="n">t</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 轮询直到有空闲子进程
+</span></span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">pool</span><span class="p">.</span><span class="n">submit</span><span class="p">(</span><span class="n">t</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 先收集部分结果，以便释放子进程
+</span></span></span><span class="line"><span class="cl">            <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Result</span><span class="o">&gt;</span> <span class="n">res</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pool</span><span class="p">.</span><span class="n">collect</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="nl">r</span> <span class="p">:</span> <span class="n">res</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Result: id=&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">id</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;, square=&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 收集所有剩余结果
+</span></span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Result</span><span class="o">&gt;</span> <span class="n">all_results</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pool</span><span class="p">.</span><span class="n">wait_all</span><span class="p">(</span><span class="n">all_results</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="nl">r</span> <span class="p">:</span> <span class="n">all_results</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Final: id=&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">id</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;, square=&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// pool 析构会自动 shutdown
+</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>多个子进程之间需要进行负载均衡，不然可能会出现一进程有难多进程围观的现象，这样就是负载不均衡。为了保持多个进程之间分配的工作相对均衡，最简单的策略是轮询空闲子进程，记录哪个进程在忙，把任务分配到不忙的进程上。负载均衡还有其他策略，如随机分配和添加负载指标。<br>
+创建子进程时子进程会直接拷贝父进程的文件描述符表，父进程的文件描述符表会有多个指向其他管道的文件描述符，子进程直接拷贝时也有，如果不关闭就相当于管道文件不只有父进程是写打开状态，父进程退出了由于还有其他子进程打开了管道文件的写端，所以管道文件对应的子进程会一直处于读取阻塞等待状态无法退出，所以创建子进程时要关掉多余的文件，只保留自己的。</p>
+<h2 id="命名管道">
+<a class="header-anchor" href="#%e5%91%bd%e5%90%8d%e7%ae%a1%e9%81%93"></a>
+命名管道
+</h2><p>匿名管道只能用来进行具有血缘关系的进程之间进行通信，如果两个进程不相关，可以使用命名管道进行通信。</p>
+<p>假如有两个进程打开了同一个文件，操作系统不会在内存中加载两次文件，因为没必要，两个进程的struct file都指向同一个文件即可，这样也节约了内存空间。所以父子进程都可以向同一个显示器文件进行打印。<br>
+两个进程打开了同一个文件，也是让不同的进程看到同一份资源，那么也可以进行进程间通信。打开同一个路径下的同一个文件，而且文件有名字，所以可以保证两个进程访问的是同一个文件。因为这个文件有文件名，所以叫做命名管道。文件有自己的文件缓冲区，管道文件只会被打开，不需要把缓冲区刷新到磁盘。命名管道本质上是管道（内核缓冲区）在文件系统中的一个“名片”，核心仍然是内核中的环形缓冲区，而非磁盘文件。</p>
+<p>使用 <code>mkfifo 管道名</code> 命令即可创建命名管道（FIFO）</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/fifo$ mkfifo my_pipe
+</span></span><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/fifo$ ls -l my_pipe 
+</span></span><span class="line"><span class="cl">prw-rw-r-- <span class="m">1</span> user1 user1 <span class="m">0</span> Apr <span class="m">27</span> 21:29 my_pipe
+</span></span><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/fifo$ 
+</span></span></code></pre></div><p>权限前的首字母是p，代表这是一个管道文件，占用空间是0字节，操作系统会对管道文件做特殊处理。</p>
+<p>我们还可以使用系统调用<code>int mkfifo(const char *pathname, mode_t mode);</code>来创建管道，<code>pathname</code>是要创建的命名文件路径（绝对路径或相对路径），<code>mode</code>是创建命名文件的权限位（例如 0666），同时还受进程 <code>umask</code> 的影响，最终权限为<code> mode &amp; ~umask</code>，创建成功返回 0，失败返回 -1。使用系统调用<code>int unlink(const char *pathname);</code>来删除管道。<br>
+运行以下代码，使用命名管道来模拟服务端进程和客户端进程之间通信。打开两个窗口，一个运行server服务端，一个运行client客户端，客户端输入消息服务端可以接收。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">//让两个进程看到同一个管道文件，创建一个新的comm.hpp头文件分别引入
+</span></span></span><span class="line"><span class="cl"><span class="cp">#pragma once
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define     FIFO_FILE &#34;fifo&#34;
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">//server.cc
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;comm.hpp&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">umask</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>                        <span class="c1">// 自定义umaks用来替换系统的umaks
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">f</span> <span class="o">=</span> <span class="n">mkfifo</span><span class="p">(</span><span class="n">FIFO_FILE</span><span class="p">,</span> <span class="mo">0666</span><span class="p">);</span> <span class="c1">// 设置权限，0666就是rw-rw-rw-
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">f</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;mkfifo error&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 打开文件，write方没有执行open的时候，read方，就要在open内部进行阻塞，直到有人把管道文件打开了，open才会返回
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">FIFO_FILE</span><span class="p">,</span> <span class="n">O_RDONLY</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">fd</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;open error&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">2048</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;open success：&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">buffer</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;client say：&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">buffer</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;all quit&#34;</span>  <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;read error&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">u</span> <span class="o">=</span> <span class="n">unlink</span><span class="p">(</span><span class="n">FIFO_FILE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">u</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;remove fifo success&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;remove fifo failed&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">//client.cc
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;comm.hpp&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">FIFO_FILE</span><span class="p">,</span> <span class="n">O_WRONLY</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">fd</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;open error&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">cut</span> <span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pid_t</span> <span class="n">id</span> <span class="o">=</span> <span class="n">getpid</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&#34;please enter# &#34;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">getline</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">cin</span><span class="p">,</span><span class="n">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">message</span> <span class="o">+=</span> <span class="p">(</span><span class="s">&#34;, message number:&#34;</span><span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">cut</span><span class="o">++</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#34;,[&#34;</span> <span class="o">+</span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#34;]&#34;</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">write</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="n">message</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span><span class="n">message</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/fifo$ ./client 
+</span></span><span class="line"><span class="cl">plsase enter# 
+</span></span><span class="line"><span class="cl"><span class="m">123</span>
+</span></span><span class="line"><span class="cl">plsase enter# 
+</span></span><span class="line"><span class="cl"><span class="m">666</span>
+</span></span><span class="line"><span class="cl">plsase enter# 
+</span></span><span class="line"><span class="cl"><span class="m">114514</span>
+</span></span><span class="line"><span class="cl">plsase enter# 
+</span></span><span class="line"><span class="cl">^C
+</span></span><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/fifo$ 
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/fifo$ ./server 
+</span></span><span class="line"><span class="cl">open success：
+</span></span><span class="line"><span class="cl">client say：123, message number:1,<span class="o">[</span>63625<span class="o">]</span>
+</span></span><span class="line"><span class="cl">client say：666, message number:2,<span class="o">[</span>63625<span class="o">]</span>
+</span></span><span class="line"><span class="cl">client say：114514, message number:3,<span class="o">[</span>63625<span class="o">]</span>
+</span></span><span class="line"><span class="cl">all quit
+</span></span><span class="line"><span class="cl">remove fifo success
+</span></span><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/fifo$ 
+</span></span></code></pre></div><p>在客户端输入消息，服务端可以接收。</p>
+<hr>
+<p>命名管道的特点和匿名管道相同，只有一点不同，命名管道可以用来进行两个不相关的进程之间进行通信。</p>
+<h2 id="systemv">
+<a class="header-anchor" href="#systemv"></a>
+systemV
+</h2><p>systemV是一种标准，Linux内核支持此标准，专门设计了IPC通信模块。systemV规定了通信接口设计，原理等，systemV的不同通信方式都有相似性。</p>
+<p>进程间通信的本质是让不同进程看到同一份资源，systemV也是如此。</p>
+<h3 id="systemv-共享内存">
+<a class="header-anchor" href="#systemv-%e5%85%b1%e4%ba%ab%e5%86%85%e5%ad%98"></a>
+systemV 共享内存
+</h3><p>共享内存就是让两个进程使用同一块物理内存。首先在物理内存申请一块空间，进程A也在自己的虚拟地址开一块一样大的空间，然后通过页表映射物理内存地址和虚拟地址，进程B也是如此。这样进程A和B就都看到了同一份内存资源，可以进行通信了。<br>
+操作系统负责管理计算机的软硬件资源，所以申请物理内存和页表映射等工作都是操作系统来完成，用户通过系统调用来使用共享内存。<br>
+释放共享内存时，进程A和B分别释放在虚拟地址中申请的空间，页表的映射关系也没了，操作系统把物理内存中没人用的共享内存释放。</p>
+<p>系统内可能会有多个进程在使用多块共享内存来进行通信，操作系统需要管理这些同时存在的共享内存，使用先描述再组织的方式来管理。共享内存一定要有对应的描述共享内存的内核结构体对象以及物理内存。进程和共享内存的关系就是内核数据结构之间的关系。</p>
+<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/bba5e22523724aa8bf7e24d9db23ff14.webp" alt=""></p>
+<h4 id="共享内存的接口和特点">
+<a class="header-anchor" href="#%e5%85%b1%e4%ba%ab%e5%86%85%e5%ad%98%e7%9a%84%e6%8e%a5%e5%8f%a3%e5%92%8c%e7%89%b9%e7%82%b9"></a>
+共享内存的接口和特点
+</h4><p>使用系统调用<code>shmget</code>可以申请共享内存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/ipc.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/shm.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">shmget</span><span class="p">(</span><span class="kt">key_t</span> <span class="n">key</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">int</span> <span class="n">shmflg</span><span class="p">);</span>
+</span></span></code></pre></div><p>参数<code>size</code>是创建共享内存的大小。<code>shmflg</code>是标记位，通常有两种，<code>IPC_CREAT</code>和<code>IPC_EXCL</code>，是一种宏，使用<code>int</code>当作位图的方式传递；<code>IPC_CREAT</code>代表创建共享内存，如果目标共享内存不存在，就创建，否则打开这个已经存在的共享内存，并返回，<code>IPC_EXCL</code>单独使用无意义，必须和<code>IPC_CREAT</code>组合使用，<code>IPC_CREAT | IPC_EXCL</code>代表如果要创建的共享内存不存在就创建，如果已经存在<code>shmget</code>就会出错返回，保证只要成功返回那么一定是新创建的共享内存，同时<code>shmflg</code>还可以设置权限，如<code>IPC_CREAT | IPC_EXCL | 0666</code>就是设置权限为<code>0666</code>。<br>
+参数<code>key</code>是共享内存的标识符。不同的进程要使用共享内存来通信，那么就要保证看到的是同一块共享内存，需要标识符来保证共享内存的唯一性。<code>key</code>用来区分不同的共享内存，<code>key</code>是在用户层创建，传入给操纵系统。假如由操作系统创建<code>key</code>，那么为了让进程A和B看到同一块共享内存，进程A必须要把<code>key</code>交给进程B，但是把<code>key</code>交给进程B又需要实现进程间通信，所以就要由用户来创建<code>key</code>，指定进程A和B使用相同的<code>key</code>。在命名管道里两个进程打开同一个文件，而同路径下的文件具有唯一性，那么两个进程打开的肯定是同一个管道文件了，共享内存的<code>key</code>就相当于标识共享内存的唯一性。</p>
+<p>进程结束了，如果没有删除共享内存，共享内存资源会一直存在。共享内存资源的生命周期随内核，如果沒有显示的删除，即便进程退出了，IPC资源依旧被占用。
+创建共享内存后可以使用<code>ipcs -m</code>指令来查看。<code>perms</code>是权限，<code>nattch</code>是一共有多少个进程关联，<code>bytes</code>是共享内存的大小。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/sharemm$ ipcs -m
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">------ Shared Memory Segments --------
+</span></span><span class="line"><span class="cl">key        shmid      owner      perms      bytes      nattch     status      
+</span></span><span class="line"><span class="cl">0x52037e7f <span class="m">0</span>          user1      <span class="m">666</span>        <span class="m">4096</span>       <span class="m">0</span>                       
+</span></span></code></pre></div><p>共享内存在创建时，大小必须是4KB（4096字节）的整数倍，操作系统对内存管理的最小单位是4KB，假如申请4097字节大小的共享内存，操作系统会在内存里分配两个4KB大小的块给共享内存使用，剩下的4095字节被浪费了无法使用。<br>
+如果要删除或控制共享内存，不能使用<code>key</code>，<code>key</code>只给操作系统来区分唯一性，指令本质是运行在用户层的，删除或控制共享内存需要使用<code>shmid</code>。<br>
+使用系统调用<code>shmctl</code>可以删除或控制共享内存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/ipc.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/shm.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">shmctl</span><span class="p">(</span><span class="kt">int</span> <span class="n">shmid</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cmd</span><span class="p">,</span> <span class="k">struct</span> <span class="n">shmid_ds</span> <span class="o">*</span><span class="n">buf</span><span class="p">);</span>
+</span></span></code></pre></div><p>参数<code>shmid</code>就是共享内存的<code>shmid</code>，<code>cmd</code>就是传入的命令，传入<code>IPC_RMID</code>就是删除共享内存。</p>
+<p>使用系统调用<code>shmat</code>来把当前进程的虚拟地址和共享内存进行映射。<code>at</code>是关联，挂接的含义，<code>shmat</code>就是将共享内存挂接到进程的地址空间中。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/shm.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="o">*</span><span class="nf">shmat</span><span class="p">(</span><span class="kt">int</span> <span class="n">shmid</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">shmaddr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">shmflg</span><span class="p">);</span>
+</span></span></code></pre></div><p>返回值是共享内存在虚拟地址空间的起始虚拟地址，参数<code>shmid</code>就是要映射的共享内存的<code>shmid</code>，参数<code>shmaddr</code>是虚拟地址，指定固定地址进行挂接，一般可设为<code>NULL</code>让操作系统自动选择未占用的地址空间区域，参数<code>shmflg</code>是附加选项标志，设为0是默认行为，没有特殊要求（读写映射），如果需要让共享内存是只读的可以设为<code>SHM_RDONLY</code>。</p>
+<p><code>shmat</code>和<code>malloc</code>很相似，都是在虚拟地址空间内申请内存，调用<code>shmat</code>成功后在使用上和<code>malloc</code>申请的空间一样。<br>
+读写共享内存没有调用系统调用，共享区属于用户空间，可以让用户直接使用。共享内存是进程间通信中速度最快的方式，映射之后读写可以之间被其他进程看到，不需要使用系统调用获取或写入内容。假如先开一块共享内存空间，把磁盘上的文件加载到共享内存里，那么就可以让进程访问了，共享内存就是动态库加载的底层原理，只不过动态库加载的时候会使用其他系统调用。</p>
+<p>共享内存的优点是快，缺点是两个进程之间没有同步机制，会出现数据不一致，共享内存没有对共享内存中数据的保护机制。如果我们要保护数据，可以在两个进程之间再创建一个命名管道，再通过管道通知另外一个进程进行读写操作。</p>
+<h4 id="使用共享内存通信示例">
+<a class="header-anchor" href="#%e4%bd%bf%e7%94%a8%e5%85%b1%e4%ba%ab%e5%86%85%e5%ad%98%e9%80%9a%e4%bf%a1%e7%a4%ba%e4%be%8b"></a>
+使用共享内存通信示例
+</h4><p>运行以下代码来让进程使用共享内存进行通信，并使用命名管道进行通知。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">//Shm.hpp
+</span></span></span><span class="line"><span class="cl"><span class="cp">#pragma once
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/ipc.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/shm.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cstdio&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">gdefaultid</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">gsize</span> <span class="o">=</span> <span class="mi">4096</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">pathname</span><span class="p">(</span><span class="s">&#34;.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">projid</span> <span class="o">=</span> <span class="mi">114514</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">gmode</span> <span class="o">=</span> <span class="mo">0666</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#define CREATER &#34;creater&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define USER &#34;user&#34;
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#ifndef ERR_EXIT
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define ERR_EXIT(m) do{perror(m);exit(EXIT_FAILURE);} while (0)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Shm</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Shm</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">pathname</span><span class="p">,</span> <span class="kt">int</span> <span class="n">projid</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">usertype</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">:</span> <span class="n">_shmid</span><span class="p">(</span><span class="n">gdefaultid</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">          <span class="n">_size</span><span class="p">(</span><span class="n">gsize</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">          <span class="n">_start_mem</span><span class="p">(</span><span class="k">nullptr</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">          <span class="n">_usertype</span><span class="p">(</span><span class="n">usertype</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_key</span> <span class="o">=</span> <span class="n">ftok</span><span class="p">(</span><span class="n">pathname</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="n">projid</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">_key</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ERR_EXIT</span><span class="p">(</span><span class="s">&#34;ftok&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;key : 0x%x</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">_key</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">_usertype</span> <span class="o">==</span> <span class="n">CREATER</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Create</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">_usertype</span> <span class="o">==</span> <span class="n">USER</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Get</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Attach</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">CreateHelper</span><span class="p">(</span><span class="kt">int</span> <span class="n">flag</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 共享内存的生命周期随内核，进程退出前需要显式删除
+</span></span></span><span class="line"><span class="cl">        <span class="c1">//_shmid = shmget(k,_size,IPC_CREAT | IPC_EXCL | gmode);
+</span></span></span><span class="line"><span class="cl">        <span class="n">_shmid</span> <span class="o">=</span> <span class="n">shmget</span><span class="p">(</span><span class="n">_key</span><span class="p">,</span> <span class="n">_size</span><span class="p">,</span> <span class="n">flag</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">_shmid</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ERR_EXIT</span><span class="p">(</span><span class="s">&#34;shmget&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;_shmid : %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">_shmid</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="o">*</span><span class="nf">VirtualAddr</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;VirtualAddr: %p</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">_start_mem</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">_start_mem</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">Size</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">_size</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">Shm</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">_usertype</span> <span class="o">==</span> <span class="n">CREATER</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Destroy</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">Create</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 创建的是全新的共享内存
+</span></span></span><span class="line"><span class="cl">        <span class="n">CreateHelper</span><span class="p">(</span><span class="n">IPC_CREAT</span> <span class="o">|</span> <span class="n">IPC_EXCL</span> <span class="o">|</span> <span class="n">gmode</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">Attach</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_start_mem</span> <span class="o">=</span> <span class="n">shmat</span><span class="p">(</span><span class="n">_shmid</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">((</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">_start_mem</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ERR_EXIT</span><span class="p">(</span><span class="s">&#34;shmat&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;attach success</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">Get</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">CreateHelper</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">Destroy</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">_shmid</span> <span class="o">==</span> <span class="n">gdefaultid</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">shmctl</span><span class="p">(</span><span class="n">_shmid</span><span class="p">,</span> <span class="n">IPC_RMID</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">printf</span><span class="p">(</span><span class="s">&#34;shmctl delete shm:%d success</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">_shmid</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ERR_EXIT</span><span class="p">(</span><span class="s">&#34;shmctl&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">_shmid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_t</span> <span class="n">_key</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">_size</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="o">*</span><span class="n">_start_mem</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">_usertype</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// fifo.hpp
+</span></span></span><span class="line"><span class="cl"><span class="cp">#pragma once
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cstdio&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cstdlib&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cerrno&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 默认使用 &#34;fifo&#34;，可在包含前 #define FIFO_FILE &#34;fifo&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp">#ifndef FIFO_FILE
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define FIFO_FILE &#34;fifo&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#ifndef ERR_EXIT
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define ERR_EXIT(m) do { perror(m); exit(EXIT_FAILURE); } while(0)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Fifo</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 创建管道文件（只需一端调用）
+</span></span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">void</span> <span class="n">Make</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">mkfifo</span><span class="p">(</span><span class="n">FIFO_FILE</span><span class="p">,</span> <span class="mo">0666</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">EEXIST</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ERR_EXIT</span><span class="p">(</span><span class="s">&#34;mkfifo&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 删除管道文件（通常由 server 退出时清理）
+</span></span></span><span class="line"><span class="cl">    <span class="k">static</span> <span class="kt">void</span> <span class="nf">Remove</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">unlink</span><span class="p">(</span><span class="n">FIFO_FILE</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">errno</span> <span class="o">!=</span> <span class="n">ENOENT</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">perror</span><span class="p">(</span><span class="s">&#34;unlink fifo&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 打开管道，flags 为 O_RDONLY 或 O_WRONLY
+</span></span></span><span class="line"><span class="cl">    <span class="n">Fifo</span><span class="p">(</span><span class="kt">int</span> <span class="n">flags</span><span class="p">)</span> <span class="o">:</span> <span class="n">_fd</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">FIFO_FILE</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">_fd</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ERR_EXIT</span><span class="p">(</span><span class="s">&#34;open fifo&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="o">~</span><span class="n">Fifo</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">_fd</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">close</span><span class="p">(</span><span class="n">_fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 阻塞读
+</span></span></span><span class="line"><span class="cl">    <span class="n">ssize_t</span> <span class="nf">Read</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">count</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ssize_t</span> <span class="n">n</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">_fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="n">ERR_EXIT</span><span class="p">(</span><span class="s">&#34;read fifo&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">n</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 写
+</span></span></span><span class="line"><span class="cl">    <span class="n">ssize_t</span> <span class="nf">Write</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">count</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ssize_t</span> <span class="n">n</span> <span class="o">=</span> <span class="n">write</span><span class="p">(</span><span class="n">_fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="n">ERR_EXIT</span><span class="p">(</span><span class="s">&#34;write fifo&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">n</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">_fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">//server.cc
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;Shm.hpp&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;fifo.hpp&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Shm</span> <span class="n">shm</span><span class="p">(</span><span class="n">pathname</span><span class="p">,</span> <span class="n">projid</span><span class="p">,</span> <span class="n">CREATER</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">mem</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">shm</span><span class="p">.</span><span class="n">VirtualAddr</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 2. 初始化 FIFO（创建 + 只读打开）
+</span></span></span><span class="line"><span class="cl">    <span class="n">Fifo</span><span class="o">::</span><span class="n">Make</span><span class="p">();</span>        <span class="c1">// 创建管道文件
+</span></span></span><span class="line"><span class="cl">    <span class="n">Fifo</span> <span class="n">fifo</span><span class="p">(</span><span class="n">O_RDONLY</span><span class="p">);</span> <span class="c1">// 打开读端，会阻塞直到 client 打开写端
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="n">sig</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ssize_t</span> <span class="n">n</span> <span class="o">=</span> <span class="n">fifo</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sig</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>        <span class="c1">// FIFO 写端关闭，退出
+</span></span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">mem</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">//client.cc
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;Shm.hpp&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;fifo.hpp&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Shm</span> <span class="n">shm</span><span class="p">(</span><span class="n">pathname</span><span class="p">,</span> <span class="n">projid</span><span class="p">,</span> <span class="n">USER</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">mem</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">shm</span><span class="p">.</span><span class="n">VirtualAddr</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Fifo</span> <span class="n">fifo</span><span class="p">(</span><span class="n">O_WRONLY</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">ind</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="n">i</span> <span class="o">=</span> <span class="sc">&#39;A&#39;</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="sc">&#39;Z&#39;</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">,</span> <span class="n">ind</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mem</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mem</span><span class="p">[</span><span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mem</span><span class="p">[</span><span class="n">ind</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>   <span class="c1">// 结束符
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="n">sig</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fifo</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sig</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>运行后client会按顺序连续写两个字母，server会在写入后再读取，client写入到Z后server会读到0，进而退出。</p>
+<h3 id="systemv-消息队列">
+<a class="header-anchor" href="#systemv-%e6%b6%88%e6%81%af%e9%98%9f%e5%88%97"></a>
+systemV 消息队列
+</h3><p>System V 消息队列是Linux下一种报文模式的进程间通信机制。与共享内存（直接读写数据传输快，需额外同步）和 FIFO（字节流，需自行切分消息）不同，消息队列提供了基于消息的异步、带类型的数据传输，内核负责消息的缓冲和定位。</p>
+<p>进程间通信就是让两个进程看到同一份资源，操作系统提供一个队列结构，进程A把自己要发送的消息拷贝到队列里，操作系统在队列里给进程A的消息新建一个节点，进程B也可以使用相同的方式发送消息，每个进程都可以往队列里发送多条消息，其他进程访问队列就可以得到消息，实现进程间通信。为了区分哪个消息是哪个进程发的，进程往队列发送消息时还需要添加消息类型，用来标识是谁发送的消息，当进程发现标识符不是自己的就可以读取了。消息队列提供了一种，一个进程给另一个进程发送有类型数据块的方式。</p>
+<p>消息队列是由操纵系统提供的，可能会有多个进程在使用多个消息队列进行通信，操作系统就要对这些队列进行管理，使用先描述再组织的方式来管理。<br>
+和共享内存相似，两个进程使用同一个<code>key</code>来保证两个进程看到的是同一个消息队列。</p>
+<p>使用<code>msgget</code>可以创建或获取消息队列。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/ipc.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/msg.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">msgget</span><span class="p">(</span><span class="kt">key_t</span> <span class="n">key</span><span class="p">,</span> <span class="kt">int</span> <span class="n">msgflg</span><span class="p">);</span>
+</span></span></code></pre></div><p>参数<code>key</code>同共享内存，<code>msgflg</code>也同共享内存，有<code>IPC_CREAT</code>和<code>IPC_EXCL</code>。</p>
+<p>使用<code>msgctl</code>来删除或控制消息队列。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/ipc.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/msg.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">msgctl</span><span class="p">(</span><span class="kt">int</span> <span class="n">msqid</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cmd</span><span class="p">,</span> <span class="k">struct</span> <span class="n">msqid_ds</span> <span class="o">*</span><span class="n">buf</span><span class="p">);</span>
+</span></span></code></pre></div><p>使用方式同共享内存。</p>
+<p>使用系统调用<code>msgrcv</code>和<code>msgsnd</code>来收发数据。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/ipc.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/msg.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">ssize_t</span> <span class="nf">msgrcv</span><span class="p">(</span><span class="kt">int</span> <span class="n">msqid</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">msgp</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">msgsz</span><span class="p">,</span> <span class="kt">long</span> <span class="n">msgtyp</span><span class="p">,</span> <span class="kt">int</span> <span class="n">msgflg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">msgsnd</span><span class="p">(</span><span class="kt">int</span> <span class="n">msqid</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">msgp</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">msgsz</span><span class="p">,</span> <span class="kt">int</span> <span class="n">msgflg</span><span class="p">);</span>
+</span></span></code></pre></div><p><code>msqid</code>是消息队列的<code>msqid</code>，和共享内存的<code>shmid</code>相似，<code>msgp</code>是指向用户定义的消息结构体的指针。<br>
+System V 消息结构要求第一个字段是 <code>long</code> 型消息类型，后面是真实数据，例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">my_msgbuf</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">long</span> <span class="n">mtype</span><span class="p">;</span>        <span class="c1">// 必须 &gt; 0，用作接收选择的类型
+</span></span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">mtext</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>   <span class="c1">// 任意内容
+</span></span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>在发送消息系统调用<code>msgsnd</code>中，<code>msgsz</code>：消息正文的大小（即 <code>msgp</code> 结构中除 <code>mtype</code> 外的数据长度）。不能超过系统上限 <code>MSGMAX</code>（通常 8192 字节）。<code>msgflg</code>：控制发送行为：0（默认）：若队列已满（达到 <code>MSGMNB</code> 上限或系统总消息数限制），调用阻塞直到有空间可用。<code>IPC_NOWAIT</code>：若队列满，立即返回错误，<code>errno = EAGAIN</code>。成功返回 0。失败返回 -1。<br>
+在接收消息系统调用<code>msgrcv</code>中，<code>msqid</code>：队列 ID。<code>msgp</code>：指向与 <code>msgsnd</code> 相同结构的缓冲区，接收的消息将填入此处。<code>msgsz</code>：<code>msgp</code> 中数据缓冲区的最大长度。若真实消息正文 &gt; <code>msgsz</code>：若未设 <code>MSG_NOERROR</code>，调用失败，<code>errno = E2BIG</code>。若设置了 <code>MSG_NOERROR</code>，则截断消息正文至 <code>msgsz</code>，不报错。<code>msgtyp</code>：消息选择类型，影响接收行为的核心参数：<code>msgtyp</code> = 0：接收队列中的第一条消息（无论其类型）。<code>msgtyp &gt; 0</code>：接收该类型（等于 <code>msgtyp</code>）的第一条消息。<code>msgtyp &lt; 0</code>：接收类型小于等于 <code>abs(msgtyp)</code> 的最小类型消息。例如 <code>msgtyp = -5</code> 会接收类型 <code>≤ 5</code> 且类型值最小的第一条消息。<code>msgflg</code>：标志位：0（默认）：若队列中没有符合 msgtyp 条件的消息，阻塞直到有符合条件的消息到达。<code>IPC_NOWAIT</code>：若没有符合条件的消息，立即返回 -1，<code>errno = ENOMSG</code>。<code>MSG_NOERROR</code>：允许截断超过 <code>msgsz</code> 的消息（见上面说明）。<code>MSG_EXCEPT</code>（Linux 特有）：当 <code>msgtyp &gt; 0</code>时，接收不等于 <code>msgtyp</code> 的第一个类型的消息。即“除指定类型以外的第一条消息”。成功返回实际读入的数据字节数（即放入 <code>msgp</code> 中除 <code>mtype</code> 外的数据长度），失败返回 -1。</p>
+<p>和共享内存类似，使用命令<code>ipcs -q</code>可以查看当前所有消息队列，使用<code>ipcrm -q msqid</code>可以删除<code>msqid</code>对应的消息队列。</p>
+<h3 id="systemv-信号量">
+<a class="header-anchor" href="#systemv-%e4%bf%a1%e5%8f%b7%e9%87%8f"></a>
+systemV 信号量
+</h3><p>共享内存就是两个进程都能看到同一份内存（资源），但是共享内存没有保护机制，可能会出现数据不一致的问题，信号量就是解决这个问题的一种方案。</p>
+<h4 id="并发编程概念">
+<a class="header-anchor" href="#%e5%b9%b6%e5%8f%91%e7%bc%96%e7%a8%8b%e6%a6%82%e5%bf%b5"></a>
+并发编程概念
+</h4><ul>
+<li>多个执行流(进程),能看到的同一份公共资源：共享资源，比如共享内存等。</li>
+<li>被保护起来的共享资源叫做<strong>临界资源</strong>。</li>
+<li>保护的式常见：互斥与同步。</li>
+<li>任何时刻，只允许一个执流访问资源，叫做互斥。</li>
+<li>多个执行流，访问临界资源的时候，具有一定的顺序性，叫做同步。</li>
+<li>系统中某些资源一次只允许一个进程使用，称这样的资源为临界资源或互斥资源。</li>
+<li>在进程中涉及到互斥资源的程序段叫临界区。我们写的代码=访问临界资源的代码(临界区)+不访问临界资源的代码(非临界区)。</li>
+<li>所谓的对共享资源进行保护，本质是对访问共享资源的代码进行保护。</li>
+</ul>
+<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/059ef9f63eb3437eb7aeecf0350fd77a.webp" alt=""></p>
+<p>造成数据不一致问题的原因是共享资源没有被保护和各个进程的代码访问了共享资源。
+在一个项目里，大部分不访问公共资源代码称为非临界区，与数据不一致问题无关，只有一小部分代码会访问公共资源称为临界区。保护（约束）临界区代码就是变相保护临界资源。<br>
+互斥是保护临界资源的一种方式，任何时刻只允许一个执流访问资源。比如上厕所，一个坑位同时只能有一个人使用，或者是ATM机，同一时刻只能有一个人操作。厕所隔间的门有锁，有些独立的ATM机也是一个个小房间，门上也有锁。加上锁以后就可以防止其他人打扰。<br>
+还有一种方法是同步，就像没有独立隔间的ATM机，每个人排队等候，一个人操作完了下一个人继续操作，具有顺序性。例如上面共享内存中使用命名管道来进行同步。</p>
+<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/u493146797,2904607602&amp;fm=199&amp;app=68&amp;f=JPEG.webp" alt="" title="带锁的互斥ATM机">
+<img src="u=3751192653,3742213365&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG.webp" alt="" title="同步机制，具有顺序性的ATM机"></p>
+<h4 id="原子性">
+<a class="header-anchor" href="#%e5%8e%9f%e5%ad%90%e6%80%a7"></a>
+原子性
+</h4><p>原子性是说明只有两个状态，要么不做，要么做完。比如微信里发红包，对方要么没收红包，要么就是已经收下了红包。在有隔间的ATM机里取钱，外面的人要么等待，要么进入隔间操作ATM机，那么对于外面排队的人来说，在ATM隔间里操作的人的动作就是原子的。</p>
+<p>如果有一个临界资源，想通过临界区来保护，进程A和进程B都需要在访问临界区前申请锁，锁本身也要被共享，所以申请锁的时候必须是原子的，要么申请成功要么申请失败。</p>
+<h3 id="信号量">
+<a class="header-anchor" href="#%e4%bf%a1%e5%8f%b7%e9%87%8f"></a>
+信号量
+</h3><p>信号量本质是一个计数器，用来表明临界资源中资源数量的多少。</p>
+<p>张三开了一家电影院，里面有数个放映厅，放映厅就是一个临界资源。张三卖电影票最怕票卖多了和票号重复。放映厅里面的座位是有限的，李四买到票了，票上对应的座位就是他的，就算李四最后没去看电影，其他人也不能访问他的座位，买票本质就是对资源的预订机制，想访问临界资源都要买票。<br>
+共享内存也是一个大放映厅，把一块大共享内存像放映厅一样划分为各个不同的区域，只要各个进程不访问同一个位置(票号重复)，同时访问共享内存的进程总数不过多（票卖多了），就能实现多个进程同时并发访问资源不出问题，提高了效率。<br>
+信号量本质是一个计数器，假如某进程想要访问资源，需要先申请信号量，申请时信号量要-1，如果-1后信号量的值还是大于0，那么就允许进程访问资源。如果某进程申请信号量失败，那么就要被阻塞挂起。进程访问资源前要申请信号量，本质是对资源的预订机制。只要进程A申请信号量成功了，资源就给进程A了，即使不用，其他进程也无法访问，没有进程和进程A抢。</p>
+<p>信号量本身就算共享资源，申请时需要-1，这个过程必须是原子的，信号量有自己的一套机制来实现原子性。申请时-1称为P操作，使用完毕时+1称为V操作，P操作和V操作都是原子的，进程通过PV操作来完成资源的预订机制。</p>
+<p>后来张三给电影院添加了VIP放映厅，整个放映厅只有一个座位，那么这个放映厅的信号量就可以设为1，这个放映厅的状态只有有人和没人两种，里面有人时外面的人只能排队等待。信号量只有1或者0两态的信号量，叫做二元信号量。二元信号量的本质就是互斥。进程A使用资源时其他进程B进程C等都无法打扰，只能阻塞挂起。</p>
+<p>访问公共资源时只有两种场景，当资源被整体使用时，就该使用二元信号量，当资源被划分为多块使用时，使用的就是多元信号量。</p>
+<p>信号量也是一个结构体，里面包含了锁，计数器，进程PCB等待队列的指针等，锁用于保护计数器的原子性，等待队列指针用于让进程阻塞挂起。</p>
+<p>要访问信号量，那么每个进程都得看到同一个信号量，不是只有传输数据才是进程间通信，进程之间相互通知也属于进程间通信。</p>
+<h4 id="信号量的接口">
+<a class="header-anchor" href="#%e4%bf%a1%e5%8f%b7%e9%87%8f%e7%9a%84%e6%8e%a5%e5%8f%a3"></a>
+信号量的接口
+</h4><p>使用系统调用<code>semget</code>来创建信号量。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/ipc.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/sem.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">semget</span><span class="p">(</span><span class="kt">key_t</span> <span class="n">key</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nsems</span><span class="p">,</span> <span class="kt">int</span> <span class="n">semflg</span><span class="p">);</span>
+</span></span></code></pre></div><p><code>key</code>和<code>semflg</code>同共享内存，参数<code>nsems</code>是集合中信号量的数量，创建时必须 &gt;0；仅获取已存在集合时可填 0。创建成功返回信号量集合标识符（<code>semid</code>，非负整数），失败返回 -1，并设置 errno。<br>
+创建信号量时可以同时创建多个，这些信号量组合到一起就是信号量集。</p>
+<p>使用系统调用<code>semop</code>来进行原子操作信号量（P / V 操作）</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/ipc.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/sem.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">semop</span><span class="p">(</span><span class="kt">int</span> <span class="n">semid</span><span class="p">,</span> <span class="k">struct</span> <span class="n">sembuf</span> <span class="o">*</span><span class="n">sops</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nsops</span><span class="p">);</span>
+</span></span></code></pre></div><p>参数：<br>
+<code>semid</code>：信号量集合标识符。<br>
+<code>sops</code>：指向 <code>sembuf</code> 结构数组的指针，描述要进行的操作。<br>
+<code>nsops</code>：数组中操作的数量。<br>
+返回值：成功返回 0，失败返回 -1。<br>
+struct sembuf 结构体：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">sembuf</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">sem_num</span><span class="p">;</span> <span class="c1">// 信号量在集合中的索引（从0开始）
+</span></span></span><span class="line"><span class="cl">    <span class="kt">short</span>          <span class="n">sem_op</span><span class="p">;</span>  <span class="c1">// 操作值：
+</span></span></span><span class="line"><span class="cl">                            <span class="c1">// &gt;0 : V 操作，信号量值增加 sem_op
+</span></span></span><span class="line"><span class="cl">                            <span class="c1">// &lt;0 : P 操作，信号量值减少 |sem_op|；若不够减则阻塞
+</span></span></span><span class="line"><span class="cl">                            <span class="c1">// =0 : 等待信号量值变为0
+</span></span></span><span class="line"><span class="cl">    <span class="kt">short</span>          <span class="n">sem_flg</span><span class="p">;</span> <span class="c1">// 标志位：
+</span></span></span><span class="line"><span class="cl">                            <span class="c1">// 0 : 默认，阻塞等待
+</span></span></span><span class="line"><span class="cl">                            <span class="c1">// IPC_NOWAIT : 非阻塞，若无法完成则立即返回错误
+</span></span></span><span class="line"><span class="cl">                            <span class="c1">// SEM_UNDO : 进程退出时自动撤销操作
+</span></span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>使用系统调用<code>semctl</code>来删除或控制信号量。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/ipc.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/sem.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">semctl</span><span class="p">(</span><span class="kt">int</span> <span class="n">semid</span><span class="p">,</span> <span class="kt">int</span> <span class="n">semnum</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cmd</span><span class="p">,</span> <span class="p">...</span> <span class="cm">/* union semun arg */</span><span class="p">);</span>
+</span></span></code></pre></div><p><code>semid</code>：信号量集合标识符。<br>
+<code>semnum</code>：操作针对的信号量在集合中的索引（从 0 开始）。对于 <code>IPC_RMID</code> 等全局命令，此参数被忽略（通常填 0）。<br>
+<code>cmd</code>：控制命令，常用：</p>
+<ul>
+<li><code>IPC_RMID</code>：立即删除信号量集合，释放系统资源。</li>
+<li><code>SETVAL</code>：将某个信号量的值设置为指定值（需要第四个参数 <code>union semun</code>）。</li>
+<li><code>GETVAL</code>：返回某个信号量的当前值。</li>
+<li><code>IPC_STAT / IPC_SET</code>：获取/设置集合的内核属性结构 <code>semid_ds</code>。<br>
+可选第四个参数：union semun，定义如下：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">union</span> <span class="n">semun</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span>              <span class="n">val</span><span class="p">;</span>         <span class="c1">// 用于 SETVAL
+</span></span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">semid_ds</span> <span class="o">*</span><span class="n">buf</span><span class="p">;</span>         <span class="c1">// 用于 IPC_STAT / IPC_SET
+</span></span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">short</span>  <span class="o">*</span><span class="n">array</span><span class="p">;</span>       <span class="c1">// 用于 GETALL / SETALL
+</span></span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>（某些系统中 <code>union semun</code> 可能在头文件中未定义，需要用户自己定义。）<br>
+返回值：<br>
+<code>GETVAL</code>：返回信号量值。<br>
+其他命令：成功返回 0，失败返回 -1。</p>
+<p>信号量的初始化不在创建时，需要使用<code>semctl</code>来设置信号量的初始值，即在参数<code>cmd</code>里使用<code>GETVAL</code>。</p>
+<hr>
+<p>和共享内存类似，操作系统也需要管理所有的信号量。使用先描述，再组织的方式管理。共享内存，消息队列，信号量在操作系统里都是使用<code>key</code>来区分唯一性，操作系统把这三个东西当作同一种资源。这三个东西的结构体开头都一样，所以可以放在同一个数组里的指针进行管理。当需要用的时候，再对指针进行强制类型转换，这就实现了C语言版本的多态。</p>
+<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/755f68536d2748d0a521ce51da677ef6.webp" alt=""></p>
 </div>
     <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
     <a
@@ -593,6 +1533,41 @@
         rel="tag"
         >进程</a
       >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e7%ae%a1%e9%81%93"
+        rel="tag"
+        >管道</a
+      >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e5%85%b1%e4%ba%ab%e5%86%85%e5%ad%98"
+        rel="tag"
+        >共享内存</a
+      >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e6%b6%88%e6%81%af%e9%98%9f%e5%88%97"
+        rel="tag"
+        >消息队列</a
+      >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/%e4%bf%a1%e5%8f%b7%e9%87%8f"
+        rel="tag"
+        >信号量</a
+      >
+    </li><li class="article-tag-list-item" data-aos="zoom-in">
+      <a
+        class="article-tag-list-link"
+        href="/tags/systemv"
+        rel="tag"
+        >systemV</a
+      >
     </li></ul>
 </footer>
   </div><nav
@@ -600,7 +1575,7 @@
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-56.webp"
+              data-src="/images/covers/covers-146.webp"
               data-sizes="auto"
               alt="【Linux】09 - 库制作与原理"
               class="lazyload"
@@ -611,6 +1586,18 @@
         ></a>
         <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">【Linux】09 - 库制作与原理</h3>
+      </div><div class="article-nav-link-wrap right"><img
+              data-src="/images/covers/covers-67.webp"
+              data-sizes="auto"
+              alt="【Linux】11 - 进程信号"
+              class="lazyload"
+            /><a
+          href="/post/linux11---%E8%BF%9B%E7%A8%8B%E4%BF%A1%E5%8F%B7/"
+          aria-label="后一篇:【Linux】11 - 进程信号"
+          title="后一篇:【Linux】11 - 进程信号"
+        ></a>
+        <div class="article-nav-caption">后一篇</div>
+        <h3 class="article-nav-title">【Linux】11 - 进程信号</h3>
       </div></nav></article></section>
         </div><footer id="footer" aria-label="Site footer">
   <div style="width: 100%; overflow: hidden">
@@ -632,10 +1619,10 @@
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;134.8k</span
+          >&nbsp;145.6k</span
         >
         &nbsp;|&nbsp;
-        <span class="icon-coffee">&nbsp;04:41</span>
+        <span class="icon-coffee">&nbsp;05:04</span>
       </div><div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"
@@ -673,6 +1660,31 @@
         <li><a href="#匿名管道">匿名管道</a>
           <ol>
             <li><a href="#匿名管道原理">匿名管道原理</a></li>
+            <li><a href="#管道的容量和原子性">管道的容量和原子性</a></li>
+            <li><a href="#基于匿名管道的进程池">基于匿名管道的进程池</a></li>
+          </ol>
+        </li>
+        <li><a href="#命名管道">命名管道</a></li>
+        <li><a href="#systemv">systemV</a>
+          <ol>
+            <li><a href="#systemv-共享内存">systemV 共享内存</a>
+              <ol>
+                <li><a href="#共享内存的接口和特点">共享内存的接口和特点</a></li>
+                <li><a href="#使用共享内存通信示例">使用共享内存通信示例</a></li>
+              </ol>
+            </li>
+            <li><a href="#systemv-消息队列">systemV 消息队列</a></li>
+            <li><a href="#systemv-信号量">systemV 信号量</a>
+              <ol>
+                <li><a href="#并发编程概念">并发编程概念</a></li>
+                <li><a href="#原子性">原子性</a></li>
+              </ol>
+            </li>
+            <li><a href="#信号量">信号量</a>
+              <ol>
+                <li><a href="#信号量的接口">信号量的接口</a></li>
+              </ol>
+            </li>
           </ol>
         </li>
       </ol>
@@ -692,7 +1704,7 @@
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
-    <div>文章</div><div class="sidebar-state-number">21</div>
+    <div>文章</div><div class="sidebar-state-number">22</div>
   </div>
   <a class="sidebar-state-category" href="/categories/" aria-label="sidebar-state-category-link">
     <div>分类</div>
@@ -702,7 +1714,7 @@
   </a>
   <a class="sidebar-state-tag" href="/tags/" aria-label="sidebar-state-tag-link">
     <div>标签</div>
-    <div class="sidebar-state-number">28</div>
+    <div class="sidebar-state-number">34</div>
   </a>
 </div>
 <div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
