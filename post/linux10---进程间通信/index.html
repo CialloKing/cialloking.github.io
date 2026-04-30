@@ -610,7 +610,7 @@
 <li>写慢读快，读取进程就要阻塞，等待写进程。</li>
 <li>写快读慢，写满了的时候写进程就要阻塞，等待读进程。</li>
 <li>写入进程关，读取进程继续读时，read就会读取直到返回0，表示读取到文件末尾。</li>
-<li>读取进程关，写入进程继续写时，写入进程在写入没有意义，操作系统为了不浪费资源，不做没有意义的事情。操作系统会发送异常信号13(SIGIEP)杀掉写入进程。</li>
+<li>读取进程关，写入进程继续写时，写入进程在写入没有意义，操作系统为了不浪费资源，不做没有意义的事情。操作系统会发送异常信号13(SIGPIPE)杀掉写入进程。</li>
 </ol>
 <h3 id="管道的容量和原子性">
 <a class="header-anchor" href="#%e7%ae%a1%e9%81%93%e7%9a%84%e5%ae%b9%e9%87%8f%e5%92%8c%e5%8e%9f%e5%ad%90%e6%80%a7"></a>
@@ -1048,13 +1048,13 @@
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/fifo$ ./client 
-</span></span><span class="line"><span class="cl">plsase enter# 
+</span></span><span class="line"><span class="cl">please enter# 
 </span></span><span class="line"><span class="cl"><span class="m">123</span>
-</span></span><span class="line"><span class="cl">plsase enter# 
+</span></span><span class="line"><span class="cl">please enter# 
 </span></span><span class="line"><span class="cl"><span class="m">666</span>
-</span></span><span class="line"><span class="cl">plsase enter# 
+</span></span><span class="line"><span class="cl">please enter# 
 </span></span><span class="line"><span class="cl"><span class="m">114514</span>
-</span></span><span class="line"><span class="cl">plsase enter# 
+</span></span><span class="line"><span class="cl">please enter# 
 </span></span><span class="line"><span class="cl">^C
 </span></span><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/fifo$ 
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">user1@iZ2zeh5i3yddf3p4q4ueo7Z:~/fifo$ ./server 
@@ -1513,10 +1513,81 @@ struct sembuf 结构体：</p>
 返回值：<br>
 <code>GETVAL</code>：返回信号量值。<br>
 其他命令：成功返回 0，失败返回 -1。</p>
-<p>信号量的初始化不在创建时，需要使用<code>semctl</code>来设置信号量的初始值，即在参数<code>cmd</code>里使用<code>GETVAL</code>。</p>
+<p>信号量的初始化不在创建时，需要使用<code>semctl</code>来设置信号量的初始值，即在参数<code>cmd</code>里使用<code>SETVAL</code>。</p>
 <hr>
 <p>和共享内存类似，操作系统也需要管理所有的信号量。使用先描述，再组织的方式管理。共享内存，消息队列，信号量在操作系统里都是使用<code>key</code>来区分唯一性，操作系统把这三个东西当作同一种资源。这三个东西的结构体开头都一样，所以可以放在同一个数组里的指针进行管理。当需要用的时候，再对指针进行强制类型转换，这就实现了C语言版本的多态。</p>
 <p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/755f68536d2748d0a521ce51da677ef6.webp" alt=""></p>
+<ol>
+<li>通用 IPC 结构</li>
+</ol>
+<ul>
+<li><code>ipc_ids</code>: 这是一个全局管理结构，用于管理系统中所有的 IPC 资源（消息、信号量、共享内存）。
+<ul>
+<li>它包含一个 <code>ipc_id_ary</code> 指针数组（图中 *p[0] 指向的柔性数组），用于索引具体的 IPC 对象。</li>
+<li>它负责分配唯一的 ID 和管理资源的生命周期。</li>
+</ul>
+</li>
+<li><code>kern_ipc_perm</code>: 这是一个嵌入在具体 IPC 对象（如 msg_queue, sem_array, shmid_kernel）中的通用权限结构。
+<ul>
+<li>它包含了所有 IPC 对象共有的元数据：权限模式、用户 ID、组 ID、创建者信息等。</li>
+<li>作用：实现了不同 IPC 类型的统一权限管理和查找。</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>消息队列</li>
+</ol>
+<ul>
+<li><code>msg_queue</code>: 代表一个具体的消息队列。
+<ul>
+<li>包含 <code>kern_ipc_perm</code> 用于权限控制。</li>
+<li>包含统计信息（如 <code>q_cbytes</code> 当前字节数，<code>q_qnum</code> 消息数量）。</li>
+<li>关键指针：<code>q_messages</code> 指向实际的消息链表。</li>
+</ul>
+</li>
+<li><code>msg_msg</code>: 代表队列中的一条具体消息。
+<ul>
+<li>包含消息类型 <code>m_type</code> 和消息大小 m_ts。</li>
+<li>通过 <code>next</code> 和 <code>prev</code> 指针形成双向链表。</li>
+<li>如果消息体过大，会使用 <code>msg_msgseg</code> 结构进行分段存储。</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>信号量</li>
+</ol>
+<ul>
+<li><code>sem_array</code>: 代表一个信号量集合（集）。
+<ul>
+<li>包含 <code>kern_ipc_perm</code>。</li>
+<li>包含 <code>sem_nsems</code>，表示该集合中有多少个具体的信号量。</li>
+<li>关键指针：<code>*sem_base</code> 指向具体的信号量数组。</li>
+</ul>
+</li>
+<li><code>sem</code>: 具体的信号量单元。
+<ul>
+<li>包含 <code>semval</code>（信号量的值）和 <code>sempid</code>（最后一次操作该信号量的进程 ID）。</li>
+</ul>
+</li>
+<li><code>sem_queue</code>: 用于管理等待信号量的进程队列。当进程请求资源失败（如 P 操作导致值小于 0）时，会被挂在这个等待队列上。</li>
+</ul>
+<ol start="4">
+<li>共享内存</li>
+</ol>
+<ul>
+<li><code>shmid_kernel</code>: 内核视角的共享内存标识符。
+<ul>
+<li>包含 <code>kern_ipc_perm</code>。</li>
+<li>关键指针：<code>*shm_file</code> 指向底层的文件系统 <code>struct file</code>。这体现了 Linux &ldquo;一切皆文件&rdquo; 的设计哲学，共享内存底层也是基于 tmpfs 文件系统实现的。</li>
+</ul>
+</li>
+<li><code>vm_area_struct</code>: 这是内存管理的关键结构。当进程将共享内存映射到自己的地址空间时，会创建或更新这个结构，建立虚拟内存区域与底层文件的映射关系。</li>
+</ul>
+<p>这三个结构体：<code>msg_queue</code>、<code>sem_array</code>、<code>shmid_kernel</code>，它们都在内存的起始位置嵌入了 <code>kern_ipc_perm</code> 结构。因为 <code>kern_ipc_perm</code> 总是位于子结构体的起始地址（偏移量为 0），所以指向子结构体的指针和指向其第一个成员（父结构体）的指针，其数值地址是完全一样的。这意味着，内核可以使用一个通用的 <code>struct kern_ipc_perm *</code> 指针来指向任何类型的 IPC 对象（无论是消息队列、信号量还是共享内存），这就实现了向上转型。</p>
+<p>图中右上角的 <code>ipc_ids</code> 结构体管理着所有的 IPC 资源。<br>
+<code>ipc_ids</code> 中的 <code>entries</code> 或数组 <code>*p[0]</code> 实际上存储的是指向 <code>kern_ipc_perm</code> 的指针。当系统调用（如 <code>msgsnd</code>, <code>semop</code>, <code>shmat</code>）通过 ID 查找资源时，内核首先找到的是通用的 <code>kern_ipc_perm</code>。<br>
+类型识别：内核通过检查 <code>kern_ipc_perm</code> 中的元数据（或者通过容器宏 container_of）来确定这个通用指针到底属于哪种具体类型。如果是消息队列，就将其转换回 <code>msg_queue</code> 指针。如果是信号量，就将其转换回 <code>sem_array</code> 指针。<br>
+这样就实现了多态。</p>
 </div>
     <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
     <a
@@ -1575,7 +1646,7 @@ struct sembuf 结构体：</p>
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-146.webp"
+              data-src="/images/covers/covers-21.webp"
               data-sizes="auto"
               alt="【Linux】09 - 库制作与原理"
               class="lazyload"
@@ -1587,7 +1658,7 @@ struct sembuf 结构体：</p>
         <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">【Linux】09 - 库制作与原理</h3>
       </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-67.webp"
+              data-src="/images/covers/covers-44.webp"
               data-sizes="auto"
               alt="【Linux】11 - 进程信号"
               class="lazyload"
@@ -1619,10 +1690,10 @@ struct sembuf 结构体：</p>
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;145.6k</span
+          >&nbsp;146.7k</span
         >
         &nbsp;|&nbsp;
-        <span class="icon-coffee">&nbsp;05:04</span>
+        <span class="icon-coffee">&nbsp;05:06</span>
       </div><div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"
