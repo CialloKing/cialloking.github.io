@@ -40,7 +40,7 @@
   <meta property="og:image" content="https://cialloking.com/images/bg/bg1.webp" />
   <meta property="article:author" content="CialloKing" />
   <meta property="article:published_time" content="2026-04-22T00:00:00&#43;08:00" />
-  <meta property="article:modified_time" content="2026-04-29T00:00:00&#43;08:00" /><meta property="article:tag" content="进程, 管道, 共享内存, 消息队列, 信号量, systemV" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
+  <meta property="article:modified_time" content="2026-05-01T00:00:00&#43;08:00" /><meta property="article:tag" content="进程, 管道, 共享内存, 消息队列, 信号量, systemV" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
 <link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.42c2ff6576a8f7440f141db001877cdde6d4907355753cb3bbd43efbad8597c9.css" /><link
     rel="preload"
     as="style"
@@ -402,7 +402,7 @@
       >2026-04-22</time
     >
     <time style="display: none;" id="post-update-time"
-      >2026-04-29</time
+      >2026-05-01</time
     >
   </span></div>
 </div><div class="hr-line"></div><div class="e-content article-entry" itemprop="articleBody"><h1 id="进程间通信">
@@ -1435,7 +1435,7 @@ systemV 信号量
 在一个项目里，大部分不访问公共资源代码称为非临界区，与数据不一致问题无关，只有一小部分代码会访问公共资源称为临界区。保护（约束）临界区代码就是变相保护临界资源。<br>
 互斥是保护临界资源的一种方式，任何时刻只允许一个执流访问资源。比如上厕所，一个坑位同时只能有一个人使用，或者是ATM机，同一时刻只能有一个人操作。厕所隔间的门有锁，有些独立的ATM机也是一个个小房间，门上也有锁。加上锁以后就可以防止其他人打扰。<br>
 还有一种方法是同步，就像没有独立隔间的ATM机，每个人排队等候，一个人操作完了下一个人继续操作，具有顺序性。例如上面共享内存中使用命名管道来进行同步。</p>
-<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/u493146797,2904607602&amp;fm=199&amp;app=68&amp;f=JPEG.webp" alt="" title="带锁的互斥ATM机">
+<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/u493146797.webp" alt="" title="带锁的互斥ATM机">
 <img src="u=3751192653,3742213365&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG.webp" alt="" title="同步机制，具有顺序性的ATM机"></p>
 <h4 id="原子性">
 <a class="header-anchor" href="#%e5%8e%9f%e5%ad%90%e6%80%a7"></a>
@@ -1585,9 +1585,26 @@ struct sembuf 结构体：</p>
 </ul>
 <p>这三个结构体：<code>msg_queue</code>、<code>sem_array</code>、<code>shmid_kernel</code>，它们都在内存的起始位置嵌入了 <code>kern_ipc_perm</code> 结构。因为 <code>kern_ipc_perm</code> 总是位于子结构体的起始地址（偏移量为 0），所以指向子结构体的指针和指向其第一个成员（父结构体）的指针，其数值地址是完全一样的。这意味着，内核可以使用一个通用的 <code>struct kern_ipc_perm *</code> 指针来指向任何类型的 IPC 对象（无论是消息队列、信号量还是共享内存），这就实现了向上转型。</p>
 <p>图中右上角的 <code>ipc_ids</code> 结构体管理着所有的 IPC 资源。<br>
-<code>ipc_ids</code> 中的 <code>entries</code> 或数组 <code>*p[0]</code> 实际上存储的是指向 <code>kern_ipc_perm</code> 的指针。当系统调用（如 <code>msgsnd</code>, <code>semop</code>, <code>shmat</code>）通过 ID 查找资源时，内核首先找到的是通用的 <code>kern_ipc_perm</code>。<br>
+<code>ipc_ids</code> 中的 <code>entries</code> 或数组 <code>*p[0]</code> 实际上存储的是指向 <code>kern_ipc_perm</code> 的指针，结构体地址和结构体首元素的地址相同。当系统调用（如 <code>msgsnd</code>, <code>semop</code>, <code>shmat</code>）通过 ID 查找资源时，内核首先找到的是通用的 <code>kern_ipc_perm</code>。<br>
 类型识别：内核通过检查 <code>kern_ipc_perm</code> 中的元数据（或者通过容器宏 container_of）来确定这个通用指针到底属于哪种具体类型。如果是消息队列，就将其转换回 <code>msg_queue</code> 指针。如果是信号量，就将其转换回 <code>sem_array</code> 指针。<br>
 这样就实现了多态。</p>
+<p>查看Linux内核2.6.18版本的源代码<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>，可以看见内核的进程通信结构体对象，从源代码中可以看到进程通信结构的各种属性，创建时返回的id就是柔性数组的下标。</p>
+<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/PixPin_2026-05-01_6.webp" alt="/ ipc / util.h"></p>
+<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/PixPin_2026-05-01_4.webp" alt="/ include / linux / ipc.h"></p>
+<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/PixPin_2026-05-01_5.webp" alt="/ include / linux / msg.h"></p>
+<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/PixPin_2026-05-01_8.webp" alt="/ include / linux / sem.h"></p>
+<p><img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/PixPin_2026-05-01_9.webp" alt="/ include / linux / shm.h"></p>
+<hr>
+<p>ChatGPT Images 2生成，有部分文本错乱，仅供参考。
+<img src="/post/linux10---%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/ChatGPT%20Image%202-1.webp" alt="ChatGPT Images 2.0"></p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>在bootlin的<a href="https://elixir.bootlin.com/linux/v2.6.18/source/ipc/util.h">网站</a>和Linux内核官网的这个<a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/ipc/util.h?h=v2.6.18&amp;id=3752aee96538b582b089f4a97a26e2ccd9403929">网页</a>以及GitHub的这个<a href="https://github.com/torvalds/linux/blob/v2.6.18/ipc/util.h">网页</a> 都能查看Linux2.6.18版本的源代码&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
 </div>
     <footer class="article-footer"><ul class="article-category-list"><li class="article-tag-list-item" data-aos="zoom-in">
     <a
@@ -1646,7 +1663,7 @@ struct sembuf 结构体：</p>
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-21.webp"
+              data-src="/images/covers/covers-59.webp"
               data-sizes="auto"
               alt="【Linux】09 - 库制作与原理"
               class="lazyload"
@@ -1658,7 +1675,7 @@ struct sembuf 结构体：</p>
         <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">【Linux】09 - 库制作与原理</h3>
       </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-44.webp"
+              data-src="/images/covers/covers-50.webp"
               data-sizes="auto"
               alt="【Linux】11 - 进程信号"
               class="lazyload"
@@ -1690,10 +1707,10 @@ struct sembuf 结构体：</p>
         >
       </div><div>
         <span class="icon-brush"
-          >&nbsp;146.7k</span
+          >&nbsp;146.9k</span
         >
         &nbsp;|&nbsp;
-        <span class="icon-coffee">&nbsp;05:06</span>
+        <span class="icon-coffee">&nbsp;05:07</span>
       </div><div>
         <span class="icon-eye"></span>
         <span id="busuanzi_container_site_pv"

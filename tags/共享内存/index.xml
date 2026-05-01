@@ -12,7 +12,7 @@
     
     <copyright>本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！</copyright>
     
-    <lastBuildDate>Wed, 29 Apr 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 01 May 2026 00:00:00 +0800</lastBuildDate>
     
     
     <atom:link href="https://cialloking.com/tags/%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98/index.xml" rel="self" type="application/rss&#43;xml" />
@@ -51,7 +51,7 @@
 进程间通信的方式
 </h3><p>进程间通信（IPC,Inter-Process Communication）是指运行在同一台计算机或不同计算机上的多个进程之间进行数据交换和通信的技术。由于每个进程都有自己的地址空间，它们无法直接访问彼此的数据，因此需要通过特定的机制来实现通信。IPC是操作系统和多进程编程中的一个重要概念，广泛应用于分布式系统、多任务操作系统以及各种应用程序之间，IPC 是实现多进程协作的基础。</p>
         
-        <hr><p>本文2026-04-22首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-04-29</p>]]>
+        <hr><p>本文2026-04-22首发于<a href='https://cialloking.com/'>CialloKing 的博客</a>，最后修改于2026-05-01</p>]]>
       </description>
       
         <category>Linux</category>
