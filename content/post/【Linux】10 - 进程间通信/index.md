@@ -1,7 +1,7 @@
 ---
 
 date: 2026-04-22T00:00:00+08:00
-lastmod: 2026-04-29T00:00:00+08:00
+lastmod: 2026-05-01T00:00:00+08:00
 title: '【Linux】10 - 进程间通信'
 
 tags:
@@ -1134,7 +1134,7 @@ struct my_msgbuf {
 还有一种方法是同步，就像没有独立隔间的ATM机，每个人排队等候，一个人操作完了下一个人继续操作，具有顺序性。例如上面共享内存中使用命名管道来进行同步。
 
 
-![](u493146797,2904607602&fm=199&app=68&f=JPEG.webp "带锁的互斥ATM机")
+![](u493146797.webp "带锁的互斥ATM机")
 ![](u=3751192653,3742213365&fm=253&fmt=auto&app=138&f=JPEG.webp "同步机制，具有顺序性的ATM机")
 
 
@@ -1291,14 +1291,32 @@ union semun {
 这三个结构体：`msg_queue`、`sem_array`、`shmid_kernel`，它们都在内存的起始位置嵌入了 `kern_ipc_perm` 结构。因为 `kern_ipc_perm` 总是位于子结构体的起始地址（偏移量为 0），所以指向子结构体的指针和指向其第一个成员（父结构体）的指针，其数值地址是完全一样的。这意味着，内核可以使用一个通用的 `struct kern_ipc_perm *` 指针来指向任何类型的 IPC 对象（无论是消息队列、信号量还是共享内存），这就实现了向上转型。
 
 图中右上角的 `ipc_ids` 结构体管理着所有的 IPC 资源。  
-`ipc_ids` 中的 `entries` 或数组 `*p[0]` 实际上存储的是指向 `kern_ipc_perm` 的指针。当系统调用（如 `msgsnd`, `semop`, `shmat`）通过 ID 查找资源时，内核首先找到的是通用的 `kern_ipc_perm`。  
+`ipc_ids` 中的 `entries` 或数组 `*p[0]` 实际上存储的是指向 `kern_ipc_perm` 的指针，结构体地址和结构体首元素的地址相同。当系统调用（如 `msgsnd`, `semop`, `shmat`）通过 ID 查找资源时，内核首先找到的是通用的 `kern_ipc_perm`。  
 类型识别：内核通过检查 `kern_ipc_perm` 中的元数据（或者通过容器宏 container_of）来确定这个通用指针到底属于哪种具体类型。如果是消息队列，就将其转换回 `msg_queue` 指针。如果是信号量，就将其转换回 `sem_array` 指针。  
 这样就实现了多态。
 
+查看Linux内核2.6.18版本的源代码[^1]，可以看见内核的进程通信结构体对象，从源代码中可以看到进程通信结构的各种属性，创建时返回的id就是柔性数组的下标。
+
+
+![/ ipc / util.h](PixPin_2026-05-01_6.webp)
+
+![/ include / linux / ipc.h](PixPin_2026-05-01_4.webp)
+
+![/ include / linux / msg.h](PixPin_2026-05-01_5.webp)
+
+![/ include / linux / sem.h](PixPin_2026-05-01_8.webp)
+
+![/ include / linux / shm.h](PixPin_2026-05-01_9.webp)
 
 
 
 
+[^1]: 在bootlin的[网站](https://elixir.bootlin.com/linux/v2.6.18/source/ipc/util.h)和Linux内核官网的这个[网页](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/ipc/util.h?h=v2.6.18&id=3752aee96538b582b089f4a97a26e2ccd9403929)以及GitHub的这个[网页](https://github.com/torvalds/linux/blob/v2.6.18/ipc/util.h) 都能查看Linux2.6.18版本的源代码
+
+---
+
+ChatGPT Images 2生成，有部分文本错乱，仅供参考。
+![ChatGPT Images 2.0](<ChatGPT Image 2-1.webp>)
 
 
 
