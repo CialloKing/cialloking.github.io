@@ -11,7 +11,7 @@
   【Linux】11 - 进程信号 | CialloKing
 </title>
 <meta name="description" content="少女祈祷中..."/><script>
-  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"Lang\":\"zh-cn\",\"Title\":\"CialloKing 的博客\",\"Weight\":1,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"简体中文\",\"Locale\":\"zh-CN\"},{\"Lang\":\"en\",\"Title\":\"CialloKing Blog\",\"Weight\":2,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"English\",\"Locale\":\"en\"}],\"icon_font\":\"4552607_a0oqhord1y\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
+  window.siteConfig = JSON.parse("{\"anchor\":{\"auto\":{\"enable\":false,\"length\":60},\"explicit\":{\"enable\":false,\"marker\":\"{#anchor-\",\"prefix\":\"anchor-\"}},\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"label\":\"简体中文\",\"lang\":\"zh-cn\"},{\"label\":\"English\",\"lang\":\"en\"}],\"icon_font\":\"4552607_a0oqhord1y\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
   
 </script>
 <link
@@ -41,7 +41,7 @@
   <meta property="article:author" content="CialloKing" />
   <meta property="article:published_time" content="2026-04-29T00:00:00&#43;08:00" />
   <meta property="article:modified_time" content="2026-05-01T00:00:00&#43;08:00" /><meta property="article:tag" content="信号" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
-<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.42c2ff6576a8f7440f141db001877cdde6d4907355753cb3bbd43efbad8597c9.css" /><link
+<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.330a8ab8604950152c4165630d77f6af2a43bf013a2c4a72a124488b7724ed21.css" /><link
     rel="preload"
     as="style"
     href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
@@ -486,34 +486,34 @@
 </span></span><span class="line"><span class="cl">       The signals SIGKILL and SIGSTOP cannot be caught, blocked, or ignored.
 </span></span></code></pre></div><p>进程对信号的默认处理方式（即信号的 disposition，也叫默认动作）主要有以下 5 种：</p>
 <table>
-  <thead>
-      <tr>
-          <th>默认动作</th>
-          <th>含义</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>Term</td>
-          <td>终止进程（不生成 core dump），例如：SIGINT、SIGTERM、SIGALRM</td>
-      </tr>
-      <tr>
-          <td>Ign</td>
-          <td>忽略信号，进程不做任何反应，例如：SIGCHLD、SIGURG、SIGWINCH</td>
-      </tr>
-      <tr>
-          <td>Core</td>
-          <td>终止进程，并生成 core dump 文件，例如：SIGQUIT、SIGSEGV、SIGFPE、SIGILL</td>
-      </tr>
-      <tr>
-          <td>Stop</td>
-          <td>暂停（停止）进程的执行，例如：SIGTSTP、SIGTTIN、SIGTTOU</td>
-      </tr>
-      <tr>
-          <td>Cont</td>
-          <td>继续一个已停止的进程，例如：SIGCONT</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>默认动作</th>
+					<th>含义</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Term</td>
+					<td>终止进程（不生成 core dump），例如：SIGINT、SIGTERM、SIGALRM</td>
+			</tr>
+			<tr>
+					<td>Ign</td>
+					<td>忽略信号，进程不做任何反应，例如：SIGCHLD、SIGURG、SIGWINCH</td>
+			</tr>
+			<tr>
+					<td>Core</td>
+					<td>终止进程，并生成 core dump 文件，例如：SIGQUIT、SIGSEGV、SIGFPE、SIGILL</td>
+			</tr>
+			<tr>
+					<td>Stop</td>
+					<td>暂停（停止）进程的执行，例如：SIGTSTP、SIGTTIN、SIGTTOU</td>
+			</tr>
+			<tr>
+					<td>Cont</td>
+					<td>继续一个已停止的进程，例如：SIGCONT</td>
+			</tr>
+	</tbody>
 </table>
 <h3 id="前台后台进程">
 <a class="header-anchor" href="#%e5%89%8d%e5%8f%b0%e5%90%8e%e5%8f%b0%e8%bf%9b%e7%a8%8b"></a>
@@ -730,7 +730,7 @@
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-79.webp"
+              data-src="/images/covers/covers-147.webp"
               data-sizes="auto"
               alt="【Linux】10 - 进程间通信"
               class="lazyload"

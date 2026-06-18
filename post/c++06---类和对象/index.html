@@ -11,7 +11,7 @@
   【C&#43;&#43;】06 - 类和对象 | CialloKing
 </title>
 <meta name="description" content="少女祈祷中..."/><script>
-  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"Lang\":\"zh-cn\",\"Title\":\"CialloKing 的博客\",\"Weight\":1,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"简体中文\",\"Locale\":\"zh-CN\"},{\"Lang\":\"en\",\"Title\":\"CialloKing Blog\",\"Weight\":2,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"English\",\"Locale\":\"en\"}],\"icon_font\":\"4552607_a0oqhord1y\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
+  window.siteConfig = JSON.parse("{\"anchor\":{\"auto\":{\"enable\":false,\"length\":60},\"explicit\":{\"enable\":false,\"marker\":\"{#anchor-\",\"prefix\":\"anchor-\"}},\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"label\":\"简体中文\",\"lang\":\"zh-cn\"},{\"label\":\"English\",\"lang\":\"en\"}],\"icon_font\":\"4552607_a0oqhord1y\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
   
 </script>
 <link
@@ -41,7 +41,7 @@
   <meta property="article:author" content="CialloKing" />
   <meta property="article:published_time" content="2026-03-24T00:00:00&#43;00:00" />
   <meta property="article:modified_time" content="2026-03-26T00:00:00&#43;00:00" /><meta property="article:tag" content="基础语法, 类和对象" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
-<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.42c2ff6576a8f7440f141db001877cdde6d4907355753cb3bbd43efbad8597c9.css" /><link
+<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.330a8ab8604950152c4165630d77f6af2a43bf013a2c4a72a124488b7724ed21.css" /><link
     rel="preload"
     as="style"
     href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
@@ -1268,35 +1268,35 @@ C++11 之后又增加了两个：移动构造函数 和 移动赋值运算符</l
 <a class="header-anchor" href="#%e6%8b%b7%e8%b4%9d%e6%9e%84%e9%80%a0-vs-%e8%b5%8b%e5%80%bc%e9%87%8d%e8%bd%bd"></a>
 拷贝构造 vs 赋值重载
 </h4><table>
-  <thead>
-      <tr>
-          <th>操作</th>
-          <th>拷贝构造函数</th>
-          <th>赋值运算符重载</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>场景</td>
-          <td>用已有对象初始化新对象</td>
-          <td>两个已存在的对象之间赋值</td>
-      </tr>
-      <tr>
-          <td>对象状态</td>
-          <td>新对象尚未构造</td>
-          <td>两个对象都已经构造完成</td>
-      </tr>
-      <tr>
-          <td>调用时机</td>
-          <td><code>Date d2(d1);</code> 或  <code>Date d2 = d1;</code></td>
-          <td><code>d1 = d2;</code></td>
-      </tr>
-      <tr>
-          <td>资源管理</td>
-          <td>分配新资源</td>
-          <td>先释放旧资源，再分配新资源</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>操作</th>
+					<th>拷贝构造函数</th>
+					<th>赋值运算符重载</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>场景</td>
+					<td>用已有对象初始化新对象</td>
+					<td>两个已存在的对象之间赋值</td>
+			</tr>
+			<tr>
+					<td>对象状态</td>
+					<td>新对象尚未构造</td>
+					<td>两个对象都已经构造完成</td>
+			</tr>
+			<tr>
+					<td>调用时机</td>
+					<td><code>Date d2(d1);</code> 或  <code>Date d2 = d1;</code></td>
+					<td><code>d1 = d2;</code></td>
+			</tr>
+			<tr>
+					<td>资源管理</td>
+					<td>分配新资源</td>
+					<td>先释放旧资源，再分配新资源</td>
+			</tr>
+	</tbody>
 </table>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Date</span> <span class="nf">d1</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">Date</span> <span class="nf">d2</span><span class="p">(</span><span class="n">d1</span><span class="p">);</span>   <span class="c1">// 拷贝构造（初始化）
@@ -2523,7 +2523,7 @@ static 成员
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-141.webp"
+              data-src="/images/covers/covers-243.webp"
               data-sizes="auto"
               alt="【C语言】03 - C语言数据类型，变量和运算符"
               class="lazyload"
@@ -2535,7 +2535,7 @@ static 成员
         <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">【C语言】03 - C语言数据类型，变量和运算符</h3>
       </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-04.webp"
+              data-src="/images/covers/covers-265.webp"
               data-sizes="auto"
               alt="【Linux】02 - Linux基础命令"
               class="lazyload"

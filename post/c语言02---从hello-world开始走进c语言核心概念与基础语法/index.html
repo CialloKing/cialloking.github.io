@@ -11,7 +11,7 @@
   【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法 | CialloKing
 </title>
 <meta name="description" content="少女祈祷中..."/><script>
-  window.siteConfig = JSON.parse("{\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"Lang\":\"zh-cn\",\"Title\":\"CialloKing 的博客\",\"Weight\":1,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"简体中文\",\"Locale\":\"zh-CN\"},{\"Lang\":\"en\",\"Title\":\"CialloKing Blog\",\"Weight\":2,\"Disabled\":false,\"Direction\":\"\",\"Label\":\"English\",\"Locale\":\"en\"}],\"icon_font\":\"4552607_a0oqhord1y\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
+  window.siteConfig = JSON.parse("{\"anchor\":{\"auto\":{\"enable\":false,\"length\":60},\"explicit\":{\"enable\":false,\"marker\":\"{#anchor-\",\"prefix\":\"anchor-\"}},\"anchor_icon\":null,\"base\":\"https://cialloking.com/\",\"clipboard\":{\"copyright\":{\"count\":50,\"enable\":false,\"license_type\":\"by-nc-sa\"},\"fail\":{\"en\":\"Copy failed (ﾟ⊿ﾟ)ﾂ\",\"ja\":\"コピー失敗 (ﾟ⊿ﾟ)ﾂ\",\"pt-br\":\"Falha ao copiar (ﾟ⊿ﾟ)ﾂ\",\"zh-cn\":\"复制失败 (ﾟ⊿ﾟ)ﾂ\",\"zh-tw\":\"複製失敗 (ﾟ⊿ﾟ)ﾂ\"},\"success\":{\"en\":\"Copy successfully (*^▽^*)\",\"ja\":\"コピー成功 (*^▽^*)\",\"pt-br\":\"Copiado com sucesso (*^▽^*)\",\"zh-cn\":\"复制成功 (*^▽^*)\",\"zh-tw\":\"複製成功 (*^▽^*)\"}},\"code_block\":{\"expand\":15},\"i18n_languages\":[{\"label\":\"简体中文\",\"lang\":\"zh-cn\"},{\"label\":\"English\",\"lang\":\"en\"}],\"icon_font\":\"4552607_a0oqhord1y\",\"outdate\":{\"daysago\":180,\"enable\":false,\"message\":{\"en\":\"This article was last updated on {time}. Please note that the content may no longer be applicable.\",\"ja\":\"この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。\",\"pt-br\":\"Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.\",\"zh-cn\":\"本文最后更新于 {time}，请注意文中内容可能已不适用。\",\"zh-tw\":\"本文最後更新於 {time}，請注意文中內容可能已不適用。\"}}}");
   
 </script>
 <link
@@ -41,7 +41,7 @@
   <meta property="article:author" content="CialloKing" />
   <meta property="article:published_time" content="2026-03-22T00:00:00&#43;00:00" />
   <meta property="article:modified_time" content="2026-03-22T00:00:00&#43;00:00" /><meta property="article:tag" content="基础语法" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
-<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.42c2ff6576a8f7440f141db001877cdde6d4907355753cb3bbd43efbad8597c9.css" /><link
+<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.330a8ab8604950152c4165630d77f6af2a43bf013a2c4a72a124488b7724ed21.css" /><link
     rel="preload"
     as="style"
     href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
@@ -515,76 +515,76 @@ printf的使用
 格式说明符
 </h4><p>格式说明符告诉<code> printf</code> 如何解释后面的参数。最常用的有以下几种：</p>
 <table>
-  <thead>
-      <tr>
-          <th>说明符</th>
-          <th>类型</th>
-          <th>示例</th>
-          <th>输出</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>%d</td>
-          <td>int</td>
-          <td>printf(&quot;%d&quot;, 123);</td>
-          <td>123</td>
-      </tr>
-      <tr>
-          <td>%c</td>
-          <td>char</td>
-          <td>printf(&quot;%c&quot;, &lsquo;A&rsquo;);</td>
-          <td>A</td>
-      </tr>
-      <tr>
-          <td>%s</td>
-          <td>字符串</td>
-          <td>printf(&quot;%s&quot;, &ldquo;hello&rdquo;);</td>
-          <td>hello</td>
-      </tr>
-      <tr>
-          <td>%f</td>
-          <td>float / double</td>
-          <td>printf(&quot;%f&quot;, 3.14);</td>
-          <td>3.140000</td>
-      </tr>
-      <tr>
-          <td>%lf</td>
-          <td>double（在 printf 中与 %f 通用）</td>
-          <td>printf(&quot;%lf&quot;, 3.14);</td>
-          <td>3.140000</td>
-      </tr>
-      <tr>
-          <td>%e / %E</td>
-          <td>科学计数法</td>
-          <td>printf(&quot;%e&quot;, 123.4);</td>
-          <td>1.234000e+02</td>
-      </tr>
-      <tr>
-          <td>%x / %X</td>
-          <td>十六进制（小写/大写）</td>
-          <td>printf(&quot;%x&quot;, 255);</td>
-          <td>ff</td>
-      </tr>
-      <tr>
-          <td>%o</td>
-          <td>八进制</td>
-          <td>printf(&quot;%o&quot;, 8);</td>
-          <td>10</td>
-      </tr>
-      <tr>
-          <td>%p</td>
-          <td>指针地址</td>
-          <td>printf(&quot;%p&quot;, ptr);</td>
-          <td>0x7fff1234</td>
-      </tr>
-      <tr>
-          <td>%%</td>
-          <td>输出 % 本身</td>
-          <td>printf(&quot;%%&quot;);</td>
-          <td>%</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>说明符</th>
+					<th>类型</th>
+					<th>示例</th>
+					<th>输出</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>%d</td>
+					<td>int</td>
+					<td>printf(&quot;%d&quot;, 123);</td>
+					<td>123</td>
+			</tr>
+			<tr>
+					<td>%c</td>
+					<td>char</td>
+					<td>printf(&quot;%c&quot;, &lsquo;A&rsquo;);</td>
+					<td>A</td>
+			</tr>
+			<tr>
+					<td>%s</td>
+					<td>字符串</td>
+					<td>printf(&quot;%s&quot;, &ldquo;hello&rdquo;);</td>
+					<td>hello</td>
+			</tr>
+			<tr>
+					<td>%f</td>
+					<td>float / double</td>
+					<td>printf(&quot;%f&quot;, 3.14);</td>
+					<td>3.140000</td>
+			</tr>
+			<tr>
+					<td>%lf</td>
+					<td>double（在 printf 中与 %f 通用）</td>
+					<td>printf(&quot;%lf&quot;, 3.14);</td>
+					<td>3.140000</td>
+			</tr>
+			<tr>
+					<td>%e / %E</td>
+					<td>科学计数法</td>
+					<td>printf(&quot;%e&quot;, 123.4);</td>
+					<td>1.234000e+02</td>
+			</tr>
+			<tr>
+					<td>%x / %X</td>
+					<td>十六进制（小写/大写）</td>
+					<td>printf(&quot;%x&quot;, 255);</td>
+					<td>ff</td>
+			</tr>
+			<tr>
+					<td>%o</td>
+					<td>八进制</td>
+					<td>printf(&quot;%o&quot;, 8);</td>
+					<td>10</td>
+			</tr>
+			<tr>
+					<td>%p</td>
+					<td>指针地址</td>
+					<td>printf(&quot;%p&quot;, ptr);</td>
+					<td>0x7fff1234</td>
+			</tr>
+			<tr>
+					<td>%%</td>
+					<td>输出 % 本身</td>
+					<td>printf(&quot;%%&quot;);</td>
+					<td>%</td>
+			</tr>
+	</tbody>
 </table>
 <blockquote>
 <p>printf函数还有其他更多用法，可前往 <a href="https://en.cppreference.com/w/c/io/fprintf">文档 </a> 查看</p>
@@ -647,34 +647,34 @@ ASCII 编码
 <p>每个字符对应一个唯一的整数（0~127），这个整数就是它的ASCII码值</p>
 <p>常用 ASCII 码值</p>
 <table>
-  <thead>
-      <tr>
-          <th>字符范围</th>
-          <th>ASCII码值</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>数字 0~9</td>
-          <td>48 ~ 57</td>
-      </tr>
-      <tr>
-          <td>大写字母 A~Z</td>
-          <td>65 ~ 90</td>
-      </tr>
-      <tr>
-          <td>小写字母 a~z</td>
-          <td>97 ~ 122</td>
-      </tr>
-      <tr>
-          <td>换⾏ \n</td>
-          <td>10</td>
-      </tr>
-      <tr>
-          <td>空格</td>
-          <td>32</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>字符范围</th>
+					<th>ASCII码值</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>数字 0~9</td>
+					<td>48 ~ 57</td>
+			</tr>
+			<tr>
+					<td>大写字母 A~Z</td>
+					<td>65 ~ 90</td>
+			</tr>
+			<tr>
+					<td>小写字母 a~z</td>
+					<td>97 ~ 122</td>
+			</tr>
+			<tr>
+					<td>换⾏ \n</td>
+					<td>10</td>
+			</tr>
+			<tr>
+					<td>空格</td>
+					<td>32</td>
+			</tr>
+	</tbody>
 </table>
 <pre><code>大小写字母相差 32：'A' 是 65，'a' 是 97，差 32。
 </code></pre>
@@ -727,38 +727,38 @@ ASCII 编码
 字符串在内存中是如何存储的？
 </h3><p>C 语言使用字符数组存储字符串。例如 <code>&quot;Hello&quot;</code> 在内存中是这样存放的：</p>
 <table>
-  <thead>
-      <tr>
-          <th>地址</th>
-          <th>内容</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>100</td>
-          <td>&lsquo;H&rsquo;</td>
-      </tr>
-      <tr>
-          <td>101</td>
-          <td>&rsquo;e&rsquo;</td>
-      </tr>
-      <tr>
-          <td>102</td>
-          <td>&rsquo;l&rsquo;</td>
-      </tr>
-      <tr>
-          <td>103</td>
-          <td>&rsquo;l&rsquo;</td>
-      </tr>
-      <tr>
-          <td>104</td>
-          <td>&lsquo;o&rsquo;</td>
-      </tr>
-      <tr>
-          <td>105</td>
-          <td><code>\0</code></td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>地址</th>
+					<th>内容</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>100</td>
+					<td>&lsquo;H&rsquo;</td>
+			</tr>
+			<tr>
+					<td>101</td>
+					<td>&rsquo;e&rsquo;</td>
+			</tr>
+			<tr>
+					<td>102</td>
+					<td>&rsquo;l&rsquo;</td>
+			</tr>
+			<tr>
+					<td>103</td>
+					<td>&rsquo;l&rsquo;</td>
+			</tr>
+			<tr>
+					<td>104</td>
+					<td>&lsquo;o&rsquo;</td>
+			</tr>
+			<tr>
+					<td>105</td>
+					<td><code>\0</code></td>
+			</tr>
+	</tbody>
 </table>
 <p>末尾会自动添加一个 <code>\0</code>（空字符），作为字符串结束标志。</p>
 <p>每个字符占用一个字节，末尾会自动添加一个 <code>\0</code> 字符。
@@ -780,80 +780,80 @@ ASCII 编码
 举个例子：
 n 本来只是一个普通的字母 n，但写成 \n 后，它就变成了“换行”的意思。</p>
 <table>
-  <thead>
-      <tr>
-          <th>转义字符</th>
-          <th>含义</th>
-          <th>ASCII码值</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>\n</td>
-          <td>换行（Newline）</td>
-          <td>10</td>
-      </tr>
-      <tr>
-          <td>\r</td>
-          <td>回车（Carriage Return），光标移到行首</td>
-          <td>13</td>
-      </tr>
-      <tr>
-          <td>\t</td>
-          <td>水平制表符（Tab）</td>
-          <td>9</td>
-      </tr>
-      <tr>
-          <td>\v</td>
-          <td>垂直制表符</td>
-          <td>11</td>
-      </tr>
-      <tr>
-          <td>\b</td>
-          <td>退格（Backspace），光标左移一格</td>
-          <td>8</td>
-      </tr>
-      <tr>
-          <td>\f</td>
-          <td>换页（Form Feed）</td>
-          <td>12</td>
-      </tr>
-      <tr>
-          <td>\a</td>
-          <td>响铃（Alert），发出“嘀”声</td>
-          <td>7</td>
-      </tr>
-      <tr>
-          <td>\</td>
-          <td>反斜杠本身</td>
-          <td>92</td>
-      </tr>
-      <tr>
-          <td>'</td>
-          <td>单引号</td>
-          <td>39</td>
-      </tr>
-      <tr>
-          <td>&quot;</td>
-          <td>双引号</td>
-          <td>34</td>
-      </tr>
-      <tr>
-          <td>\0</td>
-          <td>空字符（字符串结束标志）</td>
-          <td>0</td>
-      </tr>
-      <tr>
-          <td>\ddd</td>
-          <td>1~3位八进制数表示的字符	对应ASCII</td>
-          <td></td>
-      </tr>
-      <tr>
-          <td>\xdd</td>
-          <td>2位十六进制数表示的字符	对应ASCII</td>
-          <td></td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>转义字符</th>
+					<th>含义</th>
+					<th>ASCII码值</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>\n</td>
+					<td>换行（Newline）</td>
+					<td>10</td>
+			</tr>
+			<tr>
+					<td>\r</td>
+					<td>回车（Carriage Return），光标移到行首</td>
+					<td>13</td>
+			</tr>
+			<tr>
+					<td>\t</td>
+					<td>水平制表符（Tab）</td>
+					<td>9</td>
+			</tr>
+			<tr>
+					<td>\v</td>
+					<td>垂直制表符</td>
+					<td>11</td>
+			</tr>
+			<tr>
+					<td>\b</td>
+					<td>退格（Backspace），光标左移一格</td>
+					<td>8</td>
+			</tr>
+			<tr>
+					<td>\f</td>
+					<td>换页（Form Feed）</td>
+					<td>12</td>
+			</tr>
+			<tr>
+					<td>\a</td>
+					<td>响铃（Alert），发出“嘀”声</td>
+					<td>7</td>
+			</tr>
+			<tr>
+					<td>\</td>
+					<td>反斜杠本身</td>
+					<td>92</td>
+			</tr>
+			<tr>
+					<td>'</td>
+					<td>单引号</td>
+					<td>39</td>
+			</tr>
+			<tr>
+					<td>&quot;</td>
+					<td>双引号</td>
+					<td>34</td>
+			</tr>
+			<tr>
+					<td>\0</td>
+					<td>空字符（字符串结束标志）</td>
+					<td>0</td>
+			</tr>
+			<tr>
+					<td>\ddd</td>
+					<td>1~3位八进制数表示的字符	对应ASCII</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>\xdd</td>
+					<td>2位十六进制数表示的字符	对应ASCII</td>
+					<td></td>
+			</tr>
+	</tbody>
 </table>
 <h2 id="语句">
 <a class="header-anchor" href="#%e8%af%ad%e5%8f%a5"></a>
@@ -978,7 +978,7 @@ hello world的运行
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-13.webp"
+              data-src="/images/covers/covers-399.webp"
               data-sizes="auto"
               alt="【C&#43;&#43;】01 - 什么是C&#43;&#43;"
               class="lazyload"
@@ -990,7 +990,7 @@ hello world的运行
         <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">【C&#43;&#43;】01 - 什么是C&#43;&#43;</h3>
       </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-20.webp"
+              data-src="/images/covers/covers-147.webp"
               data-sizes="auto"
               alt="【C&#43;&#43;】04 - 引用"
               class="lazyload"

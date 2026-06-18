@@ -2,8 +2,6 @@
     // 图片列表（相对于站点根目录）
     const images = [
         '/images/bg/bg1.webp',
-        '/images/bg/bg2.jpg',
-       
     ];
 
     // 随机选一张
