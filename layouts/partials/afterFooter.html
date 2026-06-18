@@ -1,7 +1,7 @@
 {{- $site := .Site -}}
 {{- $params := .Site.Params -}}
-{{- $js := .Site.Data.vendor.js -}}
-{{- $css := .Site.Data.vendor.css -}}
+{{- $js := hugo.Data.vendor.js -}}
+{{- $css := hugo.Data.vendor.css -}}
 
 {{- partial "helpers/cdnJs.html" (dict "name" "lazysizes" "ctx" .) }}
 {{- partial "helpers/cdnJs.html" (dict "name" "clipboard" "ctx" .) }}
@@ -217,6 +217,9 @@
     {{- end -}}
     {{- if not .IsHome -}}
       {{- partial "helpers/ts.html" (dict "source" "js/insert_highlight.ts" "pjax" true "ctx" .) -}}
+      {{- if or $params.anchor.explicit.enable $params.anchor.auto.enable -}}
+        {{- partial "helpers/ts.html" (dict "source" "js/anchor.ts" "pjax" true "ctx" .) -}}
+      {{- end -}}
       {{- partial "helpers/ts.html" (dict "source" "js/tabs.ts" "pjax" true "ctx" . "defer" true) -}}
       {{- $photoswipe_lightbox := index (partial "helpers/vendorCdn.html" (dict "item" $js.photoswipe_lightbox "ctx" $site)) 0 -}}
       {{- $photoswipe_lightbox_integrity := index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.photoswipe_lightbox)) 0 -}}
@@ -401,66 +404,6 @@
   );
 </script>
 
-<!-- {{- if $params.player.aplayer.enable -}}
-  {{- if not $params.player.meting.enable -}}
-    <script>
-    var setupAPlayer = () => {
-      if (!{{ $params.player.disable_on_mobile | default false }} || !window.matchMedia('(max-width: 768px)').matches) {
-        if (window.matchMedia('(max-width: 959px)').matches) {
-        const aplayer = _$('#aplayer');
-          if (aplayer) {
-            const aside = aplayer.parentNode?.parentNode;
-            if (aside?.tagName === 'ASIDE') {
-              aplayer.removeAttribute('data-aos');
-              aside.parentNode.removeChild(aplayer);
-              document.body.appendChild(aplayer);
-            }
-          }
-        }
-        new APlayer({
-            theme: "var(--color-link)",
-            container: document.getElementById('aplayer'),
-            audio: JSON.parse({{ $params.player.aplayer.options.audio | jsonify }}) || [],
-            fixed: isMobile ? true : ({{ $params.player.aplayer.options.fixed }} || false),
-            autoplay: {{ $params.player.aplayer.options.autoplay }} || false,
-            loop: '{{ $params.player.aplayer.options.loop }}' || 'all',
-            order: '{{ $params.player.aplayer.options.order }}' || 'list',
-            preload: '{{ $params.player.aplayer.options.preload }}' || 'auto',
-            volume: {{ $params.player.aplayer.options.volume }} || 0.7,
-            mutex: {{ $params.player.aplayer.options.mutex }} || true,
-            listFolded: {{ $params.player.aplayer.options.listFolded }} || false,
-            lrcType: {{ $params.player.aplayer.options.lrcType }} || 0,
-        });
-      }
-    }
-    </script>
-  {{- else -}}
-    <script>
-    var setupAPlayer = () => {
-      if (!{{ $params.player.disable_on_mobile | default false }} || !window.matchMedia('(max-width: 768px)').matches) {
-        if (window.matchMedia('(max-width: 959px)').matches) {
-          const meting = _$('meting-js');
-          if (meting) {
-            meting.setAttribute('fixed', 'true');
-            const aside = meting.parentNode?.parentNode;
-            if (aside?.tagName === 'ASIDE') {
-              meting.parentNode.removeChild(meting);
-              document.body.appendChild(meting);
-            }
-          }
-        }
-      }
-    };
-    {{- if $params.player.meting.meting_api -}}
-      var meting_api = '{{ $params.player.meting.meting_api }}';
-    {{- end -}}
-    </script>
-  {{- end -}}
-  {{- partial "helpers/cdnJs.html" (dict "name" "aplayer" "ctx" . "defer" true "onload" "setupAPlayer()") -}}
-    {{- if $params.player.meting.enable -}}
-    {{- partial "helpers/cdnJs.html" (dict "name" "meting" "ctx" . "defer" true) -}}
-  {{- end -}}
-{{- end -}} -->
 
 {{- if $params.player.aplayer.enable -}}
   {{- if not $params.player.meting.enable -}}

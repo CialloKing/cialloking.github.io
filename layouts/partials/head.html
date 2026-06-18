@@ -50,8 +50,8 @@
   {{- partialCached "helpers/vendorGoogleFont.html" . -}}
 {{- end -}}
 
-{{- $js := .Site.Data.vendor.js -}}
-{{- $css := .Site.Data.vendor.css -}}
+{{- $js := hugo.Data.vendor.js -}}
+{{- $css := hugo.Data.vendor.css -}}
 <!-- icon -->
 {{- if .Site.Params.icon_font -}}
   <link
@@ -63,10 +63,10 @@
   />
 {{- else -}}
   {{- range $css.fontawesome.high_priority -}}
-    {{- partial "helpers/cdnCss.html" (dict "item" . "ctx" .) -}}
+    {{- partial "helpers/cdnCss.html" (dict "item" . "ctx" $) -}}
   {{- end -}}
   {{- range $css.fontawesome.low_priority -}}
-    {{- partial "helpers/cdnCss.html" (dict "item" . "ctx" . "async" true) -}}
+    {{- partial "helpers/cdnCss.html" (dict "item" . "ctx" $ "async" true) -}}
   {{- end -}}
 {{- end -}}
 <!-- loader -->

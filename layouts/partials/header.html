@@ -38,13 +38,10 @@
       <a id="nav-search-btn" class="nav-icon popup-trigger" title="{{ i18n "search" }}" aria-label="{{ i18n "search" }}"></a>
     {{- end -}}
   </nav>
-
-
-  </nav>
   {{- if and hugo.IsMultilingual (ne "404" .Type) -}}
     {{- $i18nMap := dict -}}
     {{- range .Site.Languages -}}
-      {{- $i18nMap = merge $i18nMap (dict .Lang .LanguageName) -}}
+      {{- $i18nMap = merge $i18nMap (dict .Lang .Label) -}}
     {{- end -}}
     <nav id="i18n-nav" aria-label="Language selection">
       <div class="custom-dropdown">
@@ -54,7 +51,7 @@
         </div>
         <ul class="select-items" id="select-items" role="listbox" aria-label="Languages">
           {{- range .Site.Languages -}}
-            <li data-value="{{ .Lang }}" role="option" {{ if eq $.Language.Lang .Lang }}class="selected" aria-selected="true"{{ else }}aria-selected="false"{{ end }} >{{ .LanguageName }}</li>
+            <li data-value="{{ .Lang }}" role="option" {{ if eq $.Language.Lang .Lang }}class="selected" aria-selected="true"{{ else }}aria-selected="false"{{ end }} >{{ .Label }}</li>
           {{- end -}}
         </ul>
       </div>
