@@ -41,7 +41,7 @@
   <meta property="article:author" content="CialloKing" />
   <meta property="article:published_time" content="2026-04-22T00:00:00&#43;08:00" />
   <meta property="article:modified_time" content="2026-04-22T00:00:00&#43;08:00" /><meta property="article:tag" content="进程" /><meta name="twitter:card" content="summary" /><meta name="twitter:image" content="https://cialloking.com/images/bg/bg1.webp" />
-<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.330a8ab8604950152c4165630d77f6af2a43bf013a2c4a72a124488b7724ed21.css" /><link
+<link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="/css/main.min.b83e878eb219777c43e4d71e2c119752bcba5b35d1382d788cb71a5e88d88484.css" /><link
     rel="preload"
     as="style"
     href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css"
@@ -308,7 +308,15 @@ This article does not have a corresponding language version
     <div class="sidebar-state-number">13</div>
   </a>
 </div>
-<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+<div class="sidebar-social" ><div class="icon-github sidebar-social-icon">
+        <a
+          href="https://github.com/CialloKing"
+          itemprop="url"
+          target="_blank"
+          aria-label="github"
+          rel="noopener nofollow noreferrer"
+        ></a>
+      </div></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
       <a
         class="sidebar-menu-link-dummy"
         href="/en/"
@@ -382,7 +390,7 @@ This article does not have a corresponding language version
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-214.webp"
+              data-src="/images/covers/covers-83.avif"
               data-sizes="auto"
               alt="【Linux】09 - Library Creation and Principles"
               class="lazyload"
@@ -394,7 +402,7 @@ This article does not have a corresponding language version
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">【Linux】09 - Library Creation and Principles</h3>
       </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-37.avif"
+              data-src="/images/covers/covers-124.webp"
               data-sizes="auto"
               alt="【Linux】11 - Process Signals"
               class="lazyload"
@@ -480,7 +488,15 @@ This article does not have a corresponding language version
     <div class="sidebar-state-number">13</div>
   </a>
 </div>
-<div class="sidebar-social" ></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
+<div class="sidebar-social" ><div class="icon-github sidebar-social-icon">
+        <a
+          href="https://github.com/CialloKing"
+          itemprop="url"
+          target="_blank"
+          aria-label="github"
+          rel="noopener nofollow noreferrer"
+        ></a>
+      </div></div><div class="sidebar-menu"><div class="sidebar-menu-link-wrap">
       <a
         class="sidebar-menu-link-dummy"
         href="/en/"
@@ -534,24 +550,7 @@ This article does not have a corresponding language version
     } else {
       aosInit();
     }
-  </script><script src="/js/pjax_main.js" integrity="" crossorigin="anonymous" data-pjax ></script><script>
-  var setupFirework = () => {
-    if (! false  || !window.matchMedia('(max-width: 768px)').matches) {
-      if (window.firework) {
-        const options = JSON.parse("{\"excludeelements\":[\"a\",\"button\"],\"particles\":[{\"colors\":[\"var(--red-1)\",\"var(--red-2)\",\"var(--red-3)\",\"var(--red-4)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"emit\"],\"number\":20,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.3,0.5],\"radius\":[16,32]}},{\"colors\":[\"var(--red-0)\"],\"duration\":[1200,1800],\"easing\":\"easeOutExpo\",\"move\":[\"diffuse\"],\"number\":1,\"shape\":\"circle\",\"shapeOptions\":{\"alpha\":[0.2,0.5],\"lineWidth\":6,\"radius\":20}}]}");
-        options.excludeElements = options.excludeelements;
-        delete options.excludeelements;
-        window.firework(options);
-      }
-    }
-  }
-</script><script
-    src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js"
-    defer
-    
-    
-    onload="setupFirework()"
-    integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8&#43;pUoWX8n1rgq282T" crossorigin="anonymous"></script><script
+  </script><script src="/js/pjax_main.js" integrity="" crossorigin="anonymous" data-pjax ></script><script
     src="https://npm.webcache.cn/theme-shokax-pjax@0.0.3/dist/index.umd.js"
     
     
@@ -662,6 +661,21 @@ This article does not have a corresponding language version
     
     onload="setupAPlayer()"
     integrity="sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr&#43;h5UfruuRL/aORyw&#43;5&#43;HZoU6e" crossorigin="anonymous"></script><script>
+  // 时间段暗黑模式：不改变 localStorage（维持 auto），直接设 data-theme
+  (function() {
+    function applyTimeTheme() {
+      var mode = localStorage.getItem('dark_mode');
+      if (mode === 'true' || mode === 'false') return;
+      var isSysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (isSysDark) return;
+      var h = new Date().getHours();
+      document.documentElement.setAttribute('data-theme', (h >= 22 || h < 8) ? 'dark' : null);
+    }
+    applyTimeTheme();
+    setInterval(applyTimeTheme, 60000); // 每分钟检测一次，跨时段自动切换
+  })();
+</script>
+<script>
 (function() {
   // 封面图片列表（保持你现有路径不变，无需修改）
   window.covers = [
@@ -1280,5 +1294,300 @@ This article does not have a corresponding language version
   });
 })();
 </script>
+
+<script src="/js/ba-click-fx.iife.js"></script>
+<script>
+  (function() {
+    if (!window.BAClickFX) return;
+
+    // ── 默认配置 ──
+    var DEFAULTS = {
+      color: '#ff5252',       // 主题色：与博客主题统一
+      trail: true,            // 启用拖尾
+      trailAlways: false,     // 仅按住时拖尾
+    };
+
+    // ── 辅助函数 ──
+    function hexToRgb(hex) {
+      var n = parseInt(hex.slice(1), 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+    function rgbToHex(r, g, b) {
+      return '#' + [r, g, b].map(function(c) {
+        return ('0' + c.toString(16)).slice(-2);
+      }).join('');
+    }
+
+    // ── 读取保存的设置 ──
+    var saved = {};
+    try {
+      saved = JSON.parse(localStorage.getItem('ba-fx-panel') || '{}');
+    } catch(e) {}
+
+    var initColor = hexToRgb(saved.color || DEFAULTS.color);
+    var initTrail = saved.trail != null ? saved.trail : DEFAULTS.trail;
+    var initTrailAlways = saved.trailAlways != null ? saved.trailAlways : DEFAULTS.trailAlways;
+
+    // ── 初始化特效 ──
+    window.__baClickFX = new BAClickFX.BAClickFX({
+      color: initColor,
+      scale: 1.10,
+      opacity: 0.50,
+      trailEnabled: initTrail,
+      trailAlways: initTrailAlways,
+    });
+
+    // ── 保存设置 ──
+    function saveSettings() {
+      var data = {
+        color: rgbToHex.apply(null, __baClickFX.getConfig().color),
+        trail: __baClickFX.getConfig().trail.enabled,
+        trailAlways: __baClickFX.getConfig().trail.always,
+      };
+      localStorage.setItem('ba-fx-panel', JSON.stringify(data));
+    }
+
+    // ── 注入齿轮按钮和面板 HTML ──
+    var gearBtn = document.createElement('a');
+    gearBtn.id = 'ba-fx-toggle';
+    gearBtn.title = '鼠标特效';
+    gearBtn.innerHTML = '<svg viewBox="0 0 512 512" width="16" height="16" fill="currentColor" style="display:block;pointer-events:none"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4l-55.7 17.7c-8.8 2.8-18.6 .4-24.5-6.8-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6 4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2 5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.4 24.5 6.8 8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>';
+    document.body.appendChild(gearBtn);
+
+    // 按钮 1:1 跟随背景上移 → 停在距顶部一段距离 → 继续滚动后隐藏
+    var GEAR_INITIAL_TOP = 70;   // 初始位置
+    var GEAR_STOP_TOP = 13;        // 停止位置（距视口顶部）
+    var GEAR_HIDE_SCROLL = 250;   // 隐藏阈值（滚动超过此值隐藏）
+    function onScroll() {
+      var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      var newTop = GEAR_INITIAL_TOP - scrollY;
+      if (newTop > GEAR_INITIAL_TOP) { newTop = GEAR_INITIAL_TOP; }
+      if (newTop < GEAR_STOP_TOP) { newTop = GEAR_STOP_TOP; }
+      gearBtn.style.top = newTop + 'px';
+      if (scrollY > GEAR_HIDE_SCROLL) {
+        gearBtn.classList.add('hidden');
+      } else {
+        gearBtn.classList.remove('hidden');
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    var panelHTML = '<div id="ba-fx-panel">' +
+        '<div id="ba-fx-panel-header">' +
+          '<span>特效设置</span>' +
+          '<button id="ba-fx-panel-close">✕</button>' +
+        '</div>' +
+        '<label class="ba-fx-ctrl">' +
+          '<span>主题颜色</span>' +
+          '<input type="color" id="ba-fx-color" value="' + (saved.color || DEFAULTS.color) + '">' +
+        '</label>' +
+        '<label class="ba-fx-ctrl ba-fx-toggle">' +
+          '<span>启用拖尾</span>' +
+          '<input type="checkbox" id="ba-fx-trail"' + (initTrail ? ' checked' : '') + '>' +
+          '<span class="ba-fx-toggle-track"></span>' +
+        '</label>' +
+        '<label class="ba-fx-ctrl ba-fx-toggle">' +
+          '<span>始终显示</span>' +
+          '<input type="checkbox" id="ba-fx-trail-always"' + (initTrailAlways ? ' checked' : '') + '>' +
+          '<span class="ba-fx-toggle-track"></span>' +
+        '</label>' +
+        '<button id="ba-fx-reset">重置默认</button>' +
+      '</div>';
+
+    var panelContainer = document.createElement('div');
+    panelContainer.innerHTML = panelHTML;
+    while (panelContainer.firstChild) {
+      document.body.appendChild(panelContainer.firstChild);
+    }
+
+    // ── 绑定事件 ──
+    var toggleBtn = document.getElementById('ba-fx-toggle');
+    var panel = document.getElementById('ba-fx-panel');
+    var closeBtn = document.getElementById('ba-fx-panel-close');
+    var colorInput = document.getElementById('ba-fx-color');
+    var trailCheck = document.getElementById('ba-fx-trail');
+    var trailAlwaysCheck = document.getElementById('ba-fx-trail-always');
+    var resetBtn = document.getElementById('ba-fx-reset');
+
+    var panelOpen = false;
+    function openPanel() {
+      panel.classList.add('open');
+      toggleBtn.classList.add('active');
+      panelOpen = true;
+    }
+    function closePanelFunc() {
+      panel.classList.remove('open');
+      toggleBtn.classList.remove('active');
+      panelOpen = false;
+    }
+
+    toggleBtn.addEventListener('click', function() {
+      panelOpen ? closePanelFunc() : openPanel();
+    });
+    closeBtn.addEventListener('click', closePanelFunc);
+
+    // 点击面板外关闭
+    document.addEventListener('click', function(e) {
+      if (panelOpen && !panel.contains(e.target) && e.target !== toggleBtn) {
+        closePanelFunc();
+      }
+    });
+
+    // 颜色选择器
+    colorInput.addEventListener('input', function() {
+      var rgb = hexToRgb(colorInput.value);
+      __baClickFX.setColor(rgb[0], rgb[1], rgb[2]);
+      saveSettings();
+    });
+
+    // 启用拖尾
+    trailCheck.addEventListener('change', function() {
+      __baClickFX.setTrail(trailCheck.checked);
+      saveSettings();
+    });
+
+    // 始终显示（仅在启用拖尾时生效）
+    trailAlwaysCheck.addEventListener('change', function() {
+      __baClickFX.setTrailAlways(trailAlwaysCheck.checked);
+      saveSettings();
+    });
+
+    // 重置
+    resetBtn.addEventListener('click', function() {
+      colorInput.value = DEFAULTS.color;
+      var rgb = hexToRgb(DEFAULTS.color);
+      __baClickFX.setColor(rgb[0], rgb[1], rgb[2]);
+      trailCheck.checked = DEFAULTS.trail;
+      __baClickFX.setTrail(DEFAULTS.trail);
+      trailAlwaysCheck.checked = DEFAULTS.trailAlways;
+      __baClickFX.setTrailAlways(DEFAULTS.trailAlways);
+      localStorage.removeItem('ba-fx-panel');
+    });
+  })();
+</script>
+<style>
+  /* ── 面板容器 ── */
+  #ba-fx-toggle {
+    position: fixed;
+    top: 70px;
+    right: 36px;
+    z-index: 999;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--color-wrap);
+    box-shadow: var(--shadow-card-hover);
+    color: var(--red-1, #ff5252);
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.3s;
+    user-select: none;
+    will-change: top;
+  }
+  #ba-fx-toggle.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  #ba-fx-toggle:hover {
+    transform: rotate(30deg);
+  }
+  #ba-fx-panel {
+    position: fixed;
+    top: 116px;
+    right: 36px;
+    z-index: 1000000;
+    width: 200px;
+    padding: 16px;
+    border: 1px solid var(--highlight-scrollbar, rgba(128,128,128,0.2));
+    border-radius: 12px;
+    background: var(--highlight-background, rgba(30,30,30,0.92));
+    color: var(--highlight-foreground, #ccc);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 13px;
+  }
+  #ba-fx-panel.open { display: flex; }
+  #ba-fx-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  #ba-fx-panel-close {
+    padding: 2px 6px;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--highlight-comment, #888);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+  }
+  #ba-fx-panel-close:hover { color: var(--highlight-foreground, #eee); }
+  .ba-fx-ctrl {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .ba-fx-ctrl input[type="color"] {
+    width: 28px;
+    height: 22px;
+    padding: 0;
+    border: 1px solid var(--highlight-scrollbar, rgba(128,128,128,0.3));
+    border-radius: 4px;
+    background: none;
+    cursor: pointer;
+  }
+  .ba-fx-toggle { cursor: pointer; }
+  .ba-fx-toggle input[type="checkbox"] { display: none; }
+  .ba-fx-toggle-track {
+    position: relative;
+    width: 32px;
+    height: 18px;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background: var(--highlight-scrollbar, rgba(128,128,128,0.25));
+    transition: background 0.2s;
+  }
+  .ba-fx-toggle-track::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--highlight-foreground, #ccc);
+    transition: transform 0.2s, background 0.2s;
+  }
+  .ba-fx-toggle input:checked + .ba-fx-toggle-track {
+    background: rgba(252, 88, 89, 0.4);
+  }
+  .ba-fx-toggle input:checked + .ba-fx-toggle-track::after {
+    transform: translateX(14px);
+    background: #fc5859;
+  }
+  #ba-fx-reset {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid var(--highlight-scrollbar, rgba(128,128,128,0.2));
+    border-radius: 6px;
+    background: var(--highlight-selection, rgba(255,255,255,0.05));
+    color: var(--highlight-comment, #888);
+    font-size: 12px;
+    cursor: pointer;
+  }
+  #ba-fx-reset:hover {
+    background: var(--highlight-selection, rgba(255,255,255,0.1));
+    color: var(--highlight-foreground, #eee);
+  }
+</style>
 </body>
 </html>
