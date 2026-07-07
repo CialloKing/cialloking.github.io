@@ -1448,6 +1448,11 @@ injector:                                    # 代码注入器
               '<input type="color" id="ba-fx-color" value="' + (saved.color || DEFAULTS.color) + '">' +
             '</label>' +
             '<label class="ba-fx-ctrl ba-fx-toggle">' +
+              '<span>点击特效</span>' +
+              '<input type="checkbox" id="ba-fx-click"' + (initClickFx ? ' checked' : '') + '>' +
+              '<span class="ba-fx-toggle-track"></span>' +
+            '</label>' +
+            '<label class="ba-fx-ctrl ba-fx-toggle">' +
               '<span>启用拖尾</span>' +
               '<input type="checkbox" id="ba-fx-trail"' + (initTrail ? ' checked' : '') + '>' +
               '<span class="ba-fx-toggle-track"></span>' +
