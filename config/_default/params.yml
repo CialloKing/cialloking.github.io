@@ -1398,6 +1398,11 @@ injector:                                    # 代码注入器
         var subNav = document.getElementById('sub-nav');
         if (subNav) {
           subNav.insertAdjacentHTML('beforeend', gearHTML);
+        } else {
+          // 降级：没有 sub-nav 时（如 404 页面），固定定位在右下角
+          document.body.insertAdjacentHTML('beforeend', gearHTML);
+          var fb = document.getElementById('ba-fx-toggle');
+          if (fb) { fb.classList.add('ba-fx-fallback'); }
         }
 
         var panelHTML = '<div id="ba-fx-panel">' +
@@ -1620,6 +1625,21 @@ injector:                                    # 代码注入器
       #ba-fx-reset:hover {
         background: var(--highlight-selection, rgba(255,255,255,0.1));
         color: var(--highlight-foreground, #eee);
+      }
+      #ba-fx-toggle.ba-fx-fallback {
+        position: fixed;
+        bottom: 90px;
+        right: 30px;
+        width: 40px;
+        height: 40px;
+        border: 1px solid var(--highlight-scrollbar, rgba(128,128,128,0.3));
+        border-radius: 50%;
+        background: var(--highlight-background, rgba(30,30,30,0.85));
+        box-shadow: var(--shadow-card-hover);
+        backdrop-filter: blur(8px);
+      }
+      #ba-fx-toggle.ba-fx-fallback:hover {
+        background: var(--highlight-selection, rgba(255,255,255,0.1));
       }
     </style>
 
