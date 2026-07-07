@@ -665,7 +665,7 @@
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-207.webp"
+            data-src="/images/covers/covers-170.webp"
             data-sizes="auto"
             alt="【C&#43;&#43;】04 - 引用"
             class="lazyload"
@@ -713,7 +713,7 @@ int a = 10; int&amp; b = a; // b 是 a 的引用（别名） int* c =&amp;a; std
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-384.webp"
+            data-src="/images/covers/covers-65.avif"
             data-sizes="auto"
             alt="【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法"
             class="lazyload"
@@ -760,7 +760,7 @@ int a = 10; int&amp; b = a; // b 是 a 的引用（别名） int* c =&amp;a; std
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-349.webp"
+            data-src="/images/covers/covers-361.webp"
             data-sizes="auto"
             alt="【C&#43;&#43;】01 - 什么是C&#43;&#43;"
             class="lazyload"
@@ -807,7 +807,7 @@ int a = 10; int&amp; b = a; // b 是 a 的引用（别名） int* c =&amp;a; std
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-87.avif"
+            data-src="/images/covers/covers-176.webp"
             data-sizes="auto"
             alt="【C语言】01 - 什么是C语言"
             class="lazyload"
@@ -855,7 +855,7 @@ int a = 10; int&amp; b = a; // b 是 a 的引用（别名） int* c =&amp;a; std
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-164.webp"
+            data-src="/images/covers/covers-30.avif"
             data-sizes="auto"
             alt="第一篇测试文章"
             class="lazyload"
@@ -908,7 +908,7 @@ ctrl+c
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-241.webp"
+            data-src="/images/covers/covers-268.webp"
             data-sizes="auto"
             alt="Hello World"
             class="lazyload"
@@ -1887,13 +1887,8 @@ ctrl+c
       opacity: 0.50,
       trailEnabled: initTrail,
       trailAlways: initTrailAlways,
+      clickEnabled: initClickFx,
     });
-
-    // ── 保存原始 _createClickEffect，通过 monkey-patch 控制点击特效开关
-    var _origCreateClick = __baClickFX._createClickEffect.bind(__baClickFX);
-    if (!initClickFx) {
-      __baClickFX._createClickEffect = function() {};
-    }
 
     // ── 保存设置 ──
     function saveSettings() {
@@ -2017,14 +2012,10 @@ ctrl+c
       saveSettings();
     });
 
-    // 点击特效：monkey-patch _createClickEffect 彻底关闭
+    // 点击特效：官方 setClick API
     clickCheck.addEventListener('change', function() {
       initClickFx = clickCheck.checked;
-      if (initClickFx) {
-        __baClickFX._createClickEffect = _origCreateClick;
-      } else {
-        __baClickFX._createClickEffect = function() {};
-      }
+      __baClickFX.setClick(initClickFx);
       saveSettings();
     });
 
@@ -2038,7 +2029,7 @@ ctrl+c
       trailAlwaysCheck.checked = DEFAULTS.trailAlways;
       __baClickFX.setTrailAlways(DEFAULTS.trailAlways);
       clickCheck.checked = DEFAULTS.clickFx;
-      __baClickFX._createClickEffect = _origCreateClick;
+      __baClickFX.setClick(true);
       initClickFx = true;
       localStorage.removeItem('ba-fx-panel');
     });

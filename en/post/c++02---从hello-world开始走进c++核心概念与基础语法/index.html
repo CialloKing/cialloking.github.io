@@ -390,7 +390,7 @@ This article does not have a corresponding language version
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-256.webp"
+              data-src="/images/covers/covers-228.webp"
               data-sizes="auto"
               alt="【C&#43;&#43;】03 - Function Overloading and Default Arguments"
               class="lazyload"
@@ -402,7 +402,7 @@ This article does not have a corresponding language version
         <div class="article-nav-caption">Prev</div>
         <h3 class="article-nav-title">【C&#43;&#43;】03 - Function Overloading and Default Arguments</h3>
       </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-349.webp"
+              data-src="/images/covers/covers-56.avif"
               data-sizes="auto"
               alt="【C&#43;&#43;】05 - inline and nullptr"
               class="lazyload"
@@ -1366,13 +1366,8 @@ This article does not have a corresponding language version
       opacity: 0.50,
       trailEnabled: initTrail,
       trailAlways: initTrailAlways,
+      clickEnabled: initClickFx,
     });
-
-    // ── 保存原始 _createClickEffect，通过 monkey-patch 控制点击特效开关
-    var _origCreateClick = __baClickFX._createClickEffect.bind(__baClickFX);
-    if (!initClickFx) {
-      __baClickFX._createClickEffect = function() {};
-    }
 
     // ── 保存设置 ──
     function saveSettings() {
@@ -1496,14 +1491,10 @@ This article does not have a corresponding language version
       saveSettings();
     });
 
-    // 点击特效：monkey-patch _createClickEffect 彻底关闭
+    // 点击特效：官方 setClick API
     clickCheck.addEventListener('change', function() {
       initClickFx = clickCheck.checked;
-      if (initClickFx) {
-        __baClickFX._createClickEffect = _origCreateClick;
-      } else {
-        __baClickFX._createClickEffect = function() {};
-      }
+      __baClickFX.setClick(initClickFx);
       saveSettings();
     });
 
@@ -1517,7 +1508,7 @@ This article does not have a corresponding language version
       trailAlwaysCheck.checked = DEFAULTS.trailAlways;
       __baClickFX.setTrailAlways(DEFAULTS.trailAlways);
       clickCheck.checked = DEFAULTS.clickFx;
-      __baClickFX._createClickEffect = _origCreateClick;
+      __baClickFX.setClick(true);
       initClickFx = true;
       localStorage.removeItem('ba-fx-panel');
     });

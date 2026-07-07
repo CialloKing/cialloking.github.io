@@ -1471,7 +1471,7 @@ shell不仅支持环境变量，还支持本地变量。</p>
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-228.webp"
+              data-src="/images/covers/covers-63.avif"
               data-sizes="auto"
               alt="【Linux】04 - Linux开发工具"
               class="lazyload"
@@ -1483,7 +1483,7 @@ shell不仅支持环境变量，还支持本地变量。</p>
         <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">【Linux】04 - Linux开发工具</h3>
       </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-367.webp"
+              data-src="/images/covers/covers-120.webp"
               data-sizes="auto"
               alt="【Linux】06 - 进程控制"
               class="lazyload"
@@ -2508,13 +2508,8 @@ shell不仅支持环境变量，还支持本地变量。</p>
       opacity: 0.50,
       trailEnabled: initTrail,
       trailAlways: initTrailAlways,
+      clickEnabled: initClickFx,
     });
-
-    // ── 保存原始 _createClickEffect，通过 monkey-patch 控制点击特效开关
-    var _origCreateClick = __baClickFX._createClickEffect.bind(__baClickFX);
-    if (!initClickFx) {
-      __baClickFX._createClickEffect = function() {};
-    }
 
     // ── 保存设置 ──
     function saveSettings() {
@@ -2638,14 +2633,10 @@ shell不仅支持环境变量，还支持本地变量。</p>
       saveSettings();
     });
 
-    // 点击特效：monkey-patch _createClickEffect 彻底关闭
+    // 点击特效：官方 setClick API
     clickCheck.addEventListener('change', function() {
       initClickFx = clickCheck.checked;
-      if (initClickFx) {
-        __baClickFX._createClickEffect = _origCreateClick;
-      } else {
-        __baClickFX._createClickEffect = function() {};
-      }
+      __baClickFX.setClick(initClickFx);
       saveSettings();
     });
 
@@ -2659,7 +2650,7 @@ shell不仅支持环境变量，还支持本地变量。</p>
       trailAlwaysCheck.checked = DEFAULTS.trailAlways;
       __baClickFX.setTrailAlways(DEFAULTS.trailAlways);
       clickCheck.checked = DEFAULTS.clickFx;
-      __baClickFX._createClickEffect = _origCreateClick;
+      __baClickFX.setClick(true);
       initClickFx = true;
       localStorage.removeItem('ba-fx-panel');
     });

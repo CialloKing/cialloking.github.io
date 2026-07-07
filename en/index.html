@@ -612,7 +612,7 @@ This article does not have a corresponding language version
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-322.webp"
+            data-src="/images/covers/covers-315.webp"
             data-sizes="auto"
             alt="【Linux】11 - Process Signals"
             class="lazyload"
@@ -659,7 +659,7 @@ This article does not have a corresponding language version
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-67.avif"
+            data-src="/images/covers/covers-175.webp"
             data-sizes="auto"
             alt="【Linux】10 - Inter-Process Communication"
             class="lazyload"
@@ -706,7 +706,7 @@ This article does not have a corresponding language version
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-27.avif"
+            data-src="/images/covers/covers-40.avif"
             data-sizes="auto"
             alt="【Linux】09 - Library Creation and Principles"
             class="lazyload"
@@ -753,7 +753,7 @@ This article does not have a corresponding language version
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-272.webp"
+            data-src="/images/covers/covers-48.avif"
             data-sizes="auto"
             alt="【Linux】08 - File System"
             class="lazyload"
@@ -800,7 +800,7 @@ This article does not have a corresponding language version
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-390.webp"
+            data-src="/images/covers/covers-253.webp"
             data-sizes="auto"
             alt="【Linux】07 - Basic I/O"
             class="lazyload"
@@ -847,7 +847,7 @@ This article does not have a corresponding language version
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-137.webp"
+            data-src="/images/covers/covers-144.webp"
             data-sizes="auto"
             alt="【Linux】06 - Process Control"
             class="lazyload"
@@ -894,7 +894,7 @@ This article does not have a corresponding language version
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-31.avif"
+            data-src="/images/covers/covers-42.avif"
             data-sizes="auto"
             alt="【Linux】05 - Process Concepts"
             class="lazyload"
@@ -941,7 +941,7 @@ This article does not have a corresponding language version
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-356.webp"
+            data-src="/images/covers/covers-116.webp"
             data-sizes="auto"
             alt="【Linux】04 - Linux Development Tools"
             class="lazyload"
@@ -1920,13 +1920,8 @@ This article does not have a corresponding language version
       opacity: 0.50,
       trailEnabled: initTrail,
       trailAlways: initTrailAlways,
+      clickEnabled: initClickFx,
     });
-
-    // ── 保存原始 _createClickEffect，通过 monkey-patch 控制点击特效开关
-    var _origCreateClick = __baClickFX._createClickEffect.bind(__baClickFX);
-    if (!initClickFx) {
-      __baClickFX._createClickEffect = function() {};
-    }
 
     // ── 保存设置 ──
     function saveSettings() {
@@ -2050,14 +2045,10 @@ This article does not have a corresponding language version
       saveSettings();
     });
 
-    // 点击特效：monkey-patch _createClickEffect 彻底关闭
+    // 点击特效：官方 setClick API
     clickCheck.addEventListener('change', function() {
       initClickFx = clickCheck.checked;
-      if (initClickFx) {
-        __baClickFX._createClickEffect = _origCreateClick;
-      } else {
-        __baClickFX._createClickEffect = function() {};
-      }
+      __baClickFX.setClick(initClickFx);
       saveSettings();
     });
 
@@ -2071,7 +2062,7 @@ This article does not have a corresponding language version
       trailAlwaysCheck.checked = DEFAULTS.trailAlways;
       __baClickFX.setTrailAlways(DEFAULTS.trailAlways);
       clickCheck.checked = DEFAULTS.clickFx;
-      __baClickFX._createClickEffect = _origCreateClick;
+      __baClickFX.setClick(true);
       initClickFx = true;
       localStorage.removeItem('ba-fx-panel');
     });
