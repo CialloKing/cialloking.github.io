@@ -620,7 +620,7 @@ injector:                                    # 代码注入器
     <script>
       (function() {
         var saved = localStorage.getItem('dark_mode');
-        if (saved) return; // 用户手动设置过，不干预
+        if (saved === 'true' || saved === 'false') return; // 用户手动选了亮/暗，不干预
         var isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (isSystemDark) return; // 系统已暗，保持 auto
         var h = new Date().getHours();
