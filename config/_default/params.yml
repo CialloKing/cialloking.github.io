@@ -723,14 +723,16 @@ injector:                                    # 代码注入器
     <script>
       // 时间段暗黑模式：不改变 localStorage（维持 auto），直接设 data-theme
       (function() {
-        var mode = localStorage.getItem('dark_mode');
-        if (mode === 'true' || mode === 'false') return;
-        var isSysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (isSysDark) return;
-        var h = new Date().getHours();
-        if (h >= 22 || h < 8) {
-          document.documentElement.setAttribute('data-theme', 'dark');
+        function applyTimeTheme() {
+          var mode = localStorage.getItem('dark_mode');
+          if (mode === 'true' || mode === 'false') return;
+          var isSysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (isSysDark) return;
+          var h = new Date().getHours();
+          document.documentElement.setAttribute('data-theme', (h >= 22 || h < 8) ? 'dark' : null);
         }
+        applyTimeTheme();
+        setInterval(applyTimeTheme, 60000); // 每分钟检测一次，跨时段自动切换
       })();
     </script>
     <script>
