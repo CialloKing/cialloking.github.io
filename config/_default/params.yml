@@ -617,6 +617,18 @@ home_categories:
 injector:                                    # 代码注入器
   head_begin: # Inject code snippet right after <head>
   head_end: |          # Inject code snippet right before </head>
+    <script>
+      (function() {
+        var saved = localStorage.getItem('dark_mode');
+        if (saved) return; // 用户手动设置过，不干预
+        var isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (isSystemDark) return; // 系统已暗，保持 auto
+        var h = new Date().getHours();
+        if (h >= 22 || h < 8) {
+          document.documentElement.setAttribute('data-theme-mode', 'true');
+        }
+      })();
+    </script>
     <style>
       .post-cover img {
         transition: opacity 0.3s ease;
