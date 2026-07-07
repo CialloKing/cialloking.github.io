@@ -1382,6 +1382,9 @@ injector:                                    # 代码注入器
           trailAlways: initTrailAlways,
         });
 
+        // 博客场景不需要按 B 键触发屏幕中央特效
+        window.removeEventListener('keydown', window.__baClickFX._onKeyDown);
+
         // ── 保存设置 ──
         function saveSettings() {
           var data = {
