@@ -1,0 +1,123 @@
+/* ba-click-fx 控制面板样式 */
+/* ── 面板容器 ── */
+#ba-fx-toggle {
+  position: fixed;
+  top: 70px;
+  right: 36px;
+  z-index: 999;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--color-wrap);
+  box-shadow: var(--shadow-card-hover);
+  color: var(--red-1, #ff5252);
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.3s;
+  user-select: none;
+  will-change: top;
+}
+#ba-fx-toggle.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+#ba-fx-toggle:hover {
+  transform: rotate(30deg);
+}
+#ba-fx-panel {
+  position: fixed;
+  top: 116px;
+  right: 36px;
+  z-index: 1000000;
+  width: 200px;
+  padding: 16px;
+  border: 1px solid var(--highlight-scrollbar, rgba(128,128,128,0.2));
+  border-radius: 12px;
+  background: var(--highlight-background, rgba(30,30,30,0.92));
+  color: var(--highlight-foreground, #ccc);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 13px;
+}
+#ba-fx-panel.open { display: flex; }
+#ba-fx-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+#ba-fx-panel-close {
+  padding: 2px 6px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--highlight-comment, #888);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+#ba-fx-panel-close:hover { color: var(--highlight-foreground, #eee); }
+.ba-fx-ctrl {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ba-fx-ctrl input[type="color"] {
+  width: 28px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--highlight-scrollbar, rgba(128,128,128,0.3));
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+}
+.ba-fx-toggle { cursor: pointer; }
+.ba-fx-toggle input[type="checkbox"] { display: none; }
+.ba-fx-toggle-track {
+  position: relative;
+  width: 32px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: var(--highlight-scrollbar, rgba(128,128,128,0.25));
+  transition: background 0.2s;
+}
+.ba-fx-toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--highlight-foreground, #ccc);
+  transition: transform 0.2s, background 0.2s;
+}
+.ba-fx-toggle input:checked + .ba-fx-toggle-track {
+  background: rgba(252, 88, 89, 0.4);
+}
+.ba-fx-toggle input:checked + .ba-fx-toggle-track::after {
+  transform: translateX(14px);
+  background: #fc5859;
+}
+#ba-fx-reset {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid var(--highlight-scrollbar, rgba(128,128,128,0.2));
+  border-radius: 6px;
+  background: var(--highlight-selection, rgba(255,255,255,0.05));
+  color: var(--highlight-comment, #888);
+  font-size: 12px;
+  cursor: pointer;
+}
+#ba-fx-reset:hover {
+  background: var(--highlight-selection, rgba(255,255,255,0.1));
+  color: var(--highlight-foreground, #eee);
+}
