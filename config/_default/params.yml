@@ -123,7 +123,7 @@ sidebar:                       #设置侧边栏，此栏显示在主页侧边栏
 
 social:                         #设置社交方式，若启用需删除#
   # email: mailto:xxx@gmail.com
-  # github: https://github.com/yourname
+  github: https://github.com/CialloKing
   # google: https://plus.google.com/yourname
   # twitter: https://twitter.com/yourname
   # facebook: https://www.facebook.com/yourname
@@ -499,7 +499,7 @@ animation:                   #设置整体动画效果
 
 # see https://github.com/D-Sketon/mouse-firework
 firework:             #设置点击时的烟花效果
-  enable: true
+  enable: false
   disable_on_mobile: false
   options:
     excludeElements: ["a", "button"]
@@ -1338,6 +1338,19 @@ injector:                                    # 代码注入器
         setRandomBanner();
       });
     })();
+    </script>
+
+    <script src="/js/ba-click-fx.iife.js"></script>
+    <script>
+      (function() {
+        if (window.BAClickFX) {
+          window.__baClickFX = new BAClickFX.BAClickFX({
+            color: [24, 158, 255],
+            scale: 1.10,
+            opacity: 0.50,
+          });
+        }
+      })();
     </script>
 
 
