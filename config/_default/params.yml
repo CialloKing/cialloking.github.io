@@ -1394,7 +1394,7 @@ injector:                                    # 代码注入器
 
         // ── 注入面板 HTML ──
         var panelHTML =
-          '<div id="ba-fx-toggle" title="鼠标特效">⚙</div>' +
+          '<div id="ba-fx-toggle" title="鼠标特效"><i class="fa-solid fa-gear"></i></div>' +
           '<div id="ba-fx-panel">' +
             '<div id="ba-fx-panel-header">' +
               '<span>特效设置</span>' +
