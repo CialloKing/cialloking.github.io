@@ -382,7 +382,7 @@ hello world</p>
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-148.webp"
+              data-src="/images/covers/covers-160.webp"
               data-sizes="auto"
               alt="第一篇测试文章"
               class="lazyload"
@@ -1366,6 +1366,11 @@ hello world</p>
         '<label class="ba-fx-ctrl">' +
           '<span>主题颜色</span>' +
           '<input type="color" id="ba-fx-color" value="' + (saved.color || DEFAULTS.color) + '">' +
+        '</label>' +
+        '<label class="ba-fx-ctrl ba-fx-toggle">' +
+          '<span>点击特效</span>' +
+          '<input type="checkbox" id="ba-fx-click"' + (initClickFx ? ' checked' : '') + '>' +
+          '<span class="ba-fx-toggle-track"></span>' +
         '</label>' +
         '<label class="ba-fx-ctrl ba-fx-toggle">' +
           '<span>启用拖尾</span>' +
