@@ -617,22 +617,6 @@ home_categories:
 injector:                                    # 代码注入器
   head_begin: # Inject code snippet right after <head>
   head_end: |          # Inject code snippet right before </head>
-    <script>
-      (function() {
-        var saved = localStorage.getItem('dark_mode');
-        if (saved === 'true' || saved === 'false') return; // 用户手动选了亮/暗，不干预
-        var isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var h = new Date().getHours();
-        var isNight = h >= 22 || h < 8;
-        if (isSystemDark) {
-          localStorage.setItem('dark_mode', 'auto');
-        } else if (isNight) {
-          localStorage.setItem('dark_mode', 'true');
-        } else {
-          localStorage.setItem('dark_mode', 'auto');
-        }
-      })();
-    </script>
     <style>
       .post-cover img {
         transition: opacity 0.3s ease;
@@ -736,6 +720,19 @@ injector:                                    # 代码注入器
 
   body_begin: # Inject code snippet right after <body>
   body_end: |
+    <script>
+      // 时间段暗黑模式：不改变 localStorage（维持 auto），直接设 data-theme
+      (function() {
+        var mode = localStorage.getItem('dark_mode');
+        if (mode === 'true' || mode === 'false') return;
+        var isSysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (isSysDark) return;
+        var h = new Date().getHours();
+        if (h >= 22 || h < 8) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
     <script>
     (function() {
       // 封面图片列表（保持你现有路径不变，无需修改）
