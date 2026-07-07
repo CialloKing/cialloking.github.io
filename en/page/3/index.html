@@ -612,7 +612,7 @@ This article does not have a corresponding language version
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-369.webp"
+            data-src="/images/covers/covers-351.webp"
             data-sizes="auto"
             alt="【C&#43;&#43;】04 - References"
             class="lazyload"
@@ -659,7 +659,7 @@ This article does not have a corresponding language version
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-213.webp"
+            data-src="/images/covers/covers-103.webp"
             data-sizes="auto"
             alt="【C语言】01 - 什么是C语言"
             class="lazyload"
@@ -706,7 +706,7 @@ This article does not have a corresponding language version
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-327.webp"
+            data-src="/images/covers/covers-384.webp"
             data-sizes="auto"
             alt="[C] 01 - What is C?"
             class="lazyload"
@@ -753,7 +753,7 @@ This article does not have a corresponding language version
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-324.webp"
+            data-src="/images/covers/covers-360.webp"
             data-sizes="auto"
             alt="【C&#43;&#43;】01 - what is the C&#43;&#43;"
             class="lazyload"
@@ -800,7 +800,7 @@ This article does not have a corresponding language version
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-288.webp"
+            data-src="/images/covers/covers-180.webp"
             data-sizes="auto"
             alt="Hello"
             class="lazyload"
@@ -847,7 +847,7 @@ This article does not have a corresponding language version
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-187.webp"
+            data-src="/images/covers/covers-26.avif"
             data-sizes="auto"
             alt="Hello World"
             class="lazyload"
@@ -1793,7 +1793,8 @@ This article does not have a corresponding language version
     var DEFAULTS = {
       color: '#ff5252',       // 主题色：与博客主题统一
       trail: true,            // 启用拖尾
-      trailAlways: false,     // 仅按住时拖尾
+      trailAlways: true,      // 始终显示拖尾
+      clickFx: true,          // 点击特效
     };
 
     // ── 辅助函数 ──
@@ -1816,6 +1817,7 @@ This article does not have a corresponding language version
     var initColor = hexToRgb(saved.color || DEFAULTS.color);
     var initTrail = saved.trail != null ? saved.trail : DEFAULTS.trail;
     var initTrailAlways = saved.trailAlways != null ? saved.trailAlways : DEFAULTS.trailAlways;
+    var initClickFx = saved.clickFx != null ? saved.clickFx : DEFAULTS.clickFx;
 
     // ── 初始化特效 ──
     window.__baClickFX = new BAClickFX.BAClickFX({
@@ -1826,12 +1828,16 @@ This article does not have a corresponding language version
       trailAlways: initTrailAlways,
     });
 
+    // 关闭点击特效时设 sparksCount=0
+    if (!initClickFx) { __baClickFX.setSparksCount(0); }
+
     // ── 保存设置 ──
     function saveSettings() {
       var data = {
         color: rgbToHex.apply(null, __baClickFX.getConfig().color),
         trail: __baClickFX.getConfig().trail.enabled,
         trailAlways: __baClickFX.getConfig().trail.always,
+        clickFx: initClickFx,
       };
       localStorage.setItem('ba-fx-panel', JSON.stringify(data));
     }
@@ -1896,6 +1902,7 @@ This article does not have a corresponding language version
     var colorInput = document.getElementById('ba-fx-color');
     var trailCheck = document.getElementById('ba-fx-trail');
     var trailAlwaysCheck = document.getElementById('ba-fx-trail-always');
+    var clickCheck = document.getElementById('ba-fx-click');
     var resetBtn = document.getElementById('ba-fx-reset');
 
     var panelOpen = false;
@@ -1941,6 +1948,17 @@ This article does not have a corresponding language version
       saveSettings();
     });
 
+    // 点击特效
+    clickCheck.addEventListener('change', function() {
+      initClickFx = clickCheck.checked;
+      if (initClickFx) {
+        __baClickFX.setSparksCount(4);
+      } else {
+        __baClickFX.setSparksCount(0);
+      }
+      saveSettings();
+    });
+
     // 重置
     resetBtn.addEventListener('click', function() {
       colorInput.value = DEFAULTS.color;
@@ -1950,6 +1968,9 @@ This article does not have a corresponding language version
       __baClickFX.setTrail(DEFAULTS.trail);
       trailAlwaysCheck.checked = DEFAULTS.trailAlways;
       __baClickFX.setTrailAlways(DEFAULTS.trailAlways);
+      clickCheck.checked = DEFAULTS.clickFx;
+      __baClickFX.setSparksCount(4);
+      initClickFx = true;
       localStorage.removeItem('ba-fx-panel');
     });
   })();

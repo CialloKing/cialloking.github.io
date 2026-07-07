@@ -1018,7 +1018,7 @@ signed 与 unsigned 的内存表示
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-163.webp"
+              data-src="/images/covers/covers-90.avif"
               data-sizes="auto"
               alt="【C&#43;&#43;】05 - inline和nullptr"
               class="lazyload"
@@ -1030,7 +1030,7 @@ signed 与 unsigned 的内存表示
         <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">【C&#43;&#43;】05 - inline和nullptr</h3>
       </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-121.webp"
+              data-src="/images/covers/covers-288.webp"
               data-sizes="auto"
               alt="【C&#43;&#43;】06 - 类和对象"
               class="lazyload"
@@ -1982,7 +1982,8 @@ signed 与 unsigned 的内存表示
     var DEFAULTS = {
       color: '#ff5252',       // 主题色：与博客主题统一
       trail: true,            // 启用拖尾
-      trailAlways: false,     // 仅按住时拖尾
+      trailAlways: true,      // 始终显示拖尾
+      clickFx: true,          // 点击特效
     };
 
     // ── 辅助函数 ──
@@ -2005,6 +2006,7 @@ signed 与 unsigned 的内存表示
     var initColor = hexToRgb(saved.color || DEFAULTS.color);
     var initTrail = saved.trail != null ? saved.trail : DEFAULTS.trail;
     var initTrailAlways = saved.trailAlways != null ? saved.trailAlways : DEFAULTS.trailAlways;
+    var initClickFx = saved.clickFx != null ? saved.clickFx : DEFAULTS.clickFx;
 
     // ── 初始化特效 ──
     window.__baClickFX = new BAClickFX.BAClickFX({
@@ -2015,12 +2017,16 @@ signed 与 unsigned 的内存表示
       trailAlways: initTrailAlways,
     });
 
+    // 关闭点击特效时设 sparksCount=0
+    if (!initClickFx) { __baClickFX.setSparksCount(0); }
+
     // ── 保存设置 ──
     function saveSettings() {
       var data = {
         color: rgbToHex.apply(null, __baClickFX.getConfig().color),
         trail: __baClickFX.getConfig().trail.enabled,
         trailAlways: __baClickFX.getConfig().trail.always,
+        clickFx: initClickFx,
       };
       localStorage.setItem('ba-fx-panel', JSON.stringify(data));
     }
@@ -2085,6 +2091,7 @@ signed 与 unsigned 的内存表示
     var colorInput = document.getElementById('ba-fx-color');
     var trailCheck = document.getElementById('ba-fx-trail');
     var trailAlwaysCheck = document.getElementById('ba-fx-trail-always');
+    var clickCheck = document.getElementById('ba-fx-click');
     var resetBtn = document.getElementById('ba-fx-reset');
 
     var panelOpen = false;
@@ -2130,6 +2137,17 @@ signed 与 unsigned 的内存表示
       saveSettings();
     });
 
+    // 点击特效
+    clickCheck.addEventListener('change', function() {
+      initClickFx = clickCheck.checked;
+      if (initClickFx) {
+        __baClickFX.setSparksCount(4);
+      } else {
+        __baClickFX.setSparksCount(0);
+      }
+      saveSettings();
+    });
+
     // 重置
     resetBtn.addEventListener('click', function() {
       colorInput.value = DEFAULTS.color;
@@ -2139,6 +2157,9 @@ signed 与 unsigned 的内存表示
       __baClickFX.setTrail(DEFAULTS.trail);
       trailAlwaysCheck.checked = DEFAULTS.trailAlways;
       __baClickFX.setTrailAlways(DEFAULTS.trailAlways);
+      clickCheck.checked = DEFAULTS.clickFx;
+      __baClickFX.setSparksCount(4);
+      initClickFx = true;
       localStorage.removeItem('ba-fx-panel');
     });
   })();
