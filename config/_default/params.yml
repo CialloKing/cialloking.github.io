@@ -622,10 +622,14 @@ injector:                                    # 代码注入器
         var saved = localStorage.getItem('dark_mode');
         if (saved === 'true' || saved === 'false') return; // 用户手动选了亮/暗，不干预
         var isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (isSystemDark) return; // 系统已暗，保持 auto
         var h = new Date().getHours();
-        if (h >= 22 || h < 8) {
-          document.documentElement.setAttribute('data-theme-mode', 'true');
+        var isNight = h >= 22 || h < 8;
+        if (isSystemDark) {
+          localStorage.setItem('dark_mode', 'auto');
+        } else if (isNight) {
+          localStorage.setItem('dark_mode', 'true');
+        } else {
+          localStorage.setItem('dark_mode', 'auto');
         }
       })();
     </script>
