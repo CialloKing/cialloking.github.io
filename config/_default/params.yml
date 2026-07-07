@@ -1343,15 +1343,279 @@ injector:                                    # 代码注入器
     <script src="/js/ba-click-fx.iife.js"></script>
     <script>
       (function() {
-        if (window.BAClickFX) {
-          window.__baClickFX = new BAClickFX.BAClickFX({
-            color: [24, 158, 255],
-            scale: 1.10,
-            opacity: 0.50,
-          });
+        if (!window.BAClickFX) return;
+
+        // ── 默认配置 ──
+        var DEFAULTS = {
+          color: '#fc5859',       // 主题色：rgb(252, 88, 89)
+          trail: true,            // 启用拖尾
+          trailAlways: false,     // 仅按住时拖尾
+        };
+
+        // ── 辅助函数 ──
+        function hexToRgb(hex) {
+          var n = parseInt(hex.slice(1), 16);
+          return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
         }
+        function rgbToHex(r, g, b) {
+          return '#' + [r, g, b].map(function(c) {
+            return ('0' + c.toString(16)).slice(-2);
+          }).join('');
+        }
+
+        // ── 读取保存的设置 ──
+        var saved = {};
+        try {
+          saved = JSON.parse(localStorage.getItem('ba-fx-panel') || '{}');
+        } catch(e) {}
+
+        var initColor = hexToRgb(saved.color || DEFAULTS.color);
+        var initTrail = saved.trail != null ? saved.trail : DEFAULTS.trail;
+        var initTrailAlways = saved.trailAlways != null ? saved.trailAlways : DEFAULTS.trailAlways;
+
+        // ── 初始化特效 ──
+        window.__baClickFX = new BAClickFX.BAClickFX({
+          color: initColor,
+          scale: 1.10,
+          opacity: 0.50,
+          trailEnabled: initTrail,
+          trailAlways: initTrailAlways,
+        });
+
+        // ── 保存设置 ──
+        function saveSettings() {
+          var data = {
+            color: rgbToHex.apply(null, __baClickFX.getConfig().color),
+            trail: __baClickFX.getConfig().trail.enabled,
+            trailAlways: __baClickFX.getConfig().trail.always,
+          };
+          localStorage.setItem('ba-fx-panel', JSON.stringify(data));
+        }
+
+        // ── 注入面板 HTML ──
+        var panelHTML =
+          '<div id="ba-fx-toggle" title="鼠标特效">⚙</div>' +
+          '<div id="ba-fx-panel">' +
+            '<div id="ba-fx-panel-header">' +
+              '<span>特效设置</span>' +
+              '<button id="ba-fx-panel-close">✕</button>' +
+            '</div>' +
+            '<label class="ba-fx-ctrl">' +
+              '<span>主题颜色</span>' +
+              '<input type="color" id="ba-fx-color" value="' + (saved.color || DEFAULTS.color) + '">' +
+            '</label>' +
+            '<label class="ba-fx-ctrl ba-fx-toggle">' +
+              '<span>启用拖尾</span>' +
+              '<input type="checkbox" id="ba-fx-trail"' + (initTrail ? ' checked' : '') + '>' +
+              '<span class="ba-fx-toggle-track"></span>' +
+            '</label>' +
+            '<label class="ba-fx-ctrl ba-fx-toggle">' +
+              '<span>始终显示</span>' +
+              '<input type="checkbox" id="ba-fx-trail-always"' + (initTrailAlways ? ' checked' : '') + '>' +
+              '<span class="ba-fx-toggle-track"></span>' +
+            '</label>' +
+            '<button id="ba-fx-reset">重置默认</button>' +
+          '</div>';
+
+        var panelContainer = document.createElement('div');
+        panelContainer.innerHTML = panelHTML;
+        while (panelContainer.firstChild) {
+          document.body.appendChild(panelContainer.firstChild);
+        }
+
+        // ── 绑定事件 ──
+        var toggleBtn = document.getElementById('ba-fx-toggle');
+        var panel = document.getElementById('ba-fx-panel');
+        var closeBtn = document.getElementById('ba-fx-panel-close');
+        var colorInput = document.getElementById('ba-fx-color');
+        var trailCheck = document.getElementById('ba-fx-trail');
+        var trailAlwaysCheck = document.getElementById('ba-fx-trail-always');
+        var resetBtn = document.getElementById('ba-fx-reset');
+
+        var panelOpen = false;
+        function openPanel() {
+          panel.classList.add('open');
+          toggleBtn.classList.add('active');
+          panelOpen = true;
+        }
+        function closePanelFunc() {
+          panel.classList.remove('open');
+          toggleBtn.classList.remove('active');
+          panelOpen = false;
+        }
+
+        toggleBtn.addEventListener('click', function() {
+          panelOpen ? closePanelFunc() : openPanel();
+        });
+        closeBtn.addEventListener('click', closePanelFunc);
+
+        // 点击面板外关闭
+        document.addEventListener('click', function(e) {
+          if (panelOpen && !panel.contains(e.target) && e.target !== toggleBtn) {
+            closePanelFunc();
+          }
+        });
+
+        // 颜色选择器
+        colorInput.addEventListener('input', function() {
+          var rgb = hexToRgb(colorInput.value);
+          __baClickFX.setColor(rgb[0], rgb[1], rgb[2]);
+          saveSettings();
+        });
+
+        // 启用拖尾
+        trailCheck.addEventListener('change', function() {
+          __baClickFX.setTrail(trailCheck.checked);
+          saveSettings();
+        });
+
+        // 始终显示（仅在启用拖尾时生效）
+        trailAlwaysCheck.addEventListener('change', function() {
+          __baClickFX.setTrailAlways(trailAlwaysCheck.checked);
+          saveSettings();
+        });
+
+        // 重置
+        resetBtn.addEventListener('click', function() {
+          colorInput.value = DEFAULTS.color;
+          var rgb = hexToRgb(DEFAULTS.color);
+          __baClickFX.setColor(rgb[0], rgb[1], rgb[2]);
+          trailCheck.checked = DEFAULTS.trail;
+          __baClickFX.setTrail(DEFAULTS.trail);
+          trailAlwaysCheck.checked = DEFAULTS.trailAlways;
+          __baClickFX.setTrailAlways(DEFAULTS.trailAlways);
+          localStorage.removeItem('ba-fx-panel');
+        });
       })();
     </script>
+    <style>
+      /* ── 面板容器 ── */
+      #ba-fx-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000000;
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--highlight-scrollbar, rgba(128,128,128,0.3));
+        border-radius: 50%;
+        background: var(--highlight-background, rgba(30,30,30,0.85));
+        color: var(--highlight-foreground, #ccc);
+        font-size: 18px;
+        cursor: pointer;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        transition: background 0.2s, border-color 0.2s, transform 0.2s;
+        user-select: none;
+      }
+      #ba-fx-toggle:hover {
+        background: var(--highlight-selection, rgba(255,255,255,0.1));
+        border-color: var(--color-link, #fc5859);
+        transform: rotate(30deg);
+      }
+      #ba-fx-toggle.active {
+        background: rgba(252, 88, 89, 0.2);
+        border-color: var(--color-link, #fc5859);
+      }
+      #ba-fx-panel {
+        position: fixed;
+        bottom: 68px;
+        right: 20px;
+        z-index: 1000000;
+        width: 200px;
+        padding: 16px;
+        border: 1px solid var(--highlight-scrollbar, rgba(128,128,128,0.2));
+        border-radius: 12px;
+        background: var(--highlight-background, rgba(30,30,30,0.92));
+        color: var(--highlight-foreground, #ccc);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+        display: none;
+        flex-direction: column;
+        gap: 12px;
+        font-size: 13px;
+      }
+      #ba-fx-panel.open { display: flex; }
+      #ba-fx-panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      #ba-fx-panel-close {
+        padding: 2px 6px;
+        border: none;
+        border-radius: 4px;
+        background: transparent;
+        color: var(--highlight-comment, #888);
+        cursor: pointer;
+        font-size: 14px;
+        line-height: 1;
+      }
+      #ba-fx-panel-close:hover { color: var(--highlight-foreground, #eee); }
+      .ba-fx-ctrl {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .ba-fx-ctrl input[type="color"] {
+        width: 28px;
+        height: 22px;
+        padding: 0;
+        border: 1px solid var(--highlight-scrollbar, rgba(128,128,128,0.3));
+        border-radius: 4px;
+        background: none;
+        cursor: pointer;
+      }
+      .ba-fx-toggle { cursor: pointer; }
+      .ba-fx-toggle input[type="checkbox"] { display: none; }
+      .ba-fx-toggle-track {
+        position: relative;
+        width: 32px;
+        height: 18px;
+        flex-shrink: 0;
+        border-radius: 9px;
+        background: var(--highlight-scrollbar, rgba(128,128,128,0.25));
+        transition: background 0.2s;
+      }
+      .ba-fx-toggle-track::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--highlight-foreground, #ccc);
+        transition: transform 0.2s, background 0.2s;
+      }
+      .ba-fx-toggle input:checked + .ba-fx-toggle-track {
+        background: rgba(252, 88, 89, 0.4);
+      }
+      .ba-fx-toggle input:checked + .ba-fx-toggle-track::after {
+        transform: translateX(14px);
+        background: #fc5859;
+      }
+      #ba-fx-reset {
+        width: 100%;
+        padding: 6px;
+        border: 1px solid var(--highlight-scrollbar, rgba(128,128,128,0.2));
+        border-radius: 6px;
+        background: var(--highlight-selection, rgba(255,255,255,0.05));
+        color: var(--highlight-comment, #888);
+        font-size: 12px;
+        cursor: pointer;
+      }
+      #ba-fx-reset:hover {
+        background: var(--highlight-selection, rgba(255,255,255,0.1));
+        color: var(--highlight-foreground, #eee);
+      }
+    </style>
 
 
 
