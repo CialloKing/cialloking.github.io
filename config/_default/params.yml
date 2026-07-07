@@ -1492,7 +1492,7 @@ injector:                                    # 代码注入器
       /* ── 面板容器 ── */
       #ba-fx-toggle {
         position: fixed;
-        bottom: 20px;
+        top: 20px;
         right: 20px;
         z-index: 1000000;
         width: 38px;
@@ -1522,7 +1522,7 @@ injector:                                    # 代码注入器
       }
       #ba-fx-panel {
         position: fixed;
-        bottom: 68px;
+        top: 68px;
         right: 20px;
         z-index: 1000000;
         width: 200px;
