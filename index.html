@@ -665,7 +665,7 @@
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-05.avif"
+            data-src="/images/covers/covers-363.webp"
             data-sizes="auto"
             alt="【Linux】11 - 进程信号"
             class="lazyload"
@@ -712,7 +712,7 @@
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-23.avif"
+            data-src="/images/covers/covers-57.avif"
             data-sizes="auto"
             alt="【Linux】10 - 进程间通信"
             class="lazyload"
@@ -759,7 +759,7 @@
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-310.webp"
+            data-src="/images/covers/covers-299.webp"
             data-sizes="auto"
             alt="【Linux】09 - 库制作与原理"
             class="lazyload"
@@ -806,7 +806,7 @@
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-213.webp"
+            data-src="/images/covers/covers-161.webp"
             data-sizes="auto"
             alt="【Linux】08 - 文件系统"
             class="lazyload"
@@ -854,7 +854,7 @@
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-271.webp"
+            data-src="/images/covers/covers-155.webp"
             data-sizes="auto"
             alt="【Linux】07 - 基础IO"
             class="lazyload"
@@ -901,7 +901,7 @@
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-28.avif"
+            data-src="/images/covers/covers-12.avif"
             data-sizes="auto"
             alt="【Linux】06 - 进程控制"
             class="lazyload"
@@ -948,7 +948,7 @@
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-288.webp"
+            data-src="/images/covers/covers-89.avif"
             data-sizes="auto"
             alt="【Linux】05 - 进程概念"
             class="lazyload"
@@ -994,7 +994,7 @@
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-142.webp"
+            data-src="/images/covers/covers-54.avif"
             data-sizes="auto"
             alt="【Linux】04 - Linux开发工具"
             class="lazyload"
@@ -1976,8 +1976,11 @@
       trailAlways: initTrailAlways,
     });
 
-    // 关闭点击特效时设 sparksCount=0
-    if (!initClickFx) { __baClickFX.setSparksCount(0); }
+    // ── 保存原始 _createClickEffect，通过 monkey-patch 控制点击特效开关
+    var _origCreateClick = __baClickFX._createClickEffect.bind(__baClickFX);
+    if (!initClickFx) {
+      __baClickFX._createClickEffect = function() {};
+    }
 
     // ── 保存设置 ──
     function saveSettings() {
@@ -2101,13 +2104,13 @@
       saveSettings();
     });
 
-    // 点击特效
+    // 点击特效：monkey-patch _createClickEffect 彻底关闭
     clickCheck.addEventListener('change', function() {
       initClickFx = clickCheck.checked;
       if (initClickFx) {
-        __baClickFX.setSparksCount(4);
+        __baClickFX._createClickEffect = _origCreateClick;
       } else {
-        __baClickFX.setSparksCount(0);
+        __baClickFX._createClickEffect = function() {};
       }
       saveSettings();
     });
@@ -2122,7 +2125,7 @@
       trailAlwaysCheck.checked = DEFAULTS.trailAlways;
       __baClickFX.setTrailAlways(DEFAULTS.trailAlways);
       clickCheck.checked = DEFAULTS.clickFx;
-      __baClickFX.setSparksCount(4);
+      __baClickFX._createClickEffect = _origCreateClick;
       initClickFx = true;
       localStorage.removeItem('ba-fx-panel');
     });

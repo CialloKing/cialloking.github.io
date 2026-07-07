@@ -665,7 +665,7 @@
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-150.webp"
+            data-src="/images/covers/covers-207.webp"
             data-sizes="auto"
             alt="【C&#43;&#43;】04 - 引用"
             class="lazyload"
@@ -713,7 +713,7 @@ int a = 10; int&amp; b = a; // b 是 a 的引用（别名） int* c =&amp;a; std
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-67.avif"
+            data-src="/images/covers/covers-384.webp"
             data-sizes="auto"
             alt="【C语言】02 - 从[hello world]开始，走进C语言核心概念与基础语法"
             class="lazyload"
@@ -760,7 +760,7 @@ int a = 10; int&amp; b = a; // b 是 a 的引用（别名） int* c =&amp;a; std
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-246.webp"
+            data-src="/images/covers/covers-349.webp"
             data-sizes="auto"
             alt="【C&#43;&#43;】01 - 什么是C&#43;&#43;"
             class="lazyload"
@@ -807,7 +807,7 @@ int a = 10; int&amp; b = a; // b 是 a 的引用（别名） int* c =&amp;a; std
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-93.avif"
+            data-src="/images/covers/covers-87.avif"
             data-sizes="auto"
             alt="【C语言】01 - 什么是C语言"
             class="lazyload"
@@ -855,7 +855,7 @@ int a = 10; int&amp; b = a; // b 是 a 的引用（别名） int* c =&amp;a; std
         post-cover left
       "
     ><img
-            data-src="/images/covers/covers-206.webp"
+            data-src="/images/covers/covers-164.webp"
             data-sizes="auto"
             alt="第一篇测试文章"
             class="lazyload"
@@ -908,7 +908,7 @@ ctrl+c
         post-cover right
       "
     ><img
-            data-src="/images/covers/covers-325.webp"
+            data-src="/images/covers/covers-241.webp"
             data-sizes="auto"
             alt="Hello World"
             class="lazyload"
@@ -1889,8 +1889,11 @@ ctrl+c
       trailAlways: initTrailAlways,
     });
 
-    // 关闭点击特效时设 sparksCount=0
-    if (!initClickFx) { __baClickFX.setSparksCount(0); }
+    // ── 保存原始 _createClickEffect，通过 monkey-patch 控制点击特效开关
+    var _origCreateClick = __baClickFX._createClickEffect.bind(__baClickFX);
+    if (!initClickFx) {
+      __baClickFX._createClickEffect = function() {};
+    }
 
     // ── 保存设置 ──
     function saveSettings() {
@@ -2014,13 +2017,13 @@ ctrl+c
       saveSettings();
     });
 
-    // 点击特效
+    // 点击特效：monkey-patch _createClickEffect 彻底关闭
     clickCheck.addEventListener('change', function() {
       initClickFx = clickCheck.checked;
       if (initClickFx) {
-        __baClickFX.setSparksCount(4);
+        __baClickFX._createClickEffect = _origCreateClick;
       } else {
-        __baClickFX.setSparksCount(0);
+        __baClickFX._createClickEffect = function() {};
       }
       saveSettings();
     });
@@ -2035,7 +2038,7 @@ ctrl+c
       trailAlwaysCheck.checked = DEFAULTS.trailAlways;
       __baClickFX.setTrailAlways(DEFAULTS.trailAlways);
       clickCheck.checked = DEFAULTS.clickFx;
-      __baClickFX.setSparksCount(4);
+      __baClickFX._createClickEffect = _origCreateClick;
       initClickFx = true;
       localStorage.removeItem('ba-fx-panel');
     });

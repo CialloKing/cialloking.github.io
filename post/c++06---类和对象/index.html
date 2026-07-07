@@ -2528,7 +2528,7 @@ static 成员
     aria-label="Article navigation"
     data-aos="fade-up"
   ><div class="article-nav-link-wrap left"><img
-              data-src="/images/covers/covers-111.webp"
+              data-src="/images/covers/covers-374.webp"
               data-sizes="auto"
               alt="【C语言】03 - C语言数据类型，变量和运算符"
               class="lazyload"
@@ -2540,7 +2540,7 @@ static 成员
         <div class="article-nav-caption">前一篇</div>
         <h3 class="article-nav-title">【C语言】03 - C语言数据类型，变量和运算符</h3>
       </div><div class="article-nav-link-wrap right"><img
-              data-src="/images/covers/covers-191.webp"
+              data-src="/images/covers/covers-359.webp"
               data-sizes="auto"
               alt="【Linux】02 - Linux基础命令"
               class="lazyload"
@@ -3589,8 +3589,11 @@ static 成员
       trailAlways: initTrailAlways,
     });
 
-    // 关闭点击特效时设 sparksCount=0
-    if (!initClickFx) { __baClickFX.setSparksCount(0); }
+    // ── 保存原始 _createClickEffect，通过 monkey-patch 控制点击特效开关
+    var _origCreateClick = __baClickFX._createClickEffect.bind(__baClickFX);
+    if (!initClickFx) {
+      __baClickFX._createClickEffect = function() {};
+    }
 
     // ── 保存设置 ──
     function saveSettings() {
@@ -3714,13 +3717,13 @@ static 成员
       saveSettings();
     });
 
-    // 点击特效
+    // 点击特效：monkey-patch _createClickEffect 彻底关闭
     clickCheck.addEventListener('change', function() {
       initClickFx = clickCheck.checked;
       if (initClickFx) {
-        __baClickFX.setSparksCount(4);
+        __baClickFX._createClickEffect = _origCreateClick;
       } else {
-        __baClickFX.setSparksCount(0);
+        __baClickFX._createClickEffect = function() {};
       }
       saveSettings();
     });
@@ -3735,7 +3738,7 @@ static 成员
       trailAlwaysCheck.checked = DEFAULTS.trailAlways;
       __baClickFX.setTrailAlways(DEFAULTS.trailAlways);
       clickCheck.checked = DEFAULTS.clickFx;
-      __baClickFX.setSparksCount(4);
+      __baClickFX._createClickEffect = _origCreateClick;
       initClickFx = true;
       localStorage.removeItem('ba-fx-panel');
     });
