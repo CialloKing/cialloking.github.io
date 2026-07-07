@@ -1401,7 +1401,7 @@ injector:                                    # 代码注入器
 
         // 按钮 1:1 跟随背景上移 → 停在距顶部一段距离 → 继续滚动后隐藏
         var GEAR_INITIAL_TOP = 70;   // 初始位置
-        var GEAR_STOP_TOP = 12;        // 停止位置（距视口顶部）
+        var GEAR_STOP_TOP = 13;        // 停止位置（距视口顶部）
         var GEAR_HIDE_SCROLL = 250;   // 隐藏阈值（滚动超过此值隐藏）
         function onScroll() {
           var scrollY = window.pageYOffset || document.documentElement.scrollTop;
