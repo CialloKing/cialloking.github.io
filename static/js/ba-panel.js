@@ -35,16 +35,14 @@
   var initClickFx = saved.clickFx != null ? saved.clickFx : DEFAULTS.clickFx;
 
   // ── 初始化特效 ──
-  // 注意：v1.0.11 构造函数中 setter 调用先于 _animationLoopBound 初始化
-  // color 必须在构造函数之后单独设置，避免 requestAnimationFrame 崩溃
-  window.__baClickFX = new BAClickFX.BAClickFX({
-    scale: 1.10,
-    opacity: 0.50,
-    trailEnabled: initTrail,
-    trailAlways: initTrailAlways,
-    clickEnabled: initClickFx,
-  });
+  // v1.0.11 构造函数中 setter 在 _animationLoopBound 之前，全部移到实例创建后
+  window.__baClickFX = new BAClickFX.BAClickFX();
   window.__baClickFX.setColor(initColor[0], initColor[1], initColor[2]);
+  window.__baClickFX.setScale(1.10);
+  window.__baClickFX.setOpacity(0.50);
+  window.__baClickFX.setTrail(initTrail);
+  window.__baClickFX.setTrailAlways(initTrailAlways);
+  window.__baClickFX.setClick(initClickFx);
 
   // ── 保存设置 ──
   function saveSettings() {
