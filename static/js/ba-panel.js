@@ -12,45 +12,35 @@
     clickFx: true,          // 点击特效
   };
 
-  // ── 辅助函数 ──
-  function hexToRgb(hex) {
-    var n = parseInt(hex.slice(1), 16);
-    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-  }
-  function rgbToHex(r, g, b) {
-    return '#' + [r, g, b].map(function(c) {
-      return ('0' + c.toString(16)).slice(-2);
-    }).join('');
-  }
-
   // ── 读取保存的设置 ──
   var saved = {};
   try {
     saved = JSON.parse(localStorage.getItem('ba-fx-panel') || '{}');
   } catch(e) {}
 
-  var initColor = hexToRgb(saved.color || DEFAULTS.color);
   var initTrail = saved.trail != null ? saved.trail : DEFAULTS.trail;
   var initTrailAlways = saved.trailAlways != null ? saved.trailAlways : DEFAULTS.trailAlways;
   var initClickFx = saved.clickFx != null ? saved.clickFx : DEFAULTS.clickFx;
 
   // ── 初始化特效 ──
   window.__baClickFX = new BAClickFX.BAClickFX({
-    color: initColor,
     scale: 1.10,
     opacity: 0.50,
+    renderingMode: 'legacy',
     trailEnabled: initTrail,
     trailAlways: initTrailAlways,
     clickEnabled: initClickFx,
   });
+  __baClickFX.setThemeColor(saved.color || DEFAULTS.color);
 
   // ── 保存设置 ──
   function saveSettings() {
+    var cfg = __baClickFX.getConfig();
     var data = {
-      color: rgbToHex.apply(null, __baClickFX.getConfig().color),
-      trail: __baClickFX.getConfig().trail.enabled,
-      trailAlways: __baClickFX.getConfig().trail.always,
-      clickFx: initClickFx,
+      color: colorInput.value,
+      trail: cfg.trailEnabled,
+      trailAlways: cfg.trailAlways,
+      clickFx: cfg.clickEnabled,
     };
     localStorage.setItem('ba-fx-panel', JSON.stringify(data));
   }
@@ -149,42 +139,40 @@
 
   // 颜色选择器
   colorInput.addEventListener('input', function() {
-    var rgb = hexToRgb(colorInput.value);
-    __baClickFX.setColor(rgb[0], rgb[1], rgb[2]);
+    __baClickFX.setThemeColor(colorInput.value);
     saveSettings();
   });
 
   // 启用拖尾
   trailCheck.addEventListener('change', function() {
-    __baClickFX.setTrail(trailCheck.checked);
+    __baClickFX.updateConfig({ trailEnabled: trailCheck.checked });
     saveSettings();
   });
 
   // 始终显示（仅在启用拖尾时生效）
   trailAlwaysCheck.addEventListener('change', function() {
-    __baClickFX.setTrailAlways(trailAlwaysCheck.checked);
+    __baClickFX.updateConfig({ trailAlways: trailAlwaysCheck.checked });
     saveSettings();
   });
 
-  // 点击特效：官方 setClick API
+  // 点击特效
   clickCheck.addEventListener('change', function() {
-    initClickFx = clickCheck.checked;
-    __baClickFX.setClick(initClickFx);
+    __baClickFX.updateConfig({ clickEnabled: clickCheck.checked });
     saveSettings();
   });
 
   // 重置
   resetBtn.addEventListener('click', function() {
     colorInput.value = DEFAULTS.color;
-    var rgb = hexToRgb(DEFAULTS.color);
-    __baClickFX.setColor(rgb[0], rgb[1], rgb[2]);
+    __baClickFX.setThemeColor(DEFAULTS.color);
     trailCheck.checked = DEFAULTS.trail;
-    __baClickFX.setTrail(DEFAULTS.trail);
     trailAlwaysCheck.checked = DEFAULTS.trailAlways;
-    __baClickFX.setTrailAlways(DEFAULTS.trailAlways);
     clickCheck.checked = DEFAULTS.clickFx;
-    __baClickFX.setClick(true);
-    initClickFx = true;
+    __baClickFX.updateConfig({
+      trailEnabled: DEFAULTS.trail,
+      trailAlways: DEFAULTS.trailAlways,
+      clickEnabled: DEFAULTS.clickFx,
+    });
     localStorage.removeItem('ba-fx-panel');
   });
 })();
