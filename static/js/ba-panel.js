@@ -26,7 +26,6 @@
   window.__baClickFX = new BAClickFX.BAClickFX({
     scale: 1.10,
     opacity: 0.50,
-    renderingMode: 'legacy',
     trailEnabled: initTrail,
     trailAlways: initTrailAlways,
     clickEnabled: initClickFx,
