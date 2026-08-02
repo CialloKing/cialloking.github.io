@@ -27,6 +27,7 @@
     scale: 1.10,
     opacity: 0.50,
     outputCompositing: 'browser-overlay',
+    hostCompositing: 'plus-lighter',
     trailEnabled: initTrail,
     trailAlways: initTrailAlways,
     clickEnabled: initClickFx,
