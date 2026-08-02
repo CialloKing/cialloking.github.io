@@ -26,6 +26,7 @@
   window.__baClickFX = new BAClickFX.BAClickFX({
     scale: 1.10,
     opacity: 0.50,
+    outputCompositing: 'browser-overlay',
     trailEnabled: initTrail,
     trailAlways: initTrailAlways,
     clickEnabled: initClickFx,
