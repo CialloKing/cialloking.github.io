@@ -28,6 +28,7 @@
     opacity: 0.50,
     outputCompositing: 'browser-overlay',
     hostCompositing: 'plus-lighter',
+    themeColorMode: 'relative-oklch',
     trailEnabled: initTrail,
     trailAlways: initTrailAlways,
     clickEnabled: initClickFx,
