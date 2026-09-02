@@ -1135,7 +1135,6 @@ struct my_msgbuf {
 
 
 ![](u493146797.webp "带锁的互斥ATM机")
-![](u=3751192653,3742213365&fm=253&fmt=auto&app=138&f=JPEG.webp "同步机制，具有顺序性的ATM机")
 
 
 #### 原子性
