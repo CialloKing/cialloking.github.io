@@ -1,0 +1,15 @@
+{{- $mediaURLs := partialCached "helpers/mediaURLs.html" . -}}
+{{- $covers := index $mediaURLs "covers" -}}
+{{- $cover := "" -}}
+{{- if gt (len $covers) 0 -}}
+  {{- /* Keep the theme's shuffled queue behavior while handling an empty manifest. */ -}}
+  {{- $scratchKey := "helpers/randomCover/queue" -}}
+  {{- $queue := .Scratch.Get $scratchKey | default (slice) -}}
+  {{- if lt (len $queue) 1 -}}
+    {{- $queue = shuffle $covers -}}
+  {{- end -}}
+  {{- $cover = index $queue 0 -}}
+  {{- $nextQueue := cond (gt (len $queue) 1) (after 1 $queue) (slice) -}}
+  {{- .Scratch.Set $scratchKey $nextQueue -}}
+{{- end -}}
+{{- return $cover -}}

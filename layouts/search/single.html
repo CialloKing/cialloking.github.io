@@ -40,13 +40,13 @@
 
 
 
-      // ========== 新增：随机封面获取函数 ==========
       const getRandomCover = () => {
-        const covers = window.covers || [];
+        const covers = Array.isArray(window.covers) ? window.covers : [];
         if (covers.length) {
           return covers[Math.floor(Math.random() * covers.length)];
         }
-        return '/images/bg1.webp'; // 默认封面 fallback
+        const backgrounds = Array.isArray(window.backgrounds) ? window.backgrounds : [];
+        return backgrounds[0] || {{ .Site.Params.banner | relURL | jsonify | safeJS }};
       };
 
 
@@ -64,14 +64,6 @@
           resultsContainer.innerHTML = '<p style="text-align:center;">未找到相关内容</p>';
           return;
         }
-
-        // 默认封面图（如果你的文章大多没有封面，可以替换为你的默认图）
-        const defaultCover = '/images/bg1.webp';
-        // 使用全局的 covers 数组（如果你在 injector 中定义的 covers 是全局的）
-        // const covers = window.covers || [];  // 确保能访问到
-        // const randomCover = covers.length ? covers[Math.floor(Math.random() * covers.length)] : '/images/bg1.webp';
-        // // ...
-        // <img src="${doc.cover || randomCover}" alt="${doc.title}">
 
         results.forEach((result, index) => {
           const doc = result.item;

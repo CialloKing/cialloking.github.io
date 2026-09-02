@@ -41,6 +41,13 @@
 {{- $site := .Site -}}
 {{- partialCached "head/analytics.html" . -}}
 {{- partialCached "head/config.html" . -}}
+{{- $mediaURLs := partialCached "helpers/mediaURLs.html" . -}}
+{{- $covers := index $mediaURLs "covers" -}}
+{{- $backgrounds := index $mediaURLs "backgrounds" -}}
+<script>
+  window.covers = {{ $covers | jsonify | safeJS }};
+  window.backgrounds = {{ $backgrounds | jsonify | safeJS }};
+</script>
 
 {{- if .Site.Params.custom_font.enable -}}
   {{- partialCached "helpers/vendorFont.html" . -}}

@@ -1,0 +1,13 @@
+{{- $covers := slice -}}
+{{- $backgrounds := slice -}}
+{{- with hugo.Data.media -}}
+  {{- range .files -}}
+    {{- $path := .path -}}
+    {{- if strings.HasPrefix $path "static/images/covers/" -}}
+      {{- $covers = $covers | append (strings.TrimPrefix "static" $path) -}}
+    {{- else if strings.HasPrefix $path "static/images/bg/" -}}
+      {{- $backgrounds = $backgrounds | append (strings.TrimPrefix "static" $path) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return (dict "covers" $covers "backgrounds" $backgrounds) -}}
