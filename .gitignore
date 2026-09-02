@@ -2,3 +2,23 @@ public
 resources
 .hugo_build.lock
 hugo.exe
+
+# Hydrated from the immutable commit recorded in media.lock.
+/.media/
+/data/media.json
+/static/audio/
+/static/images/bg/
+/static/images/covers/
+/content/post/**/*.avif
+/content/post/**/*.gif
+/content/post/**/*.jpeg
+/content/post/**/*.jpg
+/content/post/**/*.m4a
+/content/post/**/*.mp3
+/content/post/**/*.mp4
+/content/post/**/*.ogg
+/content/post/**/*.png
+/content/post/**/*.svg
+/content/post/**/*.wav
+/content/post/**/*.webm
+/content/post/**/*.webp
