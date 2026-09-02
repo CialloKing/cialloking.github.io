@@ -1,37 +1,100 @@
-name: deploy
+name: 部署 Hugo 到 GitHub Pages
 
-# 代码提交到main分支时触发github action
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-          with:
-              fetch-depth: 0
-              submodules: recursive
+      - name: 检出博客源码
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          submodules: recursive
+          persist-credentials: false
 
-        - name: Setup Hugo
-          uses: peaceiris/actions-hugo@v3
-          with:
-              hugo-version: "latest"
-              extended: true
+      - name: 安装 Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
 
-        - name: Build Web
-          run: hugo -D
+      - name: 读取媒体锁定文件
+        id: media
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const lock = JSON.parse(fs.readFileSync('media.lock', 'utf8'));
 
-        - name: Deploy Web
-          uses: peaceiris/actions-gh-pages@v4
-          with:
-              PERSONAL_TOKEN: ${{ secrets.TOKEN }}
-              EXTERNAL_REPOSITORY: CialloKing/cialloking.github.io                         # 记得改，不然运行不了
-              PUBLISH_BRANCH: gh-pages
-              PUBLISH_DIR: ./public
-              commit_message: auto deploy
+          if (lock.version !== 1) {
+            throw new Error(`不支持的媒体锁版本: ${lock.version}`);
+          }
+          if (lock.repository !== process.env.GITHUB_REPOSITORY || lock.branch !== 'media') {
+            throw new Error('media.lock 必须指向本仓库的 media 分支');
+          }
+          if (!/^[0-9a-f]{40}$/.test(lock.commit)) {
+            throw new Error('media.lock 中的 commit 必须是完整的 SHA-1');
+          }
+          if (!/^[0-9a-f]{64}$/.test(lock.manifestSha256)) {
+            throw new Error('media.lock 中的 manifestSha256 无效');
+          }
 
+          fs.appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            `repository=${lock.repository}\ncommit=${lock.commit}\n`,
+          );
+          NODE
 
+      - name: 检出锁定的媒体快照
+        uses: actions/checkout@v7
+        with:
+          repository: ${{ steps.media.outputs.repository }}
+          ref: ${{ steps.media.outputs.commit }}
+          path: .media/repository
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: 校验并还原媒体
+        run: node scripts/media-sync.mjs .media/repository . --lock media.lock
+
+      - name: 安装 Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.164.0'
+          extended: true
+
+      - name: 配置 GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: 构建站点
+        run: hugo -D
+
+      - name: 上传 Pages Artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 部署 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
