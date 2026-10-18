@@ -855,7 +855,7 @@ injector:                                    # 代码注入器
     })();
     </script>
 
-        <script src="/js/ba-click-fx.iife.js?v=1.3.12"></script>
+        <script src="/js/ba-click-fx.iife.js?v=1.3.15"></script>
     <script src="/js/ba-panel.js"></script>
 
 
