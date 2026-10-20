@@ -81,7 +81,7 @@ jobs:
         uses: actions/configure-pages@v6
 
       - name: 构建站点
-        run: hugo -D
+        run: hugo
 
       - name: 上传 Pages Artifact
         uses: actions/upload-pages-artifact@v5
