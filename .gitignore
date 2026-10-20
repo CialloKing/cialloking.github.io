@@ -3,6 +3,11 @@ resources
 .hugo_build.lock
 hugo.exe
 
+# Local metadata and temporary files.
+/.reasonix/
+/git
+/mobile-test.png
+
 # Hydrated from the immutable commit recorded in media.lock.
 /.media/
 /data/media.json
